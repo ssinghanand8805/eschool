@@ -30,16 +30,16 @@ flutter:
           weight: 400
     - family: Open Sans
       fonts: 
-        - asset: assets/fonts/OpenSansSemibold.ttf
-          weight: 600
+#        - asset: assets/fonts/OpenSansSemibold.ttf
+#          weight: 600
         - asset: assets/fonts/OpenSans.ttf
           weight: 400
         - asset: assets/fonts/OpenSansLight.ttf
           weight: 300
         - asset: assets/fonts/OpenSansExtrabold.ttf
           weight: 800
-        - asset: assets/fonts/OpenSansSemiBold.ttf
-          weight: 600
+#        - asset: assets/fonts/OpenSansSemiBold.ttf
+#          weight: 600
     - family: Roboto
       fonts: 
         - asset: assets/fonts/RobotoRegular.ttf

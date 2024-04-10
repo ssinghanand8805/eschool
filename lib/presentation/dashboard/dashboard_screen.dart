@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../apiHelper/userData.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
+import '../homework/HomeworkScreen.dart';
+import '../lesson_plan/lesson_plan.dart';
 import 'controller/dashbord_controller.dart';
 // ignore_for_file: must_be_immutable
 
@@ -25,6 +27,13 @@ class DashboardScreen extends StatelessWidget {
             icon: Icon(Icons.notification_add),
             onPressed: () {
               // Add your action here
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => LessonPlanScreen()),
+              // );
+              Get.toNamed(
+                AppRoutes.homeworkRoute,
+              );
             },
           ),
         ],
@@ -59,11 +68,11 @@ class DashboardScreen extends StatelessWidget {
                           height: 12,
                         ),
                         Text(
-                          usersData.getData("userData").record.username,
+                         "sandeep",
                           style: TextStyle(fontSize: 28, color: Colors.black),
                         ),
                          Text(
-                          usersData.getData("userData").record.className + '( '+ usersData.getData("userData").record.section + ' )',
+                         "First" + '( '+ "A" + ' )',
                           style: TextStyle(fontSize: 14, color: Colors.black),
                         ),
                       ],

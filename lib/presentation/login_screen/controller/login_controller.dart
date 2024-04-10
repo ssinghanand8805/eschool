@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:anand_s_application1/apiHelper/userData.dart';
 import 'package:anand_s_application1/presentation/login_screen/models/userDataModal.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';
 import '../../dashboard/dashboard_screen.dart';
@@ -37,19 +40,120 @@ class LoginController extends GetxController {
 
 
     print("DATA @@@@ ${data.body}");
-    UsersData usersData = UsersData.fromJson(data.body);
-    print("DATA USING DATA MODEL ${usersData.role}");
-    userData.saveData("userData", usersData);
-    print("GET USER DATA ${userData.getData("userData",)}");
+    //UsersData usersData = UsersData.fromJson(data.body);
+    Map<dynamic, dynamic> jsonData = data.body;//json.decode(data.body);
+    if(jsonData["status"].toString() == "1")
+      {
+        UserData usersData = UserData();
+        usersData.addRole(jsonData["role"].toString());
+        usersData.addUserId(jsonData["id"].toString());
+        usersData.addAccessToken(jsonData["token"].toString());
+        usersData.addSchoolName(jsonData["sch_name"].toString());
+        usersData.addCurrency_symbol(jsonData["currency_symbol"].toString());
+        usersData.addCurrency_short_name(jsonData["currency_short_name"].toString());
+        usersData.addStart_week(jsonData["startWeek"].toString());
+        usersData.addStudent_session_id(jsonData["student_session_id"].toString());
+        String imgUrl = Constants.imagesUrl + jsonData["image"].toString();
+        usersData.addUserImage(imgUrl);
+        usersData.addUsername(jsonData["username"].toString());
+        Map<String, dynamic> recordData = jsonData["record"];//json.decode(jsonData["record"]);
+        if(jsonData["role"].toString() == "parent")
+          {
+            List<dynamic> childArray = recordData['parent_childs'];
+            if(childArray.length == 1)
+              {
+                usersData.addUserIsLoggedIn(true);
+                usersData.addUserHasMultipleChild(false);
+                var firstChild = childArray[0];//json.decode(childArray[0]);
+                usersData.addUserStudentId(firstChild["student_id"]);
+                usersData.addUserClassSection(firstChild["class"] + " - " + firstChild["section"]);
+                usersData.addUserStudentName(firstChild["name"]);
+                ///navigate here to dashboard
+                  print('one child found:::::::::');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DashboardScreen()),
+                );
+              }
+            else
+              {
+                List<String> childNameList = [];
+                List<String> childIdList = [];
+                List<String> childImageList = [];
+                List<String> childClassList = [];
+                for (int i = 0; i<childArray.length; i++) {
+                String name = childArray[i]["name"];
+                childNameList.add(name);
+                String id = childArray[i]["student_id"];
+                childIdList.add(id);
+                String image = childArray[i]["image"];
+                childImageList.add(image);
+                String clss = childArray[i]["className"] + " - " + childArray[i]["section"];
+                childClassList.add(clss);
+                }
+                print('child name List:::::::::');
+                print(childNameList);
+                print('child name List:::::::::');
+                /// show Child List here
+                ///
+                showChildList(context,childNameList,childIdList,childImageList,childClassList);
+                }
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => DashboardScreen()),
-    );
+              }
+        else if(jsonData["role"] == "student")
+          {
+            usersData.addUserIsLoggedIn(true);
+            usersData.addUserStudentId(recordData["student_id"]);
+            usersData.addUserClassSection(recordData["className"] + " - " + recordData["section"]);
+            usersData.addUserAdmissionNo(recordData["admission_no"]);
+            ///checking for profile lock
+            Map<String,dynamic> body2 = { "student_id" : usersData.getUserStudentId };
+            var data  = await apiRespository.postApiCallByJson("webservice/lock_student_panel", body2);
+            print('start profile lock data:::::::::');
+            print(data);
+            print('end profile lock data:::::::::');
+          }
+
+      }
+    else
+      {
+        print('login failed:::::::::');
+      }
+
+    //print("DATA USING DATA MODEL ${usersData.role}");
+   // userData.saveData("userData", usersData);
+  //  print("GET USER DATA ${userData.getData("userData",)}");
+
+
 
    // Get.to( AppRoutes.teacherLoginScreen);
 
 
+  }
+  void showChildList(BuildContext context,List<String> childNameList,List<String> childIdList,List<String> childImageList,List<String> childClassList) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return ListView.builder(
+          itemCount: childNameList.length,
+          itemBuilder: (BuildContext context, int index){
+          return Column(
+            children: <Widget>[
+              ListTile(
+                leading: CircleAvatar(
+                  // Add child image
+                ),
+                title: Text(childNameList[index]),
+                subtitle: Text(childClassList[index]),
+              )
+              // Add more ListTiles for more children
+            ],
+          );
+        },
+
+        );
+      },
+    );
   }
 
 }

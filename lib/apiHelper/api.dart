@@ -24,9 +24,9 @@ class ApiClient extends GetConnect implements GetxService {
   @override
   void onInit() {
     // add your local storage here to load for every request
-    token=  userData.getUserToken;
+    token=  userData.getAccessToken;
     _mainHeader= {
-      'token': userData.getUserToken
+      'token': userData.getAccessToken
     };
 
     super.onInit();
@@ -37,7 +37,7 @@ class ApiClient extends GetConnect implements GetxService {
     String uri,
   ) async {
     _mainHeader={
-      'token': UserData().getUserToken
+      'token': UserData().getAccessToken
     };
 
     try {
@@ -50,13 +50,13 @@ class ApiClient extends GetConnect implements GetxService {
 
   Future<Response> postDataFormData(uri,body)async{
     _mainHeader={
-      'accessToken': UserData().getUserToken
+      'accessToken': UserData().getAccessToken
     };
 
     try{
       print("Api Url  $baseUrl$uri");
       print("Request body $body");
-      print("token "+ UserData().getUserToken);
+      print("token "+ UserData().getAccessToken);
 
       Response response=await post(uri, body,headers: _mainHeader,contentType: "application/x-www-form-urlencoded");
       print("Response body ${response.body}");
