@@ -70,10 +70,11 @@ class LoginController extends GetxController {
                 usersData.addUserStudentName(firstChild["name"]);
                 ///navigate here to dashboard
                   print('one child found:::::::::');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DashboardScreen()),
-                );
+                Get.toNamed(AppRoutes.formScreen);
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => DashboardScreen()),
+                // );
               }
             else
               {

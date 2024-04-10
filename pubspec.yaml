@@ -23,6 +23,7 @@ flutter:
   assets: 
     - assets/
     - assets/images/
+    - assets/projectImages/
   fonts: 
     - family: Lato
       fonts: 
