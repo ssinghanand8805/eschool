@@ -1,6 +1,6 @@
 
 
-import 'package:anand_s_application1/presentation/login_screen/models/userDataModal.dart';
+import 'package:learnladder/presentation/login_screen/models/userDataModal.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -21,6 +21,7 @@ class UserData extends GetxController {
   String get getUserImage => userData.read('imagesUrl') ?? '';
   String get getUserStudentId => userData.read('student_id') ?? '';
   String get getUserClassSection => userData.read('class_section') ?? '';
+  String get getUserFCMDeviceToken => userData.read('fcm_tocken') ?? '';
   String get getUserStudentName => userData.read('student_name') ?? '';
   String get getUserAdmissionNo => userData.read('admission_no') ?? '';
   bool get getUserIsLoggedIn => userData.read('isLoggegIn') ?? false;
@@ -28,6 +29,7 @@ class UserData extends GetxController {
 
 
   addAccessToken(String val) {userData.write('accessToken', val);}
+  addUserFCMDeviceToken(String val) {userData.write('fcm_tocken', val);}
   addUserId(String val) {userData.write('userId', val);}
   addRole(String val) {userData.write('role', val);}
   addUsername(String val) {userData.write('username', val);}

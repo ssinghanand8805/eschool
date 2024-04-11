@@ -1,4 +1,4 @@
-name: anand_s_application1
+name: learnladder
 description: A new Flutter project.
 version: 1.0.0+1
 environment: 
@@ -14,7 +14,12 @@ dependencies:
   get: ^4.6.6
   shared_preferences: ^2.2.2
   connectivity_plus: ^5.0.2
+  firebase_core:
+  firebase_messaging:
   intl: ^0.18.0
+  flutter_html:
+  table_calendar:
+  image_picker: ^1.0.7
 dev_dependencies: 
   flutter_test: 
     sdk: flutter

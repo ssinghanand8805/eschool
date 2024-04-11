@@ -1,4 +1,4 @@
-package com.anandsapplication.app
+package com.learnladder.app
 
 import io.flutter.embedding.android.FlutterActivity
 

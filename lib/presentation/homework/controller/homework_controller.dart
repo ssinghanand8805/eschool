@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:anand_s_application1/apiHelper/userData.dart';
-import 'package:anand_s_application1/presentation/login_screen/models/userDataModal.dart';
+import 'package:learnladder/apiHelper/userData.dart';
+import 'package:learnladder/presentation/login_screen/models/userDataModal.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../apiHelper/Constants.dart';

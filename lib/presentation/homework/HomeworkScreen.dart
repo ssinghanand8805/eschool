@@ -1,6 +1,6 @@
-import 'package:anand_s_application1/core/app_export.dart';
-import 'package:anand_s_application1/presentation/homework/controller/homework_controller.dart';
-import 'package:anand_s_application1/presentation/homework/model/Homework.dart';
+import 'package:learnladder/core/app_export.dart';
+import 'package:learnladder/presentation/homework/controller/homework_controller.dart';
+import 'package:learnladder/presentation/homework/model/Homework.dart';
 import 'package:flutter/material.dart';
 
 
@@ -25,6 +25,7 @@ HomeWorkController controller = Get.put(HomeWorkController());
   {
 
     controller.getSubjects(context);
+    controller.getData(context);
   }
 
   @override
@@ -174,7 +175,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(primary: Colors.grey),
       onPressed: () {
-        showUploadHomeworkPopup(context);
+        Get.toNamed("/sumithomework");
 
       },
       child: Text("Submit"),

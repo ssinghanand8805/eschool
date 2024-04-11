@@ -1,4 +1,4 @@
-import 'package:anand_s_application1/presentation/login_screen/models/userDataModal.dart';
+import 'package:learnladder/presentation/login_screen/models/userDataModal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -15,6 +15,12 @@ class DashboardScreen extends GetView<DashboardController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   leading: IconButton( Icons.drag_handle_rounded),
+      //   title: Text("My App"),
+      //   actions: [Icon(Icons.notification_add)],
+      //
+      // ),
         drawer: Drawer(
           child: SingleChildScrollView(
             child: Column(
@@ -76,13 +82,17 @@ class DashboardScreen extends GetView<DashboardController> {
                       onTap: () {
                         /// Close Navigation drawer before
                         Navigator.pop(context);
+                        Get.toNamed("/profile");
                         //Navigator.push(context, MaterialPageRoute(builder: (context) => FavouriteScreen()),);
                       },
                     ),
                     ListTile(
                       leading: Icon(Icons.error_outline),
                       title: Text('About School'),
-                      onTap: () {},
+                      onTap: () {
+                        Get.toNamed("/aboutSchool");
+
+                      },
                     ),
                     ListTile(
                       leading: Icon(Icons.settings),

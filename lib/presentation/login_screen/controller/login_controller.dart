@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:anand_s_application1/apiHelper/userData.dart';
-import 'package:anand_s_application1/presentation/login_screen/models/userDataModal.dart';
+import 'package:learnladder/apiHelper/userData.dart';
+import 'package:learnladder/presentation/login_screen/models/userDataModal.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../apiHelper/Constants.dart';
@@ -33,7 +33,7 @@ class LoginController extends GetxController {
     Map<String,dynamic> body = {
       "username" : idController.text,
       "password" : passwordController.text,
-      "deviceToken" : ""
+      "deviceToken" : userData.getUserFCMDeviceToken
     };
 
     var data  = await apiRespository.postApiCallByJson("auth/login", body);

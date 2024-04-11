@@ -207,7 +207,8 @@ class DashboardController extends GetxController {
               ModuleList data = items[index];
               return InkWell(
                 onTap: (){
-
+                  print("========${data.shortCode.toString()}");
+Get.toNamed("/"+data.shortCode.toString());
                 },
                 child: Container(
                   decoration: BoxDecoration(// Change this to your preferred color
