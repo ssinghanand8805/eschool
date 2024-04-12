@@ -1,11 +1,23 @@
+import 'package:learnladder/presentation/calender_todo/bindings/calendar_todo.dart';
+import 'package:learnladder/presentation/calender_todo/calendar_todo_view.dart';
 import 'package:learnladder/presentation/class_time_table/ClassTimeTableScreen.dart';
 import 'package:learnladder/presentation/class_time_table/binding/class_time_table_binding.dart';
 import 'package:learnladder/presentation/download_center/DownloadCenterScreen.dart';
 import 'package:learnladder/presentation/download_center/binding/syllabus_status_binding.dart';
 import 'package:learnladder/presentation/homework/HomeworkScreen.dart';
+import 'package:learnladder/presentation/hostel_rooms/bindings/hostelrooms.dart';
+import 'package:learnladder/presentation/hostel_rooms/hostel_room_view.dart';
+import 'package:learnladder/presentation/library/bindings/library.dart';
+import 'package:learnladder/presentation/library/library_view.dart';
+import 'package:learnladder/presentation/student_timeline/bindings/student_timeline.dart';
+import 'package:learnladder/presentation/student_timeline/student_timeline_view.dart';
 import 'package:learnladder/presentation/submit_homework/binding/profile.dart';
 import 'package:learnladder/presentation/syllabus_lesson/SyllabusLessonScreen.dart';
 import 'package:learnladder/presentation/syllabus_lesson/binding/syllabus_lesson_binding.dart';
+import 'package:learnladder/presentation/teacher_rating/bindings/teacher_rating.dart';
+import 'package:learnladder/presentation/teacher_rating/teacher_rating_view.dart';
+import 'package:learnladder/presentation/transport_routes/bindings/transportrouts.dart';
+import 'package:learnladder/presentation/transport_routes/transport_route_view.dart';
 
 import '../core/app_export.dart';
 import '../presentation/about_school/about_school.dart';
@@ -81,6 +93,17 @@ class AppRoutes {
   static const String sumithomeworkRoute = '/sumithomework';
   static const String visitorbookRoute = '/visitor_book';
   static const String applyleaveRoute = '/apply_leave';
+  static const String transportroutesRoute = '/transport_routes';
+  static const String hostelroomsRoute = '/hostel_rooms';
+  static const String calendartodolistRoute = '/calendar_to_do_list';
+  static const String libraryRoute = '/library';
+  static const String teachersratingRoute = '/teachers_rating';
+  static const String studenttimelineRoute = '/student_timeline';
+  static const String transportRouteUrl = '/student_timeline';
+
+
+
+
   static List<GetPage> pages = [
     GetPage(
       name: sScreen,
@@ -187,10 +210,12 @@ class AppRoutes {
       page: () => AppNavigationScreen(),
       bindings: [AppNavigationBinding()],
     ),
-    GetPage(
-      name: initialRoute,
-      page: () => SScreen(),
-      bindings: [SBinding()],
-    )
+    GetPage(name: initialRoute, page: () => SScreen(), bindings: [SBinding()],),
+    GetPage(name: transportroutesRoute, page: () => TransportRoutesPage(), bindings: [TransportRoutesBinding()],),
+    GetPage(name: hostelroomsRoute, page: () => HostelRoomsPage(), bindings: [HostelRoomsBinding()],),
+    GetPage(name: calendartodolistRoute, page: () => CalendarTodoPage(), bindings: [CalendarTodoBinding()],),
+    GetPage(name: libraryRoute, page: () => LibraryPage(), bindings: [LibraryBinding()],),
+    GetPage(name: teachersratingRoute, page: () => TeacherRatingPage(), bindings: [TeacherRatingBinding()],),
+    GetPage(name: studenttimelineRoute, page: () => StudentTimeLinePage(), bindings: [StudentTimeLineBinding()],),
   ];
 }

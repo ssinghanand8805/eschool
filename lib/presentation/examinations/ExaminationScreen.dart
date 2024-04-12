@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:learnladder/core/app_export.dart';
 import 'package:learnladder/presentation/apply_leave/uploadLeave.dart';
 
+import '../apply_leave/model/ApplyLeave.dart';
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
 import '../homework/HomeworkScreen.dart';
-import 'controller/ApplyLeaveController.dart';
-import 'model/ApplyLeave.dart';
+
+import 'controller/ExaminationController.dart';
+
 
 class ApplyLeavePage extends StatefulWidget {
   @override
@@ -15,7 +17,7 @@ class ApplyLeavePage extends StatefulWidget {
 }
 
 class _ApplyLeavePageState extends State<ApplyLeavePage> {
-  ApplyLeaveController controller = Get.put(ApplyLeaveController());
+  ExaminationController controller = Get.put(ExaminationController());
   @override
   Widget build(BuildContext context) {
     return MainBody(
@@ -46,46 +48,47 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
   }
 
   Widget _buildChildWidget() {
-    return GetBuilder(
-        init: controller,
-        builder: (_) {
-          return FutureBuilder(
-              future: controller.fetchDataFuture, //controller.getData(context),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return CustomLoader(); // CustomLoader();
-                }
-                else {
-
-                  return controller.applyLeaveModelObj!.value != null ? controller.applyLeaveModelObj!.value!.resultArray!.length > 0 ? ListView.builder(
-                    itemCount: controller.applyLeaveModelObj!.value!.resultArray?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      return  _buildLeaveCard(
-                          data: controller.applyLeaveModelObj!.value!.resultArray![index]
-                      );
-                    },
-                  ) : Center(child: Image.asset("assets/projectImages/no_data.png")) : Center(child: Image.asset("assets/projectImages/no_data.png"));
-
-                  // return  controller.applyLeaveModelObj!.value!.resultArray!.length > 0
-                  //     ? ListView.builder(
-                  //   itemCount:  controller.applyLeaveModelObj.value.resultArray?.length ?? 0,
-                  //   itemBuilder: (context, index) {
-                  //     // return _buildLeaveCard();
-                  //
-                  //     return _buildLeaveCard(
-                  //         data: controller.applyLeaveModelObj.value
-                  //             .resultArray![index]);
-                  //   },
-                  // )
-                  //          : Center(child: Image.asset(
-                  //     "assets/projectImages/no_data.png"));
-
-
-                }
-              }
-          );
-        }
-    );
+    return SizedBox();
+    // return GetBuilder(
+    //     init: controller,
+    //     builder: (_) {
+    //       return FutureBuilder(
+    //           future: controller.fetchDataFuture, //controller.getData(context),
+    //           builder: (context, snapshot) {
+    //             if (snapshot.connectionState != ConnectionState.done) {
+    //               return CustomLoader(); // CustomLoader();
+    //             }
+    //             else {
+    //
+    //               return controller.applyLeaveModelObj!.value != null ? controller.applyLeaveModelObj!.value!.resultArray!.length > 0 ? ListView.builder(
+    //                 itemCount: controller.applyLeaveModelObj!.value!.resultArray?.length ?? 0,
+    //                 itemBuilder: (context, index) {
+    //                   return  _buildLeaveCard(
+    //                       data: controller.applyLeaveModelObj!.value!.resultArray![index]
+    //                   );
+    //                 },
+    //               ) : Center(child: Image.asset("assets/projectImages/no_data.png")) : Center(child: Image.asset("assets/projectImages/no_data.png"));
+    //
+    //               // return  controller.applyLeaveModelObj!.value!.resultArray!.length > 0
+    //               //     ? ListView.builder(
+    //               //   itemCount:  controller.applyLeaveModelObj.value.resultArray?.length ?? 0,
+    //               //   itemBuilder: (context, index) {
+    //               //     // return _buildLeaveCard();
+    //               //
+    //               //     return _buildLeaveCard(
+    //               //         data: controller.applyLeaveModelObj.value
+    //               //             .resultArray![index]);
+    //               //   },
+    //               // )
+    //               //          : Center(child: Image.asset(
+    //               //     "assets/projectImages/no_data.png"));
+    //
+    //
+    //             }
+    //           }
+    //       );
+    //     }
+    // );
   }
 
   Widget _buildLeaveCard({required ResultArray data}) {

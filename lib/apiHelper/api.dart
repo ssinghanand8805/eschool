@@ -50,7 +50,9 @@ class ApiClient extends GetConnect implements GetxService {
 
   Future<Response> postDataFormData(uri,body)async{
     _mainHeader={
-      'accessToken': UserData().getAccessToken
+      'Client-Service': "smartschool",
+      'Auth-Key': "schoolAdmin@",
+      //UserData().getUserToken
     };
 
     try{

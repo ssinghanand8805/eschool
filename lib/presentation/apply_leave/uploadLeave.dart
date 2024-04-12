@@ -2,7 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:learnladder/presentation/apply_leave/controller/ApplyLeaveController.dart';
 import 'package:learnladder/presentation/common_widgets/MainBody.dart';
+
+import '../../core/app_export.dart';
 
 class LeaveApplicationPage extends StatefulWidget {
   @override
@@ -10,168 +14,172 @@ class LeaveApplicationPage extends StatefulWidget {
 }
 
 class _LeaveApplicationPageState extends State<LeaveApplicationPage> {
-  DateTime _applyDate = DateTime.now();
-  DateTime? _fromDate;
-  DateTime? _toDate;
-  String _reason = '';
-  File? image;
-TextEditingController reason = TextEditingController();
+  ApplyLeaveController controller = Get.put(ApplyLeaveController());
+
   final ImagePicker _picker = ImagePicker();
+
+
 
   Future<void> getImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
 
     if (pickedFile != null) {
-      setState(() {
-        image = File(pickedFile.path);
-        print("image $image");
-      });
+      controller.image.value = File(pickedFile.path);
+
     }
   }
+
+  getDate() async
+  {
+    var date = await showDatePicker(
+      context: context,
+      initialDate: controller.applyDate.value,
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2025),
+    );
+    return date;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MainBody(
         label: "Add Leave from\nhere!",
         imageUrl: "assets/projectImages/leavepage.jpg",
         AppbarTitle: "Apply Leave",
-        widget: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  height: 50,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Apply Date',
-                      border: OutlineInputBorder(),
-                    ),
-                    readOnly: true,
-                    onTap: () async {
-                      final date = await showDatePicker(
-                        context: context,
-                        initialDate: _applyDate,
-                        firstDate: DateTime(2023),
-                        lastDate: DateTime(2025),
-                      );
-                      if (date != null) {
-                        setState(() {
-                          _applyDate = date;
-                        });
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Row(
+        widget: GetBuilder(
+          init: controller,
+          builder: (context1) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Container(
-                        height: 50,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: 'From Date',
-                            border: OutlineInputBorder(),
-                          ),
-                          readOnly: true,
-                          onTap: () async {
-                            final date = await showDatePicker(
-                              context: context,
-                              initialDate: _fromDate ?? _applyDate,
-                              firstDate: _applyDate,
-                              lastDate: DateTime(2025),
-                            );
-                            if (date != null) {
-                              setState(() {
-                                _fromDate = date;
-                              });
-                            }
-                          },
+                    Container(
+
+                      child: TextField(
+                        controller: controller.applyDateController.value,
+                        decoration: InputDecoration(
+                          hintText: 'Apply Date',
+                          border: OutlineInputBorder(),
                         ),
+                        readOnly: true,
+                        onTap: () async {
+                          final date = await getDate();
+                          if (date != null) {
+
+                            controller.applyDateController.value.text = DateFormat('yyyy-MM-dd').format(date);
+
+                          }
+                        },
                       ),
                     ),
-                    SizedBox(width: 16.0),
-                    Expanded(
-                      child: Container(
-                        height: 50,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: 'To Date',
-                            border: OutlineInputBorder(),
+                    SizedBox(height: 16.0),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+
+                            child: TextField(
+                              controller: controller.fromDateController.value,
+                              decoration: InputDecoration(
+                                hintText: 'From Date',
+                                border: OutlineInputBorder(),
+                              ),
+                              readOnly: true,
+                              onTap: () async {
+                                final date = await getDate();
+                                if (date != null) {
+                                  controller.fromDateController.value.text =  DateFormat('yyyy-MM-dd').format(date);
+
+
+                                }
+                              },
+                            ),
                           ),
-                          readOnly: true,
-                          onTap: () async {
-                            final date = await showDatePicker(
-                              context: context,
-                              initialDate: _toDate ?? (_fromDate ?? _applyDate),
-                              firstDate: _fromDate ?? _applyDate,
-                              lastDate: DateTime(2025),
-                            );
-                            if (date != null) {
-                              setState(() {
-                                _toDate = date;
-                              });
-                            }
-                          },
                         ),
+                        SizedBox(width: 16.0),
+                        Expanded(
+                          child: Container(
+                            // height: 50,
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: 'To Date',
+                                border: OutlineInputBorder(),
+                              ),
+                              readOnly: true,
+                              controller: controller.toDateController.value,
+                              onTap: () async {
+                                final date = await getDate();
+                                if (date != null) {
+                                  controller.toDateController.value.text = DateFormat('yyyy-MM-dd').format(date);
+
+
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.0),
+                    Container(
+                      height: 55,
+                      child: TextField(
+                        controller: controller.reasonController.value,
+                        decoration: InputDecoration(
+                          hintText: 'Reason',
+                          border: OutlineInputBorder(),
+                        ),
+
+                        // onChanged: (value) {
+                        //   controller.reason.value = value;
+                        //
+                        // },
                       ),
+                    ),
+                    SizedBox(height: 16.0),
+                    SizedBox(height: 10),
+                    Image.asset(
+                      'assets/projectImages/upload_file.jpg',
+                      height: 150,
+                    ), // Replace with your asset
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 35, vertical: 25),
+                        textStyle: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        backgroundColor: Colors.grey.shade400,
+                      ),
+                      onPressed: () {
+                        _showImagePicker(context);
+                      },
+                      child: Text("Choose File"),
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 60, vertical: 30),
+                        textStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        backgroundColor: Colors.green.shade400,
+                      ),
+                      onPressed: () {
+
+        controller.saveData();
+                      },
+                      child: Text("Submit"),
                     ),
                   ],
                 ),
-                SizedBox(height: 16.0),
-                Container(
-                  height: 55,
-                  child: TextField(
-                    controller: reason,
-                    decoration: InputDecoration(
-                      hintText: 'Reason',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        _reason = value;
-                      });
-                    },
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                SizedBox(height: 10),
-                Image.asset(
-                  'assets/projectImages/upload_file.jpg',
-                  height: 150,
-                ), // Replace with your asset
-                SizedBox(height: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 25),
-                    textStyle: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    backgroundColor: Colors.grey.shade400,
-                  ),
-                  onPressed: () {
-                    _showImagePicker(context);
-                  },
-                  child: Text("Choose File"),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 60, vertical: 30),
-                    textStyle: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    backgroundColor: Colors.green.shade400,
-                  ),
-                  onPressed: () {},
-                  child: Text("Submit"),
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          }
         ));
   }
   void _showImagePicker(BuildContext context) {
