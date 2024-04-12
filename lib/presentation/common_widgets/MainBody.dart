@@ -7,6 +7,7 @@ class MainBody extends StatelessWidget {
   final String imageUrl;
   final String AppbarTitle;
   final Widget widget;
+  final Widget? floatingActionButton;
 
   const MainBody({
     Key? key,
@@ -14,6 +15,7 @@ class MainBody extends StatelessWidget {
     required this.imageUrl,
     required this.AppbarTitle,
     required this.widget,
+     this.floatingActionButton,
   }) : super(key: key);
 
   @override
@@ -48,6 +50,7 @@ class MainBody extends StatelessWidget {
           ),
         ],
       ),
+     floatingActionButton: floatingActionButton,
 
     );
   }

@@ -12,6 +12,8 @@ import '../presentation/about_school/about_school.dart';
 import '../presentation/about_school/binding/about_school.dart';
 import '../presentation/app_navigation_screen/app_navigation_screen.dart';
 import '../presentation/app_navigation_screen/binding/app_navigation_binding.dart';
+import '../presentation/apply_leave/ApplyLeaveScreen.dart';
+import '../presentation/apply_leave/bindings/applyleave.dart';
 import '../presentation/attendance/AttendanceScreen.dart';
 import '../presentation/attendance/binding/attendance.dart';
 import '../presentation/choose_your_option_screen/binding/choose_your_option_binding.dart';
@@ -38,7 +40,9 @@ import '../presentation/submit_homework/submit_homework.dart';
 import '../presentation/syllabus_status/SyllabuStatusScreen.dart';
 import '../presentation/syllabus_status/binding/syllabus_status_binding.dart';
 import '../presentation/teacher_login_screen/binding/teacher_login_binding.dart';
-import '../presentation/teacher_login_screen/teacher_login_screen.dart'; // ignore_for_file: must_be_immutable
+import '../presentation/teacher_login_screen/teacher_login_screen.dart';
+import '../presentation/visitor/bindings/visitorbook.dart';
+import '../presentation/visitor/visitor_bookScreen.dart'; // ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
 class AppRoutes {
@@ -75,12 +79,23 @@ class AppRoutes {
   static const String mydocumentsRoute = '/mydocuments';
   static const String cbseexamRoute = '/cbseexam';
   static const String sumithomeworkRoute = '/sumithomework';
-
+  static const String visitorbookRoute = '/visitor_book';
+  static const String applyleaveRoute = '/apply_leave';
   static List<GetPage> pages = [
     GetPage(
       name: sScreen,
       page: () => SScreen(),
       bindings: [SBinding()],
+    ),
+    GetPage(
+      name: applyleaveRoute,
+      page: () => ApplyLeavePage(),
+      bindings: [ApplyLeaveBinding()],
+    ),
+    GetPage(
+      name: visitorbookRoute,
+      page: () => VisitorBookPage(),
+      bindings: [VisitorBookBinding()],
     ),
     GetPage(
       name: profileRoute,
