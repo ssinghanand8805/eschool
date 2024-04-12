@@ -6,6 +6,7 @@ import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
 import '../homework/HomeworkScreen.dart';
 import 'controller/visitor_book_Controller.dart';
+import 'model/Visitor.dart';
 
 class VisitorBookPage extends StatefulWidget {
   @override
@@ -27,36 +28,36 @@ class _VisitorBookPageState extends State<VisitorBookPage> {
   }
 
   Widget _buildChildWidget() {
-    // return GetBuilder(
-    //   init: controller,
-    //   builder: (_) {
-    //     return FutureBuilder(
-    //       future:  controller.fetchDataFuture,//controller.getData(context),
-    //       builder: (context, snapshot) {
-    //         if (snapshot.connectionState != ConnectionState.done) {
-    //           return CustomLoader(); // CustomLoader();
-    //         }
-    //         else {
+    return GetBuilder(
+      init: controller,
+      builder: (_) {
+        return FutureBuilder(
+          future:  controller.fetchDataFuture,//controller.getData(context),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return CustomLoader(); // CustomLoader();
+            }
+            else {
 
-    return ListView.builder(
-      itemCount: 2,
+    return controller.visitorModelObj.value.result!.length > 0 ? ListView.builder(
+      itemCount: controller.visitorModelObj.value.result!.length ,
       itemBuilder: (context, index) {
-        return _buildLeaveCard();
+        // return _buildLeaveCard();
 
-        // controller.syllabusStatusModelObj.value.subjects!.length > 0 ? _buildLeaveCard(
-        // data: controller.syllabusStatusModelObj.value.subjects![index],
-        // ): Center(child: Image.asset("assets/projectImages/no_data.png",height: 100,));
-        //         },
-        //       );;
-        //
-        //     }
-        //   },
-        // );
+        return  _buildLeaveCard(
+        data: controller.visitorModelObj.value.result![index],
+        );
+                },
+              ) : Center(child: Image.asset("assets/projectImages/no_data.png"));
+
+            }
+          },
+        );
       },
     );
   }
 
-  Widget _buildLeaveCard() {
+  Widget _buildLeaveCard({required Result data}) {
     return Padding(
       padding: EdgeInsets.all(12.0),
       child: Container(
@@ -94,7 +95,7 @@ class _VisitorBookPageState extends State<VisitorBookPage> {
               child: Row(
                 children: [
                   Text(
-                    "Maxwell",
+                    data.name!,
                     //'{homework.} (Code)',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
@@ -111,14 +112,14 @@ class _VisitorBookPageState extends State<VisitorBookPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 // crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  InfoRow(title: 'Purpose', value: "Parent Teacher Meeting"),
-                  InfoRow(title: 'Phone', value: "08958565457"),
-                  InfoRow(title: 'Id Card', value: '0884555'),
-                  InfoRow(title: 'No. of Person', value: '4'),
-                  InfoRow(title: 'Date', value: '04/08/2024'),
-                  InfoRow(title: 'In Time', value: '10:30 pm'),
-                  InfoRow(title: 'Out Time', value: '11:30 am'),
-                  InfoRow(title: 'Note', value: ''),
+                  InfoRow(title: 'Purpose', value: data.purpose!),
+                  InfoRow(title: 'Phone', value: data.contact!),
+                  InfoRow(title: 'Id Card', value: data.idProof!),
+                  InfoRow(title: 'No. of Person', value: data.noOfPeople!),
+                  InfoRow(title: 'Date', value: data.date!),
+                  InfoRow(title: 'In Time', value: data.inTime!),
+                  InfoRow(title: 'Out Time', value: data.outTime!),
+                  InfoRow(title: 'Note', value: data.note!),
                 ],
               ),
             ),

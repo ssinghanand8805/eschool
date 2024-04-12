@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:learnladder/core/app_export.dart';
+import 'package:learnladder/presentation/hostel_rooms/model/Hostel.dart';
 
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
@@ -17,9 +18,9 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
   @override
   Widget build(BuildContext context) {
     return MainBody(
-      label: 'Your Visitor\n Book Here!',
+      label: 'Your Hostel\n Room Here!',
       imageUrl: 'assets/projectImages/noticepage.png',
-      AppbarTitle: 'Visitor Book',
+      AppbarTitle: 'Hostel Room',
       widget: _buildChildWidget(),
 
 
@@ -27,36 +28,36 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
   }
 
   Widget _buildChildWidget() {
-    // return GetBuilder(
-    //   init: controller,
-    //   builder: (_) {
-    //     return FutureBuilder(
-    //       future:  controller.fetchDataFuture,//controller.getData(context),
-    //       builder: (context, snapshot) {
-    //         if (snapshot.connectionState != ConnectionState.done) {
-    //           return CustomLoader(); // CustomLoader();
-    //         }
-    //         else {
+    return GetBuilder(
+      init: controller,
+      builder: (_) {
+        return FutureBuilder(
+          future:  controller.fetchDataFuture,//controller.getData(context),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return CustomLoader(); // CustomLoader();
+            }
+            else {
 
-    return ListView.builder(
-      itemCount: 2,
-      itemBuilder: (context, index) {
-        return _buildLeaveCard();
+              return controller.hostelListModelObj.value.hostelarray!.length > 0 ? ListView.builder(
+                itemCount: controller.hostelListModelObj.value.hostelarray!.length ,
+                itemBuilder: (context, index) {
+                  // return _buildLeaveCard();
 
-        // controller.syllabusStatusModelObj.value.subjects!.length > 0 ? _buildLeaveCard(
-        // data: controller.syllabusStatusModelObj.value.subjects![index],
-        // ): Center(child: Image.asset("assets/projectImages/no_data.png",height: 100,));
-        //         },
-        //       );;
-        //
-        //     }
-        //   },
-        // );
+                  return  _buildLeaveCard(
+                    data: controller.hostelListModelObj.value.hostelarray![index],
+                  );
+                },
+              ) : Center(child: Image.asset("assets/projectImages/no_data.png"));
+
+            }
+          },
+        );
       },
     );
   }
 
-  Widget _buildLeaveCard() {
+  Widget _buildLeaveCard({required Hostelarray data}) {
     return Padding(
       padding: EdgeInsets.all(12.0),
       child: Container(
@@ -94,7 +95,7 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
               child: Row(
                 children: [
                   Text(
-                    "Maxwell",
+                    data.hostelName!,
                     //'{homework.} (Code)',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
@@ -102,6 +103,7 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
                     ),
                   ),
                   Spacer(),
+                  data.assign == 1 ? Text("Assigned") : SizedBox(),
                 ],
               ),
             ),
@@ -111,14 +113,10 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 // crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  InfoRow(title: 'Purpose', value: "Parent Teacher Meeting"),
-                  InfoRow(title: 'Phone', value: "08958565457"),
-                  InfoRow(title: 'Id Card', value: '0884555'),
-                  InfoRow(title: 'No. of Person', value: '4'),
-                  InfoRow(title: 'Date', value: '04/08/2024'),
-                  InfoRow(title: 'In Time', value: '10:30 pm'),
-                  InfoRow(title: 'Out Time', value: '11:30 am'),
-                  InfoRow(title: 'Note', value: ''),
+                  InfoRow(title: 'Room Type', value: data.roomType!),
+                  InfoRow(title: 'Room no.', value: data.roomNo!),
+                  InfoRow(title: 'No. of Bed', value: data.noOfBed!),
+                  InfoRow(title: 'Cost per Bed', value: data.costPerBed!)
                 ],
               ),
             ),
