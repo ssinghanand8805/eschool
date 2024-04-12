@@ -118,9 +118,10 @@ class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
                 color: Colors.white,
                 child: Row(
                     children: [
-
                       Expanded(
+                        flex: 2,
                         child: TabBar(
+                          labelPadding: EdgeInsets.zero,
                           controller: _tabController,
                           tabs: [
                             Tab(
@@ -137,96 +138,82 @@ class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
                           unselectedLabelStyle: tabTextStyle,
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.white,
-                              width: 2.0,
+                      Expanded(
+                        child: Container(
+                          height: 35,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.orange),
+                            borderRadius: BorderRadius.circular(50)
+                          ),
+                          child: GetBuilder(
+                            init: controller,
+                            builder:(_) => FutureBuilder(
+                                future: controller.fetchDataFutureForSubjects,
+                              builder: (_,snanpshot) {
+                                if (snanpshot.connectionState != ConnectionState.done) {
+                                  return CircularProgressIndicator();
+                                  // return DropdownButton<Subjectlist>(
+                                  //   value: null,
+                                  //   icon: Icon(Icons.keyboard_arrow_down_rounded),
+                                  //   onChanged: (Subjectlist? newValue) {
+                                  //     controller.currentSelectedSubject.value= newValue!;
+                                  //     controller.currentSelectedSubejectId.value = newValue!.subjectId!;
+                                  //
+                                  //   },
+                                  //   items: <DropdownMenuItem<Subjectlist>>[
+                                  //     DropdownMenuItem(
+                                  //       value: controller.currentSelectedSubject.value == null ? null : controller.currentSelectedSubject.value,
+                                  //       child: Text('All'),
+                                  //     ),
+                                  //
+                                  //   ],
+                                  // );
+                                }
+                                else
+                                  {
+                                    return DropdownButton<Subjectlist>(
+                                      value: controller.currentSelectedSubject.value.subjectId == null ? controller.studentSubjectsModelObj.value.subjectlist![0] : controller.currentSelectedSubject.value,
+                                      icon: Icon(Icons.keyboard_arrow_down_rounded),
+                                      onChanged: (Subjectlist? newValue) {
+
+                                        controller.currentSelectedSubject.value= newValue!;
+                                        // controller.update();
+                                        controller.currentSelectedSubejectId.value = controller.currentSelectedSubject.value!.subjectId!;
+                                        controller.update();
+                                        controller.getData();
+                                      },
+                                      items: <DropdownMenuItem<Subjectlist>>[
+                                        // DropdownMenuItem(
+                                        //   value: Subjectlist(
+                                        //     subjectGroupSubjectsId: "0",
+                                        //     subjectGroupClassSectionsId: "0",
+                                        //     name: "All",
+                                        //     code: "",
+                                        //     subjectId: "0",
+                                        //   ),
+                                        //   child: Text('All',style: TextStyle(color: Colors.red),),
+                                        // ),
+                                        if(controller.studentSubjectsModelObj != null && controller.studentSubjectsModelObj.value != null && controller.studentSubjectsModelObj.value.subjectlist != null)
+                                          ...controller.studentSubjectsModelObj!.value!.subjectlist!.map<DropdownMenuItem<Subjectlist>>((Subjectlist value) {
+                                            return DropdownMenuItem<Subjectlist>(
+                                              value: value,
+                                              child: Text(value.name!,style: TextStyle(color: Colors.red)), // Assuming 'name' is the display property
+                                            );
+
+
+                                          }),
+                                      ],
+                                    );
+                                  }
+
+                              }
                             ),
                           ),
                         ),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 4.0),
-                              child: Container(
-
-                                height: 35,
-                                width: 120,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20), // Adjust the value for roundness
-                                  border: Border.all(color: Colors.orange), // Adjust the color as needed
-                                ),
-                                child: GetBuilder(
-                                  init: controller,
-                                  builder:(_) => FutureBuilder(
-                                      future: controller.fetchDataFutureForSubjects,
-                                    builder: (_,snanpshot) {
-                                      if (snanpshot.connectionState != ConnectionState.done) {
-                                        return CircularProgressIndicator();
-                                        // return DropdownButton<Subjectlist>(
-                                        //   value: null,
-                                        //   icon: Icon(Icons.keyboard_arrow_down_rounded),
-                                        //   onChanged: (Subjectlist? newValue) {
-                                        //     controller.currentSelectedSubject.value= newValue!;
-                                        //     controller.currentSelectedSubejectId.value = newValue!.subjectId!;
-                                        //
-                                        //   },
-                                        //   items: <DropdownMenuItem<Subjectlist>>[
-                                        //     DropdownMenuItem(
-                                        //       value: controller.currentSelectedSubject.value == null ? null : controller.currentSelectedSubject.value,
-                                        //       child: Text('All'),
-                                        //     ),
-                                        //
-                                        //   ],
-                                        // );
-                                      }
-                                      else
-                                        {
-                                          return DropdownButton<Subjectlist>(
-                                            value: controller.currentSelectedSubject.value.subjectId == null ? controller.studentSubjectsModelObj.value.subjectlist![0] : controller.currentSelectedSubject.value,
-                                            icon: Icon(Icons.keyboard_arrow_down_rounded),
-                                            onChanged: (Subjectlist? newValue) {
-
-                                              controller.currentSelectedSubject.value= newValue!;
-                                              // controller.update();
-                                              controller.currentSelectedSubejectId.value = controller.currentSelectedSubject.value!.subjectId!;
-                                              controller.update();
-                                              controller.getData();
-                                            },
-                                            items: <DropdownMenuItem<Subjectlist>>[
-                                              // DropdownMenuItem(
-                                              //   value: Subjectlist(
-                                              //     subjectGroupSubjectsId: "0",
-                                              //     subjectGroupClassSectionsId: "0",
-                                              //     name: "All",
-                                              //     code: "",
-                                              //     subjectId: "0",
-                                              //   ),
-                                              //   child: Text('All',style: TextStyle(color: Colors.red),),
-                                              // ),
-                                              if(controller.studentSubjectsModelObj != null && controller.studentSubjectsModelObj.value != null && controller.studentSubjectsModelObj.value.subjectlist != null)
-                                                ...controller.studentSubjectsModelObj!.value!.subjectlist!.map<DropdownMenuItem<Subjectlist>>((Subjectlist value) {
-                                                  return DropdownMenuItem<Subjectlist>(
-                                                    value: value,
-                                                    child: Text(value.name!,style: TextStyle(color: Colors.red)), // Assuming 'name' is the display property
-                                                  );
-
-
-                                                }),
-                                            ],
-                                          );
-                                        }
-
-                                    }
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),])));
+                      ),
+                      SizedBox(width: 20,)
+                    ])));
       },
     );
 
@@ -390,7 +377,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
     Color color;
     switch (status) {
       case 'Pending':
-        color = Colors.red.shade400;
+        color = Colors.orange.shade300;
         break;
       case 'Submitted':
         color = Colors.orange;

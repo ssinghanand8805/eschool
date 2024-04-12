@@ -11,12 +11,12 @@ import '../homework/HomeworkScreen.dart';
 import 'controller/ExaminationController.dart';
 
 
-class ApplyLeavePage extends StatefulWidget {
+class ExaminationPage extends StatefulWidget {
   @override
-  State<ApplyLeavePage> createState() => _ApplyLeavePageState();
+  State<ExaminationPage> createState() => _ExaminationPageState();
 }
 
-class _ApplyLeavePageState extends State<ApplyLeavePage> {
+class _ExaminationPageState extends State<ExaminationPage> {
   ExaminationController controller = Get.put(ExaminationController());
   @override
   Widget build(BuildContext context) {

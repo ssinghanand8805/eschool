@@ -35,6 +35,8 @@ import '../presentation/daily_assignment/DailyAssignmentScreen.dart';
 import '../presentation/daily_assignment/binding/daily_assignment_binding.dart';
 import '../presentation/dashboard/binding/dashboard_binding.dart';
 import '../presentation/dashboard/dashboard_screen.dart';
+import '../presentation/examinations/ExaminationScreen.dart';
+import '../presentation/examinations/bindings/Examination.dart';
 import '../presentation/homework/binding/homework_binding.dart';
 import '../presentation/lesson_plan/binding/lesson_plan_binding.dart';
 import '../presentation/lesson_plan/lesson_plan.dart';
@@ -99,7 +101,8 @@ class AppRoutes {
   static const String libraryRoute = '/library';
   static const String teachersratingRoute = '/teachers_rating';
   static const String studenttimelineRoute = '/student_timeline';
-  static const String transportRouteUrl = '/student_timeline';
+  static const String transportRoute = '/student_timeline';
+
 
 
 
@@ -217,5 +220,6 @@ class AppRoutes {
     GetPage(name: libraryRoute, page: () => LibraryPage(), bindings: [LibraryBinding()],),
     GetPage(name: teachersratingRoute, page: () => TeacherRatingPage(), bindings: [TeacherRatingBinding()],),
     GetPage(name: studenttimelineRoute, page: () => StudentTimeLinePage(), bindings: [StudentTimeLineBinding()],),
+    GetPage(name: examinationsRoute, page: () => ExaminationPage(), bindings: [ExaminationBinding()],),
   ];
 }
