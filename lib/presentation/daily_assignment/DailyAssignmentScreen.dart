@@ -6,16 +6,15 @@ import '../common_widgets/MainBody.dart';
 class DailyAssignmentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-
-    return MainBody(label: 'Your Daily\nAssignment!', imageUrl: 'assets/projectImages/assignmentpage.jpg', AppbarTitle: 'Daily Assignment',
-      widget:_buildChildWidget() ,);
-
+    return MainBody(
+      label: 'Your Daily\nAssignment!',
+      imageUrl: 'assets/projectImages/assignmentpage.jpg',
+      AppbarTitle: 'Daily Assignment',
+      widget: _buildChildWidget(),
+    );
   }
 
-
-  Widget _buildChildWidget()
-  {
+  Widget _buildChildWidget() {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,25 +25,15 @@ class DailyAssignmentScreen extends StatelessWidget {
             submissionDate: '04/01/2023',
             evaluationDate: '04/10/2023',
             description:
-            'the number series consists of a series of numbers in which the next term is obtained by adding or subtracting the constant term to the previous term.',
+                'the number series consists of a series of numbers in which the next term is obtained by adding or subtracting the constant term to the previous term.',
           ),
-
           _buildAssignmentCard(
             title: 'English (210)',
             remark: 'Keep hard working',
             submissionDate: '04/01/2023',
             evaluationDate: '04/05/2023',
             description:
-            'The descriptive essay is a genre of essay that asks the student to describe something—object, person, place, experience, emotion, situation, etc.',
-          ),
-
-          _buildAssignmentCard(
-            title: 'Hindi (210)',
-            remark: 'Keep hard working',
-            submissionDate: '04/01/2023',
-            evaluationDate: '04/05/2023',
-            description:
-            'The descriptive essay is a genre of essay that asks the student to describe something—object, person, place, experience, emotion, situation, etc.',
+                'The descriptive essay is a genre of essay that asks the student to describe something—object, person, place, experience, emotion, situation, etc.',
           ),
           _buildAssignmentCard(
             title: 'Hindi (210)',
@@ -52,7 +41,7 @@ class DailyAssignmentScreen extends StatelessWidget {
             submissionDate: '04/01/2023',
             evaluationDate: '04/05/2023',
             description:
-            'The descriptive essay is a genre of essay that asks the student to describe something—object, person, place, experience, emotion, situation, etc.',
+                'The descriptive essay is a genre of essay that asks the student to describe something—object, person, place, experience, emotion, situation, etc.',
           ),
           _buildAssignmentCard(
             title: 'Hindi (210)',
@@ -60,7 +49,15 @@ class DailyAssignmentScreen extends StatelessWidget {
             submissionDate: '04/01/2023',
             evaluationDate: '04/05/2023',
             description:
-            'The descriptive essay is a genre of essay that asks the student to describe something—object, person, place, experience, emotion, situation, etc.',
+                'The descriptive essay is a genre of essay that asks the student to describe something—object, person, place, experience, emotion, situation, etc.',
+          ),
+          _buildAssignmentCard(
+            title: 'Hindi (210)',
+            remark: 'Keep hard working',
+            submissionDate: '04/01/2023',
+            evaluationDate: '04/05/2023',
+            description:
+                'The descriptive essay is a genre of essay that asks the student to describe something—object, person, place, experience, emotion, situation, etc.',
           ),
         ],
       ),
@@ -85,7 +82,6 @@ class DailyAssignmentScreen extends StatelessWidget {
               3.0,
             ),
             blurRadius: 4.0,
-
           ), //BoxShadow
           BoxShadow(
             color: Colors.white,
@@ -98,7 +94,7 @@ class DailyAssignmentScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 8,vertical: 2),
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               height: 30,
               decoration: BoxDecoration(
                   color: Colors.green.shade100,
@@ -116,14 +112,15 @@ class DailyAssignmentScreen extends StatelessWidget {
             ),
             SizedBox(height: 8.0),
             Padding(
-              padding: const EdgeInsets.only(left: 8.0,right: 5),
+              padding: const EdgeInsets.only(left: 8.0, right: 5),
               child: Column(
                 children: [
                   Row(
                     children: [
                       Text(
                         "Remark: ",
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 14),
                       ),
                       Text(remark, style: TextStyle(fontSize: 13)),
                     ],
@@ -133,7 +130,8 @@ class DailyAssignmentScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Submission Date: ',
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 14),
                       ),
                       Text('$submissionDate', style: TextStyle(fontSize: 13)),
                     ],
@@ -143,7 +141,8 @@ class DailyAssignmentScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Evaluation Date: ',
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 14),
                       ),
                       Text('$evaluationDate', style: TextStyle(fontSize: 13)),
                     ],
@@ -154,10 +153,12 @@ class DailyAssignmentScreen extends StatelessWidget {
                     children: [
                       Text(
                         "Description: ",
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 14),
                       ),
                       Flexible(
-                          child: Text(description, style: TextStyle(fontSize: 13))),
+                          child: Text(description,
+                              style: TextStyle(fontSize: 13))),
                     ],
                   ),
                 ],

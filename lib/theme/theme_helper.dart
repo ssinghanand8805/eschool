@@ -84,16 +84,22 @@ class TextThemes {
           fontWeight: FontWeight.w400,
         ),
         titleLarge: TextStyle(
-          color: colorScheme.onPrimary,
-          fontSize: 20.fSize,
+          //color: colorScheme.onPrimary,
+          fontSize: 18.fSize,
           fontFamily: 'Open Sans',
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w500,
         ),
         titleSmall: TextStyle(
           color: colorScheme.onPrimary,
           fontSize: 15.fSize,
           fontFamily: 'Open Sans',
           fontWeight: FontWeight.w800,
+        ),
+       titleMedium: TextStyle(
+         // color: colorScheme.onPrimary,
+          fontSize: 13.fSize,
+          fontFamily: 'Open Sans',
+         // fontWeight: FontWeight.w500,
         ),
       );
 }

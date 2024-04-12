@@ -3,6 +3,9 @@ import 'package:learnladder/presentation/homework/controller/homework_controller
 import 'package:learnladder/presentation/homework/model/Homework.dart';
 import 'package:flutter/material.dart';
 
+import '../common_widgets/custom_loader.dart';
+import '../submit_homework/submit_homework.dart';
+import 'model/StudentSubjects.dart';
 
 
 class HomeworkScreen extends StatefulWidget {
@@ -10,23 +13,22 @@ class HomeworkScreen extends StatefulWidget {
   _HomeworkScreenState createState() => _HomeworkScreenState();
 }
 
-class _HomeworkScreenState extends State<HomeworkScreen> with SingleTickerProviderStateMixin {
+class _HomeworkScreenState extends State<HomeworkScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
-HomeWorkController controller = Get.put(HomeWorkController());
+  HomeWorkController controller = Get.put(HomeWorkController());
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 4);
+    _tabController = TabController(vsync: this, length: 3);
     _tabController.addListener(onTabChanged);
-    getSubjects();
+    // getSubjects();
   }
 
-  void getSubjects()
-  {
-
-    controller.getSubjects(context);
-    controller.getData(context);
-  }
+  // void getSubjects() {
+  //   controller.getSubjects(context);
+  //   controller.getData(context);
+  // }
 
   @override
   void dispose() {
@@ -34,36 +36,34 @@ HomeWorkController controller = Get.put(HomeWorkController());
     _tabController.removeListener(onTabChanged);
     super.dispose();
   }
+
   void onTabChanged() {
     // Your code here
     if (!_tabController.indexIsChanging) {
       // Your code here
       print('Tab changed to: ${_tabController.index}');
       // controller.homeworkModelObj.value.homeworklist = [];
-     // controller.currentSelectedSubejectId.value =  1;
-      controller.status.value =  _tabController.index == 0 ? 'pending' :  _tabController.index == 1 ? 'submitted' : 'evaluated';
-      controller.getData(context);
+      // controller.currentSelectedSubejectId.value =  1;
+      controller.status.value = _tabController.index == 0
+          ? 'pending'
+          : _tabController.index == 1
+          ? 'submitted'
+          : 'evaluated';
+      controller.getData();
       print('#############: ${controller.homeworkModelObj.value.homeworklist}');
-     // controller.update();
+      // controller.update();
+    } else {
+      controller.homeworkModelObj.value.homeworklist = [];
     }
-    else
-      {
-        controller.homeworkModelObj.value.homeworklist = [];
-      }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Homework'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(text: 'Pending'),
-            Tab(text: 'Submitted'),
-            Tab(text: 'Evaluated'),
-            Tab(text: 'All'),
-          ],
+        bottom: MyTabBar(
+          tabController: _tabController,
         ),
       ),
       body: TabBarView(
@@ -72,11 +72,168 @@ HomeWorkController controller = Get.put(HomeWorkController());
           HomeworkTabContent(status: 'Pending'),
           HomeworkTabContent(status: 'Submitted'),
           HomeworkTabContent(status: 'Evaluated'),
-          HomeworkTabContent(status: 'All'),
+          // HomeworkTabContent(status: 'All'),
         ],
       ),
     );
   }
+}
+
+class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
+  final TabController _tabController;
+
+  MyTabBar({Key? key, required TabController tabController})
+      : _tabController = tabController,
+        super(key: key);
+  HomeWorkController controller = Get.put(HomeWorkController());
+
+  String dropdownValue = 'All';
+  @override
+  Widget build(BuildContext context) {
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isSmallScreen = constraints.maxWidth < 600;
+        final tabTextStyle = TextStyle(
+          fontSize: isSmallScreen ? 14.0 : 18.0,
+          fontWeight: FontWeight.bold,
+        );
+
+        return Theme(
+            data: Theme.of(context).copyWith(
+              tabBarTheme: TabBarTheme(
+                labelColor: Colors.orange,
+                unselectedLabelColor: Colors.grey,
+                indicator: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.white,
+                      width: 2.0,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            child: Container(
+                color: Colors.white,
+                child: Row(
+                    children: [
+
+                      Expanded(
+                        child: TabBar(
+                          controller: _tabController,
+                          tabs: [
+                            Tab(
+                              text: 'Pending',
+                            ),
+                            Tab(
+                              text: 'Submitted',
+                            ),
+                            Tab(
+                              text: 'Evaluated',
+                            ),
+                          ],
+                          labelStyle: tabTextStyle,
+                          unselectedLabelStyle: tabTextStyle,
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Colors.white,
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4.0),
+                              child: Container(
+
+                                height: 35,
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20), // Adjust the value for roundness
+                                  border: Border.all(color: Colors.orange), // Adjust the color as needed
+                                ),
+                                child: GetBuilder(
+                                  init: controller,
+                                  builder:(_) => FutureBuilder(
+                                      future: controller.fetchDataFutureForSubjects,
+                                    builder: (_,snanpshot) {
+                                      if (snanpshot.connectionState != ConnectionState.done) {
+                                        return CircularProgressIndicator();
+                                        // return DropdownButton<Subjectlist>(
+                                        //   value: null,
+                                        //   icon: Icon(Icons.keyboard_arrow_down_rounded),
+                                        //   onChanged: (Subjectlist? newValue) {
+                                        //     controller.currentSelectedSubject.value= newValue!;
+                                        //     controller.currentSelectedSubejectId.value = newValue!.subjectId!;
+                                        //
+                                        //   },
+                                        //   items: <DropdownMenuItem<Subjectlist>>[
+                                        //     DropdownMenuItem(
+                                        //       value: controller.currentSelectedSubject.value == null ? null : controller.currentSelectedSubject.value,
+                                        //       child: Text('All'),
+                                        //     ),
+                                        //
+                                        //   ],
+                                        // );
+                                      }
+                                      else
+                                        {
+                                          return DropdownButton<Subjectlist>(
+                                            value: controller.currentSelectedSubject.value.subjectId == null ? controller.studentSubjectsModelObj.value.subjectlist![0] : controller.currentSelectedSubject.value,
+                                            icon: Icon(Icons.keyboard_arrow_down_rounded),
+                                            onChanged: (Subjectlist? newValue) {
+
+                                              controller.currentSelectedSubject.value= newValue!;
+                                              // controller.update();
+                                              controller.currentSelectedSubejectId.value = controller.currentSelectedSubject.value!.subjectId!;
+                                              controller.update();
+                                              controller.getData();
+                                            },
+                                            items: <DropdownMenuItem<Subjectlist>>[
+                                              // DropdownMenuItem(
+                                              //   value: Subjectlist(
+                                              //     subjectGroupSubjectsId: "0",
+                                              //     subjectGroupClassSectionsId: "0",
+                                              //     name: "All",
+                                              //     code: "",
+                                              //     subjectId: "0",
+                                              //   ),
+                                              //   child: Text('All',style: TextStyle(color: Colors.red),),
+                                              // ),
+                                              if(controller.studentSubjectsModelObj != null && controller.studentSubjectsModelObj.value != null && controller.studentSubjectsModelObj.value.subjectlist != null)
+                                                ...controller.studentSubjectsModelObj!.value!.subjectlist!.map<DropdownMenuItem<Subjectlist>>((Subjectlist value) {
+                                                  return DropdownMenuItem<Subjectlist>(
+                                                    value: value,
+                                                    child: Text(value.name!,style: TextStyle(color: Colors.red)), // Assuming 'name' is the display property
+                                                  );
+
+
+                                                }),
+                                            ],
+                                          );
+                                        }
+
+                                    }
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),])));
+      },
+    );
+
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
 
 class HomeworkTabContent extends GetWidget<HomeWorkController> {
@@ -88,11 +245,34 @@ class HomeworkTabContent extends GetWidget<HomeWorkController> {
   Widget build(BuildContext context) {
     return GetBuilder(
       init: controller,
-      builder: (_){
-        return ListView.builder(
-          itemCount: controller.homeworkModelObj.value.homeworklist?.length, // Replace with actual count
-          itemBuilder: (context, index) {
-            return HomeworkCard(status: status,homework: controller.homeworkModelObj.value.homeworklist![index],);
+      builder: (_) {
+        return FutureBuilder(
+          future: controller.fetchDataFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return CustomLoader();
+            } else if (controller.homeworkModelObj.value.homeworklist != null &&
+                controller.homeworkModelObj.value.homeworklist?.length == 0) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("assets/projectImages/no_data.png"),
+                  Text("No data found"),
+                ],
+              );
+            } else {
+              return ListView.builder(
+                itemCount:
+                controller.homeworkModelObj.value.homeworklist?.length ?? 0,
+                itemBuilder: (context, index) {
+                  return HomeworkCard(
+                    status: status,
+                    homework:
+                    controller.homeworkModelObj.value.homeworklist![index],
+                  );
+                },
+              );
+            }
           },
         );
       },
@@ -104,43 +284,102 @@ class HomeworkCard extends GetView<HomeWorkController> {
   final String status;
   final Homeworklist homework;
 
-  const HomeworkCard({Key? key, required this.status,required this.homework}) : super(key: key);
+  const HomeworkCard({Key? key, required this.status, required this.homework})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8.0),
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Container(
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade400,
+            offset: const Offset(
+              0.3,
+              3.0,
+            ),
+            blurRadius: 4.0,
+          ), //BoxShadow
+          BoxShadow(
+            color: Colors.white,
+            offset: const Offset(0.0, 0.0),
+            blurRadius: 0.0,
+            spreadRadius: 0.0,
+          ), //BoxShadow
+        ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              children: [
-                Text(
-
-                  "${homework.subjectName.toString()} (${homework.subjectCode.toString()})",
-                  //'{homework.} (Code)',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              height: 45,
+              decoration: BoxDecoration(
+                  color: Colors.green.shade100,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10))),
+              width: Get.width,
+              child: Row(
+                children: [
+                  Text(
+                    "${homework.subjectName.toString()} (${homework.subjectCode.toString()})",
+                    //'{homework.} (Code)',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
-                ),
-                statusButton(status),
-                submitButton(context),
-              ],
+                  Spacer(),
+                  statusButton(status),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  submitButton(context),
+                ],
+              ),
             ),
-            Divider(),
-            InfoRow(title: 'Homework Date', value: homework.homeworkDate.toString()),
-            InfoRow(title: 'Submission Date', value: homework.submitDate.toString()),
-            InfoRow(title: 'Created By', value: '${homework.createdByName.toString()} (${homework.createdByEmployeeId.toString()})'),
-            InfoRow(title: 'Evaluated By', value: '${homework.evaluatedBy.toString()}'),
-            InfoRow(title: 'Evaluation Date', value: '${homework.evaluationDate.toString()}'),
-            InfoRow(title: 'Max Marks', value: '${homework.marks.toString()}'),
-            InfoRow(title: 'Marks Obtained', value: '${homework.evaluationMarks.toString()}'),
-            Text('Description', style: TextStyle(fontWeight: FontWeight.bold)),
-            Text('Please submit homework before last date.' ),
-
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InfoRow(
+                      title: 'Homework Date',
+                      value: homework.homeworkDate.toString()),
+                  InfoRow(
+                      title: 'Submission Date',
+                      value: homework.submitDate.toString()),
+                  InfoRow(
+                      title: 'Created By',
+                      value:
+                      '${homework.createdByName.toString()} (${homework.createdByEmployeeId.toString()})'),
+                  InfoRow(
+                      title: 'Evaluated By',
+                      value: '${homework.evaluatedBy.toString()}'),
+                  InfoRow(
+                      title: 'Evaluation Date',
+                      value: '${homework.evaluationDate.toString()}'),
+                  InfoRow(
+                      title: 'Max Marks',
+                      value: '${homework.marks.toString()}'),
+                  InfoRow(
+                      title: 'Marks Obtained',
+                      value: '${homework.evaluationMarks.toString()}'),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Description  ',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Flexible(
+                          child: Text(
+                            'Please submit homework before last date.',
+                          )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -151,7 +390,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
     Color color;
     switch (status) {
       case 'Pending':
-        color = Colors.red;
+        color = Colors.red.shade400;
         break;
       case 'Submitted':
         color = Colors.orange;
@@ -164,19 +403,30 @@ class HomeworkCard extends GetView<HomeWorkController> {
     }
 
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: color),
+      style: ElevatedButton.styleFrom(
+          primary: color,
+          padding: EdgeInsets.symmetric(horizontal: 23, vertical: 20),
+          textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
       onPressed: () {},
-      child: Text(status),
+      child: Text(status, style: theme.textTheme.titleMedium),
     );
   }
+
   Widget submitButton(context) {
-
-
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: Colors.grey),
+      style: ElevatedButton.styleFrom(
+        padding: EdgeInsets.symmetric(horizontal: 23, vertical: 20),
+        textStyle: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),
+        backgroundColor: Colors.grey.shade400,
+      ),
       onPressed: () {
-        Get.toNamed("/sumithomework");
-
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => UploadHomework()),
+        );
       },
       child: Text("Submit"),
     );
@@ -187,7 +437,8 @@ class InfoRow extends StatelessWidget {
   final String title;
   final String value;
 
-  const InfoRow({Key? key, required this.title, required this.value}) : super(key: key);
+  const InfoRow({Key? key, required this.title, required this.value})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -196,63 +447,17 @@ class InfoRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(title),
-          Text(value),
+          Text(
+            title,
+            style: theme.textTheme.titleMedium,
+          ),
+          Text(
+            value,
+            style: theme.textTheme.titleMedium,
+          ),
         ],
       ),
     );
   }
 }
-void showUploadHomeworkPopup(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return Dialog(
-        child: Container(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Upload Homework from here!',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 20),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Message',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Documents',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              Image.asset('assets/upload_image.png'), // Replace with your asset
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Implement file selection functionality
-                },
-                child: Text('Choose File'),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Implement submit functionality
-                },
-                child: Text('SUBMIT'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.fromHeight(50), // Fixed height for button
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
+
