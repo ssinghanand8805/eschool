@@ -1,4 +1,5 @@
 import 'package:learnladder/apiHelper/userData.dart';
+import 'package:learnladder/presentation/profile/model/Profile.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';
@@ -8,7 +9,7 @@ import '../../../core/app_export.dart';
 class ProfileController extends GetxController {
   UserData userData = Get.put(UserData());
   ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
-  // Rx<NotiiceBoard> noticeBoardModelObj = NotiiceBoard().obs;
+  Rx<Profile> profileModelObj = Profile().obs;
   late Future<void> fetchDataFuture;
   @override
   void onClose() {
@@ -18,18 +19,19 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // fetchDataFuture = getData(); // Initialize the future when the controller is created
+     fetchDataFuture = getData(); // Initialize the future when the controller is created
   }
   Future<void> getData() async
   {
     Map<String,dynamic> body = {
-      "student_id" : userData.getUserStudentId
+      "student_id" : userData.getUserStudentId,
+      "user_type" : userData.getRole
     };
     print("Body @@@@ ${body}");
-    var data  = await apiRespository.postApiCallByJson(Constants.getNotificationsUrl, body);
+    var data  = await apiRespository.postApiCallByJson(Constants.getStudentProfileUrl, body);
     print("DATA @@@@ ${data.body}");
-    // noticeBoardModelObj.value = NotiiceBoard.fromJson(data.body);
-    // print("111111111111111111111 ${noticeBoardModelObj.value.toJson()}");
+    profileModelObj.value = Profile.fromJson(data.body);
+  print("111111111111111111111 ${profileModelObj.value.toJson()}");
     update();
   }
 }

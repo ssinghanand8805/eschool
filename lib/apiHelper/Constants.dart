@@ -6,5 +6,8 @@ class Constants {
   static const String getNotificationsUrl = 'webservice/getNotifications';
   static const String getsyllabussubjectsUrl = 'webservice/getsyllabussubjects';
   static const String getSubjectsLessonsUrl = 'webservice/getSubjectsLessons';
+  static const String getAttendenceRecordsUrl = 'webservice/getAttendenceRecords';
+  static const String getDocumentUrl = 'webservice/getDocument';
+  static const String getStudentProfileUrl = 'webservice/getStudentProfile';
   // static const int defaultAge = 30;
 }

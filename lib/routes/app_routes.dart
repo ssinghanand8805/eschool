@@ -26,6 +26,8 @@ import '../presentation/lesson_plan/binding/lesson_plan_binding.dart';
 import '../presentation/lesson_plan/lesson_plan.dart';
 import '../presentation/login_screen/binding/login_binding.dart';
 import '../presentation/login_screen/login_screen.dart';
+import '../presentation/mydocuments/MyDocumentsScreen.dart';
+import '../presentation/mydocuments/binding/mydocuments_binding.dart';
 import '../presentation/notice_board/NoticeBoardScreen.dart';
 import '../presentation/notice_board/binding/notice_board_binding.dart';
 import '../presentation/profile/ProfileScreen.dart';
@@ -84,6 +86,11 @@ class AppRoutes {
       name: profileRoute,
       page: () => UserProfilePage(),
       bindings: [ProfileBinding()],
+    ),
+    GetPage(
+      name: mydocumentsRoute,
+      page: () => MyDocumentsScreen(),
+      bindings: [MyDocumentsBinding()],
     ),
     GetPage(
       name: sumithomeworkRoute,

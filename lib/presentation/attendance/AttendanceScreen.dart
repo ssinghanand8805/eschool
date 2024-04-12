@@ -7,6 +7,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/app_export.dart';
 import '../../theme/theme_helper.dart';
+import 'model/Attendance.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({Key? key});
@@ -50,83 +51,113 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title:  Text('Attendance',style: theme.textTheme.titleMedium,),),
-      body: ListView(
-        children: [
-          TableCalendar(
-            daysOfWeekHeight: 30,
-            daysOfWeekStyle: DaysOfWeekStyle(
-                decoration: BoxDecoration(
-                    color: Colors.green.shade100,
-                    borderRadius: BorderRadius.all(Radius.circular(50))
-                )
-            ),
-
-            calendarFormat: _calendarFormat,
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-            focusedDay: _focusedDay,
-            firstDay: _firstDay,
-            lastDay: _lastDay,
-            onPageChanged: (focusedDay) {
-              setState(() {
-                _focusedDay = focusedDay;
-              });
-            },
-            selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
-              });
-            },
-            calendarStyle: const CalendarStyle(
-              weekendTextStyle: TextStyle(
-                color: Colors.red,
-              ),
-              selectedDecoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.red,
-              ),
-            ),
-            calendarBuilders: CalendarBuilders(
-              headerTitleBuilder: (context, day) {
-                String dateString = day.toString();
-
-                String cleanedDateString = dateString.substring(0, 10); // Extracts "2024-04-01"
-                print(cleanedDateString);
-                print("dgfgfdg"+day.toString());
-                return Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(cleanedDateString.toString()),
-                );
-
-              },
-            ),
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: attendanceData.length,
-            itemBuilder: (context, index) {
-              final item = attendanceData[index];
-              return ListTile(
-                title: Text(item['name'] ?? ''),
-                subtitle: Text(item['status'] ?? ''),
-                trailing: Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
+      body: GetBuilder(
+        init: controller,
+        builder: (context) {
+          return ListView(
+            children: [
+              TableCalendar<Event>(
+                headerStyle: HeaderStyle(
+                  formatButtonVisible : false,
+                ),
+                daysOfWeekHeight: 30,
+                daysOfWeekStyle: DaysOfWeekStyle(
+                    decoration: BoxDecoration(
+                        color: Colors.green.shade100,
+                        borderRadius: BorderRadius.all(Radius.circular(50))
+                    )
+                ),
+                eventLoader: (DateTime date) => controller.getEvents(date) ?? [],
+                calendarFormat: _calendarFormat,
+                onFormatChanged: (format) {
+                  // setState(() {
+                  //   _calendarFormat = format;
+                  // });
+                },
+                focusedDay: _focusedDay,
+                firstDay: _firstDay,
+                lastDay: _lastDay,
+                onPageChanged: (focusedDay) {
+                  print("********${focusedDay}");
+                  setState(() {
+                    _focusedDay = focusedDay;
+                  });
+                  controller.getDataFromApi(focusedDay);
+                },
+                selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
+                onDaySelected: (selectedDay, focusedDay) {
+                  setState(() {
+                    _selectedDay = selectedDay;
+                    _focusedDay = focusedDay;
+                  });
+                },
+                calendarStyle: const CalendarStyle(
+                  // weekendTextStyle: TextStyle(
+                  //   color: Colors.red,
+                  // ),
+                  selectedDecoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: getAttendanceColor(item['status']),
+                    color: Colors.red,
                   ),
                 ),
-              );
-            },
-          ),
+                calendarBuilders: CalendarBuilders(
+                  headerTitleBuilder: (context, day) {
+                    String dateString = day.toString();
 
-        ],
+                    String cleanedDateString = dateString.substring(0, 10); // Extracts "2024-04-01"
+                    print(cleanedDateString);
+                    print("dgfgfdg"+day.toString());
+                    return Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(cleanedDateString.toString()),
+                    );
+
+                  },
+                    markerBuilder: (context, day, events) {
+                      return events.isNotEmpty
+                          ? PositionedDirectional(
+                        bottom: 0,
+                        end: 0,
+                        child: Center(
+                            child: Container(
+                              width: 15,
+                              height: 15,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: getAttendanceColor(events[0].title),
+                              ),
+                            )),
+                      )
+                          : null;
+                    }
+                ),
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: attendanceData.length,
+                itemBuilder: (context, index) {
+                  final item = attendanceData[index];
+                  return Container(
+                    height: 30,
+                    child: ListTile(
+                      title: Text(item['status'] ?? ''),
+                      // subtitle: Text(item['status'] ?? ''),
+                      trailing: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: getAttendanceColor(item['status']),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+
+            ],
+          );
+        }
       ),
     );
   }

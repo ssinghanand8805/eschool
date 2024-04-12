@@ -20,6 +20,7 @@ dependencies:
   flutter_html:
   table_calendar:
   image_picker: ^1.0.7
+  flutter_file_downloader: ^1.2.1
 dev_dependencies: 
   flutter_test: 
     sdk: flutter
