@@ -5,6 +5,7 @@ import 'package:learnladder/apiHelper/userData.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';
+import '../model/Examination.dart';
 
 
 
@@ -12,7 +13,7 @@ import '../../../core/app_export.dart';
 class ExaminationController extends GetxController {
   UserData userData = Get.put(UserData());
   ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
-  // Rx<ApplyLeave> applyLeaveModelObj = ApplyLeave().obs;
+   Rx<ExamListModel> examListObj = ExamListModel().obs;
   late Future<void> fetchDataFuture;
 
 
@@ -35,10 +36,10 @@ class ExaminationController extends GetxController {
       "student_id" : userData.getUserStudentId
     };
     print("Body @@@@ ${body}");
-    var data  = await apiRespository.postApiCallByJson(Constants.getApplyLeaveUrl, body);
+    var data  = await apiRespository.postApiCallByJson(Constants.getExamListUrl, body);
     print("DATA @@@@ ${data.body}");
     // print("111111111111111111111 ${applyLeaveModelObj.value.toJson()}");
-    //  applyLeaveModelObj.value = ApplyLeave.fromJson(data.body);
+    examListObj.value = ExamListModel.fromJson(data.body);
     //  print("111111111111111111111 ${applyLeaveModelObj.value.toJson()}");
     update();
   }

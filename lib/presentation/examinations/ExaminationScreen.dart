@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:learnladder/core/app_export.dart';
 import 'package:learnladder/presentation/apply_leave/uploadLeave.dart';
+import 'package:learnladder/presentation/examinations/model/Examination.dart';
 
 import '../apply_leave/model/ApplyLeave.dart';
 import '../common_widgets/MainBody.dart';
@@ -11,20 +12,20 @@ import '../homework/HomeworkScreen.dart';
 import 'controller/ExaminationController.dart';
 
 
-class ExaminationPage extends StatefulWidget {
-  @override
-  State<ExaminationPage> createState() => _ExaminationPageState();
-}
+class ExaminationPage extends GetView<ExaminationController> {
 
-class _ExaminationPageState extends State<ExaminationPage> {
-  ExaminationController controller = Get.put(ExaminationController());
   @override
   Widget build(BuildContext context) {
     return MainBody(
-      label: 'Your Applied\n Leaves!',
-      imageUrl: 'assets/projectImages/leavepage.jpg',
-      AppbarTitle: 'Apply Leave',
-      widget: _buildChildWidget(),
+      label: 'Your \nExaminations is\nhere!',
+      imageUrl: 'assets/projectImages/examinationpage.jpg',
+      AppbarTitle: 'Examinations',
+      widget: GetBuilder(
+        init: controller,
+        builder: (_){
+          return _buildChildWidget();
+        },
+      ),
       floatingActionButton: Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
@@ -48,57 +49,25 @@ class _ExaminationPageState extends State<ExaminationPage> {
   }
 
   Widget _buildChildWidget() {
-    return SizedBox();
-    // return GetBuilder(
-    //     init: controller,
-    //     builder: (_) {
-    //       return FutureBuilder(
-    //           future: controller.fetchDataFuture, //controller.getData(context),
-    //           builder: (context, snapshot) {
-    //             if (snapshot.connectionState != ConnectionState.done) {
-    //               return CustomLoader(); // CustomLoader();
-    //             }
-    //             else {
-    //
-    //               return controller.applyLeaveModelObj!.value != null ? controller.applyLeaveModelObj!.value!.resultArray!.length > 0 ? ListView.builder(
-    //                 itemCount: controller.applyLeaveModelObj!.value!.resultArray?.length ?? 0,
-    //                 itemBuilder: (context, index) {
-    //                   return  _buildLeaveCard(
-    //                       data: controller.applyLeaveModelObj!.value!.resultArray![index]
-    //                   );
-    //                 },
-    //               ) : Center(child: Image.asset("assets/projectImages/no_data.png")) : Center(child: Image.asset("assets/projectImages/no_data.png"));
-    //
-    //               // return  controller.applyLeaveModelObj!.value!.resultArray!.length > 0
-    //               //     ? ListView.builder(
-    //               //   itemCount:  controller.applyLeaveModelObj.value.resultArray?.length ?? 0,
-    //               //   itemBuilder: (context, index) {
-    //               //     // return _buildLeaveCard();
-    //               //
-    //               //     return _buildLeaveCard(
-    //               //         data: controller.applyLeaveModelObj.value
-    //               //             .resultArray![index]);
-    //               //   },
-    //               // )
-    //               //          : Center(child: Image.asset(
-    //               //     "assets/projectImages/no_data.png"));
-    //
-    //
-    //             }
-    //           }
-    //       );
-    //     }
-    // );
+    return ListView.separated(
+      shrinkWrap: true,
+        itemBuilder: (BuildContext context, int index){
+          return _buildExamCard(controller.examListObj.value.examSchedule![index]);
+        },
+        separatorBuilder: (BuildContext context, int index)=>SizedBox(height: 0,),
+        itemCount: controller.examListObj.value.examSchedule!.length
+    );
   }
 
-  Widget _buildLeaveCard({required ResultArray data}) {
-    print(data.applyDate);
+  Widget _buildExamCard(ExamSchedule data) {
     // return Text(data.applyDate!);
-    return
-        Padding(
+    print("DATA @@ ${data.exam}");
+    return Padding(
       padding: EdgeInsets.all(12.0),
       child: Container(
-        decoration: BoxDecoration(boxShadow: [
+        padding: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+            boxShadow: [
           BoxShadow(
             color: Colors.grey.shade400,
             offset: const Offset(
@@ -113,60 +82,26 @@ class _ExaminationPageState extends State<ExaminationPage> {
             blurRadius: 0.0,
             spreadRadius: 0.0,
           ), //BoxShadow
-        ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
+        ],
+            color: Colors.green.shade50,
+            borderRadius: BorderRadius.circular(10)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 8,),
-              height: 45,
-              decoration: BoxDecoration(
-                  color: Colors.green.shade100,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10))),
-              width: Get.width,
-              child: Row(
-                children: [
-                  Text(
-                    "Apply Date - ${data.applyDate}",
-                    //'{homework.} (Code)',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Spacer(),
-
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InfoRow(title: 'From Date', value: "${data.fromDate}"),
-                  InfoRow(title: 'To  Date', value: "${data.toDate}"),
-                  InfoRow(title: 'Reason', value: '${data.reason}'),
-                 Row(children: [
-                   Text("Leave Status",style: theme.textTheme.titleMedium,),
-                   Spacer(),
-                   Text(
-                     "${_getStatusString(data.status!)}",
-                     //'{homework.} (Code)',
-                     style: TextStyle(
-                       color: _getStatusColor(data.status!),
-                       fontWeight: FontWeight.w600,
-                       fontSize: 14,
-                     ),
-                   ),
-                 ],)
-                ],
-              ),
-            ),
+          children: [
+            Text(data.exam.toString(),
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.bold
+            ),),
+            Text(data.exam.toString(),
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600
+              ),),
+            SizedBox(height: 10,),
+            cardButtons()
           ],
-        ),
+        )
       ),
     );
   }
@@ -181,6 +116,7 @@ class _ExaminationPageState extends State<ExaminationPage> {
       return Colors.red;
     }
   }
+
   String _getStatusString(String status) {
     print(status);
     if (status.toString() == "1") {
@@ -190,5 +126,46 @@ class _ExaminationPageState extends State<ExaminationPage> {
     } else {
       return "Dis-Approved";
     }
+  }
+
+  Widget cardButtons(){
+    return Row(
+      children: [
+        Container(
+          child: Text("Exam Schedule",
+            style: TextStyle(
+                fontSize: 12,
+                color: Colors.red,
+                fontWeight: FontWeight.w600
+            ),),
+          padding: EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.red,width: 2),
+            borderRadius: BorderRadius.circular(20)
+          ),
+        ),
+        SizedBox(width: 10,),
+        InkWell(
+          onTap: (){
+            Get.toNamed(AppRoutes.exam_result_view);
+          },
+          child: Container(
+            child: Text("Exam Result",
+              style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600
+              ),),
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                color: Colors.green,
+                border: Border.all(color: Colors.green,width: 2),
+                borderRadius: BorderRadius.circular(20)
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

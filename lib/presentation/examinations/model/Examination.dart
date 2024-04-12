@@ -1,102 +1,91 @@
-class ApplyLeave {
-  List<ResultArray>? resultArray = [];
+class ExamListModel {
+  List<ExamSchedule>? examSchedule;
 
-  ApplyLeave({this.resultArray});
+  ExamListModel({this.examSchedule});
 
-  ApplyLeave.fromJson(Map<String, dynamic> json) {
-    if (json['result_array'] != null) {
-      resultArray = <ResultArray>[];
-      json['result_array'].forEach((v) {
-        resultArray!.add(new ResultArray.fromJson(v));
+  ExamListModel.fromJson(Map<String, dynamic> json) {
+    if (json['examSchedule'] != null) {
+      examSchedule = <ExamSchedule>[];
+      json['examSchedule'].forEach((v) {
+        examSchedule!.add(new ExamSchedule.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.resultArray != null) {
-      data['result_array'] = this.resultArray!.map((v) => v.toJson()).toList();
+    if (this.examSchedule != null) {
+      data['examSchedule'] = this.examSchedule!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class ResultArray {
+class ExamSchedule {
   String? id;
-  String? studentSessionId;
-  String? fromDate;
-  String? toDate;
-  String? applyDate;
-  String? status;
-  String? docs;
-  String? reason;
-  String? approveBy;
-  String? approveDate;
-  String? requestType;
-  String? createdAt;
-  String? firstname;
-  String? lastname;
-  String? staffName;
+  String? examGroupClassBatchExamId;
   String? studentId;
-  String? surname;
+  String? studentSessionId;
+  Null? rollNo;
+  Null? teacherRemark;
+  String? rank;
+  String? isActive;
+  String? createdAt;
+  Null? updatedAt;
+  String? exam;
+  String? description;
+  String? examActive;
+  String? resultPublish;
 
-  ResultArray({this.id,
-    this.studentSessionId,
-    this.fromDate,
-    this.toDate,
-    this.applyDate,
-    this.status,
-    this.docs,
-    this.reason,
-    this.approveBy,
-    this.approveDate,
-    this.requestType,
-    this.createdAt,
-    this.firstname,
-    this.lastname,
-    this.staffName,
-    this.studentId,
-    this.surname});
+  ExamSchedule(
+      {this.id,
+        this.examGroupClassBatchExamId,
+        this.studentId,
+        this.studentSessionId,
+        this.rollNo,
+        this.teacherRemark,
+        this.rank,
+        this.isActive,
+        this.createdAt,
+        this.updatedAt,
+        this.exam,
+        this.description,
+        this.examActive,
+        this.resultPublish});
 
-  ResultArray.fromJson(Map<String, dynamic> json) {
+  ExamSchedule.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    studentSessionId = json['student_session_id'];
-    fromDate = json['from_date'];
-    toDate = json['to_date'];
-    applyDate = json['apply_date'];
-    status = json['status'];
-    docs = json['docs'];
-    reason = json['reason'];
-    approveBy = json['approve_by'];
-    approveDate = json['approve_date'];
-    requestType = json['request_type'];
-    createdAt = json['created_at'];
-    firstname = json['firstname'];
-    lastname = json['lastname'];
-    staffName = json['staff_name'];
+    examGroupClassBatchExamId = json['exam_group_class_batch_exam_id'];
     studentId = json['student_id'];
-    surname = json['surname'];
+    studentSessionId = json['student_session_id'];
+    rollNo = json['roll_no'];
+    teacherRemark = json['teacher_remark'];
+    rank = json['rank'];
+    isActive = json['is_active'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    exam = json['exam'];
+    description = json['description'];
+    examActive = json['exam_active'];
+    resultPublish = json['result_publish'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['student_session_id'] = this.studentSessionId;
-    data['from_date'] = this.fromDate;
-    data['to_date'] = this.toDate;
-    data['apply_date'] = this.applyDate;
-    data['status'] = this.status;
-    data['docs'] = this.docs;
-    data['reason'] = this.reason;
-    data['approve_by'] = this.approveBy;
-    data['approve_date'] = this.approveDate;
-    data['request_type'] = this.requestType;
-    data['created_at'] = this.createdAt;
-    data['firstname'] = this.firstname;
-    data['lastname'] = this.lastname;
-    data['staff_name'] = this.staffName;
+    data['exam_group_class_batch_exam_id'] = this.examGroupClassBatchExamId;
     data['student_id'] = this.studentId;
-    data['surname'] = this.surname;
+    data['student_session_id'] = this.studentSessionId;
+    data['roll_no'] = this.rollNo;
+    data['teacher_remark'] = this.teacherRemark;
+    data['rank'] = this.rank;
+    data['is_active'] = this.isActive;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['exam'] = this.exam;
+    data['description'] = this.description;
+    data['exam_active'] = this.examActive;
+    data['result_publish'] = this.resultPublish;
     return data;
   }
 }

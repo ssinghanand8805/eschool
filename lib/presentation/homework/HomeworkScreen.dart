@@ -391,7 +391,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          primary: color,
+          backgroundColor: color,
           padding: EdgeInsets.symmetric(horizontal: 23, vertical: 20),
           textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
       onPressed: () {},

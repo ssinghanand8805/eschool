@@ -14,5 +14,7 @@ class Constants {
   static const String getApplyLeaveUrl = 'webservice/getApplyLeave';
   static const String addleaveUrl = 'webservice/addleave';
   static const String getExamScheduleUrl = 'webservice/getExamSchedule';
+  static const String getExamListUrl = 'webservice/getExamList';
+  static const String getExamResultUrl = 'webservice/getExamResult';
   // static const int defaultAge = 30;
 }

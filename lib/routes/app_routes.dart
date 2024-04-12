@@ -4,6 +4,8 @@ import 'package:learnladder/presentation/class_time_table/ClassTimeTableScreen.d
 import 'package:learnladder/presentation/class_time_table/binding/class_time_table_binding.dart';
 import 'package:learnladder/presentation/download_center/DownloadCenterScreen.dart';
 import 'package:learnladder/presentation/download_center/binding/syllabus_status_binding.dart';
+import 'package:learnladder/presentation/examinations/exam%20result/bindings/exam_result_bindings.dart';
+import 'package:learnladder/presentation/examinations/exam%20result/exam_result_view.dart';
 import 'package:learnladder/presentation/homework/HomeworkScreen.dart';
 import 'package:learnladder/presentation/hostel_rooms/bindings/hostelrooms.dart';
 import 'package:learnladder/presentation/hostel_rooms/hostel_room_view.dart';
@@ -81,6 +83,7 @@ class AppRoutes {
   static const String syllabus_statusRoute = '/syllabus_status';
   static const String syllabus_lessonRoute = '/syllabus_lesson';
   static const String download_centerRoute = '/download_center';
+  static const String exam_result_view = '/exam_result_view';
 
 
   //todo
@@ -221,5 +224,6 @@ class AppRoutes {
     GetPage(name: teachersratingRoute, page: () => TeacherRatingPage(), bindings: [TeacherRatingBinding()],),
     GetPage(name: studenttimelineRoute, page: () => StudentTimeLinePage(), bindings: [StudentTimeLineBinding()],),
     GetPage(name: examinationsRoute, page: () => ExaminationPage(), bindings: [ExaminationBinding()],),
+    GetPage(name: exam_result_view, page: () => ExamResultView(), bindings: [ExamResultBindings()],),
   ];
 }
