@@ -45,20 +45,27 @@ class _FeesPageState extends State<FeesPage> {
               return Column(
                 children: [
                   _buildRouteCard(data: controller.feesDataModal.value.grandFee!),
-                  ListView.builder(
-                    itemCount: controller.feesDataModal.value!.studentDueFee!.length ?? 0,
-                    itemBuilder: (context, index) {
-                      return controller.feesDataModal.value!.studentDueFee![index].fees!.length > 0
-                          ? timeLine(
-                              data: controller.feesDataModal.value.studentDueFee,
-                            )
-                          : Center(
-                              child: Image.asset(
-                              "assets/projectImages/no_data.png",
-                              height: 100,
-                            ));
-                    },
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: controller.feesDataModal.value!.studentDueFee!.length ?? 0,
+                      itemBuilder: (context, index) {
+                        return controller.feesDataModal.value!.studentDueFee![index].fees!.length > 0
+                            ? timeLine(
+                                data: controller.feesDataModal.value!.studentDueFee![index].fees,
+                              )
+                            : Center(
+                                child: Image.asset(
+                                "assets/projectImages/no_data.png",
+                                height: 100,
+                              ));
+                      },
+                    ),
                   ),
+                  // Expanded(
+                  //   child: transportFee(
+                  //     data: controller.feesDataModal.value!.transportFees!,
+                  //   ),
+                  // )
                 ],
               );
               ;
@@ -164,18 +171,18 @@ class _FeesPageState extends State<FeesPage> {
           ),
           TableRow(
             children: [
-              TableCell(child: Text('\$${data!.amount}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
-              TableCell(child: Text(' \$${data.amountDiscount}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
-              TableCell(child: Text(' \$${data.feeFine}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
-              TableCell(child: Text(' \$${data.amountPaid}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
-              TableCell(child: Text(' \$${data.amountRemaining}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
+              TableCell(child: Text('\Rs. ${data!.amount}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
+              TableCell(child: Text(' \Rs. ${data.amountDiscount}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
+              TableCell(child: Text(' \Rs. ${data.feeFine}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
+              TableCell(child: Text(' \Rs. ${data.amountPaid}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
+              TableCell(child: Text(' \Rs. ${data.amountRemaining}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
             ],
           ),
         ],
       ),
     );
   }
-  Widget timeLine({List<StudentDueFee>? data}) {
+  Widget timeLine({List<Fees>? data}) {
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -219,7 +226,7 @@ class _FeesPageState extends State<FeesPage> {
                               topRight: Radius.circular(10))),
                       width: Get.width,
                       child: Text(
-                        'Class 3 Lump Sum-Admission Fees',
+                        data![index].name! + " " + data![index].type!,
                         style:  theme.textTheme.titleMedium!.copyWith(fontSize: 17,fontWeight: FontWeight.w600)
                       ),
                     ),
@@ -231,24 +238,24 @@ class _FeesPageState extends State<FeesPage> {
                         children: [
                           InfoRow(
                               title: 'Fees Code',
-                              value: "Admission fees"),
+                              value: data![index].code!),
                           InfoRow(
                               title: 'Due Date',
-                              value: "04/10/2023"),
+                              value: data![index].dueDate!),
                           InfoRow(
                               title: 'Amount',
-                              value: "Rs 3000"),
+                              value: "Rs ${data![index].amount!}"),
                           InfoRow(
                               title: 'Fine',
-                              value: "Rs 0"),
+                              value: "Rs  ${data![index].fineAmount!}"),
                           InfoRow(
                               title: 'Discount',
-                              value: "Rs 100"),
+                              value: "Rs ${data![index].totalAmountDiscount!}"),
                           InfoRow(
                               title: 'Paid Amount',
-                              value: "Rs 2900"),
+                              value: "Rs ${data![index].totalAmountPaid!}"),
                           InfoRow(
-                              title: 'Balance Amount ', value: "Rs 0"),
+                              title: 'Balance Amount ', value: "Rs ${data![index].totalAmountRemaining!}"),
                         ],
                       ),
                     ),
@@ -287,7 +294,123 @@ class _FeesPageState extends State<FeesPage> {
           ],
         );
       },
-      itemCount: 10,
+      itemCount: data!.length,
+    );
+  }
+
+  Widget transportFee({List<TransportFees>? data}) {
+    return ListView.builder(
+      // physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (BuildContext context, int index) {
+        return new Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Container(
+                width: double.infinity,
+
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade400,
+                        offset: const Offset(
+                          0.3,
+                          3.0,
+                        ),
+                        blurRadius: 4.0,
+                      ), //BoxShadow
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: const Offset(0.0, 0.0),
+                        blurRadius: 0.0,
+                        spreadRadius: 0.0,
+                      ), //BoxShadow
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                      height: 35,
+                      decoration: BoxDecoration(
+                          color: Colors.green.shade100,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10))),
+                      width: Get.width,
+                      child: Text(
+                          "Transport Fee",
+                          style:  theme.textTheme.titleMedium!.copyWith(fontSize: 17,fontWeight: FontWeight.w600)
+                      ),
+                    ),
+                    SizedBox(height: 12.0),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InfoRow(
+                              title: 'Fees Code',
+                              value: data![index].month!),
+                          InfoRow(
+                              title: 'Due Date',
+                              value: data![index].dueDate!),
+                          InfoRow(
+                              title: 'Amount',
+                              value: "Rs ${data![index].amountDetail!}"),
+                          InfoRow(
+                              title: 'Fine',
+                              value: "Rs  ${data![index].fineAmount ?? ""}"),
+                          InfoRow(
+                              title: 'Discount',
+                              value: "Rs ${data![index].totalAmountDiscount!}"),
+                          InfoRow(
+                              title: 'Paid Amount',
+                              value: "Rs ${data![index].totalAmountPaid!}"),
+                          InfoRow(
+                              title: 'Balance Amount ', value: "Rs ${data![index].totalAmountRemaining!}"),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // new Positioned(
+            //   top: 0.0,
+            //   bottom: 0.0,
+            //   left: 18.0,
+            //   child: new Container(
+            //     height: double.infinity,
+            //     width: 5.0,
+            //     color: Colors.green.shade100,
+            //   ),
+            // ),
+            // new Positioned(
+            //   top: 0.0,
+            //   left: 0.0,
+            //   child: new Container(
+            //     height: 25.0,
+            //     width: 40.0,
+            //     decoration: new BoxDecoration(
+            //       shape: BoxShape.circle,
+            //       color: Colors.green.shade200,
+            //     ),
+            //     child: new Container(
+            //       child: Icon(Icons.location_on, size: 15),
+            //       margin: new EdgeInsets.all(5.0),
+            //       height: 15.0,
+            //       width: 30.0,
+            //     ),
+            //   ),
+            // )
+          ],
+        );
+      },
+      itemCount: data!.length,
     );
   }
 }

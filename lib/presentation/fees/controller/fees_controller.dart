@@ -27,12 +27,27 @@ class FeesController extends GetxController {
       "student_id" : userData.getUserStudentId
     };
     print("Body @@@@ ${body}");
-    var data  = await apiRespository.postApiCallByJson(Constants.gettransportroutesUrl, body);
+    var data  = await apiRespository.postApiCallByJson(Constants.getFeestUrl, body);
     print("DATA TransportRoute ${data.body}");
 
 
     feesDataModal.value = FeesDataModal.fromJson(data.body);
+    for(var i=0;i<feesDataModal.value!.transportFees!.length;i++)
+      {
+        var e = new Fees(
+          name: "Transport",
+          type: feesDataModal.value!.transportFees![i].month,
+          code: feesDataModal.value!.transportFees![i].month,
+          dueDate: feesDataModal.value!.transportFees![i].dueDate,
+          amount: feesDataModal.value!.transportFees![i].amountDetail,
+          fineAmount: feesDataModal.value!.transportFees![i].fineAmount ?? "0",
+          totalAmountDiscount: feesDataModal.value!.transportFees![i].totalAmountDiscount,
+          totalAmountPaid: feesDataModal.value!.transportFees![i].totalAmountPaid,
+          totalAmountRemaining: feesDataModal.value!.transportFees![i].totalAmountRemaining
 
+        );
+        feesDataModal.value!.studentDueFee![0].fees!.add(e);
+      }
 
      print("111111111111111111111 ${feesDataModal.value.toJson()}");
     update();

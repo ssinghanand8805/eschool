@@ -229,14 +229,14 @@ class TransportFees {
   String? transportFeemasterId;
   String? studentSessionId;
   String? routePickupPointId;
-  Null? generatedBy;
+  String? generatedBy;
   String? createdAt;
   String? month;
   String? dueDate;
   String? fees;
-  Null? fineAmount;
+  String? fineAmount;
   String? fineType;
-  Null? finePercentage;
+  String? finePercentage;
   String? studentFeesDepositeId;
   String? amountDetail;
   int? totalAmountPaid;
