@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:learnladder/core/app_export.dart';
 
 import '../common_widgets/MainBody.dart';
@@ -41,19 +42,24 @@ class _FeesPageState extends State<FeesPage> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return ListView.builder(
-                itemCount: controller.transportRouteModal.length ?? 0,
-                itemBuilder: (context, index) {
-                  return controller.transportRouteModal.length > 0
-                      ? _buildRouteCard(
-                          data: controller.transportRouteModal.value[index],
-                        )
-                      : Center(
-                          child: Image.asset(
-                          "assets/projectImages/no_data.png",
-                          height: 100,
-                        ));
-                },
+              return Column(
+                children: [
+                  _buildRouteCard(data: controller.feesDataModal.value.grandFee!),
+                  ListView.builder(
+                    itemCount: controller.feesDataModal.value!.studentDueFee!.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return controller.feesDataModal.value!.studentDueFee![index].fees!.length > 0
+                          ? timeLine(
+                              data: controller.feesDataModal.value.studentDueFee,
+                            )
+                          : Center(
+                              child: Image.asset(
+                              "assets/projectImages/no_data.png",
+                              height: 100,
+                            ));
+                    },
+                  ),
+                ],
               );
               ;
             }
@@ -63,12 +69,14 @@ class _FeesPageState extends State<FeesPage> {
     );
   }
 
-  Widget _buildRouteCard({required TransportRoutesModal data}) {
+  Widget _buildRouteCard({ GrandFee? data}) {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(8),
           child: Container(
+            width: double.infinity,
+
             decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -86,44 +94,88 @@ class _FeesPageState extends State<FeesPage> {
                     spreadRadius: 0.0,
                   ), //BoxShadow
                 ],
-                color: Colors.green.shade100,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(10)),
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InfoRow(
-                      title: 'Route Title:',
-                      value: "${data.route!.routeTitle}"),
-                  InfoRow(
-                      title: 'Vehicle Number:',
-                      value: "${data.route!.vehicleNo}"),
-                  InfoRow(
-                      title: 'Vehicle Model:',
-                      value: "${data.route!.vehicleModel}"),
-                  InfoRow(
-                      title: 'Driver Name:',
-                      value: "${data.route!.driverName}"),
-                  InfoRow(
-                      title: 'Driver Contact:',
-                      value: "${data.route!.driverContact}"),
-                  InfoRow(
-                      title: 'Driver Licence:',
-                      value: "${data.route!.driverLicence}"),
-                  InfoRow(
-                      title: 'Made: ', value: "${data.route!.manufactureYear}"),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                  height: 35,
+                  decoration: BoxDecoration(
+                      color: Colors.green.shade100,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10))),
+                  width: Get.width,
+                  child: Text(
+                      'Grand Total',
+                      style:  theme.textTheme.titleMedium!.copyWith(fontSize: 17,fontWeight: FontWeight.w600)
+                  ),
+                ),
+                SizedBox(height: 12.0),
+                _buildGrandTotalTable(data: data)
+              ],
             ),
           ),
         ),
-        timeLine(),
+        //timeLine(),
       ],
     );
   }
-
-  Widget timeLine() {
+  Widget _buildGrandTotalTable({GrandFee? data}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Table(
+        children: [
+          TableRow(
+            children: [
+              TableCell(
+                child: Text(
+                  'Amount',
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
+                ),
+              ),
+              TableCell(
+                child: Text(
+                  'Discount',
+                  style:TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
+                ),
+              ),
+              TableCell(
+                child: Text(
+                  'Fine',
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
+                ),
+              ),
+              TableCell(
+                child: Text(
+                  'Paid',
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
+                ),
+              ),
+              TableCell(
+                child: Text(
+                  'Balance',
+                  style:TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
+                ),
+              ),
+            ],
+          ),
+          TableRow(
+            children: [
+              TableCell(child: Text('\$${data!.amount}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
+              TableCell(child: Text(' \$${data.amountDiscount}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
+              TableCell(child: Text(' \$${data.feeFine}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
+              TableCell(child: Text(' \$${data.amountPaid}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
+              TableCell(child: Text(' \$${data.amountRemaining}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+  Widget timeLine({List<StudentDueFee>? data}) {
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,

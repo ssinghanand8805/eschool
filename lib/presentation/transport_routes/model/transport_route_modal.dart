@@ -1,6 +1,6 @@
 class TransportRoutesModal {
   List<PickupPoint>? pickupPoint;
-  Route? route;
+  RouteData? route;
 
   TransportRoutesModal({this.pickupPoint, this.route});
 
@@ -11,7 +11,7 @@ class TransportRoutesModal {
         pickupPoint!.add(new PickupPoint.fromJson(v));
       });
     }
-    route = json['route'] != null ? new Route.fromJson(json['route']) : null;
+    route = json['route'] != null ? new RouteData.fromJson(json['route']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -79,7 +79,7 @@ class PickupPoint {
   }
 }
 
-class Route {
+class RouteData {
   String? pickupPointName;
   String? routePickupPointId;
   String? transportFees;
@@ -175,7 +175,7 @@ class Route {
   String? sessionId;
   String? session;
 
-  Route(
+  RouteData(
       {this.pickupPointName,
         this.routePickupPointId,
         this.transportFees,
@@ -271,7 +271,7 @@ class Route {
         this.sessionId,
         this.session});
 
-  Route.fromJson(Map<String, dynamic> json) {
+  RouteData.fromJson(Map<String, dynamic> json) {
     pickupPointName = json['pickup_point_name'];
     routePickupPointId = json['route_pickup_point_id'];
     transportFees = json['transport_fees'];
