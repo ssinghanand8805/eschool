@@ -5,6 +5,7 @@ import 'package:learnladder/presentation/profile/controller/ProfileController.da
 import '../../apiHelper/Constants.dart';
 import '../../apiHelper/userData.dart';
 import '../../theme/theme_helper.dart';
+import '../common_widgets/custom_loader.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage() : super();
@@ -22,106 +23,120 @@ class _UserProfilePageState extends State<UserProfilePage> {
       appBar: AppBar(
         title: Text('Profile'),
       ),
-      body: Column(
-        children: [
-          Card(
-            color: Colors.grey.shade50,
-            elevation: 0.3,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 30.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: GetBuilder(
+          init: controller,
+        builder: (context) {
+          return FutureBuilder(
+              future:  controller.fetchDataFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return CustomLoader(); // CustomLoader();
+              }
+
+              return Column(
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          controller.profileModelObj.value!.studentResult!
-                                  .firstname! +
-                              " " +
-                              controller.profileModelObj.value!.studentResult!
-                                  .middlename! +
-                              " " +
-                              controller.profileModelObj.value!.studentResult!
-                                  .lastname!,
-                          style: theme.textTheme.titleMedium!.copyWith(
-                              fontSize: 25, fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          "${controller.profileModelObj.value!.studentResult!.className!}" +
-                              ' ( ' +
-                              controller.profileModelObj.value!.studentResult!
-                                  .section! +
-                              ' )',
-                          style:
-                              theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                        ),
-                        Text(
-                            'Adm. No: ${controller.profileModelObj.value!.studentResult!.admissionNo!}',
-                            style: theme.textTheme.bodySmall!
-                                .copyWith(fontSize: 14)),
-                        Text(
-                            'Roll Number: ${controller.profileModelObj.value!.studentResult!.rollNo!}',
-                            style: theme.textTheme.bodySmall!
-                                .copyWith(fontSize: 14)),
-                        Row(
-                          children: [
-                            Text('BarCode:',
-                                style: theme.textTheme.bodySmall!
-                                    .copyWith(fontSize: 14)),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Image.network(Constants.imagesUrl2 +
+                  Card(
+                    color: Colors.grey.shade50,
+                    elevation: 0.3,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
                                   controller.profileModelObj.value!.studentResult!
-                                      .barcode!),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text('Qr Code:',
-                                style: theme.textTheme.bodySmall!
-                                    .copyWith(fontSize: 14)),
-                            controller.profileModelObj.value!
-                                .studentResult!.qrcode != null?Image.network(
-                                Constants.imagesUrl2 +
+                                          .firstname! +
+                                      " " +
+                                      controller.profileModelObj.value!.studentResult!
+                                          .middlename! +
+                                      " " +
+                                      controller.profileModelObj.value!.studentResult!
+                                          .lastname!,
+                                  style: theme.textTheme.titleMedium!.copyWith(
+                                      fontSize: 25, fontWeight: FontWeight.w600),
+                                ),
+                                Text(
+                                  "${controller.profileModelObj.value!.studentResult!.className!}" +
+                                      ' ( ' +
+                                      controller.profileModelObj.value!.studentResult!
+                                          .section! +
+                                      ' )',
+                                  style:
+                                      theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                                ),
+                                Text(
+                                    'Adm. No: ${controller.profileModelObj.value!.studentResult!.admissionNo!}',
+                                    style: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 14)),
+                                Text(
+                                    'Roll Number: ${controller.profileModelObj.value!.studentResult!.rollNo!}',
+                                    style: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 14)),
+                                Row(
+                                  children: [
+                                    Text('BarCode:',
+                                        style: theme.textTheme.bodySmall!
+                                            .copyWith(fontSize: 14)),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8.0),
+                                      child: Image.network(Constants.imagesUrl2 +
+                                          controller.profileModelObj.value!.studentResult!
+                                              .barcode!),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text('Qr Code:',
+                                        style: theme.textTheme.bodySmall!
+                                            .copyWith(fontSize: 14)),
                                     controller.profileModelObj.value!
-                                        .studentResult!.qrcode!,
-                                height: 70,
-                                width: 70):SizedBox(),
-                          ],
-                        ),
-                      ],
+                                        .studentResult!.qrcode != null?Image.network(
+                                        Constants.imagesUrl2 +
+                                            controller.profileModelObj.value!
+                                                .studentResult!.qrcode!,
+                                        height: 70,
+                                        width: 70):SizedBox(),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                controller.profileModelObj.value!.studentResult!.image !=
+                                        null
+                                    ? CircleAvatar(
+                                        radius: 60,
+                                        backgroundColor: Colors.orange,
+                                        backgroundImage: NetworkImage(controller
+                                            .profileModelObj.value!.studentResult!.image
+                                            .toString()),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 60,
+                                        backgroundColor: Colors.orange,
+                                        backgroundImage: AssetImage(
+                                            'assets/projectImages/placeholder_user.png'),
+                                      )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        controller.profileModelObj.value!.studentResult!.image !=
-                                null
-                            ? CircleAvatar(
-                                radius: 60,
-                                backgroundColor: Colors.orange,
-                                backgroundImage: NetworkImage(controller
-                                    .profileModelObj.value!.studentResult!.image
-                                    .toString()),
-                              )
-                            : CircleAvatar(
-                                radius: 60,
-                                backgroundColor: Colors.orange,
-                                backgroundImage: AssetImage(
-                                    'assets/projectImages/placeholder_user.png'),
-                              )
-                      ],
-                    ),
-                  ),
+                  Expanded(child: MyHomePage()),
                 ],
-              ),
-            ),
-          ),
-          Expanded(child: MyHomePage()),
-        ],
+              );
+            }
+          );
+        }
       ),
     );
   }

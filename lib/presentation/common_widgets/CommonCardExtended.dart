@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../theme/theme_helper.dart';
+
 Widget CommonCardExtended({
   required String title,required Widget newWidget,required Widget leadingWidget,required String subtitle
 }) {
@@ -29,7 +31,7 @@ Widget CommonCardExtended({
         children: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8,vertical: 2),
-            height: 30,
+            height: 31,
             decoration: BoxDecoration(
                 color: Colors.green.shade100,
                 borderRadius: BorderRadius.only(
@@ -41,16 +43,12 @@ Widget CommonCardExtended({
               children: [
                 // ListTile(leading: Icon(Icons.bookmark_added_outlined,size: 5,),title: Text(title),),
                 leadingWidget,
-                Text(title,style: TextStyle(
-                  fontSize: 17.0,
-                  fontWeight: FontWeight.bold,
-                ),),
+                Text(title,  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600,fontSize:15),
+                ),
                 Spacer(),
                 Text(
                   subtitle,
-                  style: TextStyle(
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.bold,
+                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600,fontSize:14
                   ),
                 ),
               ],

@@ -31,7 +31,7 @@ class ProfileController extends GetxController {
     var data  = await apiRespository.postApiCallByJson(Constants.getStudentProfileUrl, body);
     print("DATA @@@@ ${data.body}");
     profileModelObj.value = Profile.fromJson(data.body);
-  print("111111111111111111111 ${profileModelObj.value.toJson()}");
+    print("111111111111111111111 ${profileModelObj.value.toJson()}");
     update();
   }
 }

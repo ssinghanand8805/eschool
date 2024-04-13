@@ -12,6 +12,7 @@ import 'package:learnladder/presentation/hostel_rooms/bindings/hostelrooms.dart'
 import 'package:learnladder/presentation/hostel_rooms/hostel_room_view.dart';
 import 'package:learnladder/presentation/library/bindings/library.dart';
 import 'package:learnladder/presentation/library/library_view.dart';
+import 'package:learnladder/presentation/notifications/binding/NotificationBinding.dart';
 import 'package:learnladder/presentation/student_timeline/bindings/student_timeline.dart';
 import 'package:learnladder/presentation/student_timeline/student_timeline_view.dart';
 import 'package:learnladder/presentation/submit_homework/binding/profile.dart';
@@ -50,6 +51,7 @@ import '../presentation/mydocuments/MyDocumentsScreen.dart';
 import '../presentation/mydocuments/binding/mydocuments_binding.dart';
 import '../presentation/notice_board/NoticeBoardScreen.dart';
 import '../presentation/notice_board/binding/notice_board_binding.dart';
+import '../presentation/notifications/NotificationScreen.dart';
 import '../presentation/profile/ProfileScreen.dart';
 import '../presentation/profile/binding/profile.dart';
 import '../presentation/s_screen/binding/s_binding.dart';
@@ -108,6 +110,7 @@ class AppRoutes {
   static const String studenttimelineRoute = '/student_timeline';
   static const String transportRoute = '/student_timeline';
   static const String feesRoute = '/fees';
+  static const String notificationListRoute = '/notificationsList';
 
 
 
@@ -123,6 +126,11 @@ class AppRoutes {
       name: applyleaveRoute,
       page: () => ApplyLeavePage(),
       bindings: [ApplyLeaveBinding()],
+    ),
+    GetPage(
+      name: notificationListRoute,
+      page: () => NotificationScreen(),
+      bindings: [NotificationBinding()],
     ),
     GetPage(
       name: visitorbookRoute,

@@ -10,7 +10,7 @@ import '../models/s_model.dart';
 /// current sModelObj
 class SController extends GetxController {
   // Rx<SModel> sModelObj = SModel().obs;
-  // UserData userData = Get.put(UserData());
+  UserData userData = Get.put(UserData());
 
   @override
   void onReady() async {
@@ -19,6 +19,7 @@ class SController extends GetxController {
     Future.delayed(const Duration(seconds: 2), () {
       if(prefs.getBool("isLoggegIn") == true)
         {
+          userData.loadDataFromSharedPreferences();
           Get.offNamed(
             AppRoutes.formScreen,
           );

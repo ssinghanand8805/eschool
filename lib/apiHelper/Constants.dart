@@ -17,6 +17,7 @@ class Constants {
   static const String getExamScheduleUrl = 'webservice/getExamSchedule';
   static const String getExamListUrl = 'webservice/getExamList';
   static const String getExamResultUrl = 'webservice/getExamResult';
+  // static const String getNotificationsUrl = 'webservice/getNotifications';
 
 
 

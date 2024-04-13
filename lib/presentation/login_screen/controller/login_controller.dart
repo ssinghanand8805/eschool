@@ -54,6 +54,8 @@ class LoginController extends GetxController {
         usersData.addStart_week(jsonData["startWeek"].toString());
         usersData.addStudent_session_id(jsonData["student_session_id"].toString());
         String imgUrl = Constants.imagesUrl + jsonData["image"].toString();
+        bool isUserImage = jsonData["image"].toString() == "null" ? true : false;
+        usersData.addIsUserImage(isUserImage);
         usersData.addUserImage(imgUrl);
         usersData.addUsername(jsonData["username"].toString());
         Map<String, dynamic> recordData = jsonData["record"];//json.decode(jsonData["record"]);

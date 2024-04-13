@@ -27,6 +27,7 @@ class UserData extends GetxController {
   String get getUserAdmissionNo => userData.read('admission_no') ?? '';
   bool get getUserIsLoggedIn => userData.read('isLoggegIn') ?? false;
   bool get getUserHasMultipleChild => userData.read('hasMultipleChild') ?? false;
+  bool get getIsUserImage => userData.read('isUserImage') ?? false;
 
 
   addAccessToken(String val) {userData.write('accessToken', val);}
@@ -46,6 +47,7 @@ class UserData extends GetxController {
   addUserAdmissionNo(String val) {userData.write('admission_no', val);}
   addUserIsLoggedIn(bool val) {userData.write('isLoggegIn', val);}
   addUserHasMultipleChild(bool val) {userData.write('hasMultipleChild', val);}
+  addIsUserImage(bool val) {userData.write('isUserImage', val);}
 
 
   saveData<T>(String storageKey,T dataModel){
@@ -76,8 +78,30 @@ class UserData extends GetxController {
     await prefs.setString('admission_no', getUserAdmissionNo);
     await prefs.setBool('isLoggegIn', getUserIsLoggedIn);
     await prefs.setBool('hasMultipleChild', getUserHasMultipleChild);
+    await prefs.setBool('isUserImage', getIsUserImage);
   }
+  Future<void> loadDataFromSharedPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
 
+    addAccessToken(prefs.getString('accessToken') ?? '');
+    addUserId(prefs.getString('userId') ?? '');
+        addRole(prefs.getString('role') ?? '');
+    addUsername(prefs.getString('username') ?? '');
+    addSchoolName(prefs.getString('schoolName') ?? '');
+    addCurrency_symbol(prefs.getString('currency_symbol') ?? '');
+    addCurrency_short_name(prefs.getString('currency_short_name') ?? '');
+    addStart_week(prefs.getString('start_week') ?? '');
+    addUserStudentId( prefs.getString('student_session_id') ?? '');
+    addUserImage(prefs.getString('imagesUrl') ?? '');
+    addUserStudentId(prefs.getString('student_id') ?? '');
+    addUserClassSection(prefs.getString('class_section') ?? '');
+    addUserFCMDeviceToken(prefs.getString('fcm_tocken') ?? '');
+    addUserStudentName(prefs.getString('student_name') ?? '');
+    addUserAdmissionNo(prefs.getString('admission_no') ?? '');
+    addUserIsLoggedIn(prefs.getBool('isLoggegIn') ?? false);
+    addUserHasMultipleChild(prefs.getBool('hasMultipleChild') ?? false);
+    addIsUserImage(prefs.getBool('isUserImage') ?? false);
+  }
 }
 
 

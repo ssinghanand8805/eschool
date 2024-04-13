@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:learnladder/core/app_export.dart';
 
 Widget CommonCard({
   required String title,required Widget newWidget
@@ -28,8 +29,8 @@ Widget CommonCard({
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 8,vertical: 2),
-            height: 30,
+            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 4),
+            height: 31,
             decoration: BoxDecoration(
                 color: Colors.green.shade100,
                 borderRadius: BorderRadius.only(
@@ -38,10 +39,7 @@ Widget CommonCard({
             width: Get.width,
             child: Text(
               title,
-              style: TextStyle(
-                fontSize: 17.0,
-                fontWeight: FontWeight.bold,
-              ),
+              style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600,fontSize:16),
             ),
           ),
           SizedBox(height: 8.0),
