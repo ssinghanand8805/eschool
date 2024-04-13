@@ -152,7 +152,10 @@ class DashboardScreen extends GetView<DashboardController> {
                   ListTile(
                     leading: Icon(Icons.login),
                     title: Text('Logout'),
-                    onTap: () {},
+                    onTap: () {
+                      controller.logout();
+
+                    },
                   ),
                   const Divider(
                     color: Colors.black45,

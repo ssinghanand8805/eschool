@@ -4,6 +4,7 @@ import 'package:learnladder/presentation/about_school/controller/about_schoolCon
 
 import '../../core/app_export.dart';
 import '../../theme/theme_helper.dart';
+import '../common_widgets/custom_loader.dart';
 
 class AboutSchoolScreen extends StatefulWidget {
   @override
@@ -20,88 +21,124 @@ class _AboutSchoolScreenState extends State<AboutSchoolScreen> {
      title: Text("About School",style: theme.textTheme.titleMedium!),
       ),
      backgroundColor: Colors.grey.shade50,
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color: Colors.green.shade50,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body: FutureBuilder(
+    future: controller.fetchDataFuture, //controller.getData(context),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState != ConnectionState.done) {
+        return CustomLoader(); // CustomLoader();
+      }
+      else {
+        return Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade50,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
 
-                children: [
-                  Row(
+                  children: [
+                    Row(
 
-                    children: [
-                      Image.network(
-                        'https://5.imimg.com/data5/VI/LJ/MY-55827694/school-management-software-desktop-based-500x500.png',
-                        width: 80.0,//
-                       // height: 150.0,
-                      ),
-                      SizedBox(width: 16.0),
-                      Text(
-                        'Mount Carmel School',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
+                      children: [
+                        Image.network(
+                          'https://5.imimg.com/data5/VI/LJ/MY-55827694/school-management-software-desktop-based-500x500.png',
+                          width: 80.0, //
+                          // height: 150.0,
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16.0),
-                  Row(
-                    children: [
-                      Text('Address: ',style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600)),
+                        SizedBox(width: 16.0),
+                        Text(
+                          controller.schoolName.value!,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.0),
+                    Row(
+                      children: [
+                        Text('Address: ',
+                            style: theme.textTheme.titleMedium!.copyWith(
+                                fontWeight: FontWeight.w600)),
 
-                      Text('2 5 Kings Street, CA',style: theme.textTheme.titleMedium!),
-                    ],
-                  ),
-                  SizedBox(height: 8.0),
-                  Row(
-                    children: [
-                      Text('Phone: ',style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600)),
-                      Text('895624233934',style: theme.textTheme.titleMedium!),
-                    ],
-                  ),
-                  SizedBox(height: 8.0),
-                  Row(
-                    children: [
-                      Text('Email: ',style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600)),
-                      Text('mountcarmelmailtest@gmail.com',style: theme.textTheme.titleMedium!),
-                    ],
-                  ),
-                  SizedBox(height: 8.0),
-                  Row(
-                    children: [
-                      Text('School Code: ',style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600 )),
-                      Text('ACT-487438',style: theme.textTheme.titleMedium!),
-                    ],
-                  ),
-                  SizedBox(height: 8.0),
-                  Row(
-                    children: [
-                      Text('Current Session: ',style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600)),
-                      Text('2023-24',style: theme.textTheme.titleMedium!),
-                    ],
-                  ),
-                  SizedBox(height: 8.0),
-                  Row(
-                    children: [
-                      Text('Session Start Month: ',style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600)),
-                      Text('April',style: theme.textTheme.titleMedium!),
-                    ],
-                  ),
-                ],
+                        Text(controller.schoolAddress.value!,
+                            style: theme.textTheme.titleMedium!),
+                      ],
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      children: [
+                        Text('Phone: ',
+                            style: theme.textTheme.titleMedium!.copyWith(
+                                fontWeight: FontWeight.w600)),
+                        Text(controller.schoolPhone.value,
+                            style: theme.textTheme.titleMedium!),
+                      ],
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      children: [
+                        Text('Email: ',
+                            style: theme.textTheme.titleMedium!.copyWith(
+                                fontWeight: FontWeight.w600)),
+                        Text(controller.schoolEmail.value,
+                            style: theme.textTheme.titleMedium!),
+                      ],
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      children: [
+                        Text('School Code: ',
+                            style: theme.textTheme.titleMedium!.copyWith(
+                                fontWeight: FontWeight.w600)),
+                        Text(controller.schoolSchoolCode.value,
+                            style: theme.textTheme.titleMedium!),
+                      ],
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      children: [
+                        Text('Current Session: ',
+                            style: theme.textTheme.titleMedium!.copyWith(
+                                fontWeight: FontWeight.w600)),
+                        Text(controller.schoolCurrentSession.value,
+                            style: theme.textTheme.titleMedium!),
+                      ],
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      children: [
+                        Text('Session Start Month: ',
+                            style: theme.textTheme.titleMedium!.copyWith(
+                                fontWeight: FontWeight.w600)),
+                        Text(controller.schoolStartMonth.value,
+                            style: theme.textTheme.titleMedium!),
+                      ],
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Action to perform when the button is pressed
+                        print('Change School button pressed');
+                        controller.changeSchool();
+                      },
+                      child: Text('Change School',
+                        style: TextStyle(color: Colors.white),),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      }
+    }),
     );
   }
 }

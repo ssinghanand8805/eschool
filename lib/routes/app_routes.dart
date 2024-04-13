@@ -13,6 +13,7 @@ import 'package:learnladder/presentation/hostel_rooms/hostel_room_view.dart';
 import 'package:learnladder/presentation/library/bindings/library.dart';
 import 'package:learnladder/presentation/library/library_view.dart';
 import 'package:learnladder/presentation/notifications/binding/NotificationBinding.dart';
+import 'package:learnladder/presentation/school_url/bindings/school_url_binding.dart';
 import 'package:learnladder/presentation/student_timeline/bindings/student_timeline.dart';
 import 'package:learnladder/presentation/student_timeline/student_timeline_view.dart';
 import 'package:learnladder/presentation/submit_homework/binding/profile.dart';
@@ -56,6 +57,7 @@ import '../presentation/profile/ProfileScreen.dart';
 import '../presentation/profile/binding/profile.dart';
 import '../presentation/s_screen/binding/s_binding.dart';
 import '../presentation/s_screen/s_screen.dart';
+import '../presentation/school_url/schoolUrlScreen.dart';
 import '../presentation/submit_homework/submit_homework.dart';
 import '../presentation/syllabus_status/SyllabuStatusScreen.dart';
 import '../presentation/syllabus_status/binding/syllabus_status_binding.dart';
@@ -112,11 +114,18 @@ class AppRoutes {
   static const String feesRoute = '/fees';
   static const String notificationListRoute = '/notificationsList';
 
+  static const String enterSchoolUrlRoute = '/enterSchoolUrl';
+
 
 
 
 
   static List<GetPage> pages = [
+    GetPage(
+      name: enterSchoolUrlRoute,
+      page: () => SchoolUrl(),
+      bindings: [SchoolUrlBinding()],
+    ),
     GetPage(
       name: sScreen,
       page: () => SScreen(),

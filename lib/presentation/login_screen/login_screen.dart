@@ -131,7 +131,16 @@ class LoginScreen extends GetWidget<LoginController> {
                         style: CustomTextStyles.bodyMediumBlack900,
                       ),
                     ),
-                    SizedBox(height: 5.v)
+                    SizedBox(height: 5.v),
+                    CustomElevatedButton(
+                      height: 25.v,
+                      text: "Change School",
+                      margin: EdgeInsets.symmetric(horizontal: 34.h),
+                      buttonTextStyle: theme.textTheme.titleLarge!,
+                      onPressed: (){
+                        controller.changeSchool();
+                      },
+                    ),
                   ],
                 ),
               ),

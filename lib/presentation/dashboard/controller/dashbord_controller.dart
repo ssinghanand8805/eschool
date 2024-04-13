@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/userData.dart';
 import '../../../core/app_export.dart';
@@ -237,7 +238,11 @@ Get.toNamed("/"+data.shortCode.toString());
       ),
     );
   }
-
+logout() async {
+  final prefs = await SharedPreferences.getInstance();
+  prefs.clear();
+  Get.toNamed('/s_screen');
+}
   eLearningapi()async{
     Map<String,dynamic> body = {
       "user" : "student",

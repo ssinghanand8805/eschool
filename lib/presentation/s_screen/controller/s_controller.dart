@@ -15,21 +15,42 @@ class SController extends GetxController {
   @override
   void onReady() async {
     final prefs = await SharedPreferences.getInstance();
+
+    bool isBaseUrlFound = prefs.containsKey("schoolBaseUrl");
+
+    // if(!isBaseUrlFound)
+    // {
+    //   Get.offNamed(
+    //     AppRoutes.enterSchoolUrlRoute,
+    //   );
+    // }
+
+
     print("#############ONINIT ${prefs.getBool("isLoggegIn")}");
     Future.delayed(const Duration(seconds: 2), () {
-      if(prefs.getBool("isLoggegIn") == true)
+      if(!isBaseUrlFound)
         {
-          userData.loadDataFromSharedPreferences();
           Get.offNamed(
-            AppRoutes.formScreen,
+            AppRoutes.enterSchoolUrlRoute,
           );
         }
       else
         {
-          Get.offNamed(
-            AppRoutes.loginScreen,
-          );
+          if(prefs.getBool("isLoggegIn") == true)
+          {
+            userData.loadDataFromSharedPreferences();
+            Get.offNamed(
+              AppRoutes.formScreen,
+            );
+          }
+          else
+          {
+            Get.offNamed(
+              AppRoutes.loginScreen,
+            );
+          }
         }
+
 
     });
   }

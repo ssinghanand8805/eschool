@@ -4,6 +4,7 @@ import 'package:learnladder/apiHelper/userData.dart';
 import 'package:learnladder/presentation/login_screen/models/userDataModal.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';
@@ -28,7 +29,12 @@ class LoginController extends GetxController {
     super.onClose();
     passwordController.dispose();
   }
-
+  changeSchool()
+  async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    Get.toNamed('/s_screen');
+  }
   loginApi(context)async{
     Map<String,dynamic> body = {
       "username" : idController.text,
@@ -54,7 +60,7 @@ class LoginController extends GetxController {
         usersData.addStart_week(jsonData["startWeek"].toString());
         usersData.addStudent_session_id(jsonData["student_session_id"].toString());
         String imgUrl = Constants.imagesUrl + jsonData["image"].toString();
-        bool isUserImage = jsonData["image"].toString() == "null" ? true : false;
+        bool isUserImage = jsonData["image"].toString() == "null" ? false : true;
         usersData.addIsUserImage(isUserImage);
         usersData.addUserImage(imgUrl);
         usersData.addUsername(jsonData["username"].toString());
