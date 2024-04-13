@@ -6,6 +6,7 @@ import 'package:learnladder/presentation/download_center/DownloadCenterScreen.da
 import 'package:learnladder/presentation/download_center/binding/syllabus_status_binding.dart';
 import 'package:learnladder/presentation/examinations/exam%20result/bindings/exam_result_bindings.dart';
 import 'package:learnladder/presentation/examinations/exam%20result/exam_result_view.dart';
+import 'package:learnladder/presentation/fees/fees_view.dart';
 import 'package:learnladder/presentation/homework/HomeworkScreen.dart';
 import 'package:learnladder/presentation/hostel_rooms/bindings/hostelrooms.dart';
 import 'package:learnladder/presentation/hostel_rooms/hostel_room_view.dart';
@@ -39,6 +40,7 @@ import '../presentation/dashboard/binding/dashboard_binding.dart';
 import '../presentation/dashboard/dashboard_screen.dart';
 import '../presentation/examinations/ExaminationScreen.dart';
 import '../presentation/examinations/bindings/Examination.dart';
+import '../presentation/fees/bindings/fees.dart';
 import '../presentation/homework/binding/homework_binding.dart';
 import '../presentation/lesson_plan/binding/lesson_plan_binding.dart';
 import '../presentation/lesson_plan/lesson_plan.dart';
@@ -105,6 +107,7 @@ class AppRoutes {
   static const String teachersratingRoute = '/teachers_rating';
   static const String studenttimelineRoute = '/student_timeline';
   static const String transportRoute = '/student_timeline';
+  static const String feesRoute = '/fees';
 
 
 
@@ -225,5 +228,6 @@ class AppRoutes {
     GetPage(name: studenttimelineRoute, page: () => StudentTimeLinePage(), bindings: [StudentTimeLineBinding()],),
     GetPage(name: examinationsRoute, page: () => ExaminationPage(), bindings: [ExaminationBinding()],),
     GetPage(name: exam_result_view, page: () => ExamResultView(), bindings: [ExamResultBindings()],),
+    GetPage(name: feesRoute, page: () =>FeesPage(), bindings: [FeesBinding()],),
   ];
 }

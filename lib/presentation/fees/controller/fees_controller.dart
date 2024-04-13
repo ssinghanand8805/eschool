@@ -2,11 +2,11 @@ import 'package:learnladder/apiHelper/userData.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';
-import '../model/transport_route_modal.dart';
+import '../model/fees_modal.dart';
 
 
 
-class TransportRoutesController extends GetxController {
+class FeesController extends GetxController {
   UserData userData = Get.put(UserData());
   ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
   // Rx<NotiiceBoard> noticeBoardModelObj = NotiiceBoard().obs;

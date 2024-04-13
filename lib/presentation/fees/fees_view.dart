@@ -5,16 +5,16 @@ import 'package:learnladder/core/app_export.dart';
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
 import '../homework/HomeworkScreen.dart';
-import 'controller/transport_route_controller.dart';
-import 'model/transport_route_modal.dart';
+import 'controller/fees_controller.dart';
+import 'model/fees_modal.dart';
 
-class TransportRoutesPage extends StatefulWidget {
+class FeesPage extends StatefulWidget {
   @override
-  State<TransportRoutesPage> createState() => _TransportRoutesPageState();
+  State<FeesPage> createState() => _FeesPageState();
 }
 
-class _TransportRoutesPageState extends State<TransportRoutesPage> {
-  TransportRoutesController controller = Get.put(TransportRoutesController());
+class _FeesPageState extends State<FeesPage> {
+  FeesController controller = Get.put(FeesController());
 
   @override
   void initState() {
@@ -25,9 +25,9 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
   @override
   Widget build(BuildContext context) {
     return MainBody(
-        label: 'Your Transport\n Route Here!',
-        imageUrl: 'assets/projectImages/bus.png',
-        AppbarTitle: 'Transport Route',
+        label: 'Your Fees Details\n is Here!',
+        imageUrl: 'assets/projectImages/feespage.jpeg',
+        AppbarTitle: 'Fees',
         widget: _buildChildWidget());
   }
 
@@ -131,10 +131,10 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
         return new Stack(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(left: 50.0, right: 15, bottom: 15),
+              padding: const EdgeInsets.all(8),
               child: Container(
                 width: double.infinity,
-                height: 150.0,
+
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
@@ -167,58 +167,71 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
                               topRight: Radius.circular(10))),
                       width: Get.width,
                       child: Text(
-                        'Title',
-                        style:  theme.textTheme.titleMedium!.copyWith(fontSize: 18,fontWeight: FontWeight.w600)
+                        'Class 3 Lump Sum-Admission Fees',
+                        style:  theme.textTheme.titleMedium!.copyWith(fontSize: 17,fontWeight: FontWeight.w600)
                       ),
                     ),
                     SizedBox(height: 12.0),
-                    Row(
-                      children: [
-                        Icon(Icons.location_on),
-                        SizedBox(width: 8.0),
-                        Text('Text with icon',style:  theme.textTheme.titleMedium!,),
-                      ],
-                    ),
-                    SizedBox(height: 12.0),
-                    Row(
-                      children: [
-                        Icon(Icons.timer),
-                        SizedBox(width: 8.0),
-                        Text('Text with icon',style:  theme.textTheme.titleMedium!,),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InfoRow(
+                              title: 'Fees Code',
+                              value: "Admission fees"),
+                          InfoRow(
+                              title: 'Due Date',
+                              value: "04/10/2023"),
+                          InfoRow(
+                              title: 'Amount',
+                              value: "Rs 3000"),
+                          InfoRow(
+                              title: 'Fine',
+                              value: "Rs 0"),
+                          InfoRow(
+                              title: 'Discount',
+                              value: "Rs 100"),
+                          InfoRow(
+                              title: 'Paid Amount',
+                              value: "Rs 2900"),
+                          InfoRow(
+                              title: 'Balance Amount ', value: "Rs 0"),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-            new Positioned(
-              top: 0.0,
-              bottom: 0.0,
-              left: 18.0,
-              child: new Container(
-                height: double.infinity,
-                width: 5.0,
-                color: Colors.green.shade100,
-              ),
-            ),
-            new Positioned(
-              top: 0.0,
-              left: 0.0,
-              child: new Container(
-                height: 25.0,
-                width: 40.0,
-                decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.green.shade200,
-                ),
-                child: new Container(
-                  child: Icon(Icons.location_on, size: 15),
-                  margin: new EdgeInsets.all(5.0),
-                  height: 15.0,
-                  width: 30.0,
-                ),
-              ),
-            )
+            // new Positioned(
+            //   top: 0.0,
+            //   bottom: 0.0,
+            //   left: 18.0,
+            //   child: new Container(
+            //     height: double.infinity,
+            //     width: 5.0,
+            //     color: Colors.green.shade100,
+            //   ),
+            // ),
+            // new Positioned(
+            //   top: 0.0,
+            //   left: 0.0,
+            //   child: new Container(
+            //     height: 25.0,
+            //     width: 40.0,
+            //     decoration: new BoxDecoration(
+            //       shape: BoxShape.circle,
+            //       color: Colors.green.shade200,
+            //     ),
+            //     child: new Container(
+            //       child: Icon(Icons.location_on, size: 15),
+            //       margin: new EdgeInsets.all(5.0),
+            //       height: 15.0,
+            //       width: 30.0,
+            //     ),
+            //   ),
+            // )
           ],
         );
       },

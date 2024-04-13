@@ -17,12 +17,10 @@ class _StudentTimeLinePageState extends State<StudentTimeLinePage> {
   @override
   Widget build(BuildContext context) {
     return MainBody(
-      label: 'Your Visitor\n Book Here!',
-      imageUrl: 'assets/projectImages/noticepage.png',
-      AppbarTitle: 'Visitor Book',
+      label: 'Your Timeline is\nHere!',
+      imageUrl: 'assets/projectImages/timelinepage.jpg',
+      AppbarTitle: 'Student Timeline',
       widget: _buildChildWidget(),
-
-
     );
   }
 
@@ -41,7 +39,7 @@ class _StudentTimeLinePageState extends State<StudentTimeLinePage> {
     return ListView.builder(
       itemCount: 2,
       itemBuilder: (context, index) {
-        return _buildLeaveCard();
+        return timeLine();
 
         // controller.syllabusStatusModelObj.value.subjects!.length > 0 ? _buildLeaveCard(
         // data: controller.syllabusStatusModelObj.value.subjects![index],
@@ -56,85 +54,108 @@ class _StudentTimeLinePageState extends State<StudentTimeLinePage> {
     );
   }
 
-  Widget _buildLeaveCard() {
-    return Padding(
-      padding: EdgeInsets.all(12.0),
-      child: Container(
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade400,
-            offset: const Offset(
-              0.3,
-              3.0,
-            ),
-            blurRadius: 4.0,
-          ), //BoxShadow
-          BoxShadow(
-            color: Colors.white,
-            offset: const Offset(0.0, 0.0),
-            blurRadius: 0.0,
-            spreadRadius: 0.0,
-          ), //BoxShadow
-        ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget timeLine() {
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (BuildContext context, int index) {
+        return new Stack(
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 8,
-              ),
-              height: 45,
-              decoration: BoxDecoration(
-                  color: Colors.green.shade100,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10))),
-              width: Get.width,
-              child: Row(
-                children: [
-                  Text(
-                    "Maxwell",
-                    //'{homework.} (Code)',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Spacer(),
-                ],
-              ),
-            ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  InfoRow(title: 'Purpose', value: "Parent Teacher Meeting"),
-                  InfoRow(title: 'Phone', value: "08958565457"),
-                  InfoRow(title: 'Id Card', value: '0884555'),
-                  InfoRow(title: 'No. of Person', value: '4'),
-                  InfoRow(title: 'Date', value: '04/08/2024'),
-                  InfoRow(title: 'In Time', value: '10:30 pm'),
-                  InfoRow(title: 'Out Time', value: '11:30 am'),
-                  InfoRow(title: 'Note', value: ''),
-                ],
+              padding: const EdgeInsets.only(left: 50.0, right: 15, bottom: 15),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade400,
+                        offset: const Offset(
+                          0.3,
+                          3.0,
+                        ),
+                        blurRadius: 4.0,
+                      ), //BoxShadow
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: const Offset(0.0, 0.0),
+                        blurRadius: 0.0,
+                        spreadRadius: 0.0,
+                      ), //BoxShadow
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: Colors.green.shade100,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10))),
+                      width: Get.width,
+                      child: Text('Show Your\nConnectedness',
+                          style: theme.textTheme.titleMedium!.copyWith(
+                              fontSize: 16, fontWeight: FontWeight.w600)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, bottom: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 12.0),
+                          Text(
+                            '04/05/2021',
+                            style: theme.textTheme.titleMedium!,
+                          ),
+                          SizedBox(height: 12.0),
+                          Text(
+                            'Groups you join appear at the bottom of your profile. Joining some shows that you want to engage in professional communities and learn the lingo. Start with your university and industry groups.',
+                            style: theme.textTheme.titleMedium!,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
+            new Positioned(
+              top: 0.0,
+              bottom: 0.0,
+              left: 18.0,
+              child: new Container(
+                height: double.infinity,
+                width: 5.0,
+                color: Colors.green.shade100,
+              ),
+            ),
+            new Positioned(
+              top: 0.0,
+              left: 0.0,
+              child: new Container(
+                height: 25.0,
+                width: 40.0,
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.green.shade200,
+                ),
+                child: new Container(
+                  child: Image.asset(
+                    'assets/projectImages/ic_clock.jpg',
+                  ),
+                  margin: new EdgeInsets.all(5.0),
+                  height: 15.0,
+                  width: 30.0,
+                ),
+              ),
+            )
           ],
-        ),
-      ),
+        );
+      },
+      itemCount: 10,
     );
-  }
-
-  Color _getStatusColor(String status) {
-    if (status.contains('Approved')) {
-      return Colors.green;
-    } else if (status.contains('Pending')) {
-      return Colors.orange;
-    } else {
-      return Colors.red;
-    }
   }
 }

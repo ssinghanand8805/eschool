@@ -432,15 +432,22 @@ class InfoRow extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
         children: <Widget>[
-          Text(
-            title,
-            style: theme.textTheme.titleMedium,
+          Expanded(
+            flex: 3,
+            child: Text(
+              title,
+              style: theme.textTheme.titleMedium,
+            ),
           ),
-          Text(
-            value,
-            style: theme.textTheme.titleMedium,
+          Expanded(
+            flex: 4,
+            child: Text(
+              value,
+              style: theme.textTheme.titleMedium,
+            ),
           ),
         ],
       ),

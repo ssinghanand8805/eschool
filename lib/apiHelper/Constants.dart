@@ -11,6 +11,7 @@ class Constants {
   static const String getDocumentUrl = 'webservice/getDocument';
   static const String getStudentProfileUrl = 'webservice/getStudentProfile';
   static const String gettransportUrl = 'webservice/getTransportRoute';
+  static const String gettransportroutesUrl = 'webservice/gettransportroutes';
   static const String getApplyLeaveUrl = 'webservice/getApplyLeave';
   static const String addleaveUrl = 'webservice/addleave';
   static const String getExamScheduleUrl = 'webservice/getExamSchedule';
