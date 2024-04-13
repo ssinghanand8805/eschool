@@ -11,7 +11,8 @@ class PushNotificationService {
       print('Message data: ${message.data}');
 
       if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
+        print('Message also contained a notification title: ${message.notification!.title}');
+        print('Message also contained a notification body: ${message.notification!.body}');
       }
     });
     await getToken();

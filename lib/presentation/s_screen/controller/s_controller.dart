@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../apiHelper/userData.dart';
 import '../../../core/app_export.dart';
 import '../models/s_model.dart';
@@ -7,13 +9,15 @@ import '../models/s_model.dart';
 /// This class manages the state of the SScreen, including the
 /// current sModelObj
 class SController extends GetxController {
-  Rx<SModel> sModelObj = SModel().obs;
-  UserData userData = Get.put(UserData());
+  // Rx<SModel> sModelObj = SModel().obs;
+  // UserData userData = Get.put(UserData());
 
   @override
-  void onReady() {
+  void onReady() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("#############ONINIT ${prefs.getBool("isLoggegIn")}");
     Future.delayed(const Duration(seconds: 2), () {
-      if(userData.getUserIsLoggedIn)
+      if(prefs.getBool("isLoggegIn") == true)
         {
           Get.offNamed(
             AppRoutes.formScreen,

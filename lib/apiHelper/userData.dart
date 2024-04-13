@@ -3,6 +3,7 @@
 import 'package:learnladder/presentation/login_screen/models/userDataModal.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
@@ -54,7 +55,28 @@ class UserData extends GetxController {
   getData<T>(String storageKey){
    return userData.read(storageKey);
   }
+  Future<void> saveAllDataToSharedPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
 
+    // Write all data to SharedPreferences
+    await prefs.setString('accessToken', getAccessToken);
+    await prefs.setString('userId', getUserId);
+    await prefs.setString('role', getRole);
+    await prefs.setString('username', getUsername);
+    await prefs.setString('schoolName', getSchoolName);
+    await prefs.setString('currency_symbol', getCurrency_symbol);
+    await prefs.setString('currency_short_name', getCurrency_short_name);
+    await prefs.setString('start_week', getStart_week);
+    await prefs.setString('student_session_id', getStudent_session_id);
+    await prefs.setString('imagesUrl', getUserImage);
+    await prefs.setString('student_id', getUserStudentId);
+    await prefs.setString('class_section', getUserClassSection);
+    await prefs.setString('fcm_tocken', getUserFCMDeviceToken);
+    await prefs.setString('student_name', getUserStudentName);
+    await prefs.setString('admission_no', getUserAdmissionNo);
+    await prefs.setBool('isLoggegIn', getUserIsLoggedIn);
+    await prefs.setBool('hasMultipleChild', getUserHasMultipleChild);
+  }
 
 }
 

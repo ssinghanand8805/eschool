@@ -70,6 +70,7 @@ class LoginController extends GetxController {
                 usersData.addUserStudentName(firstChild["name"]);
                 ///navigate here to dashboard
                   print('one child found:::::::::');
+                usersData.saveAllDataToSharedPreferences();
                 Get.toNamed(AppRoutes.formScreen);
                 // Navigator.push(
                 //   context,
@@ -113,6 +114,7 @@ class LoginController extends GetxController {
             print('start profile lock data:::::::::');
             print(data);
             print('end profile lock data:::::::::');
+            usersData.saveAllDataToSharedPreferences();
           }
 
       }
