@@ -9,8 +9,7 @@ import '../model/fees_modal.dart';
 class FeesController extends GetxController {
   UserData userData = Get.put(UserData());
   ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
-  // Rx<NotiiceBoard> noticeBoardModelObj = NotiiceBoard().obs;
-  RxList<TransportRoutesModal>  transportRouteModal = <TransportRoutesModal>[].obs;
+  Rx<FeesDataModal> feesDataModal = FeesDataModal().obs;
   late Future<void> fetchDataFuture;
   @override
   void onClose() {
@@ -30,15 +29,12 @@ class FeesController extends GetxController {
     print("Body @@@@ ${body}");
     var data  = await apiRespository.postApiCallByJson(Constants.gettransportroutesUrl, body);
     print("DATA TransportRoute ${data.body}");
-    List<TransportRoutesModal> d = [];
-    d.add(TransportRoutesModal.fromJson(data.body));
-    // for(var i =0;i<data.body.length; i++)
-    // {
-    //   d.add(TransportRoutesModal.fromJson(data.body));
-    // }
 
-   transportRouteModal.value = d;
-     print("111111111111111111111 ${transportRouteModal.value[0].toJson()}");
+
+    feesDataModal.value = FeesDataModal.fromJson(data.body);
+
+
+     print("111111111111111111111 ${feesDataModal.value.toJson()}");
     update();
   }
 }

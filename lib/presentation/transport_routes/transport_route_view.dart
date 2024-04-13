@@ -41,19 +41,25 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return ListView.builder(
-                itemCount: controller.transportRouteModal.length ?? 0,
-                itemBuilder: (context, index) {
-                  return controller.transportRouteModal.length > 0
-                      ? _buildRouteCard(
-                          data: controller.transportRouteModal.value[index],
-                        )
-                      : Center(
-                          child: Image.asset(
-                          "assets/projectImages/no_data.png",
-                          height: 100,
-                        ));
-                },
+              return Column(
+                children: [
+                  _buildRouteCard(
+                    data: controller.transportRouteModal.value!.route!,
+                  ),
+                  timeLine( data: controller.transportRouteModal.value!.pickupPoint!)
+                  // ListView.builder(
+                  //   itemCount: controller.transportRouteModal.value.pickupPoint!.length ?? 0,
+                  //   itemBuilder: (context, index) {
+                  //     return controller.transportRouteModal.value.pickupPoint!.length > 0
+                  //         ? timeLine( data: controller.transportRouteModal.value!.pickupPoint![index])
+                  //         : Center(
+                  //             child: Image.asset(
+                  //             "assets/projectImages/no_data.png",
+                  //             height: 100,
+                  //           ));
+                  //   },
+                  // ),
+                ],
               );
               ;
             }
@@ -63,7 +69,7 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
     );
   }
 
-  Widget _buildRouteCard({required TransportRoutesModal data}) {
+  Widget _buildRouteCard({required RouteData data}) {
     return Column(
       children: [
         Padding(
@@ -95,38 +101,39 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
                 children: [
                   InfoRow(
                       title: 'Route Title:',
-                      value: "${data.route!.routeTitle}"),
+                      value: "${data.routeTitle}"),
                   InfoRow(
                       title: 'Vehicle Number:',
-                      value: "${data.route!.vehicleNo}"),
+                      value: "${data.vehicleNo}"),
                   InfoRow(
                       title: 'Vehicle Model:',
-                      value: "${data.route!.vehicleModel}"),
+                      value: "${data.vehicleModel}"),
                   InfoRow(
                       title: 'Driver Name:',
-                      value: "${data.route!.driverName}"),
+                      value: "${data.driverName}"),
                   InfoRow(
                       title: 'Driver Contact:',
-                      value: "${data.route!.driverContact}"),
+                      value: "${data.driverContact}"),
                   InfoRow(
                       title: 'Driver Licence:',
-                      value: "${data.route!.driverLicence}"),
+                      value: "${data.driverLicence}"),
                   InfoRow(
-                      title: 'Made: ', value: "${data.route!.manufactureYear}"),
+                      title: 'Made: ', value: "${data.manufactureYear}"),
                 ],
               ),
             ),
           ),
         ),
-        timeLine(),
+
       ],
     );
   }
 
-  Widget timeLine() {
+  Widget timeLine({required List<PickupPoint> data}) {
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
+      itemCount: data.length,
       itemBuilder: (BuildContext context, int index) {
         return new Stack(
           children: <Widget>[
@@ -167,16 +174,18 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
                               topRight: Radius.circular(10))),
                       width: Get.width,
                       child: Text(
-                        'Title',
+                        data[index].pickupPoint!,
                         style:  theme.textTheme.titleMedium!.copyWith(fontSize: 18,fontWeight: FontWeight.w600)
                       ),
                     ),
                     SizedBox(height: 12.0),
                     Row(
                       children: [
-                        Icon(Icons.location_on),
+                        Icon(Icons.location_on,),
                         SizedBox(width: 8.0),
-                        Text('Text with icon',style:  theme.textTheme.titleMedium!,),
+                        Text("Distance(km)"),
+                        SizedBox(width: 8.0),
+                        Text(data[index].destinationDistance!,style:  theme.textTheme.titleMedium!,),
                       ],
                     ),
                     SizedBox(height: 12.0),
@@ -184,7 +193,9 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
                       children: [
                         Icon(Icons.timer),
                         SizedBox(width: 8.0),
-                        Text('Text with icon',style:  theme.textTheme.titleMedium!,),
+                        Text("Pickup Time"),
+                        SizedBox(width: 8.0),
+                        Text(data[index].pickupTime!,style:  theme.textTheme.titleMedium!,),
                       ],
                     ),
                   ],
@@ -222,7 +233,7 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
           ],
         );
       },
-      itemCount: 10,
+
     );
   }
 }

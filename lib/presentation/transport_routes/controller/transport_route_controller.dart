@@ -10,7 +10,7 @@ class TransportRoutesController extends GetxController {
   UserData userData = Get.put(UserData());
   ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
   // Rx<NotiiceBoard> noticeBoardModelObj = NotiiceBoard().obs;
-  RxList<TransportRoutesModal>  transportRouteModal = <TransportRoutesModal>[].obs;
+  Rx<TransportRoutesModal>  transportRouteModal = TransportRoutesModal().obs;
   late Future<void> fetchDataFuture;
   @override
   void onClose() {
@@ -30,15 +30,9 @@ class TransportRoutesController extends GetxController {
     print("Body @@@@ ${body}");
     var data  = await apiRespository.postApiCallByJson(Constants.gettransportroutesUrl, body);
     print("DATA TransportRoute ${data.body}");
-    List<TransportRoutesModal> d = [];
-    d.add(TransportRoutesModal.fromJson(data.body));
-    // for(var i =0;i<data.body.length; i++)
-    // {
-    //   d.add(TransportRoutesModal.fromJson(data.body));
-    // }
+    transportRouteModal.value = TransportRoutesModal.fromJson(data.body);
 
-   transportRouteModal.value = d;
-     print("111111111111111111111 ${transportRouteModal.value[0].toJson()}");
+     print("111111111111111111111 ${transportRouteModal.value.toJson()}");
     update();
   }
 }
