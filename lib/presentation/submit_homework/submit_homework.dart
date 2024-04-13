@@ -1,8 +1,8 @@
 import 'dart:io';
 
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:learnladder/presentation/common_widgets/MainBody.dart';
 import 'package:learnladder/presentation/submit_homework/controller/SubmitHomeworkController.dart';
 
 import '../../core/app_export.dart';
@@ -32,14 +32,13 @@ class _UploadHomeworkState extends State<UploadHomework> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Upload Homework Page',style: theme.textTheme.titleMedium,),
-      ),
-      body: SingleChildScrollView(
+    return MainBody(
+      label: "Upload Homework\nfrom here!",
+      imageUrl: "assets/projectImages/homeworkpage.jpg",
+      AppbarTitle: "Upload Homework",
+      widget: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(
-
             minHeight: MediaQuery.of(context).size.height -
                 AppBar().preferredSize.height -
                 MediaQuery.of(context).padding.top -
@@ -50,11 +49,6 @@ class _UploadHomeworkState extends State<UploadHomework> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  'Upload Homework from here!',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
                 SizedBox(height: 20),
                 TextField(
                   decoration: InputDecoration(

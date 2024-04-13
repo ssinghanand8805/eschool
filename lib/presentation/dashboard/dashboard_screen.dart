@@ -21,7 +21,7 @@ class DashboardScreen extends GetView<DashboardController> {
       appBar: AppBar(
         // leading: IconButton(  onPressed: () {  }, icon: Icon(Icons.),),
         centerTitle: true,
-        title: Text("My App"),
+        title: Image.asset("assets/projectImages/online_logo.png",height: 30),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 15.0),
@@ -29,7 +29,7 @@ class DashboardScreen extends GetView<DashboardController> {
               onPressed: () {
                 Get.toNamed("/notificationsList");
               },
-              icon: Icon(Icons.notification_add),
+              icon: Image.asset("assets/projectImages/ic_notification.png",height: 22,color: Colors.deepOrangeAccent,),
             ),
           )
         ],
@@ -195,19 +195,19 @@ class DashboardScreen extends GetView<DashboardController> {
                         Container(
                           alignment: Alignment.center,
                           height: 290,
-                          color: Colors.amber,
+                          color: Colors.green.shade100,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               userData.getIsUserImage
                                   ? CircleAvatar(
-                                      radius: 60,
+                                      radius: 45,
                                       backgroundColor: Colors.orange,
                                       backgroundImage: NetworkImage(
                                           userData.getUserImage.toString()),
                                     )
                                   : CircleAvatar(
-                                      radius: 60,
+                                      radius: 45,
                                       backgroundColor: Colors.orange,
                                       backgroundImage: AssetImage(
                                           'assets/projectImages/placeholder_user.png'),

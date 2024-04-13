@@ -312,10 +312,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
                   Text(
                     "${homework.subjectName.toString()} (${homework.subjectCode.toString()})",
                     //'{homework.} (Code)',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                    style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600)
                   ),
                   Spacer(),
                   statusButton(status),
@@ -357,10 +354,10 @@ class HomeworkCard extends GetView<HomeWorkController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Description  ',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600)),
                       Flexible(
                           child: Text(
-                            'Please submit homework before last date.',
+                            'Please submit homework before last date.',style: theme.textTheme.titleMedium!,
                           )),
                     ],
                   ),
@@ -446,7 +443,7 @@ class InfoRow extends StatelessWidget {
             flex: 4,
             child: Text(
               value,
-              style: theme.textTheme.titleMedium,
+              style: theme.textTheme.titleMedium!.copyWith(color: Colors.grey.shade700),
             ),
           ),
         ],

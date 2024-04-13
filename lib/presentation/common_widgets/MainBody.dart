@@ -22,6 +22,7 @@ class MainBody extends StatelessWidget {
   Widget build(BuildContext context) {
    return  Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green.shade100,
         title: Text(AppbarTitle,style: theme.textTheme.titleLarge,),
       ),
       body: Column(
@@ -33,7 +34,7 @@ class MainBody extends StatelessWidget {
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 22.0,
+                  fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),

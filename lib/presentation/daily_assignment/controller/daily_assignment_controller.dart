@@ -17,43 +17,33 @@ import '../model/DailyAssignment.dart';
 class DailyAssignmentController extends GetxController {
   UserData userData = Get.put(UserData());
   ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
-  RxInt currentSelectedSubejectId = 0.obs;
-  RxString status = "pending".obs;
-  Rx<DailyAssignment> homeworkModelObj = DailyAssignment().obs;
+  Rx<AssignmentModal> assignmentModelObj = AssignmentModal().obs;
 
+  late Future<void> fetchDataFuture;
   @override
   void onClose() {
     super.onClose();
 
   }
+  @override
+  void onInit() {
+    super.onInit();
+    fetchDataFuture = getAssignment(); // Initialize the future when the controller is created
+  }
 
-
-  getSubjects(context)async{
+  getAssignment()async{
     Map<String,dynamic> body = {
       "student_id" : userData.getUserStudentId };
 
-      var data  = await apiRespository.postApiCallByJson(Constants.getstudentsubjectUrl, body);
-    //
-    //
-    print("DATA @@@@ ${data.body}");
+      var data  = await apiRespository.postApiCallByJson(Constants.getdailyassignmentUrl, body);
+
+    assignmentModelObj.value = AssignmentModal.fromJson(data.body);
+
+    print("getdailyassignmentUrl ${data.body}");
     // //UsersData usersData = UsersData.fromJson(data.body);
     // Map<dynamic, dynamic> jsonData = data.body;//json.decode(data.body);
 
 
   }
 
-  getData(context) async
-  {
-    Map<String,dynamic> body = {
-      "student_id" : userData.getUserStudentId,
-      "homework_status" : status.value,
-      "subject_group_subject_id" : currentSelectedSubejectId.value == 0 ? "" : currentSelectedSubejectId.value
-    };
-    print("Body @@@@ ${body}");
-    var data  = await apiRespository.postApiCallByJson(Constants.getHomeworkUrl, body);
-    print("DATA @@@@ ${data.body}");
-    homeworkModelObj.value = DailyAssignment.fromJson(data.body);
-    print("111111111111111111111 ${homeworkModelObj.value.toJson()}");
-    update();
-  }
 }

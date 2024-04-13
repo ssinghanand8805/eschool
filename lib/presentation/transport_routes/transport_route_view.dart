@@ -41,7 +41,7 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return Column(
+              return ListView(
                 children: [
                   _buildRouteCard(
                     data: controller.transportRouteModal.value!.route!,

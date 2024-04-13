@@ -1,3 +1,4 @@
+import 'package:get_storage/get_storage.dart';
 import 'package:learnladder/core/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:learnladder/presentation/class_time_table/controller/class_time_table_controller.dart';
@@ -15,8 +16,6 @@ class ClassTimeTableScreen extends StatefulWidget {
 class _ClassTimeTableScreenState extends State<ClassTimeTableScreen> {
   ClassTimeTableController controller = Get.put(ClassTimeTableController());
 
-
-
   @override
   Widget build(BuildContext context) {
     return MainBody(
@@ -32,12 +31,11 @@ class _ClassTimeTableScreenState extends State<ClassTimeTableScreen> {
       init: controller,
       builder: (_) {
         return FutureBuilder(
-          future:  controller.fetchDataFuture,//controller.getData(context),
+          future: controller.fetchDataFuture, //controller.getData(context),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
-            }
-            else {
+            } else {
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +71,6 @@ class _ClassTimeTableScreenState extends State<ClassTimeTableScreen> {
                   ],
                 ),
               );
-
             }
           },
         );
@@ -82,45 +79,86 @@ class _ClassTimeTableScreenState extends State<ClassTimeTableScreen> {
   }
 
   Widget _buildTimeTableCard({required String title, required List<Day> day}) {
+
     return CommonCard(
         title: title,
-        newWidget: day.length > 0 ? DataTable(
-          columns: const <DataColumn>[
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Time',
-                  style: TextStyle(fontStyle: FontStyle.italic,color: Colors.lightBlue),
+        newWidget: day.length > 0
+            ?DataTable(
+              dividerThickness: 0.1,
+             columnSpacing: 40.0, // Adjust the spacing between columns as needed
+              columns:  <DataColumn>[
+                DataColumn(
+                  label: Text(
+                    'Time',
+                    style: theme.textTheme.titleMedium!.copyWith(color: Colors.lightBlue,fontSize: 16),
+                  ),
                 ),
-              ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Subject',
-                  style: TextStyle(fontStyle: FontStyle.italic,color: Colors.lightBlue),
+                DataColumn(
+                  label: Text(
+                    'Subject',
+                    style: theme.textTheme.titleMedium!.copyWith(color: Colors.lightBlue,fontSize: 16),
+                  ),
                 ),
-              ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Room',
-                  style: TextStyle(fontStyle: FontStyle.italic,color: Colors.lightBlue),
+                DataColumn(
+                  label: Text(
+                    'Room',
+                    style:  theme.textTheme.titleMedium!.copyWith(color: Colors.lightBlue,fontSize: 16),
+                  ),
                 ),
-              ),
-            ),
-          ],
-          rows: day.map<DataRow>((Day singleDay) => DataRow(
-            cells: <DataCell>[
-              DataCell(Text(singleDay.startTime! + ' - ' +  singleDay.endTime!)), // Assuming Day has a time attribute
-              DataCell(Text('${singleDay.subjectName!} ( ${singleDay.sectionId!} )')), // Assuming Day has a subject attribute
-              DataCell(Text(singleDay.roomNo!)), // Assuming Day has a roomNo attribute
-            ],
-          )).toList(),
+              ],
+              rows: day
+                  .map<DataRow>((Day singleDay) => DataRow(
 
+                cells: <DataCell>[
 
+                  DataCell(
+                    Row(
+                      children: [
+                        Text(
+                          singleDay.startTime!+'-',
+                          style: theme.textTheme.titleMedium!,
+                        ), Text(
+                           singleDay.endTime!,
+                          style: theme.textTheme.titleMedium!,
+                        ),
+                      ],
+                    ),
+                  ),
+                  DataCell(
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        '${singleDay.subjectName!} (${singleDay.sectionId!})',
+                        style: theme.textTheme.titleMedium,
+                      ),
+                    ),
+                  ),
+                  DataCell(
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        singleDay.roomNo!,
+                        style: theme.textTheme.titleMedium,
+                      ),
+                    ),
+                  ),
+                ],
+              ))
+                  .toList(),
+            )
 
-        ) : Center(child: Image.asset("assets/projectImages/no_data.png",height: 100,)))  ;
+            : Center(
+                child: Column(
+                children: [
+                  Image.asset(
+                    "assets/projectImages/no_data.png",
+                    height: 80,
+                  ),
+                  Text(
+                    'No data found!',
+                    style: theme.textTheme.titleMedium,
+                  )
+                ],
+              )));
   }
 }

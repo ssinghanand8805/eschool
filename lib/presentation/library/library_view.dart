@@ -20,7 +20,7 @@ class _LibraryPageState extends State<LibraryPage> {
   Widget build(BuildContext context) {
     return MainBody(
       label: 'Your Issued\n Book Here!',
-      imageUrl: 'assets/projectImages/noticepage.png',
+      imageUrl: 'assets/projectImages/librarypage.jpg',
       AppbarTitle: 'Issued Book',
       widget: _buildChildWidget(),
 

@@ -27,8 +27,8 @@ class _NotificationScreenState extends State< NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return MainBody(
-      label: 'Notification Lists',
-      imageUrl: 'assets/projectImages/assignmentpage.jpg',
+      label: 'Notification\nLists',
+      imageUrl: 'assets/projectImages/ic_notification.png',
       AppbarTitle: 'Notification Lists',
       widget: _buildChildWidget(),
     );
@@ -66,7 +66,15 @@ class _NotificationScreenState extends State< NotificationScreen> {
         title: data.title!,
         leadingWidget: SizedBox(),
         subtitle: data.date!,
-        newWidget:  Html( data:data.message!));
+        newWidget:  Html(
+            style: {
+              "body": Style(
+                fontSize: FontSize(15.0),
+                color: Colors.black,
+              ),
+            },
+            shrinkWrap: true,
+            data:data.message!));
   }
 
 

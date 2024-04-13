@@ -14,7 +14,6 @@ import 'controller/mydocuments_controller.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 // import 'controller/notice_board_controller.dart';
 
-
 class MyDocumentsScreen extends StatefulWidget {
   @override
   State<MyDocumentsScreen> createState() => _SyllabuStatusScreenState();
@@ -23,13 +22,11 @@ class MyDocumentsScreen extends StatefulWidget {
 class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
   MyDocumentsController controller = Get.put(MyDocumentsController());
 
-
-
   @override
   Widget build(BuildContext context) {
     return MainBody(
       label: 'My Documents',
-      imageUrl: 'assets/projectImages/assignmentpage.jpg',
+      imageUrl: 'assets/projectImages/documentpage.jpg',
       AppbarTitle: 'My Documents',
       widget: _buildChildWidget(),
     );
@@ -40,21 +37,26 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
       init: controller,
       builder: (_) {
         return FutureBuilder(
-          future:  controller.fetchDataFuture,//controller.getData(context),
+          future: controller.fetchDataFuture, //controller.getData(context),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
-            }
-            else {
-              return  ListView.builder(
+            } else {
+              return ListView.builder(
                 itemCount: controller.documentsModelObj.value?.length ?? 0,
                 itemBuilder: (context, index) {
-                  return controller.documentsModelObj.value!.length > 0 ? _buildTimeTableCard(
-                    data: controller.documentsModelObj.value![index],
-                  ): Center(child: Image.asset("assets/projectImages/no_data.png",height: 100,));
+                  return controller.documentsModelObj.value!.length > 0
+                      ? _buildTimeTableCard(
+                          data: controller.documentsModelObj.value![index],
+                        )
+                      : Center(
+                          child: Image.asset(
+                          "assets/projectImages/no_data.png",
+                          height: 100,
+                        ));
                 },
-              );;
-
+              );
+              ;
             }
           },
         );
@@ -67,16 +69,31 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
         title: data.title!,
         leadingWidget: Icon(Icons.list_alt_outlined),
         subtitle: "",
-        newWidget:  ListTile(leading: Icon(Icons.file_present),title: Text(data.doc!.split("!")[1].toString()),trailing: IconButton(icon: Icon(Icons.download,color: Colors.lightBlue,), onPressed: () { onPressDownload(data.doc!,data.doc!.split("!")[1].toString()); },)));//onTap: () { onLessionPlanTap(data.subjectGroupSubjectId!,data.classSectionId!) ;}
+        newWidget: ListTile(
+            leading: Icon(Icons.file_present),
+            title: Text(data.doc!.split("!")[1].toString()),
+            trailing: IconButton(
+              icon: Icon(
+                Icons.download,
+                color: Colors.lightBlue,
+              ),
+              onPressed: () {
+                onPressDownload(data.doc!, data.doc!.split("!")[1].toString());
+              },
+            ))); //onTap: () { onLessionPlanTap(data.subjectGroupSubjectId!,data.classSectionId!) ;}
   }
-  void onPressDownload(String fileUrl,String name)
-  {
+
+  void onPressDownload(String fileUrl, String name) {
     UserData userData = Get.put(UserData());
-    String fullUrl = Constants.imagesUrl + "uploads/student_documents/" + userData.getUserStudentId + "/"+ fileUrl;
+    String fullUrl = Constants.imagesUrl +
+        "uploads/student_documents/" +
+        userData.getUserStudentId +
+        "/" +
+        fileUrl;
     print(fullUrl);
     FileDownloader.downloadFile(
         url: fullUrl,
-        name: name,//(optional)
+        name: name, //(optional)
         onProgress: (String? fileName, double? progress) {
           print('FILE ${name} HAS PROGRESS $progress');
         },

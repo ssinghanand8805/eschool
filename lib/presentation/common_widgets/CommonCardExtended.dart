@@ -30,8 +30,8 @@ Widget CommonCardExtended({
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
+            height: 45,
             padding: EdgeInsets.symmetric(horizontal: 8,vertical: 2),
-            height: 31,
             decoration: BoxDecoration(
                 color: Colors.green.shade100,
                 borderRadius: BorderRadius.only(
@@ -43,7 +43,10 @@ Widget CommonCardExtended({
               children: [
                 // ListTile(leading: Icon(Icons.bookmark_added_outlined,size: 5,),title: Text(title),),
                 leadingWidget,
-                Text(title,  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600,fontSize:15),
+                Flexible(
+
+                  child: Text(title,  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600,fontSize:15),
+                  ),
                 ),
                 Spacer(),
                 Text(
