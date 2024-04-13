@@ -37,11 +37,12 @@ class ApiClient extends GetConnect implements GetxService {
     String uri,
   ) async {
     _mainHeader={
-      'token': UserData().getAccessToken
+      'Client-Service': "smartschool",
+      'Auth-Key': "schoolAdmin@",
+      //UserData().getUserToken
     };
-
     try {
-     Response response= await get(uri);
+     Response response= await get(uri,headers: _mainHeader);
      return response;
     } catch (e) {
       return  Response(statusCode: 1,statusText: e.toString());
