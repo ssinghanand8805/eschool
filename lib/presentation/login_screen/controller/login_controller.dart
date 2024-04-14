@@ -51,6 +51,8 @@ class LoginController extends GetxController {
     if(jsonData["status"].toString() == "1")
       {
         UserData usersData = UserData();
+        usersData.addLastUserId(idController.text.toString());
+        usersData.addLastUserPwd(passwordController.text.toString());
         usersData.addRole(jsonData["role"].toString());
         usersData.addUserId(jsonData["id"].toString());
         usersData.addAccessToken(jsonData["token"].toString());

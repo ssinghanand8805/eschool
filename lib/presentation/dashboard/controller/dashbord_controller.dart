@@ -243,6 +243,8 @@ logout() async {
   prefs.clear();
   Get.toNamed('/s_screen');
 }
+
+
   eLearningapi()async{
     Map<String,dynamic> body = {
       "user" : "student",

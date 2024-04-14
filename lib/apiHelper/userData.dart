@@ -128,28 +128,33 @@ class UserData extends GetxController {
     var data  = await apiRespository.postApiCallByJson("auth/login", body);
 
 
-    print("DATA @@@@ ${data.body}");
+    print("DATA @@@##################ss@ ${data.body}");
     //UsersData usersData = UsersData.fromJson(data.body);
-    Map<dynamic, dynamic> jsonData = data.body;//json.decode(data.body);
-    if(jsonData["status"].toString() == "1")
+    Map<dynamic, dynamic> jsonData1 = data.body;//json.decode(data.body);
+    if(jsonData1["status"].toString() == "1")
     {
       UserData usersData = UserData();
       usersData.addLastUserId(getLastUserId);
       usersData.addLastUserPwd(getLastUserPwd);
-      usersData.addRole(jsonData["role"].toString());
-      usersData.addUserId(jsonData["id"].toString());
-      usersData.addAccessToken(jsonData["token"].toString());
+      usersData.addRole(jsonData1["role"].toString());
+      usersData.addUserId(jsonData1["id"].toString());
+      usersData.addAccessToken(jsonData1["token"].toString());
+
+      Map<dynamic, dynamic> jsonData = data.body['record'];
+
       usersData.addSchoolName(jsonData["sch_name"].toString());
       usersData.addCurrency_symbol(jsonData["currency_symbol"].toString());
       usersData.addCurrency_short_name(jsonData["currency_short_name"].toString());
       usersData.addStart_week(jsonData["startWeek"].toString());
       usersData.addStudent_session_id(jsonData["student_session_id"].toString());
       String imgUrl = Constants.imagesUrl + jsonData["image"].toString();
-      bool isUserImage = jsonData["image"].toString() == "null" ? false : true;
+      bool isUserImage = (jsonData["image"].toString() == "null" || jsonData["image"].toString() == "" || jsonData["image"] == null) ? false : true;
+      print("**********${jsonData["image"].toString()}");
       usersData.addIsUserImage(isUserImage);
       usersData.addUserImage(imgUrl);
       usersData.addUsername(jsonData["username"].toString());
-      Map<String, dynamic> recordData = jsonData["record"];//json.decode(jsonData["record"]);
+      Map<dynamic, dynamic> recordData = jsonData;//json.decode(jsonData["record"]);
+      update();
      return true;
 
     }

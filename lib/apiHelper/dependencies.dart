@@ -11,6 +11,7 @@ import 'api.dart';
 
 Future<void> init()async {
   //apiClient
+
   final prefs = await SharedPreferences.getInstance();
 
   bool isBaseUrlFound = prefs.containsKey("schoolBaseUrl");

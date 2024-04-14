@@ -60,13 +60,27 @@ class NotificationController extends GetxController {
     box.write('notifications', json.encode(notifications));
   }
 
-  void markNotificationAsRead(int index) {
+  void markNotificationAsRead(int? index) {
     final box = GetStorage();
+    box.remove('notifications');
     var storedNotifications = box.read('notifications');
-    List<dynamic> notifications = json.decode(storedNotifications);
+    if(storedNotifications != null)
+      {
+        List<dynamic> notifications = json.decode(storedNotifications);
+        if(index != null)
+        {
+          notifications[index]['read'] = true;
+        }
+        else
+        {
+          // for (var notification in notifications) {
+          //   notification['read'] == true;
+          // }
+        }
 
-    notifications[index]['read'] = true;
-    box.write('notifications', json.encode(notifications));
+        box.write('notifications', json.encode(notifications));
+      }
+
   }
 
 
