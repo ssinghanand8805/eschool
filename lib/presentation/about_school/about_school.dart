@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:learnladder/presentation/about_school/controller/about_schoolController.dart';
+import 'package:learnladder/presentation/homework/HomeworkScreen.dart';
 
 import '../../core/app_export.dart';
 import '../../theme/theme_helper.dart';
@@ -18,127 +18,106 @@ class _AboutSchoolScreenState extends State<AboutSchoolScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-     title: Text("About School",style: theme.textTheme.titleMedium!),
+        title: Text("About School", style: theme.textTheme.titleLarge!.copyWith(fontSize: 19)),
       ),
-     backgroundColor: Colors.grey.shade50,
+      backgroundColor: Colors.grey.shade50,
       body: FutureBuilder(
-    future: controller.fetchDataFuture, //controller.getData(context),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState != ConnectionState.done) {
-        return CustomLoader(); // CustomLoader();
-      }
-      else {
-        return Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  color: Colors.green.shade50,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-
-                  children: [
-                    Row(
-
+          future: controller.fetchDataFuture, //controller.getData(context),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return CustomLoader(); // CustomLoader();
+            } else {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade50,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.network(
-                          'https://5.imimg.com/data5/VI/LJ/MY-55827694/school-management-software-desktop-based-500x500.png',
-                          width: 80.0, //
-                          // height: 150.0,
+                        Row(
+                          children: [
+                            Image.network(
+                              'https://5.imimg.com/data5/VI/LJ/MY-55827694/school-management-software-desktop-based-500x500.png',
+                              width: 80.0, //
+                              // height: 150.0,
+                            ),
+                            SizedBox(width: 16.0),
+                            controller.schoolName.isEmpty
+                                ? Text(
+                                    controller.schoolName.value ?? '',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                : Text(''),
+                          ],
                         ),
-                        SizedBox(width: 16.0),
-                        Text(
-                          controller.schoolName.value!,
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+                        SizedBox(height: 16.0),
+                        InfoRow(
+                            title: 'Address',
+                            value: controller.schoolAddress.value!),
+                        InfoRow(
+                            title: 'Phone',
+                            value: controller.schoolPhone.value!),
+                        InfoRow(
+                            title: 'Email',
+                            value: controller.schoolEmail.value!),
+                        InfoRow(
+                            title: 'School Code',
+                            value: controller.schoolSchoolCode.value!),
+                        InfoRow(
+                            title: 'Current Session',
+                            value: controller.schoolCurrentSession.value!),
+                        InfoRow(
+                            title: 'Session Stat Month',
+                            value: controller.schoolStartMonth.value!),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Action to perform when the button is pressed
+                            print('Change School button pressed');
+                            controller.changeSchool();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF1565C0), // Blue color
+                            padding: EdgeInsets.symmetric(
+                                vertical: 16, horizontal: 24),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.school,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                'Change School',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 16.0),
-                    Row(
-                      children: [
-                        Text('Address: ',
-                            style: theme.textTheme.titleMedium!.copyWith(
-                                fontWeight: FontWeight.w600)),
-
-                        Text(controller.schoolAddress.value!,
-                            style: theme.textTheme.titleMedium!),
-                      ],
-                    ),
-                    SizedBox(height: 8.0),
-                    Row(
-                      children: [
-                        Text('Phone: ',
-                            style: theme.textTheme.titleMedium!.copyWith(
-                                fontWeight: FontWeight.w600)),
-                        Text(controller.schoolPhone.value,
-                            style: theme.textTheme.titleMedium!),
-                      ],
-                    ),
-                    SizedBox(height: 8.0),
-                    Row(
-                      children: [
-                        Text('Email: ',
-                            style: theme.textTheme.titleMedium!.copyWith(
-                                fontWeight: FontWeight.w600)),
-                        Text(controller.schoolEmail.value,
-                            style: theme.textTheme.titleMedium!),
-                      ],
-                    ),
-                    SizedBox(height: 8.0),
-                    Row(
-                      children: [
-                        Text('School Code: ',
-                            style: theme.textTheme.titleMedium!.copyWith(
-                                fontWeight: FontWeight.w600)),
-                        Text(controller.schoolSchoolCode.value,
-                            style: theme.textTheme.titleMedium!),
-                      ],
-                    ),
-                    SizedBox(height: 8.0),
-                    Row(
-                      children: [
-                        Text('Current Session: ',
-                            style: theme.textTheme.titleMedium!.copyWith(
-                                fontWeight: FontWeight.w600)),
-                        Text(controller.schoolCurrentSession.value,
-                            style: theme.textTheme.titleMedium!),
-                      ],
-                    ),
-                    SizedBox(height: 8.0),
-                    Row(
-                      children: [
-                        Text('Session Start Month: ',
-                            style: theme.textTheme.titleMedium!.copyWith(
-                                fontWeight: FontWeight.w600)),
-                        Text(controller.schoolStartMonth.value,
-                            style: theme.textTheme.titleMedium!),
-                      ],
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Action to perform when the button is pressed
-                        print('Change School button pressed');
-                        controller.changeSchool();
-                      },
-                      child: Text('Change School',
-                        style: TextStyle(color: Colors.white),),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      }
-    }),
+                  ),
+                ],
+              );
+            }
+          }),
     );
   }
 }

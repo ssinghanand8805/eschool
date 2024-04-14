@@ -53,7 +53,13 @@ class _NotificationScreenState extends State< NotificationScreen> {
                     data:controller.notificationModelObj.value![index],
                   );
                 },
-              ) : Center(child: Image.asset("assets/projectImages/no_data.png",));
+              ) : Center(child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("assets/projectImages/no_data.png",),
+                  Text("No data found!")
+                ],
+              ));
 
             }
           },

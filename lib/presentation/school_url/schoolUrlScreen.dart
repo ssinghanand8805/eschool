@@ -20,38 +20,76 @@ class _SchoolUrlState extends State<SchoolUrl> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: theme.colorScheme.onPrimary,
-        body: Center(
-            child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: controller.urlController.value,
-                decoration: InputDecoration(
-                  labelText: 'Enter School Url Here', // Label text
-                  border: OutlineInputBorder(), // Adds border around the TextField
-                  hintText: 'Type something...', // Placeholder text
+      child:LayoutBuilder(
+        builder: (context, constraints) {
+          final screenWidth = constraints.maxWidth;
+          final screenHeight = constraints.maxHeight;
+          final isSmallScreen = screenWidth < 600;
+
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Colors.green.shade100,
+            body: Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isSmallScreen ? 16.0 : 32.0,
+                  vertical: isSmallScreen ? 16.0 : 32.0,
                 ),
-                textAlign:
-                    TextAlign.center, // Centers the text inside the TextField
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    TextField(
+                      controller: controller.urlController.value,
+                      decoration: InputDecoration(
+                        labelText: 'Enter School Url Here',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        hintText: 'Type something...',
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: isSmallScreen ? 16.0 : 24.0,
+                          vertical: isSmallScreen ? 12.0 : 16.0,
+                        ),
+                      ),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: isSmallScreen ? 16.0 : 18.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: isSmallScreen ? 16.0 : 24.0),
+                    ElevatedButton(
+                      onPressed: () {
+                        print('Next button pressed ${controller.urlController.value.text}');
+                        controller.getData();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(
+                          horizontal:  35.0,
+                          vertical: 24.0
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                      ),
+                      child: Text(
+                        'Next',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: isSmallScreen ? 16.0 : 18.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Image.asset("assets/projectImages/bottom_img.png")
+                  ],
+                ),
               ),
-              SizedBox(height: 20),  // Adds space between the TextField and the button
-              ElevatedButton(
-                onPressed: () {
-                  // Action to perform when the button is pressed
-                  print('Next button pressed${controller.urlController.value.text}');
-                  controller.getData();
-                },
-                child: Text('Next',style: TextStyle(color: Colors.white),),
-              ),
-            ],
-          ),
-        )),
-      ),
+            ),
+          );
+        },
+      )
     );
   }
 }

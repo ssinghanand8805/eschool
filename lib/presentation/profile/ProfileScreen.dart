@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:learnladder/presentation/homework/HomeworkScreen.dart';
 import 'package:learnladder/presentation/profile/controller/ProfileController.dart';
 
 import '../../apiHelper/Constants.dart';
@@ -20,124 +21,145 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.green.shade100,
       appBar: AppBar(
+        backgroundColor: Colors.green.shade100,
         title: Text('Profile'),
       ),
       body: GetBuilder(
           init: controller,
-        builder: (context) {
-          return FutureBuilder(
-              future:  controller.fetchDataFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return CustomLoader(); // CustomLoader();
-              }
+          builder: (context) {
+            return FutureBuilder(
+                future: controller.fetchDataFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return CustomLoader(); // CustomLoader();
+                  }
 
-              return Column(
-                children: [
-                  Card(
-                    color: Colors.grey.shade50,
-                    elevation: 0.3,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 30.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  controller.profileModelObj.value!.studentResult!
-                                          .firstname! +
-                                      " " +
-                                      controller.profileModelObj.value!.studentResult!
-                                          .middlename! +
-                                      " " +
-                                      controller.profileModelObj.value!.studentResult!
-                                          .lastname!,
-                                  style: theme.textTheme.titleMedium!.copyWith(
-                                      fontSize: 25, fontWeight: FontWeight.w600),
-                                ),
-                                Text(
-                                  "${controller.profileModelObj.value!.studentResult!.className!}" +
-                                      ' ( ' +
-                                      controller.profileModelObj.value!.studentResult!
-                                          .section! +
-                                      ' )',
-                                  style:
-                                      theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                                ),
-                                Text(
-                                    'Adm. No: ${controller.profileModelObj.value!.studentResult!.admissionNo!}',
-                                    style: theme.textTheme.bodySmall!
-                                        .copyWith(fontSize: 14)),
-                                Text(
-                                    'Roll Number: ${controller.profileModelObj.value!.studentResult!.rollNo!}',
-                                    style: theme.textTheme.bodySmall!
-                                        .copyWith(fontSize: 14)),
-                                Row(
+                  return Column(
+                    children: [
+                      Container(
+                        // color: Colors.white,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(20),
+                              topLeft: Radius.circular(20),
+                            )),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 30.0,bottom: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('BarCode:',
+                                    Text(
+                                      controller.profileModelObj.value!
+                                              .studentResult!.firstname! +
+                                          " " +
+                                          controller.profileModelObj.value!
+                                              .studentResult!.middlename! +
+                                          " " +
+                                          controller.profileModelObj.value!
+                                              .studentResult!.lastname!,
+                                      style: theme.textTheme.titleMedium!
+                                          .copyWith(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      "${controller.profileModelObj.value!.studentResult!.className!}" +
+                                          ' ( ' +
+                                          controller.profileModelObj.value!
+                                              .studentResult!.section! +
+                                          ' )',
+                                      style: theme.textTheme.bodySmall!
+                                          .copyWith(fontSize: 14),
+                                    ),
+                                    Text(
+                                        'Adm. No: ${controller.profileModelObj.value!.studentResult!.admissionNo!}',
                                         style: theme.textTheme.bodySmall!
                                             .copyWith(fontSize: 14)),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Image.network(Constants.imagesUrl2 +
-                                          controller.profileModelObj.value!.studentResult!
-                                              .barcode!),
+                                    Text(
+                                        'Roll Number: ${controller.profileModelObj.value!.studentResult!.rollNo!}',
+                                        style: theme.textTheme.bodySmall!
+                                            .copyWith(fontSize: 14)),
+                                    Row(
+                                      children: [
+                                        Text('BarCode:',
+                                            style: theme.textTheme.bodySmall!
+                                                .copyWith(fontSize: 14)),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
+                                          child: Image.network(
+                                              Constants.imagesUrl2 +
+                                                  controller
+                                                      .profileModelObj
+                                                      .value!
+                                                      .studentResult!
+                                                      .barcode!,
+                                              height: 20),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text('Qr Code:',
+                                            style: theme.textTheme.bodySmall!
+                                                .copyWith(fontSize: 14)),
+                                        controller.profileModelObj.value!
+                                                    .studentResult!.qrcode !=
+                                                null
+                                            ? Image.network(
+                                                Constants.imagesUrl2 +
+                                                    controller
+                                                        .profileModelObj
+                                                        .value!
+                                                        .studentResult!
+                                                        .qrcode!,
+                                                height: 35,
+                                                width: 35)
+                                            : SizedBox(),
+                                      ],
                                     ),
                                   ],
                                 ),
-                                Row(
+                              ),
+                              Expanded(
+                                child: Column(
                                   children: [
-                                    Text('Qr Code:',
-                                        style: theme.textTheme.bodySmall!
-                                            .copyWith(fontSize: 14)),
                                     controller.profileModelObj.value!
-                                        .studentResult!.qrcode != null?Image.network(
-                                        Constants.imagesUrl2 +
-                                            controller.profileModelObj.value!
-                                                .studentResult!.qrcode!,
-                                        height: 70,
-                                        width: 70):SizedBox(),
+                                                .studentResult!.image !=
+                                            null
+                                        ? CircleAvatar(
+                                            radius: 45,
+                                            backgroundColor: Colors.orange,
+                                            backgroundImage: NetworkImage(
+                                                controller.profileModelObj
+                                                    .value!.studentResult!.image
+                                                    .toString()),
+                                          )
+                                        : CircleAvatar(
+                                            radius: 45,
+                                            backgroundColor: Colors.orange,
+                                            backgroundImage: AssetImage(
+                                                'assets/projectImages/placeholder_user.png'),
+                                          )
                                   ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                controller.profileModelObj.value!.studentResult!.image !=
-                                        null
-                                    ? CircleAvatar(
-                                        radius: 60,
-                                        backgroundColor: Colors.orange,
-                                        backgroundImage: NetworkImage(controller
-                                            .profileModelObj.value!.studentResult!.image
-                                            .toString()),
-                                      )
-                                    : CircleAvatar(
-                                        radius: 60,
-                                        backgroundColor: Colors.orange,
-                                        backgroundImage: AssetImage(
-                                            'assets/projectImages/placeholder_user.png'),
-                                      )
-                              ],
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                  Expanded(child: MyHomePage()),
-                ],
-              );
-            }
-          );
-        }
-      ),
+                      Expanded(child: MyHomePage()),
+                    ],
+                  );
+                });
+          }),
     );
   }
 }
@@ -154,234 +176,111 @@ class MyHomePage extends StatelessWidget {
             length: 3,
             child: Scaffold(
               body: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
-                          blurRadius: 5.0,
-                          offset: Offset(0.3, 3.0)),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        color: Colors.green.shade50,
-                        child: TabBar(
-                          unselectedLabelColor: Colors.grey,
-                          labelColor: const Color(0xFF3baee7),
-                          indicatorWeight: 3,
-                          indicatorColor: Colors.blue[500],
-                          tabs: [
-                            Tab(text: 'Personal'),
-                            Tab(text: 'Parents'),
-                            Tab(text: 'Others'),
-                          ],
-                        ),
+                padding: const EdgeInsets.all(0.0),
+                child: Column(
+                  children: [
+                    Container(
+                      color: Colors.green.shade50,
+                      child: TabBar(
+                        unselectedLabelColor: Colors.grey.shade700,
+                        // labelColor: const Color(0xFF3baee7),
+                        // indicatorWeight: 3,
+                        indicatorColor: Colors.blue,
+                        tabs: [
+                          Tab(text: 'Personal'),
+                          Tab(text: 'Parents'),
+                          Tab(text: 'Others'),
+                        ],
                       ),
-                      Expanded(
-                        child: TabBarView(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: SingleChildScrollView(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Admission Date:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller
-                                              .profileModelObj
-                                              .value!
-                                              .studentResult!
-                                              .admissionDate!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Date Of Birth:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.dob!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Gender:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.gender!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Category:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.category!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Mobile Number:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.mobileno!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Caste:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.cast!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Religion:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.religion!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Email:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.email!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Current Address:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller
-                                              .profileModelObj
-                                              .value!
-                                              .studentResult!
-                                              .currentAddress!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Permanent Address:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller
-                                              .profileModelObj
-                                              .value!
-                                              .studentResult!
-                                              .permanentAddress!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Blood Group:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller
-                                              .profileModelObj
-                                              .value!
-                                              .studentResult!
-                                              .bloodGroup!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Height:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.height!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Weight:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.weight!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Note:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.note!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-
+                                  InfoRow(
+                                    title: 'Admission Date',
+                                    value: controller.profileModelObj.value!
+                                        .studentResult!.admissionDate!,
+                                  ),
+                                  InfoRow(
+                                    title: 'Date Of Birth',
+                                    value: controller.profileModelObj.value!
+                                        .studentResult!.dob!,
+                                  ),
+                                  InfoRow(
+                                    title: 'Gender',
+                                    value: controller.profileModelObj.value!
+                                        .studentResult!.gender!,
+                                  ),
+                                  InfoRow(
+                                    title: 'Category',
+                                    value: controller.profileModelObj.value!
+                                        .studentResult!.category!,
+                                  ),
+                                  InfoRow(
+                                    title: 'Mobile Number',
+                                    value: controller.profileModelObj.value!
+                                        .studentResult!.mobileno!,
+                                  ),
+                                  InfoRow(
+                                    title: 'Cast',
+                                    value: controller.profileModelObj.value!
+                                        .studentResult!.cast!,
+                                  ),
+                                  InfoRow(
+                                    title: 'Religion',
+                                    value: controller.profileModelObj.value!
+                                        .studentResult!.religion!,
+                                  ),
+                                  InfoRow(
+                                    title: 'Email',
+                                    value: controller.profileModelObj.value!
+                                        .studentResult!.email!,
+                                  ),
+                                  InfoRow(
+                                    title: 'Current Address',
+                                    value: controller.profileModelObj.value!
+                                        .studentResult!.currentAddress!,
+                                  ),
+                                  InfoRow(
+                                    title: 'Blood Group',
+                                    value: controller.profileModelObj.value!
+                                        .studentResult!.bloodGroup!,
+                                  ),
+                                  InfoRow(
+                                    title: 'Height',
+                                    value: controller.profileModelObj.value!
+                                        .studentResult!.height!,
+                                  ),
+                                  InfoRow(
+                                    title: 'Weight',
+                                    value: controller.profileModelObj.value!
+                                        .studentResult!.weight!,
+                                  ),
+                                  InfoRow(
+                                    title: 'Note',
+                                    value: controller.profileModelObj.value!
+                                        .studentResult!.note!,
+                                  ),
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SingleChildScrollView(
                               child: Column(
                                 children: [
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
@@ -392,7 +291,8 @@ class MyHomePage extends StatelessWidget {
                                                   null
                                               ? CircleAvatar(
                                                   radius: 35,
-                                                  backgroundColor: Colors.orange,
+                                                  backgroundColor:
+                                                      Colors.orange,
                                                   backgroundImage: NetworkImage(
                                                       controller
                                                           .profileModelObj
@@ -403,7 +303,8 @@ class MyHomePage extends StatelessWidget {
                                                 )
                                               : CircleAvatar(
                                                   radius: 35,
-                                                  backgroundColor: Colors.orange,
+                                                  backgroundColor:
+                                                      Colors.orange,
                                                   backgroundImage: AssetImage(
                                                       'assets/projectImages/placeholder_user.png'),
                                                 ),
@@ -411,44 +312,47 @@ class MyHomePage extends StatelessWidget {
                                             height: 5,
                                           ),
                                           Text("Father",
-                                              style: theme.textTheme.titleMedium!
-                                                  .copyWith(
-                                                      fontWeight: FontWeight.w600)),
+                                              style: theme
+                                                  .textTheme.titleMedium!
+                                          ),
                                         ],
                                       ),
                                       Column(
-
                                         children: [
                                           Row(
                                             children: [
-                                              Icon(Icons.person),
+                                              Icon(Icons.person,color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
-
-                                                    controller
-                                                        .profileModelObj
-                                                        .value!
-                                                        .studentResult!
-                                                        .fatherName
-                                                        .toString(),
-                                                style: theme.textTheme.titleMedium,
+                                                controller
+                                                    .profileModelObj
+                                                    .value!
+                                                    .studentResult!
+                                                    .fatherName
+                                                    .toString(),
+                                                style:
+                                                    theme.textTheme.titleMedium,
                                               ),
                                             ],
                                           ),
                                           SizedBox(height: 10),
                                           Row(
                                             children: [
-                                              Icon(Icons.call),
+                                              Icon(Icons.call,color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
-                                                controller.profileModelObj.value!
-                                                    .studentResult!.fatherPhone
+                                                controller
+                                                    .profileModelObj
+                                                    .value!
+                                                    .studentResult!
+                                                    .fatherPhone
                                                     .toString(),
-                                                style: theme.textTheme.titleMedium,
+                                                style:
+                                                    theme.textTheme.titleMedium,
                                               ),
                                             ],
                                           ),
@@ -458,16 +362,20 @@ class MyHomePage extends StatelessWidget {
                                               Image.asset(
                                                 "assets/projectImages/ic_briefcase.png",
                                                 height: 35,
-                                                width: 25,
+                                                width: 25,color: Colors.grey.shade700
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
-                                                controller.profileModelObj.value!
-                                                    .studentResult!.fatherName
+                                                controller
+                                                    .profileModelObj
+                                                    .value!
+                                                    .studentResult!
+                                                    .fatherName
                                                     .toString(),
-                                                style: theme.textTheme.titleMedium,
+                                                style:
+                                                    theme.textTheme.titleMedium,
                                               ),
                                             ],
                                           ),
@@ -475,7 +383,9 @@ class MyHomePage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 20,),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
                                   Container(
                                     height: 1,
                                     decoration: BoxDecoration(
@@ -484,7 +394,8 @@ class MyHomePage extends StatelessWidget {
                                           color: Colors.grey.withOpacity(0.5),
                                           spreadRadius: 1,
                                           blurRadius: 0,
-                                          offset: Offset(0, 1), // changes position of shadow
+                                          offset: Offset(0,
+                                              1), // changes position of shadow
                                         ),
                                       ],
                                     ),
@@ -493,9 +404,12 @@ class MyHomePage extends StatelessWidget {
                                       thickness: 1,
                                     ),
                                   ),
-                                  SizedBox(height: 20,),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
@@ -506,7 +420,8 @@ class MyHomePage extends StatelessWidget {
                                                   null
                                               ? CircleAvatar(
                                                   radius: 35,
-                                                  backgroundColor: Colors.orange,
+                                                  backgroundColor:
+                                                      Colors.orange,
                                                   backgroundImage: NetworkImage(
                                                       controller
                                                           .profileModelObj
@@ -517,7 +432,8 @@ class MyHomePage extends StatelessWidget {
                                                 )
                                               : CircleAvatar(
                                                   radius: 35,
-                                                  backgroundColor: Colors.orange,
+                                                  backgroundColor:
+                                                      Colors.orange,
                                                   backgroundImage: AssetImage(
                                                       'assets/projectImages/placeholder_user.png'),
                                                 ),
@@ -525,44 +441,47 @@ class MyHomePage extends StatelessWidget {
                                             height: 5,
                                           ),
                                           Text("Mother",
-                                              style: theme.textTheme.titleMedium!
-                                                  .copyWith(
-                                                      fontWeight: FontWeight.w600)),
+                                              style: theme
+                                                  .textTheme.titleMedium!
+                                          ),
                                         ],
                                       ),
                                       Column(
-
                                         children: [
                                           Row(
                                             children: [
-                                              Icon(Icons.person),
+                                              Icon(Icons.person,color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
-
-                                                    controller
-                                                        .profileModelObj
-                                                        .value!
-                                                        .studentResult!
-                                                        .fatherName
-                                                        .toString(),
-                                                style: theme.textTheme.titleMedium,
+                                                controller
+                                                    .profileModelObj
+                                                    .value!
+                                                    .studentResult!
+                                                    .fatherName
+                                                    .toString(),
+                                                style:
+                                                    theme.textTheme.titleMedium,
                                               ),
                                             ],
                                           ),
                                           SizedBox(height: 10),
                                           Row(
                                             children: [
-                                              Icon(Icons.call),
+                                              Icon(Icons.call,color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
-                                                controller.profileModelObj.value!
-                                                    .studentResult!.fatherPhone
+                                                controller
+                                                    .profileModelObj
+                                                    .value!
+                                                    .studentResult!
+                                                    .fatherPhone
                                                     .toString(),
-                                                style: theme.textTheme.titleMedium,
+                                                style:
+                                                    theme.textTheme.titleMedium,
                                               ),
                                             ],
                                           ),
@@ -572,16 +491,20 @@ class MyHomePage extends StatelessWidget {
                                               Image.asset(
                                                 "assets/projectImages/ic_briefcase.png",
                                                 height: 35,
-                                                width: 25,
+                                                width: 25,color: Colors.grey.shade700
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
-                                                controller.profileModelObj.value!
-                                                    .studentResult!.fatherName
+                                                controller
+                                                    .profileModelObj
+                                                    .value!
+                                                    .studentResult!
+                                                    .fatherName
                                                     .toString(),
-                                                style: theme.textTheme.titleMedium,
+                                                style:
+                                                    theme.textTheme.titleMedium,
                                               ),
                                             ],
                                           ),
@@ -589,7 +512,9 @@ class MyHomePage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 20,),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
                                   Container(
                                     height: 1,
                                     decoration: BoxDecoration(
@@ -598,7 +523,8 @@ class MyHomePage extends StatelessWidget {
                                           color: Colors.grey.withOpacity(0.5),
                                           spreadRadius: 1,
                                           blurRadius: 0,
-                                          offset: Offset(0, 1), // changes position of shadow
+                                          offset: Offset(0,
+                                              1), // changes position of shadow
                                         ),
                                       ],
                                     ),
@@ -607,9 +533,12 @@ class MyHomePage extends StatelessWidget {
                                       thickness: 1,
                                     ),
                                   ),
-                                  SizedBox(height: 20,),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
@@ -620,7 +549,8 @@ class MyHomePage extends StatelessWidget {
                                                   null
                                               ? CircleAvatar(
                                                   radius: 35,
-                                                  backgroundColor: Colors.orange,
+                                                  backgroundColor:
+                                                      Colors.orange,
                                                   backgroundImage: NetworkImage(
                                                       controller
                                                           .profileModelObj
@@ -631,7 +561,8 @@ class MyHomePage extends StatelessWidget {
                                                 )
                                               : CircleAvatar(
                                                   radius: 35,
-                                                  backgroundColor: Colors.orange,
+                                                  backgroundColor:
+                                                      Colors.orange,
                                                   backgroundImage: AssetImage(
                                                       'assets/projectImages/placeholder_user.png'),
                                                 ),
@@ -639,64 +570,70 @@ class MyHomePage extends StatelessWidget {
                                             height: 5,
                                           ),
                                           Text("Guardian",
-                                              style: theme.textTheme.titleMedium!
-                                                  .copyWith(
-                                                      fontWeight: FontWeight.w600)),
+                                              style: theme
+                                                  .textTheme.titleMedium!
+                                                 ),
                                         ],
                                       ),
                                       Column(
-
                                         children: [
                                           Row(
                                             children: [
-                                              Icon(Icons.person),
+                                              Icon(Icons.person,color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
-
-                                                    controller
-                                                        .profileModelObj
-                                                        .value!
-                                                        .studentResult!
-                                                        .motherName
-                                                        .toString(),
-                                                style: theme.textTheme.titleMedium,
+                                                controller
+                                                    .profileModelObj
+                                                    .value!
+                                                    .studentResult!
+                                                    .motherName
+                                                    .toString(),
+                                                style:
+                                                    theme.textTheme.titleMedium,
                                               ),
                                             ],
                                           ),
                                           SizedBox(height: 10),
                                           Row(
                                             children: [
-                                              Icon(Icons.call),
+                                              Icon(Icons.call,color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
-                                                controller.profileModelObj.value!
-                                                    .studentResult!.motherPhone
+                                                controller
+                                                    .profileModelObj
+                                                    .value!
+                                                    .studentResult!
+                                                    .motherPhone
                                                     .toString(),
-                                                style: theme.textTheme.titleMedium,
+                                                style:
+                                                    theme.textTheme.titleMedium,
                                               ),
                                             ],
                                           ),
                                           SizedBox(height: 8),
                                           Row(
-
                                             children: [
                                               Image.asset(
                                                 "assets/projectImages/ic_briefcase.png",
                                                 height: 35,
-                                                width: 25,
+                                                width: 25,color: Colors.grey.shade700
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
-                                                controller.profileModelObj.value!
-                                                    .studentResult!.motherOccupation
+                                                controller
+                                                    .profileModelObj
+                                                    .value!
+                                                    .studentResult!
+                                                    .motherOccupation
                                                     .toString(),
-                                                style: theme.textTheme.titleMedium,
+                                                style:
+                                                    theme.textTheme.titleMedium,
                                               ),
                                             ],
                                           ),
@@ -705,16 +642,20 @@ class MyHomePage extends StatelessWidget {
                                               Image.asset(
                                                 "assets/projectImages/ic_relation.png",
                                                 height: 35,
-                                                width: 25,
+                                                width: 25,color: Colors.grey.shade700
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
-                                                controller.profileModelObj.value!
-                                                    .studentResult!.guardianName
+                                                controller
+                                                    .profileModelObj
+                                                    .value!
+                                                    .studentResult!
+                                                    .guardianName
                                                     .toString(),
-                                                style: theme.textTheme.titleMedium,
+                                                style:
+                                                    theme.textTheme.titleMedium,
                                               ),
                                             ],
                                           ),
@@ -724,15 +665,20 @@ class MyHomePage extends StatelessWidget {
                                                 "assets/projectImages/ic_email_filled.png",
                                                 height: 35,
                                                 width: 25,
+                                                 color: Colors.grey.shade700
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
-                                                controller.profileModelObj.value!
-                                                    .studentResult!.guardianEmail
+                                                controller
+                                                    .profileModelObj
+                                                    .value!
+                                                    .studentResult!
+                                                    .guardianEmail
                                                     .toString(),
-                                                style: theme.textTheme.titleMedium,
+                                                style:
+                                                    theme.textTheme.titleMedium,
                                               ),
                                             ],
                                           ),
@@ -741,16 +687,20 @@ class MyHomePage extends StatelessWidget {
                                               Image.asset(
                                                 "assets/projectImages/ic_location.png",
                                                 height: 35,
-                                                width: 25,
+                                                width: 25,color: Colors.grey.shade700
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
-                                                controller.profileModelObj.value!
-                                                    .studentResult!.guardianAddress
+                                                controller
+                                                    .profileModelObj
+                                                    .value!
+                                                    .studentResult!
+                                                    .guardianAddress
                                                     .toString(),
-                                                style: theme.textTheme.titleMedium,
+                                                style:
+                                                    theme.textTheme.titleMedium,
                                               ),
                                             ],
                                           ),
@@ -761,213 +711,101 @@ class MyHomePage extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Previous School:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller
-                                              .profileModelObj
-                                              .value!
-                                              .studentResult!
-                                              .previousSchool!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'National Id NUmber:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentFields!.nationalIdentificationNo.toString()!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Local Id NUmber:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentFields!.localIdentificationNo.toString()!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Bank Account Number:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.bankAccountNo!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Bank Name:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.bankName!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'IFSC Code:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.ifscCode!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'RTE:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.rte!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Pickup Point:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.pickupPointName!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Vehicle Route:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller
-                                              .profileModelObj
-                                              .value!
-                                              .studentResult!
-                                              .vehrouteId!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Vehicle Number:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller
-                                              .profileModelObj
-                                              .value!
-                                              .studentResult!
-                                              .vehicleNo!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Driver Name:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller
-                                              .profileModelObj
-                                              .value!
-                                              .studentResult!
-                                              .driverName!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Driver Contact:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.driverContact!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Hostels Rooms:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.hostelName!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-                                  Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Room No.:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.roomNo!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )), Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Room Type:  ',
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w600)),
-                                      TextSpan(
-                                          text: controller.profileModelObj
-                                              .value!.studentResult!.roomType!,style: theme.textTheme.titleMedium),
-                                    ],
-                                  )),
-
-                                ],
-                              ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InfoRow(
+                                  title: 'Previous School',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.previousSchool!,
+                                ),
+                                InfoRow(
+                                  title: 'National id Number',
+                                  value: controller.profileModelObj.value!
+                                      .studentFields!.nationalIdentificationNo
+                                      .toString(),
+                                ),
+                                InfoRow(
+                                  title: 'Local id Number',
+                                  value: controller.profileModelObj.value!
+                                      .studentFields!.localIdentificationNo
+                                      .toString()!,
+                                ),
+                                InfoRow(
+                                  title: 'Bank Name',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.bankName!,
+                                ),
+                                InfoRow(
+                                  title: 'Bank Account Number',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.bankAccountNo!,
+                                ),
+                                InfoRow(
+                                  title: 'Ifsc Code',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.ifscCode!,
+                                ),
+                                InfoRow(
+                                  title: 'Previous School',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.previousSchool!,
+                                ),
+                                InfoRow(
+                                  title: 'RTE',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.rte!,
+                                ),
+                                InfoRow(
+                                  title: 'Pickup Point',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.pickupPointName!,
+                                ),
+                                InfoRow(
+                                  title: 'Vehicle Route',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.vehrouteId!,
+                                ),
+                                InfoRow(
+                                  title: 'Vehicle Number',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.vehicleNo!,
+                                ),
+                                InfoRow(
+                                  title: 'Driver Name',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.driverName!,
+                                ),
+                                InfoRow(
+                                  title: 'Driver Contact',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.driverContact!,
+                                ),
+                                InfoRow(
+                                  title: 'Hostels Room',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.hostelRoomId!,
+                                ),
+                                InfoRow(
+                                  title: 'Room No',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.roomNo!,
+                                ),
+                                InfoRow(
+                                  title: 'Room Type',
+                                  value: controller.profileModelObj.value!
+                                      .studentResult!.roomType!,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
