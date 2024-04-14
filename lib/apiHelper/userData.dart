@@ -1,9 +1,13 @@
 
 
+import 'package:learnladder/apiHelper/popular_product_repo.dart';
 import 'package:learnladder/presentation/login_screen/models/userDataModal.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../routes/app_routes.dart';
+import 'Constants.dart';
 
 
 
@@ -28,12 +32,16 @@ class UserData extends GetxController {
   bool get getUserIsLoggedIn => userData.read('isLoggegIn') ?? false;
   bool get getUserHasMultipleChild => userData.read('hasMultipleChild') ?? false;
   bool get getIsUserImage => userData.read('isUserImage') ?? false;
+  String get getLastUserId => userData.read('lastUserId') ?? "";
+  String get getLastUserPwd => userData.read('lastUserPwd') ?? "";
 
 
   addAccessToken(String val) {userData.write('accessToken', val);}
   addUserFCMDeviceToken(String val) {userData.write('fcm_tocken', val);}
   addUserId(String val) {userData.write('userId', val);}
   addRole(String val) {userData.write('role', val);}
+  addLastUserId(String val) {userData.write('lastUserId', val);}
+  addLastUserPwd(String val) {userData.write('lastUserPwd', val);}
   addUsername(String val) {userData.write('username', val);}
   addUserImage(String val) {userData.write('imagesUrl', val);}
   addSchoolName(String val) {userData.write('schoolName', val);}
@@ -101,7 +109,71 @@ class UserData extends GetxController {
     addUserIsLoggedIn(prefs.getBool('isLoggegIn') ?? false);
     addUserHasMultipleChild(prefs.getBool('hasMultipleChild') ?? false);
     addIsUserImage(prefs.getBool('isUserImage') ?? false);
+
+
+    // let chek for password change and new device token
+
+    loginApi();
+
   }
+
+  loginApi()async{
+    ApiRespository apiRespository = await ApiRespository(apiClient:Get.find());
+    Map<String,dynamic> body = {
+      "username" : getLastUserId,
+      "password" : getLastUserPwd,
+      "deviceToken" : getUserFCMDeviceToken
+    };
+
+    var data  = await apiRespository.postApiCallByJson("auth/login", body);
+
+
+    print("DATA @@@@ ${data.body}");
+    //UsersData usersData = UsersData.fromJson(data.body);
+    Map<dynamic, dynamic> jsonData = data.body;//json.decode(data.body);
+    if(jsonData["status"].toString() == "1")
+    {
+      UserData usersData = UserData();
+      usersData.addLastUserId(getLastUserId);
+      usersData.addLastUserPwd(getLastUserPwd);
+      usersData.addRole(jsonData["role"].toString());
+      usersData.addUserId(jsonData["id"].toString());
+      usersData.addAccessToken(jsonData["token"].toString());
+      usersData.addSchoolName(jsonData["sch_name"].toString());
+      usersData.addCurrency_symbol(jsonData["currency_symbol"].toString());
+      usersData.addCurrency_short_name(jsonData["currency_short_name"].toString());
+      usersData.addStart_week(jsonData["startWeek"].toString());
+      usersData.addStudent_session_id(jsonData["student_session_id"].toString());
+      String imgUrl = Constants.imagesUrl + jsonData["image"].toString();
+      bool isUserImage = jsonData["image"].toString() == "null" ? false : true;
+      usersData.addIsUserImage(isUserImage);
+      usersData.addUserImage(imgUrl);
+      usersData.addUsername(jsonData["username"].toString());
+      Map<String, dynamic> recordData = jsonData["record"];//json.decode(jsonData["record"]);
+     return true;
+
+    }
+    else
+    {
+
+        final prefs = await SharedPreferences.getInstance();
+        prefs.clear();
+        Get.toNamed('/s_screen');
+
+      print('login failed:::::::::');
+    }
+
+    //print("DATA USING DATA MODEL ${usersData.role}");
+    // userData.saveData("userData", usersData);
+    //  print("GET USER DATA ${userData.getData("userData",)}");
+
+
+
+    // Get.to( AppRoutes.teacherLoginScreen);
+
+
+  }
+
 }
 
 
