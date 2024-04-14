@@ -67,20 +67,70 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
   Widget _buildTimeTableCard({required Documents data}) {
     return CommonCardExtended(
         title: data.title!,
-        leadingWidget: Icon(Icons.list_alt_outlined),
+        leadingWidget: Image.asset(
+          "assets/projectImages/ic_clipboard_filled.png",
+          height: 22,
+        ),
         subtitle: "",
         newWidget: ListTile(
-            leading: Icon(Icons.file_present),
-            title: Text(data.doc!.split("!")[1].toString()),
-            trailing: IconButton(
-              icon: Icon(
-                Icons.download,
-                color: Colors.lightBlue,
-              ),
-              onPressed: () {
+          leading: Image.asset(
+            "assets/projectImages/ic_file.png",
+            height: 20,
+          ),
+          title: Text(
+            data.doc!.split("!")[1].toString(),
+            style: theme.textTheme.titleMedium!.copyWith(fontSize: 12.5),
+          ),
+          trailing: textWithIcon(
+              onTap: () {
                 onPressDownload(data.doc!, data.doc!.split("!")[1].toString());
               },
-            ))); //onTap: () { onLessionPlanTap(data.subjectGroupSubjectId!,data.classSectionId!) ;}
+              icon: Icons.download,
+              iconColor: Colors.blue,
+              text: "Download"),
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.download,
+          //     color: Colors.lightBlue,
+          //     size: 16,
+          //   ),
+          //   onPressed: () {
+          //     onPressDownload(data.doc!, data.doc!.split("!")[1].toString());
+          //   },
+          // )
+        )); //onTap: () { onLessionPlanTap(data.subjectGroupSubjectId!,data.classSectionId!) ;}
+  }
+
+  Widget textWithIcon({
+    required IconData icon,
+    required VoidCallback onTap,
+    required String text,
+    double iconSize = 14.0,
+    Color iconColor = Colors.blue,
+    TextStyle? textStyle,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: iconSize,
+            color: iconColor,
+          ),
+          SizedBox(width: 8.0),
+          Text(
+            text,
+            style: textStyle ??
+                TextStyle(
+                  fontSize: 12.5,
+                  color: iconColor,
+                ),
+          ),
+        ],
+      ),
+    );
   }
 
   void onPressDownload(String fileUrl, String name) {

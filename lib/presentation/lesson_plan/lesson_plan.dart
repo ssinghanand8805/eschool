@@ -142,17 +142,20 @@ class LessonPlanScreen extends GetWidget<LessonPlanController> {
         )
 
             : Center(
-            child: Column(
-              children: [
-                Image.asset(
-                  "assets/projectImages/no_data.png",
-                  height: 80,
-                ),
-                Text(
-                  'No data found!',
-                  style: theme.textTheme.titleMedium,
-                )
-              ],
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Column(
+                children: [
+                  Image.asset(
+                    "assets/projectImages/no_data.png",
+                    height: 80,
+                  ),
+                  Text(
+                    'No data found!',
+                    style: theme.textTheme.titleMedium,
+                  )
+                ],
+              ),
             )));
   }
 }

@@ -107,7 +107,7 @@ class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
                 indicator: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: Colors.white,
+                      color: Colors.grey.shade500,
                       width: 2.0,
                     ),
                   ),
@@ -115,7 +115,7 @@ class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             child: Container(
-                color: Colors.white,
+                color: Colors.green.shade50,
                 child: Row(
                     children: [
                       Expanded(

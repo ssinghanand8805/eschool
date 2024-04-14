@@ -21,35 +21,46 @@ class MainBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    return  Scaffold(
+     backgroundColor: Colors.green.shade100,
       appBar: AppBar(
         backgroundColor: Colors.green.shade100,
-        title: Text(AppbarTitle,style: theme.textTheme.titleLarge,),
+        title: Text(AppbarTitle,style: theme.textTheme.titleLarge!.copyWith(fontSize: 19),),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Image.asset(
-                imageUrl,
-                width: 150.0,
-                height: 100.0,
-              ),
-            ],
-          ),
+      body: Container(
 
-          Expanded(
-            child: widget,
-          ),
-        ],
+        decoration: BoxDecoration(
+             color: Colors.white,
+         borderRadius: BorderRadius.only(
+             topRight: Radius.circular(20),
+             topLeft: Radius.circular(20),
+         )
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Image.asset(
+                  imageUrl,
+                  width: 150.0,
+                  height: 100.0,
+                ),
+              ],
+            ),
+
+            Expanded(
+              child: widget,
+            ),
+          ],
+        ),
       ),
      floatingActionButton: floatingActionButton,
 
