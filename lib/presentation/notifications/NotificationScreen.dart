@@ -8,7 +8,8 @@ import '../common_widgets/CommonCardExtended.dart';
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
 import 'controller/NotificationController.dart';
-import 'model/Notification.dart';
+import 'model/FCMNotifications.dart';
+
 
 
 // import 'controller/notice_board_controller.dart';
@@ -45,14 +46,14 @@ class _NotificationScreenState extends State< NotificationScreen> {
               return CustomLoader(); // CustomLoader();
             }
             else {
-              return  ListView.builder(
-                itemCount: controller.notificationModelObj.value!.data!.length ?? 0,
+              return controller.notificationModelObj.value!.length > 0 ?  ListView.builder(
+                itemCount: controller.notificationModelObj.value!.length ?? 0,
                 itemBuilder: (context, index) {
-                  return controller.notificationModelObj.value!.data!.length > 0 ? _buildTimeTableCard(
-                    data:controller.notificationModelObj.value!.data![index],
-                  ): Center(child: Image.asset("assets/projectImages/no_data.png",height: 100,));
+                  return  _buildTimeTableCard(
+                    data:controller.notificationModelObj.value![index],
+                  );
                 },
-              );
+              ) : Center(child: Image.asset("assets/projectImages/no_data.png",));
 
             }
           },
@@ -61,11 +62,11 @@ class _NotificationScreenState extends State< NotificationScreen> {
     );
   }
 
-  Widget _buildTimeTableCard({required Data data}) {
+  Widget _buildTimeTableCard({required FCMNotifications data}) {
     return CommonCardExtended(
         title: data.title!,
         leadingWidget: SizedBox(),
-        subtitle: data.date!,
+        subtitle: data.timestamp!,
         newWidget:  Html(
             style: {
               "body": Style(
@@ -74,7 +75,7 @@ class _NotificationScreenState extends State< NotificationScreen> {
               ),
             },
             shrinkWrap: true,
-            data:data.message!));
+            data:data.body!));
   }
 
 
