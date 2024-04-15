@@ -59,6 +59,8 @@ class ApplyLeaveController extends GetxController {
     print("111111111111111111111 ${applyLeaveModelObj.value.toJson()}");
      applyLeaveModelObj.value = ApplyLeave.fromJson(data.body);
      print("111111111111111111111 ${applyLeaveModelObj.value.toJson()}");
+
+
     update();
   }
 }

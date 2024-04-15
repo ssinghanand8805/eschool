@@ -101,7 +101,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                                       .profileModelObj
                                                       .value!
                                                       .studentResult!
-                                                      .barcode!,
+                                                      .barcode! ??"",
                                               height: 20),
                                         ),
                                       ],
@@ -120,7 +120,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                                         .profileModelObj
                                                         .value!
                                                         .studentResult!
-                                                        .qrcode!,
+                                                        .qrcode! ??'',
                                                 height: 35,
                                                 width: 35)
                                             : SizedBox(),

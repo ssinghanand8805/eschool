@@ -30,7 +30,7 @@ class _NotificationScreenState extends State< NotificationScreen> {
   Widget build(BuildContext context) {
     return MainBody(
       label: 'Notification\nLists',
-      imageUrl: 'assets/projectImages/ic_notification.png',
+      imageUrl: 'assets/projectImages/noticepage.png',
       AppbarTitle: 'Notification Lists',
       widget: _buildChildWidget(),
     );

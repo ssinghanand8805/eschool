@@ -2,11 +2,12 @@
 class ImageConstant {
   // Image folder path
   static String imagePath = 'assets/images';
+  static String imagePath2 = 'assets/projectImages';
 
 // S.Screen images
   static String imgGroup = '$imagePath/img_group.png';
 
-  static String imgRectangle = '$imagePath/img_rectangle.png';
+  static String imgRectangle = '$imagePath2/friendship.png';
 
 // Choose your option images
   static String imgVector = '$imagePath/img_vector.png';

@@ -6,6 +6,7 @@ import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
 import '../homework/HomeworkScreen.dart';
 import 'controller/student_timeline_controller.dart';
+import 'model/TimeLine.dart';
 
 class StudentTimeLinePage extends StatefulWidget {
   @override
@@ -25,38 +26,43 @@ class _StudentTimeLinePageState extends State<StudentTimeLinePage> {
   }
 
   Widget _buildChildWidget() {
-    // return GetBuilder(
-    //   init: controller,
-    //   builder: (_) {
-    //     return FutureBuilder(
-    //       future:  controller.fetchDataFuture,//controller.getData(context),
-    //       builder: (context, snapshot) {
-    //         if (snapshot.connectionState != ConnectionState.done) {
-    //           return CustomLoader(); // CustomLoader();
-    //         }
-    //         else {
-
-    return ListView.builder(
-      itemCount: 2,
-      itemBuilder: (context, index) {
-        return timeLine();
-
-        // controller.syllabusStatusModelObj.value.subjects!.length > 0 ? _buildLeaveCard(
-        // data: controller.syllabusStatusModelObj.value.subjects![index],
-        // ): Center(child: Image.asset("assets/projectImages/no_data.png",height: 100,));
-        //         },
-        //       );;
-        //
-        //     }
-        //   },
-        // );
+    return GetBuilder(
+      init: controller,
+      builder: (_) {
+        return RefreshIndicator(
+          onRefresh: () async {
+            await controller.fetchDataFuture;
+            print("object");
+          },
+          child: FutureBuilder(
+            future: controller.fetchDataFuture, //controller.getData(context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return CustomLoader(); // CustomLoader();
+              } else {
+                return controller.timeLineModelObj.value!.length > 0
+                    ? timeLine(controller.timeLineModelObj.value!)
+                    : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                            "assets/projectImages/no_data.png",
+                                                  ),
+                            Text("No data found!")
+                          ],
+                        ));
+                ;
+              }
+            },
+          ),
+        );
       },
     );
   }
 
-  Widget timeLine() {
+  Widget timeLine(List<TimeLine> data) {
     return ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
         return new Stack(
@@ -96,7 +102,7 @@ class _StudentTimeLinePageState extends State<StudentTimeLinePage> {
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10))),
                       width: Get.width,
-                      child: Text('Show Your\nConnectedness',
+                      child: Text(data[index].title!,
                           style: theme.textTheme.titleMedium!.copyWith(
                               fontSize: 16, fontWeight: FontWeight.w600)),
                     ),
@@ -107,12 +113,12 @@ class _StudentTimeLinePageState extends State<StudentTimeLinePage> {
                         children: [
                           SizedBox(height: 12.0),
                           Text(
-                            '04/05/2021',
+                            data[index].date!,
                             style: theme.textTheme.titleMedium!,
                           ),
                           SizedBox(height: 12.0),
                           Text(
-                            'Groups you join appear at the bottom of your profile. Joining some shows that you want to engage in professional communities and learn the lingo. Start with your university and industry groups.',
+                            data[index].description!,
                             style: theme.textTheme.titleMedium!,
                           ),
                         ],
@@ -155,7 +161,7 @@ class _StudentTimeLinePageState extends State<StudentTimeLinePage> {
           ],
         );
       },
-      itemCount: 10,
+      itemCount: data.length,
     );
   }
 }

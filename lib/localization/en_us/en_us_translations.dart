@@ -1,11 +1,11 @@
 final Map<String, String> enUs = {
-  "msg_powered_by_xyz_com": "Powered by:XYZ COM",
+  "msg_powered_by_xyz_com": "Powered by: Sandeepsinghmbbs@gmail.com",
   "lbl_guest": "Guest",
   "lbl_student": "Student",
   "lbl_teacher": "Teacher",
   "lbl_password": "Password",
-  "lbl_prajesh_shakya": "PRAJESH SHAKYA",
   "lbl_username": "Username",
+  "lbl_url" : "Enter School Url",
   "msg_forgot_password": "Forgot Password ?",
   "lbl_add_account": "Add Account",
   "lbl_attendance": "Attendance",
