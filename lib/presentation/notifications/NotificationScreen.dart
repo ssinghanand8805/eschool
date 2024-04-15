@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:learnladder/presentation/class_time_table/controller/class_time_table_controller.dart';
 
 import 'package:flutter_html/flutter_html.dart';
+import '../../core/utils/common_utilities.dart';
 import '../common_widgets/CommonCard.dart';
 import '../common_widgets/CommonCardExtended.dart';
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
 import 'controller/NotificationController.dart';
 import 'model/FCMNotifications.dart';
-
+import 'package:visibility_detector/visibility_detector.dart';
 
 
 // import 'controller/notice_board_controller.dart';
@@ -50,7 +51,7 @@ class _NotificationScreenState extends State< NotificationScreen> {
                 itemCount: controller.notificationModelObj.value!.length ?? 0,
                 itemBuilder: (context, index) {
                   return  _buildTimeTableCard(
-                    data:controller.notificationModelObj.value![index],
+                    data:controller.notificationModelObj.value![index],index:  index
                   );
                 },
               ) : Center(child: Column(
@@ -68,20 +69,28 @@ class _NotificationScreenState extends State< NotificationScreen> {
     );
   }
 
-  Widget _buildTimeTableCard({required FCMNotifications data}) {
-    return CommonCardExtended(
-        title: data.title!,
-        leadingWidget: SizedBox(),
-        subtitle: data.timestamp!,
-        newWidget:  Html(
-            style: {
-              "body": Style(
-                fontSize: FontSize(15.0),
-                color: Colors.black,
-              ),
-            },
-            shrinkWrap: true,
-            data:data.body!));
+  Widget _buildTimeTableCard({required FCMNotifications data, required int index}) {
+    return VisibilityDetector(
+      key: Key('notification-$index'),
+      onVisibilityChanged: (visibilityInfo) {
+        if (visibilityInfo.visibleFraction > 0.5) { // Check if more than 50% of the item is visible
+          controller.markNotificationAsRead(index);
+        }
+      },
+      child: CommonCardExtended(
+          title: data.title!,
+          leadingWidget: SizedBox(),
+          subtitle: Utils.formatDateString(data.timestamp!.toString()),
+          newWidget:  Html(
+              style: {
+                "body": Style(
+                  fontSize: FontSize(15.0),
+                  color: Colors.black,
+                ),
+              },
+              shrinkWrap: true,
+              data:data.body!)),
+    );
   }
 
 

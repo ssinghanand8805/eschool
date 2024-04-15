@@ -3,6 +3,7 @@ import 'package:learnladder/presentation/homework/controller/homework_controller
 import 'package:learnladder/presentation/homework/model/Homework.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/utils/common_utilities.dart';
 import '../common_widgets/custom_loader.dart';
 import '../submit_homework/submit_homework.dart';
 import 'model/StudentSubjects.dart';
@@ -330,10 +331,10 @@ class HomeworkCard extends GetView<HomeWorkController> {
                 children: [
                   InfoRow(
                       title: 'Homework Date',
-                      value: homework.homeworkDate.toString()),
+                      value: Utils.formatDateString(homework.homeworkDate.toString())),
                   InfoRow(
                       title: 'Submission Date',
-                      value: homework.submitDate.toString()),
+                      value: Utils.formatDateString(homework.submitDate.toString())),
                   InfoRow(
                       title: 'Created By',
                       value:
@@ -343,7 +344,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
                       value: '${homework.evaluatedBy.toString()}'),
                   InfoRow(
                       title: 'Evaluation Date',
-                      value: '${homework.evaluationDate.toString()}'),
+                      value: '${Utils.formatDateString(homework.evaluationDate.toString())}'),
                   InfoRow(
                       title: 'Max Marks',
                       value: '${homework.marks.toString()}'),

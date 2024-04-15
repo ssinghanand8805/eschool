@@ -42,7 +42,7 @@ class LoginController extends GetxController {
       "deviceToken" : userData.getUserFCMDeviceToken
     };
 
-    var data  = await apiRespository.postApiCallByJson("auth/login", body);
+    var data  = await apiRespository.postApiCallByJson(Constants.authUrl, body);
 
 
     print("DATA @@@@ ${data.body}");
@@ -94,13 +94,18 @@ class LoginController extends GetxController {
                 List<String> childImageList = [];
                 List<String> childClassList = [];
                 for (int i = 0; i<childArray.length; i++) {
+                  print("*****************${childArray[i]}");
                 String name = childArray[i]["name"];
                 childNameList.add(name);
                 String id = childArray[i]["student_id"];
                 childIdList.add(id);
-                String image = childArray[i]["image"];
+
+                bool isUserImage = childArray[i]["image"].toString() == "null" ? false : true;
+                usersData.addIsUserImage(isUserImage);
+                String imgUrl = isUserImage ? Constants.imagesUrl + childArray[i]["image"].toString() : "";
+                String image = imgUrl;
                 childImageList.add(image);
-                String clss = childArray[i]["className"] + " - " + childArray[i]["section"];
+                String clss = childArray[i]["class"] + " - " + childArray[i]["section"];
                 childClassList.add(clss);
                 }
                 print('child name List:::::::::');
@@ -143,6 +148,19 @@ class LoginController extends GetxController {
 
 
   }
+
+  onSelectChildStudent(student_id,classNameSection,name)
+  {
+    UserData usersData = UserData();
+    usersData.addUserHasMultipleChild(true);
+    usersData.addUserStudentId(student_id);
+    usersData.addUserClassSection(classNameSection);
+    usersData.addUserStudentName(name);
+    ///navigate here to dashboard
+    print('one child found:::::::::');
+    usersData.saveAllDataToSharedPreferences();
+    Get.toNamed(AppRoutes.formScreen);
+  }
   void showChildList(BuildContext context,List<String> childNameList,List<String> childIdList,List<String> childImageList,List<String> childClassList) {
     showModalBottomSheet(
       context: context,
@@ -152,12 +170,15 @@ class LoginController extends GetxController {
           itemBuilder: (BuildContext context, int index){
           return Column(
             children: <Widget>[
-              ListTile(
-                leading: CircleAvatar(
-                  // Add child image
+              InkWell(
+                onTap: () {onSelectChildStudent(childIdList[index],childClassList[index],childNameList[index]);},
+                child: ListTile(
+                  leading: CircleAvatar(
+                    // Add child image
+                  ),
+                  title: Text(childNameList[index]),
+                  subtitle: Text(childClassList[index]),
                 ),
-                title: Text(childNameList[index]),
-                subtitle: Text(childClassList[index]),
               )
               // Add more ListTiles for more children
             ],

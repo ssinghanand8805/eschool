@@ -15,6 +15,7 @@ class NotificationController extends GetxController {
 
 
   RxList<FCMNotifications> notificationModelObj = <FCMNotifications>[].obs;
+  RxInt currentCount = 0.obs;
   late Future<void> fetchDataFuture;
   @override
   void onClose() {
@@ -35,6 +36,7 @@ class NotificationController extends GetxController {
       d.add(FCMNotifications.fromJson(data[i]));
     }
     notificationModelObj.value = d;
+    countUnreadNotifications();
     update();
   }
 
@@ -58,29 +60,28 @@ class NotificationController extends GetxController {
       'read': false  // default is unread
     });
     box.write('notifications', json.encode(notifications));
+    countUnreadNotifications();
+    getData();
   }
 
   void markNotificationAsRead(int? index) {
     final box = GetStorage();
-    box.remove('notifications');
     var storedNotifications = box.read('notifications');
-    if(storedNotifications != null)
-      {
-        List<dynamic> notifications = json.decode(storedNotifications);
-        if(index != null)
-        {
-          notifications[index]['read'] = true;
-        }
-        else
-        {
-          // for (var notification in notifications) {
-          //   notification['read'] == true;
-          // }
-        }
+    if (storedNotifications != null) {
+      List<dynamic> notifications = json.decode(storedNotifications);
 
-        box.write('notifications', json.encode(notifications));
+      if (index != null && index < notifications.length) {
+        notifications[index]['read'] = true;  // Mark as read
+      } else {
+        // If index is null, mark all as read
+        notifications.forEach((n) => n['read'] = true);
       }
 
+      // Save back to storage
+      box.write('notifications', json.encode(notifications));
+      countUnreadNotifications();
+      update();  // Update the UI if needed
+    }
   }
 
 
@@ -97,7 +98,8 @@ class NotificationController extends GetxController {
         unreadCount++;
       }
     }
-
+    currentCount.value = unreadCount;
+    update();
     return unreadCount;
   }
 

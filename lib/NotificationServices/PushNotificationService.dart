@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../apiHelper/userData.dart';
 import '../core/app_export.dart';
@@ -91,6 +92,10 @@ class PushNotificationService {
     String? token = await _fcm.getToken();
     UserData u = new UserData();
     u.addUserFCMDeviceToken(token!);
+    final prefs = await SharedPreferences.getInstance();
+
+    // Write all data to SharedPreferences
+    await prefs.setString('currentDeviceToken', token);
     print('Token: $token');
     return token;
   }

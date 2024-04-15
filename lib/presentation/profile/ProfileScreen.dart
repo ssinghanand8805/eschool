@@ -5,6 +5,7 @@ import 'package:learnladder/presentation/profile/controller/ProfileController.da
 
 import '../../apiHelper/Constants.dart';
 import '../../apiHelper/userData.dart';
+import '../../core/utils/common_utilities.dart';
 import '../../theme/theme_helper.dart';
 import '../common_widgets/custom_loader.dart';
 
@@ -206,13 +207,13 @@ class MyHomePage extends StatelessWidget {
                                 children: [
                                   InfoRow(
                                     title: 'Admission Date',
-                                    value: controller.profileModelObj.value!
-                                        .studentResult!.admissionDate!,
+                                    value: Utils.formatDateString(controller.profileModelObj.value!
+                                        .studentResult!.admissionDate!.toString()),
                                   ),
                                   InfoRow(
                                     title: 'Date Of Birth',
-                                    value: controller.profileModelObj.value!
-                                        .studentResult!.dob!,
+                                    value: Utils.formatDateString(controller.profileModelObj.value!
+                                        .studentResult!.dob!.toString()),
                                   ),
                                   InfoRow(
                                     title: 'Gender',

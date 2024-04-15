@@ -32,7 +32,7 @@ class DashboardScreen extends GetView<DashboardController> {
         children: [
           IconButton(
             onPressed: () {
-              controller2.markNotificationAsRead(null);
+              // controller2.markNotificationAsRead(null);
               Get.toNamed("/notificationsList");
             },
             icon: Image.asset(
@@ -45,7 +45,7 @@ class DashboardScreen extends GetView<DashboardController> {
           Positioned(
             top: -5, // Adjust these values as needed to position the badge
             right: -5, // Adjust these values as needed to position the badge
-            child: controller2.countUnreadNotifications() > 0 ? Container(
+            child:  Obx(() => controller2.currentCount() > 0 ? Container(
               padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: Colors.red,
@@ -56,7 +56,7 @@ class DashboardScreen extends GetView<DashboardController> {
                 minHeight: 16,
               ),
               child: Text(
-                controller2.countUnreadNotifications().toString(),
+                controller2.currentCount().toString(),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 10,
@@ -64,7 +64,7 @@ class DashboardScreen extends GetView<DashboardController> {
                 textAlign: TextAlign.center,
               ),
             ) : SizedBox.shrink(), // Don't show badge if count is 0
-          ),
+          )),
         ],
       ),
     )
