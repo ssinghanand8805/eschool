@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../apiHelper/Constants.dart';
@@ -15,6 +17,110 @@ class DashboardController extends GetxController {
   UserData userData = Get.put(UserData());
   ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
   RxString schoolImageUrl = "".obs;
+
+  loadChildList(context) async
+  {
+    List<dynamic> childNameList = [];
+    List<dynamic> childIdList = [];
+    List<dynamic> childImageList = [];
+    List<dynamic> childClassList = [];
+    List<dynamic> childImagefoundList = [];
+    loadArray("childIdList");
+    var n = await loadArray("childNameList");
+    childNameList = n!;
+    var i = await loadArray("childIdList");
+    childIdList = i!;
+    var img = await loadArray("childImageList");
+    childImageList = img!;
+     var cls = await  loadArray("childClassList");
+    childClassList = cls!;
+     var imgNot = await loadArray("childImagefoundList");
+    childImagefoundList = imgNot!;
+    print(childNameList);
+
+    showChildList(context, childNameList, childIdList, childImageList,
+        childClassList,childImagefoundList);
+
+
+
+  }
+
+  onSelectChildStudent(student_id, classNameSection, name) {
+    UserData usersData = UserData();
+    usersData.addUserIsLoggedIn(true);
+    usersData.addUserHasMultipleChild(true);
+    usersData.addUserStudentId(student_id);
+    usersData.addUserClassSection(classNameSection);
+    usersData.addUserStudentName(name);
+
+    ///navigate here to dashboard
+    print('one child found:::::::::');
+    usersData.saveAllDataToSharedPreferences();
+    Get.toNamed(AppRoutes.sScreen);
+  }
+  void showChildList(
+      BuildContext context,
+      List<dynamic> childNameList,
+      List<dynamic> childIdList,
+      List<dynamic> childImageList,
+      List<dynamic> childClassList,
+      List<dynamic> childImagefoundList,
+
+      ) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            final double itemHeight = 100.0; // Set a fixed height for each item
+            final double bottomSheetHeight = (childNameList.length *
+                itemHeight) +
+                kBottomNavigationBarHeight; // Calculate the total height of the bottom sheet
+            return SizedBox(
+              height: bottomSheetHeight,
+              child: ListView.builder(
+                itemCount: childNameList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () {
+                          onSelectChildStudent(childIdList[index],
+                              childClassList[index], childNameList[index]);
+                        },
+                        child: ListTile(
+                          leading: childImagefoundList[index] != false
+                              ? CircleAvatar(
+                              radius: itemHeight / 4,
+                              backgroundImage:
+                              NetworkImage(childImageList[index])
+
+                          )
+                              : CircleAvatar(
+                            radius: itemHeight / 4,
+                            backgroundImage: AssetImage(
+                              'assets/projectImages/placeholder_user.png',),
+                          ),
+                          title: Text(childNameList[index]),
+                          subtitle: Text(childClassList[index]),
+                        ),
+                      )
+                      // Add more ListTiles for more children
+                    ],
+                  );
+                },
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+  Future<List<dynamic>?> loadArray(String name) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? encodedData = prefs.getString(name);
+    return encodedData == null ? null : List<dynamic>.from(json.decode(encodedData)); // Decode JSON string to a List
+  }
 
   Widget customContainer(){
     return Container(

@@ -19,7 +19,7 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
   Widget build(BuildContext context) {
     return MainBody(
       label: 'Your Hostel\n Room Here!',
-      imageUrl: 'assets/projectImages/noticepage.png',
+      imageUrl: 'assets/projectImages/hostelpage.jpg',
       AppbarTitle: 'Hostel Room',
       widget: _buildChildWidget(),
 

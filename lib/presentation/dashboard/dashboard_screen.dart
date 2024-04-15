@@ -23,56 +23,56 @@ class DashboardScreen extends GetView<DashboardController> {
       appBar: AppBar(
         // leading: IconButton(  onPressed: () {  }, icon: Icon(Icons.),),
         centerTitle: true,
-        title: Obx(() { if (controller.schoolImageUrl.value == "") {
-          return CircularProgressIndicator();  // Show loading indicator
-        } else {
-          return Image.network(controller.schoolImageUrl.value!);  // Show the image
-        } } ),
-
+        title: Image.asset("assets/projectImages/online_logo.png", height: 30),
         actions: [
-      Padding(
-      padding: const EdgeInsets.only(right: 15.0),
-      child: Stack(
-        clipBehavior: Clip.none, // Allows the badge to go out of the box
-        children: [
-          IconButton(
-            onPressed: () {
-              // controller2.markNotificationAsRead(null);
-              Get.toNamed("/notificationsList");
-            },
-            icon: Image.asset(
-              "assets/projectImages/ic_notification.png",
-              height: 22,
-              color: Colors.deepOrangeAccent,
-            ),
-          ),
-          // Badge
-          Positioned(
-            top: -5, // Adjust these values as needed to position the badge
-            right: -5, // Adjust these values as needed to position the badge
-            child:  Obx(() => controller2.currentCount() > 0 ? Container(
-              padding: EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              constraints: BoxConstraints(
-                minWidth: 16,
-                minHeight: 16,
-              ),
-              child: Text(
-                controller2.currentCount().toString(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
+          Padding(
+            padding: const EdgeInsets.only(right: 15.0),
+            child: Stack(
+              clipBehavior: Clip.none, // Allows the badge to go out of the box
+              children: [
+                IconButton(
+                  onPressed: () {
+                    // controller2.markNotificationAsRead(null);
+                    Get.toNamed("/notificationsList");
+                  },
+                  icon: Image.asset(
+                    "assets/projectImages/ic_notification.png",
+                    height: 22,
+                    color: Colors.deepOrangeAccent,
+                  ),
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ) : SizedBox.shrink(), // Don't show badge if count is 0
-          )),
-        ],
-      ),
-    )
+                // Badge
+                Positioned(
+                    top:
+                        -5, // Adjust these values as needed to position the badge
+                    right:
+                        -5, // Adjust these values as needed to position the badge
+                    child: Obx(
+                      () => controller2.currentCount() > 0
+                          ? Container(
+                              padding: EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              constraints: BoxConstraints(
+                                minWidth: 16,
+                                minHeight: 16,
+                              ),
+                              child: Text(
+                                controller2.currentCount().toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            )
+                          : SizedBox.shrink(), // Don't show badge if count is 0
+                    )),
+              ],
+            ),
+          )
         ],
       ),
       drawer: Drawer(
@@ -95,11 +95,7 @@ class DashboardScreen extends GetView<DashboardController> {
                             top: MediaQuery.of(context).padding.top,
                             bottom: 5,
                           )
-                        : EdgeInsets.only(
-                            top: 35,
-                            bottom: 25,
-                      left: 10
-                          ),
+                        : EdgeInsets.only(top: 35, bottom: 25, left: 10),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Row(
@@ -141,7 +137,10 @@ class DashboardScreen extends GetView<DashboardController> {
                                 ),
                                 userData.getUserHasMultipleChild == true
                                     ? InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          controller.loadChildList(context);
+                                        },
                                         child: Icon(
                                           Icons.swap_horiz,
                                         ))
@@ -160,17 +159,25 @@ class DashboardScreen extends GetView<DashboardController> {
               Column(
                 children: [
                   ListTile(
-                    leading: Icon(Icons.home_outlined),
-                    title: Text('Home'),
-                    onTap: () {
-                      /// Close Navigation drawer before
-                      Navigator.pop(context);
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()),);
-                    },
+                    leading: Icon(
+                      Icons.home_outlined,
+                      size: 18,
+                    ),
+                    title: Text(
+                      'Home',
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    onTap: () {},
                   ),
                   ListTile(
-                    leading: Icon(Icons.person_add_alt_rounded),
-                    title: Text('Profile'),
+                    leading: Icon(
+                      Icons.person_add_alt_rounded,
+                      size: 18,
+                    ),
+                    title: Text(
+                      'Profile',
+                      style: theme.textTheme.titleMedium,
+                    ),
                     onTap: () {
                       /// Close Navigation drawer before
                       Navigator.pop(context);
@@ -179,29 +186,50 @@ class DashboardScreen extends GetView<DashboardController> {
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.error_outline),
-                    title: Text('About School'),
+                    leading: Icon(
+                      Icons.error_outline,
+                      size: 18,
+                    ),
+                    title: Text(
+                      'About School',
+                      style: theme.textTheme.titleMedium,
+                    ),
                     onTap: () {
                       Get.toNamed("/aboutSchool");
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text('Setting'),
+                    leading: Icon(
+                      Icons.settings,
+                      size: 18,
+                    ),
+                    title: Text(
+                      'Setting',
+                      style: theme.textTheme.titleMedium,
+                    ),
                     onTap: () {},
                   ),
                   ListTile(
-                    leading: Icon(Icons.login),
-                    title: Text('Logout'),
+                    leading: Icon(
+                      Icons.login,
+                      size: 18,
+                    ),
+                    title: Text(
+                      'Logout',
+                      style: theme.textTheme.titleMedium,
+                    ),
                     onTap: () {
                       controller.logout();
-
                     },
                   ),
                   const Divider(
-                    color: Colors.black45,
+                    color: Colors.grey,
+                    thickness: 0.4,
                   ),
-                  Text("Version 1.6.6")
+                  Text(
+                    "Version 1.0.0",
+                    style: theme.textTheme.titleMedium,
+                  )
                 ],
               )
             ],

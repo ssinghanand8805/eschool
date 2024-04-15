@@ -23,6 +23,7 @@ class Constants {
   static const String getdailyassignmentUrl = 'webservice/getdailyassignment';
   static const String getdownloadcontent = 'webservice/getDownloadsLinks';
   static const String getVideocontent = 'webservice/getVideoTutorial';
+  static const String getTimelineUrl = 'webservice/getTimeline';
   // static const String getNotificationsUrl = 'webservice/getNotifications';
 
 

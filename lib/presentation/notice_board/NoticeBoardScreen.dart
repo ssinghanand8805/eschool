@@ -8,7 +8,6 @@ import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
 import 'controller/notice_board_controller.dart';
 
-
 class NoticeBoardScreen extends StatefulWidget {
   @override
   State<NoticeBoardScreen> createState() => _ClassTimeTableScreenState();
@@ -17,13 +16,11 @@ class NoticeBoardScreen extends StatefulWidget {
 class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
   NoticeBoardController controller = Get.put(NoticeBoardController());
 
-
-
   @override
   Widget build(BuildContext context) {
     return MainBody(
       label: 'Your Notice\Board!',
-      imageUrl: 'assets/projectImages/assignmentpage.jpg',
+      imageUrl: 'assets/projectImages/noticepage.png',
       AppbarTitle: 'Notice Board',
       widget: _buildChildWidget(),
     );
@@ -34,21 +31,28 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
       init: controller,
       builder: (_) {
         return FutureBuilder(
-          future:  controller.fetchDataFuture,//controller.getData(context),
+          future: controller.fetchDataFuture, //controller.getData(context),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
-            }
-            else {
-              return  ListView.builder(
-                itemCount: controller.noticeBoardModelObj.value.data?.length ?? 0,
+            } else {
+              return ListView.builder(
+                itemCount:
+                    controller.noticeBoardModelObj.value.data?.length ?? 0,
                 itemBuilder: (context, index) {
-                  return controller.noticeBoardModelObj.value.data!.length > 0 ? _buildTimeTableCard(
-                    data: controller.noticeBoardModelObj.value.data![index],
-                  ): Center(child: Image.asset("assets/projectImages/no_data.png",height: 100,));
+                  return controller.noticeBoardModelObj.value.data!.length > 0
+                      ? _buildTimeTableCard(
+                          data:
+                              controller.noticeBoardModelObj.value.data![index],
+                        )
+                      : Center(
+                          child: Image.asset(
+                          "assets/projectImages/no_data.png",
+                          height: 100,
+                        ));
                 },
-              );;
-
+              );
+              ;
             }
           },
         );
@@ -59,14 +63,60 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
   Widget _buildTimeTableCard({required Data data}) {
     return CommonCard(
         title: data.title!,
-        newWidget:  Column(
+        newWidget: Column(
           children: [
-            Html( data : data.message!),
-            ListTile(leading: Icon(Icons.calendar_today_outlined),title: Text("Publish Date"),subtitle: Text(data.publishDate!),),
-            ListTile(leading: Icon(Icons.calendar_today),title: Text("Notice Date"),subtitle: Text(data.date!),),
-            ListTile(leading: Icon(Icons.person),title: Text("Created By"),subtitle: Text(data.createdBy!),)
-
+            Html(
+              data: data.message!,
+              style: {
+                "body": Style(
+                  fontSize: FontSize(15.0),
+                  color: Colors.black,
+                ),
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.calendar_today_outlined,
+                size: 18,
+              ),
+              title: Text(
+                "Publish Date",
+                style: theme.textTheme.titleMedium,
+              ),
+              subtitle: Text(
+                data.publishDate!,
+                style: theme.textTheme.titleMedium,
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.calendar_today,
+                size: 18,
+              ),
+              title: Text(
+                "Notice Date",
+                style: theme.textTheme.titleMedium,
+              ),
+              subtitle: Text(
+                data.date!,
+                style: theme.textTheme.titleMedium,
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.person,
+                size: 18,
+              ),
+              title: Text(
+                "Created By",
+                style: theme.textTheme.titleMedium,
+              ),
+              subtitle: Text(
+                data.createdBy!,
+                style: theme.textTheme.titleMedium,
+              ),
+            )
           ],
-        ))  ;
+        ));
   }
 }
