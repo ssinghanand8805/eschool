@@ -64,6 +64,7 @@ class SchoolUrlController extends GetxController {
         await prefs.setString("schoolStartMonth",data["start_month_name"] ?? "");
         await  prefs.setString("schoolStartMonthNumber",data["start_month"] ?? "");
         await  prefs.setString("schoolImage",data["image"] ?? "");
+
         Get.lazyPut(()=>ApiClient(appBaseUrl: "${baseUrl}api/"),fenix: true);
         //repose
         Get.lazyPut(()=>ApiRespository(apiClient: Get.find()));

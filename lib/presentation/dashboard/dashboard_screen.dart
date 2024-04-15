@@ -23,7 +23,12 @@ class DashboardScreen extends GetView<DashboardController> {
       appBar: AppBar(
         // leading: IconButton(  onPressed: () {  }, icon: Icon(Icons.),),
         centerTitle: true,
-        title: Image.asset("assets/projectImages/online_logo.png",height: 30),
+        title: Obx(() { if (controller.schoolImageUrl.value == "") {
+          return CircularProgressIndicator();  // Show loading indicator
+        } else {
+          return Image.network(controller.schoolImageUrl.value!);  // Show the image
+        } } ),
+
         actions: [
       Padding(
       padding: const EdgeInsets.only(right: 15.0),
