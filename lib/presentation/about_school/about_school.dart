@@ -47,15 +47,14 @@ class _AboutSchoolScreenState extends State<AboutSchoolScreen> {
                               // height: 150.0,
                             ),
                             SizedBox(width: 16.0),
-                            controller.schoolName.isEmpty
-                                ? Text(
+                            Text(
                                     controller.schoolName.value ?? '',
                                     style: TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   )
-                                : Text(''),
+
                           ],
                         ),
                         SizedBox(height: 16.0),
