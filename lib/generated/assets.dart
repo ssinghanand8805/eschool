@@ -29,6 +29,8 @@ class Assets {
   static const String imagesImgTuition = 'assets/images/img_tuition.png';
   static const String imagesImgVector = 'assets/images/img_vector.png';
   static const String imagesImgVector193x375 = 'assets/images/img_vector_193x375.png';
+  static const String imagesLoading = 'assets/images/loading.json';
+  static const String imagesSplashJson = 'assets/images/splashJson.json';
   static const String projectImagesAddLeave = 'assets/projectImages/add_leave.png';
   static const String projectImagesAppIcon = 'assets/projectImages/app_icon.png';
   static const String projectImagesAssignmentpage = 'assets/projectImages/assignmentpage.jpg';
@@ -41,6 +43,7 @@ class Assets {
   static const String projectImagesBaselineReceipt = 'assets/projectImages/baseline_receipt.png';
   static const String projectImagesBottomImg = 'assets/projectImages/bottom_img.png';
   static const String projectImagesBottomNavigationBackground = 'assets/projectImages/bottom_navigation_background.xml';
+  static const String projectImagesBus = 'assets/projectImages/bus.png';
   static const String projectImagesButtonStyleAccent = 'assets/projectImages/button_style_accent.xml';
   static const String projectImagesButtonStyleGrey = 'assets/projectImages/button_style_grey.xml';
   static const String projectImagesButtonTextColor = 'assets/projectImages/button_text_color.xml';
@@ -73,6 +76,7 @@ class Assets {
   static const String projectImagesEyeGrey = 'assets/projectImages/eye_grey.png';
   static const String projectImagesEyehide = 'assets/projectImages/eyehide.png';
   static const String projectImagesFeespage = 'assets/projectImages/feespage.jpeg';
+  static const String projectImagesFriendship = 'assets/projectImages/friendship.png';
   static const String projectImagesGreenBorder = 'assets/projectImages/green_border.xml';
   static const String projectImagesGreenButton = 'assets/projectImages/green_button.xml';
   static const String projectImagesGreenCurveBorder = 'assets/projectImages/green_curve_border.xml';
