@@ -19,6 +19,7 @@ class LoginController extends GetxController {
   ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
   TextEditingController passwordController = TextEditingController();
   TextEditingController idController = TextEditingController();
+  RxString schoolImageUrl = "".obs;
 
 
 
@@ -29,6 +30,29 @@ class LoginController extends GetxController {
     super.onClose();
     passwordController.dispose();
   }
+
+
+  @override
+  void  init()
+  {
+
+  }
+
+  getSchoolDetails() async
+  {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var img = pref.getString("schoolImage");
+    if(img != null && img != "")
+      {
+        schoolImageUrl.value =  Constants.imagesUrl + "uploads/school_content/logo/app_logo/" + img;
+        update();
+      }
+    else
+      {
+
+      }
+  }
+
   changeSchool()
   async {
     final prefs = await SharedPreferences.getInstance();
