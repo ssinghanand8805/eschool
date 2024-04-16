@@ -23,7 +23,7 @@ class DashboardScreen extends GetView<DashboardController> {
       appBar: AppBar(
         // leading: IconButton(  onPressed: () {  }, icon: Icon(Icons.),),
         centerTitle: true,
-        title: Image.asset("assets/projectImages/online_logo.png", height: 30),
+        title: Obx( () => controller.schoolImageUrl == "" ? Image.asset("assets/projectImages/online_logo.png", height: 30): Image.network(controller.schoolImageUrl.toString(), height: 30)),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 15.0),

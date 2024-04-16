@@ -15,7 +15,7 @@ class LoginController extends GetxController {
   TextEditingController idController = TextEditingController();
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   Rx<bool> isShowPassword = true.obs;
-
+  RxString schoolImageUrl = "".obs;
   @override
   void onClose() {
     super.onClose();
@@ -29,6 +29,7 @@ class LoginController extends GetxController {
   }
 
   loginApi(context) async {
+
     Map<String, dynamic> body = {
       "username": idController.text,
       "password": passwordController.text,

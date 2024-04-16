@@ -122,7 +122,7 @@ class _SchoolUrlState extends State<SchoolUrl> {
         backgroundColor: const Color(0xffEEF1F3),
         body: Column(
           children: [
-            const PageHeader(),
+             PageHeader(),
             Expanded(
               child: Container(
                 decoration: const BoxDecoration(
