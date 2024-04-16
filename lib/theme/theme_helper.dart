@@ -90,8 +90,7 @@ class TextThemes {
           fontWeight: FontWeight.w500,
         ),
         titleSmall: TextStyle(
-          color: colorScheme.onPrimary,
-          fontSize: 15.fSize,
+          fontSize: 10.fSize,
           fontFamily: 'Open Sans',
           fontWeight: FontWeight.w800,
         ),

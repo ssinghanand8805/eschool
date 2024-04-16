@@ -41,7 +41,7 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return ListView(
+              return controller.transportRouteModal.value!.pickupPoint!.length>0? ListView(
                 children: [
                   _buildRouteCard(
                     data: controller.transportRouteModal.value!.route!,
@@ -60,7 +60,16 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
                   //   },
                   // ),
                 ],
-              );
+              ):Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/projectImages/no_data.png",
+                      ),
+                      Text("No data found!")
+                    ],
+                  ));
               ;
             }
           },
@@ -100,24 +109,38 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                       title: 'Route Title:',
                       value: "${data.routeTitle}"),
                   InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                       title: 'Vehicle Number:',
                       value: "${data.vehicleNo}"),
                   InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                       title: 'Vehicle Model:',
                       value: "${data.vehicleModel}"),
                   InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                       title: 'Driver Name:',
                       value: "${data.driverName}"),
                   InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                       title: 'Driver Contact:',
                       value: "${data.driverContact}"),
                   InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                       title: 'Driver Licence:',
                       value: "${data.driverLicence}"),
                   InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                       title: 'Made: ', value: "${data.manufactureYear}"),
                 ],
               ),

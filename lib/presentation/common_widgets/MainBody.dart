@@ -7,6 +7,7 @@ class MainBody extends StatelessWidget {
   final String imageUrl;
   final String AppbarTitle;
   final Widget widget;
+  final List<Widget>? actionWidget;
   final Widget? floatingActionButton;
 
   const MainBody({
@@ -15,6 +16,7 @@ class MainBody extends StatelessWidget {
     required this.imageUrl,
     required this.AppbarTitle,
     required this.widget,
+     this.actionWidget,
      this.floatingActionButton,
   }) : super(key: key);
 
@@ -23,6 +25,7 @@ class MainBody extends StatelessWidget {
    return  Scaffold(
      backgroundColor: Colors.green.shade100,
       appBar: AppBar(
+        actions:  actionWidget?? [],
         backgroundColor: Colors.green.shade100,
         title: Text(AppbarTitle,style: theme.textTheme.titleLarge!.copyWith(fontSize: 19),),
       ),

@@ -58,8 +58,8 @@ class _LibraryPageState extends State<LibraryPage> {
     print("object${data.isReturned.toString()}");
     return CommonCardExtended(
         style: TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 14,
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
             color: _getStatusColor(data.isReturned.toString())),
         title: data.bookTitle!,
         leadingWidget: SizedBox(),
@@ -71,13 +71,29 @@ class _LibraryPageState extends State<LibraryPage> {
   Widget _buildLeaveCard({required IssuedBook data}) {
     return Column(
       children: [
-        InfoRow(title: "Author", value: data.author!),
-        InfoRow(title: "Book No.", value: data.bookNo!),
-        InfoRow(title: "Issue Date", value: data.issueDate!),
         InfoRow(
+            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+            title: "Author",
+            value: data.author!),
+        InfoRow(
+            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+            title: "Book No.",
+            value: data.bookNo!),
+        InfoRow(
+            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+            title: "Issue Date",
+            value: data.issueDate!),
+        InfoRow(
+            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14,),
+            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
             title: "Author",
             value: data.returnDate == null ? "" : data.returnDate.toString()),
         InfoRow(
+            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
             title: "Due Return Date",
             value: data.dueReturnDate == null
                 ? ""

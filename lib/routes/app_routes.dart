@@ -1,9 +1,11 @@
 import 'package:learnladder/presentation/calender_todo/bindings/calendar_todo.dart';
 import 'package:learnladder/presentation/calender_todo/calendar_todo_view.dart';
+import 'package:learnladder/presentation/cbse_examniations/cbse_examinations_view.dart';
 import 'package:learnladder/presentation/class_time_table/ClassTimeTableScreen.dart';
 import 'package:learnladder/presentation/class_time_table/binding/class_time_table_binding.dart';
 import 'package:learnladder/presentation/download_center/DownloadCenterScreen.dart';
 import 'package:learnladder/presentation/download_center/binding/syllabus_status_binding.dart';
+import 'package:learnladder/presentation/exam_schedule/exam_schedule_view.dart';
 import 'package:learnladder/presentation/examinations/exam%20result/bindings/exam_result_bindings.dart';
 import 'package:learnladder/presentation/examinations/exam%20result/exam_result_view.dart';
 import 'package:learnladder/presentation/fees/fees_view.dart';
@@ -33,6 +35,7 @@ import '../presentation/apply_leave/ApplyLeaveScreen.dart';
 import '../presentation/apply_leave/bindings/applyleave.dart';
 import '../presentation/attendance/AttendanceScreen.dart';
 import '../presentation/attendance/binding/attendance.dart';
+import '../presentation/cbse_examniations/binding/cbse_examinations_binding.dart';
 import '../presentation/choose_your_option_screen/binding/choose_your_option_binding.dart';
 import '../presentation/choose_your_option_screen/choose_your_option_screen.dart';
 
@@ -40,6 +43,7 @@ import '../presentation/daily_assignment/DailyAssignmentScreen.dart';
 import '../presentation/daily_assignment/binding/daily_assignment_binding.dart';
 import '../presentation/dashboard/binding/dashboard_binding.dart';
 import '../presentation/dashboard/dashboard_screen.dart';
+import '../presentation/exam_schedule/binding/exam_schedule_binding.dart';
 import '../presentation/examinations/ExaminationScreen.dart';
 import '../presentation/examinations/bindings/Examination.dart';
 import '../presentation/fees/bindings/fees.dart';
@@ -91,7 +95,6 @@ class AppRoutes {
   static const String download_centerRoute = '/download_center';
   static const String exam_result_view = '/exam_result_view';
 
-
   //todo
   static const String online_examinationRoute = '/online_examination';
   static const String attendanceRoute = '/attendance';
@@ -115,16 +118,23 @@ class AppRoutes {
   static const String notificationListRoute = '/notificationsList';
 
   static const String enterSchoolUrlRoute = '/enterSchoolUrl';
-
-
-
-
+  static const String examScheduleRoute = '/examSchedule';
 
   static List<GetPage> pages = [
     GetPage(
       name: enterSchoolUrlRoute,
       page: () => SchoolUrl(),
       bindings: [SchoolUrlBinding()],
+    ),
+    GetPage(
+      name: cbseexamRoute,
+      page: () => CbseExaminationsScreen(),
+      bindings: [CbseExaminationsBinding()],
+    ),
+    GetPage(
+      name: examScheduleRoute,
+      page: () => ExamScheduleScreen(),
+      bindings: [ExamScheduleBinding()],
     ),
     GetPage(
       name: sScreen,
@@ -203,7 +213,7 @@ class AppRoutes {
     ),
     GetPage(
       name: download_centerRoute,
-      page: () =>DownloadCenterScreen(),
+      page: () => DownloadCenterScreen(),
       bindings: [DownloadCenterBinding()],
     ),
     GetPage(
@@ -236,15 +246,55 @@ class AppRoutes {
       page: () => AppNavigationScreen(),
       bindings: [AppNavigationBinding()],
     ),
-    GetPage(name: initialRoute, page: () => SScreen(), bindings: [SBinding()],),
-    GetPage(name: transportroutesRoute, page: () => TransportRoutesPage(), bindings: [TransportRoutesBinding()],),
-    GetPage(name: hostelroomsRoute, page: () => HostelRoomsPage(), bindings: [HostelRoomsBinding()],),
-    GetPage(name: calendartodolistRoute, page: () => CalendarTodoPage(), bindings: [CalendarTodoBinding()],),
-    GetPage(name: libraryRoute, page: () => LibraryPage(), bindings: [LibraryBinding()],),
-    GetPage(name: teachersratingRoute, page: () => TeacherRatingPage(), bindings: [TeacherRatingBinding()],),
-    GetPage(name: studenttimelineRoute, page: () => StudentTimeLinePage(), bindings: [StudentTimeLineBinding()],),
-    GetPage(name: examinationsRoute, page: () => ExaminationPage(), bindings: [ExaminationBinding()],),
-    GetPage(name: exam_result_view, page: () => ExamResultView(), bindings: [ExamResultBindings()],),
-    GetPage(name: feesRoute, page: () =>FeesPage(), bindings: [FeesBinding()],),
+    GetPage(
+      name: initialRoute,
+      page: () => SScreen(),
+      bindings: [SBinding()],
+    ),
+    GetPage(
+      name: transportroutesRoute,
+      page: () => TransportRoutesPage(),
+      bindings: [TransportRoutesBinding()],
+    ),
+    GetPage(
+      name: hostelroomsRoute,
+      page: () => HostelRoomsPage(),
+      bindings: [HostelRoomsBinding()],
+    ),
+    GetPage(
+      name: calendartodolistRoute,
+      page: () => CalendarTodoPage(),
+      bindings: [CalendarTodoBinding()],
+    ),
+    GetPage(
+      name: libraryRoute,
+      page: () => LibraryPage(),
+      bindings: [LibraryBinding()],
+    ),
+    GetPage(
+      name: teachersratingRoute,
+      page: () => TeacherRatingPage(),
+      bindings: [TeacherRatingBinding()],
+    ),
+    GetPage(
+      name: studenttimelineRoute,
+      page: () => StudentTimeLinePage(),
+      bindings: [StudentTimeLineBinding()],
+    ),
+    GetPage(
+      name: examinationsRoute,
+      page: () => ExaminationPage(),
+      bindings: [ExaminationBinding()],
+    ),
+    GetPage(
+      name: exam_result_view,
+      page: () => ExamResultView(),
+      bindings: [ExamResultBindings()],
+    ),
+    GetPage(
+      name: feesRoute,
+      page: () => FeesPage(),
+      bindings: [FeesBinding()],
+    ),
   ];
 }

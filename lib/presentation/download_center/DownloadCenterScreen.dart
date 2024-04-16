@@ -116,7 +116,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
       init: controller,
       builder: (_) {
         return RefreshIndicator(
-          onRefresh:  controller.refreshDataImage,
+          onRefresh: controller.refreshDataImage,
           child: FutureBuilder(
             future: controller.fetchDataFuture, //controller.getData(context),
             builder: (context, snapshot) {
@@ -126,7 +126,8 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                 return ListView.builder(
                   itemCount: controller.downloadModelObj.length ?? 0,
                   itemBuilder: (context, index) {
-                    print("##############${controller.downloadModelObj[index]}");
+                    print(
+                        "##############${controller.downloadModelObj[index]}");
                     return controller.downloadModelObj.length > 0
                         ? _buildDownloadItem(
                             data: controller.downloadModelObj[index],
@@ -154,30 +155,35 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
       init: controller,
       builder: (_) {
         return RefreshIndicator(
-          onRefresh:  controller.refreshDataVideo,
+          onRefresh: controller.refreshDataVideo,
           child: FutureBuilder(
             future: controller.fetchDataFuture, //controller.getData(context),
             builder: (context, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
                 return CustomLoader(); // CustomLoader();
               } else {
-                return ListView.builder(
-                  itemCount:
-                      controller.videoDataModalObj.value.result!.length ?? 0,
-                  itemBuilder: (context, index) {
-                    return controller.videoDataModalObj.value.result!.length > 0
-                        ? _buildVideoTutorialTab(
-                            data:
-                                controller.videoDataModalObj.value.result![index],
-                          )
-                        : Center(
-                            child: Image.asset(
-                            "assets/projectImages/no_data.png",
-                            height: 100,
-                          ));
-                  },
-                );
-
+                return controller.videoDataModalObj.value.result!.length > 0
+                    ? ListView.builder(
+                        itemCount:
+                            controller.videoDataModalObj.value.result!.length ??
+                                0,
+                        itemBuilder: (context, index) {
+                          return _buildVideoTutorialTab(
+                            data: controller
+                                .videoDataModalObj.value.result![index],
+                          );
+                        },
+                      )
+                    : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/projectImages/no_data.png",
+                        ),
+                        Text("No data found!")
+                      ],
+                    ));
               }
             },
           ),
@@ -245,17 +251,20 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                   children: [
                     Text(
                       "Description: ",
-                      style: theme.textTheme.titleMedium!,
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                     ),
                     Flexible(
                       child: Text(
                         data.description.toString(),
-                        style: theme.textTheme.titleMedium!,
+                        style:
+                            theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                       ),
                     ),
                   ],
                 ),
                 InfoRow(
+                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                    style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                     title: "createdBy",
                     value: "${data.name} ${data!.surname}(${data.employeeId})"),
               ],
@@ -267,7 +276,8 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
   }
 
   Widget _buildDownloadItem(
-      {required DownloadCenter data, required List<UploadContents> uploadContents}) {
+      {required DownloadCenter data,
+      required List<UploadContents> uploadContents}) {
     return CommonCardExtended(
       title: data.title.toString(),
       leadingWidget: SizedBox(),
@@ -277,16 +287,29 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InfoRow(title: "Share Date", value: data.shareDate.toString()),
-            InfoRow(title: "Valid Upto", value: data.validUpto.toString()),
             InfoRow(
+                style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                title: "Share Date",
+                value: data.shareDate.toString()),
+            InfoRow(
+                style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                title: "Valid Upto",
+                value: data.validUpto ?? ""),
+            InfoRow(
+                style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                 title: "Shared By",
                 value: "${data.name} ${data!.surname}(${data.employeeId})"),
-            InfoRow(title: "Upload Date", value: data.createdAt.toString()),
+            InfoRow(
+                style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                title: "Upload Date",
+                value: data.createdAt.toString()),
             customDownloadButton(
               onPressed: () {
-                showDynamicBottomSheet(context,
-                    data: uploadContents!);
+                showDynamicBottomSheet(context, data: uploadContents!);
               },
               backgroundColor: Colors.blue,
               textColor: Colors.white,
@@ -298,75 +321,70 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
     );
   }
 
-
-
   void showDynamicBottomSheet(BuildContext context,
       {required List<UploadContents> data}) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-
         return ListView.builder(
-          itemCount:
-          data.length ?? 0,
+          itemCount: data.length ?? 0,
           itemBuilder: (context, index) {
             return data.length > 0
                 ? Center(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.zero,
-                  ),
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.drive_file_move_sharp,
-                            color: Colors.grey,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Attachment',
-                            style: TextStyle(
-                              fontSize: 15.0,
+                    child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.zero,
+                    ),
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.drive_file_move_sharp,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Attachment',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16.0),
+                        Container(
+                          child: ListTile(
+                            title: Text(data[index].realName.toString()),
+                            trailing: IconButton(
+                              onPressed: () {
+                                downloadFileFromAPI(
+                                    "${Constants.imagesUrl + data[index].dirPath! + data[index].imgName!}",
+                                    "fileName"!);
+                              },
+                              icon: Icon(
+                                Icons.download,
+                                size: 15,
+                                color: Colors.blue,
+                              ),
                             ),
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 16.0),
-                      Container(
-                        child: ListTile(
-                          title: Text(data[index].realName.toString()),
-                          trailing: IconButton(
-                            onPressed: () {
-                              downloadFileFromAPI("${Constants.imagesUrl + data[index].dirPath! + data[index].imgName!}", "fileName"!);
-                            },
-                            icon: Icon(
-                              Icons.download,
-                              size: 15,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        )
-                        ,
-                      ),
-                    ],
-                  ),
-                ))
+                        ),
+                      ],
+                    ),
+                  ))
                 : Center(
-                child: Image.asset(
-                  "assets/projectImages/no_data.png",
-                ));
+                    child: Image.asset(
+                    "assets/projectImages/no_data.png",
+                  ));
           },
         );
-
-
       },
     );
   }
@@ -380,7 +398,6 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
       await file.writeAsBytes(response.bodyBytes);
       print('File downloaded: $filePath');
       await OpenFile.open(filePath);
-
     } catch (e) {
       print('Error downloading file: $e');
     }
@@ -410,14 +427,9 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
             size: 15,
           ),
           SizedBox(width: 8),
-          Text(
-            "Download",
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
-          ),
+          Text("Download",
+              style: theme.textTheme.titleSmall!
+                  .copyWith(fontSize: 12, color: Colors.white)),
         ],
       ),
     );

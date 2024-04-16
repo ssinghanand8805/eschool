@@ -26,37 +26,47 @@ class ExaminationPage extends GetView<ExaminationController> {
           return _buildChildWidget();
         },
       ),
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-        ),
-        child: FloatingActionButton(
-          focusColor: Colors.white54,
-          backgroundColor: Colors.grey,
-          onPressed: () {
-
-            Navigator.push(context, MaterialPageRoute(builder: (context) => LeaveApplicationPage()),);
-          },
-          child: const Icon(
-            Icons.add,
-            color: Colors.black,
-            size: 50,
-          ),
-          shape: CircleBorder(),
-        ),
-      ),
     );
   }
 
   Widget _buildChildWidget() {
-    return ListView.separated(
-      shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index){
-          return _buildExamCard(controller.examListObj.value.examSchedule![index]);
-        },
-        separatorBuilder: (BuildContext context, int index)=>SizedBox(height: 0,),
-        itemCount: controller.examListObj.value.examSchedule!.length
+
+  return  GetBuilder(
+      init: controller,
+      builder: (_) {
+        return RefreshIndicator(
+          onRefresh:  controller.refreshDataVideo,
+          child: FutureBuilder(
+            future: controller.fetchDataFuture, //controller.getData(context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return CustomLoader(); // CustomLoader();
+              } else {
+                return controller.examListObj.value.examSchedule!.length>0?ListView.separated(
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index){
+                      return _buildExamCard(controller.examListObj.value.examSchedule![index]);
+                    },
+                    separatorBuilder: (BuildContext context, int index)=>SizedBox(height: 0,),
+                    itemCount: controller.examListObj.value.examSchedule!.length
+                ):Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/projectImages/no_data.png",
+                        ),
+                        Text("No data found!")
+                      ],
+                    ));
+
+              }
+            },
+          ),
+        );
+      },
     );
+
   }
 
   Widget _buildExamCard(ExamSchedule data) {
@@ -106,27 +116,7 @@ class ExaminationPage extends GetView<ExaminationController> {
     );
   }
 
-  Color _getStatusColor(String status) {
-    print(status);
-    if (status.toString() == "1") {
-      return Colors.green;
-    } else if (status.toString() == "0") {
-      return Colors.orange;
-    } else {
-      return Colors.red;
-    }
-  }
 
-  String _getStatusString(String status) {
-    print(status);
-    if (status.toString() == "1") {
-      return "Approved";
-    } else if (status.toString() == "0") {
-      return "Pending";
-    } else {
-      return "Dis-Approved";
-    }
-  }
 
   Widget cardButtons(){
     return Row(

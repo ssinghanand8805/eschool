@@ -42,20 +42,24 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return ListView.builder(
+              return controller.documentsModelObj.value!.length > 0?ListView.builder(
                 itemCount: controller.documentsModelObj.value?.length ?? 0,
                 itemBuilder: (context, index) {
-                  return controller.documentsModelObj.value!.length > 0
-                      ? _buildTimeTableCard(
+                  return  _buildTimeTableCard(
                           data: controller.documentsModelObj.value![index],
-                        )
-                      : Center(
-                          child: Image.asset(
-                          "assets/projectImages/no_data.png",
-                          height: 100,
-                        ));
+                        );
+
                 },
-              );
+              ):Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/projectImages/no_data.png",
+                      ),
+                      Text("No data found!")
+                    ],
+                  ));
               ;
             }
           },

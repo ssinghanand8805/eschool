@@ -38,26 +38,26 @@ class DashboardScreen extends GetView<DashboardController> {
                   icon: Image.asset(
                     "assets/projectImages/ic_notification.png",
                     height: 22,
-                    color: Colors.deepOrangeAccent,
+                    color: Colors.green,
                   ),
                 ),
                 // Badge
                 Positioned(
                     top:
-                        -5, // Adjust these values as needed to position the badge
+                        5, // Adjust these values as needed to position the badge
                     right:
-                        -5, // Adjust these values as needed to position the badge
+                        -3, // Adjust these values as needed to position the badge
                     child: Obx(
                       () => controller2.currentCount() > 0
                           ? Container(
                               padding: EdgeInsets.all(2),
                               decoration: BoxDecoration(
                                 color: Colors.red,
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(20),
                               ),
                               constraints: BoxConstraints(
-                                minWidth: 16,
-                                minHeight: 16,
+                                minWidth: 18,
+                                minHeight: 18,
                               ),
                               child: Text(
                                 controller2.currentCount().toString(),
@@ -122,15 +122,11 @@ class DashboardScreen extends GetView<DashboardController> {
                               children: [
                                 Text(
                                   userData.getUserStudentName,
-                                  style: theme.textTheme.titleMedium!.copyWith(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500),
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                                 ),
                                 Text(
                                   userData.getUserClassSection,
-                                  style: theme.textTheme.titleMedium!.copyWith(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500),
+                                  style: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                                 ),
                                 SizedBox(
                                   height: 5,
@@ -165,7 +161,7 @@ class DashboardScreen extends GetView<DashboardController> {
                     ),
                     title: Text(
                       'Home',
-                      style: theme.textTheme.titleMedium,
+                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 14)
                     ),
                     onTap: () {},
                   ),
@@ -176,7 +172,7 @@ class DashboardScreen extends GetView<DashboardController> {
                     ),
                     title: Text(
                       'Profile',
-                      style: theme.textTheme.titleMedium,
+                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 14)
                     ),
                     onTap: () {
                       /// Close Navigation drawer before
@@ -192,7 +188,7 @@ class DashboardScreen extends GetView<DashboardController> {
                     ),
                     title: Text(
                       'About School',
-                      style: theme.textTheme.titleMedium,
+                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 14)
                     ),
                     onTap: () {
                       Get.toNamed("/aboutSchool");
@@ -205,7 +201,7 @@ class DashboardScreen extends GetView<DashboardController> {
                     ),
                     title: Text(
                       'Setting',
-                      style: theme.textTheme.titleMedium,
+                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 14)
                     ),
                     onTap: () {},
                   ),
@@ -216,7 +212,7 @@ class DashboardScreen extends GetView<DashboardController> {
                     ),
                     title: Text(
                       'Logout',
-                      style: theme.textTheme.titleMedium,
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14)
                     ),
                     onTap: () {
                       controller.logout();
@@ -228,7 +224,7 @@ class DashboardScreen extends GetView<DashboardController> {
                   ),
                   Text(
                     "Version 1.0.0",
-                    style: theme.textTheme.titleMedium,
+                    style: theme.textTheme.bodySmall,
                   )
                 ],
               )

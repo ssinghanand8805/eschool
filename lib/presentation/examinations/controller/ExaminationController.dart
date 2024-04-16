@@ -29,6 +29,10 @@ class ExaminationController extends GetxController {
     super.onInit();
    fetchDataFuture = getData(); // Initialize the future when the controller is created
   }
+  Future<void> refreshDataVideo() async {
+    await getData(); // Assuming getData fetches and updates the list
+    update(); // This triggers a UI update if using GetX for state management
+  }
 
   Future<void> getData() async
   {

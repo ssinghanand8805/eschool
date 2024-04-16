@@ -48,7 +48,16 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
                     data: controller.hostelListModelObj.value.hostelarray![index],
                   );
                 },
-              ) : Center(child: Image.asset("assets/projectImages/no_data.png"));
+              ) : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/projectImages/no_data.png",
+                      ),
+                      Text("No data found!")
+                    ],
+                  ));
 
             }
           },
@@ -113,10 +122,22 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 // crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  InfoRow(title: 'Room Type', value: data.roomType!),
-                  InfoRow(title: 'Room no.', value: data.roomNo!),
-                  InfoRow(title: 'No. of Bed', value: data.noOfBed!),
-                  InfoRow(title: 'Cost per Bed', value: data.costPerBed!)
+                  InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      title: 'Room Type', value: data.roomType!),
+                  InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      title: 'Room no.', value: data.roomNo!),
+                  InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      title: 'No. of Bed', value: data.noOfBed!),
+                  InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      title: 'Cost per Bed', value: data.costPerBed!)
                 ],
               ),
             ),

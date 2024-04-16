@@ -140,7 +140,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   return Container(
                     height: 30,
                     child: ListTile(
-                      title: Text(item['status'] ?? ''),
+                      title: Text(item['status'] ?? '',style: theme.textTheme.bodySmall!.copyWith(fontSize: 15),),
                       // subtitle: Text(item['status'] ?? ''),
                       trailing: Container(
                         width: 20,

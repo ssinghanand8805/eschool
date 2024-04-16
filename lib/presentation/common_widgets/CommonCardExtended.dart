@@ -7,7 +7,9 @@ Widget CommonCardExtended(
     {required String title,
     required Widget newWidget,
     required Widget leadingWidget,
-    required String subtitle,
+     bool? bottomTitle,
+      Widget? bottomTitleWidget,
+    String? subtitle,
     TextStyle? style}) {
   return Padding(
     padding: const EdgeInsets.all(10.0),
@@ -45,7 +47,9 @@ Widget CommonCardExtended(
               children: [
                 // ListTile(leading: Icon(Icons.bookmark_added_outlined,size: 5,),title: Text(title),),
                 leadingWidget,
-                SizedBox(width: 10,),
+                SizedBox(
+                  width: 10,
+                ),
                 Flexible(
                   child: Text(
                     title,
@@ -55,9 +59,11 @@ Widget CommonCardExtended(
                 ),
                 Spacer(),
                 Text(
-                  subtitle,
-                  style: style == false ?theme.textTheme.titleMedium!
-                      .copyWith(fontWeight: FontWeight.w600, fontSize: 14):style,
+                  subtitle ?? '',
+                  style: style == false
+                      ? theme.textTheme.titleMedium!
+                          .copyWith(fontWeight: FontWeight.w600, fontSize: 14)
+                      : style,
                 ),
               ],
             ),
@@ -67,6 +73,16 @@ Widget CommonCardExtended(
             padding: const EdgeInsets.only(left: 8.0, right: 5),
             child: newWidget,
           ),
+          bottomTitle == true?Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+                color: Colors.green.shade50,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10))),
+            width: Get.width,
+            child: bottomTitleWidget
+          ):SizedBox(),
         ],
       ),
     ),

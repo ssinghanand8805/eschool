@@ -42,7 +42,7 @@ class _FeesPageState extends State<FeesPage> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return Column(
+              return controller.feesDataModal.value!.studentDueFee!.length >0 ? Column(
                 children: [
                   _buildRouteCard(data: controller.feesDataModal.value.grandFee!),
                   Expanded(
@@ -54,10 +54,15 @@ class _FeesPageState extends State<FeesPage> {
                                 data: controller.feesDataModal.value!.studentDueFee![index].fees,
                               )
                             : Center(
-                                child: Image.asset(
-                                "assets/projectImages/no_data.png",
-                                height: 100,
-                              ));
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  "assets/projectImages/no_data.png",
+                                ),
+                                Text("No data found!")
+                              ],
+                            ));
                       },
                     ),
                   ),
@@ -67,7 +72,16 @@ class _FeesPageState extends State<FeesPage> {
                   //   ),
                   // )
                 ],
-              );
+              ) : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/projectImages/no_data.png",
+                      ),
+                      Text("No data found!")
+                    ],
+                  ));
               ;
             }
           },

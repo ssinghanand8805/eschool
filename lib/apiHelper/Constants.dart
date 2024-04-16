@@ -24,6 +24,8 @@ class Constants {
   static const String getdownloadcontent = 'webservice/getDownloadsLinks';
   static const String getVideocontent = 'webservice/getVideoTutorial';
   static const String getTimelineUrl = 'webservice/getTimeline';
+  static const String getCbseexamtimetableUrl = 'webservice/cbseexamtimetable';
+  static const String getCbseexamresultUrl = 'webservice/cbseexamresult';
   // static const String getNotificationsUrl = 'webservice/getNotifications';
 
 

@@ -63,60 +63,84 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
   Widget _buildTimeTableCard({required Data data}) {
     return CommonCard(
         title: data.title!,
-        newWidget: Column(
-          children: [
-            Html(
-              data: data.message!,
-              style: {
-                "body": Style(
-                  fontSize: FontSize(15.0),
-                  color: Colors.black,
-                ),
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.calendar_today_outlined,
-                size: 18,
+        newWidget: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Html(
+                data: data.message!,
+                style: {
+                  "body": Style(
+                    fontSize: FontSize(15.0),
+                    color: Colors.black,
+                  ),
+                },
               ),
-              title: Text(
-                "Publish Date",
-                style: theme.textTheme.titleMedium,
+              Row(
+                children: [
+                  Image.asset("assets/projectImages/ic_nav_attendance.png",height: 20,),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Publish Date",
+                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    data.publishDate!,
+                    style: theme.textTheme.titleMedium,
+                  ),
+                ],
               ),
-              subtitle: Text(
-                data.publishDate!,
-                style: theme.textTheme.titleMedium,
+              SizedBox(
+                height: 10,
               ),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.calendar_today,
-                size: 18,
+              Row(
+                children: [
+                  Image.asset("assets/projectImages/ic_calender.png",height: 20,),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Notice Date",
+                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    data.date!,
+                    style: theme.textTheme.titleMedium,
+                  ),
+                ],
               ),
-              title: Text(
-                "Notice Date",
-                style: theme.textTheme.titleMedium,
+              SizedBox(
+                height: 10,
               ),
-              subtitle: Text(
-                data.date!,
-                style: theme.textTheme.titleMedium,
+              Row(
+                children: [
+                  Image.asset("assets/projectImages/ic_nav_teachers.png",height: 20,),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Created By",
+                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    data.createdBy!,
+                    style: theme.textTheme.titleMedium,
+                  ),
+                ],
               ),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.person,
-                size: 18,
-              ),
-              title: Text(
-                "Created By",
-                style: theme.textTheme.titleMedium,
-              ),
-              subtitle: Text(
-                data.createdBy!,
-                style: theme.textTheme.titleMedium,
-              ),
-            )
-          ],
+            ],
+          ),
         ));
   }
 }

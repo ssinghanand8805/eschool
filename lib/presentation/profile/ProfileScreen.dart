@@ -76,22 +76,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                           controller.profileModelObj.value!
                                               .studentResult!.section! +
                                           ' )',
-                                      style: theme.textTheme.bodySmall!
-                                          .copyWith(fontSize: 14),
+                                      style:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     ),
                                     Text(
                                         'Adm. No: ${controller.profileModelObj.value!.studentResult!.admissionNo!}',
-                                        style: theme.textTheme.bodySmall!
-                                            .copyWith(fontSize: 14)),
+                                      style:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),),
                                     Text(
                                         'Roll Number: ${controller.profileModelObj.value!.studentResult!.rollNo!}',
-                                        style: theme.textTheme.bodySmall!
-                                            .copyWith(fontSize: 14)),
+                                        style:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),),
                                     Row(
                                       children: [
                                         Text('BarCode:',
-                                            style: theme.textTheme.bodySmall!
-                                                .copyWith(fontSize: 14)),
+                                          style:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),),
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(top: 8.0),
@@ -110,7 +106,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                       children: [
                                         Text('Qr Code:',
                                             style: theme.textTheme.bodySmall!
-                                                .copyWith(fontSize: 14)),
+                                                .copyWith(fontSize: 13)),
                                         controller.profileModelObj.value!
                                                     .studentResult!.qrcode !=
                                                 null
@@ -181,8 +177,10 @@ class MyHomePage extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
+
                       color: Colors.green.shade50,
                       child: TabBar(
+                        labelStyle:theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                         unselectedLabelColor: Colors.grey.shade700,
                         // labelColor: const Color(0xFF3baee7),
                         // indicatorWeight: 3,
@@ -206,66 +204,92 @@ class MyHomePage extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   InfoRow(
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     title: 'Admission Date',
                                     value: Utils.formatDateString(controller.profileModelObj.value!
                                         .studentResult!.admissionDate!.toString()),
                                   ),
                                   InfoRow(
                                     title: 'Date Of Birth',
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     value: Utils.formatDateString(controller.profileModelObj.value!
                                         .studentResult!.dob!.toString()),
                                   ),
                                   InfoRow(
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     title: 'Gender',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.gender!,
                                   ),
                                   InfoRow(
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     title: 'Category',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.category!,
                                   ),
                                   InfoRow(
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     title: 'Mobile Number',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.mobileno!,
                                   ),
                                   InfoRow(
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     title: 'Cast',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.cast!,
                                   ),
                                   InfoRow(
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     title: 'Religion',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.religion!,
                                   ),
                                   InfoRow(
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     title: 'Email',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.email!,
                                   ),
                                   InfoRow(
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     title: 'Current Address',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.currentAddress!,
                                   ),
                                   InfoRow(
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     title: 'Blood Group',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.bloodGroup!,
                                   ),
                                   InfoRow(
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     title: 'Height',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.height!,
                                   ),
                                   InfoRow(
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     title: 'Weight',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.weight!,
                                   ),
                                   InfoRow(
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                     title: 'Note',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.note!,
@@ -719,83 +743,116 @@ class MyHomePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Previous School',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.previousSchool!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'National id Number',
                                   value: controller.profileModelObj.value!
                                       .studentFields!.nationalIdentificationNo
                                       .toString(),
                                 ),
                                 InfoRow(
+
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Local id Number',
                                   value: controller.profileModelObj.value!
                                       .studentFields!.localIdentificationNo
                                       .toString()!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Bank Name',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.bankName!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Bank Account Number',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.bankAccountNo!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Ifsc Code',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.ifscCode!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Previous School',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.previousSchool!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'RTE',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.rte!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Pickup Point',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.pickupPointName!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Vehicle Route',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.vehrouteId!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Vehicle Number',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.vehicleNo!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Driver Name',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.driverName!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Driver Contact',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.driverContact!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Hostels Room',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.hostelRoomId!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Room No',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.roomNo!,
                                 ),
                                 InfoRow(
+                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                                   title: 'Room Type',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.roomType!,

@@ -429,8 +429,10 @@ class HomeworkCard extends GetView<HomeWorkController> {
 class InfoRow extends StatelessWidget {
   final String title;
   final String value;
+   TextStyle? style;
+  TextStyle? style1;
 
-  const InfoRow({Key? key, required this.title, required this.value})
+   InfoRow({Key? key, required this.title, required this.value,this.style,this.style1})
       : super(key: key);
 
   @override
@@ -445,14 +447,14 @@ class InfoRow extends StatelessWidget {
             flex: 3,
             child: Text(
               title,
-              style: theme.textTheme.titleMedium,
+              style: style == false?theme.textTheme.titleMedium:style,
             ),
           ),
           Expanded(
             flex: 4,
             child: Text(
               value,
-              style: theme.textTheme.titleMedium!.copyWith(color: Colors.grey.shade700),
+              style: style1 == false?theme.textTheme.titleMedium!.copyWith(color: Colors.grey.shade700):style1,
             ),
           ),
         ],

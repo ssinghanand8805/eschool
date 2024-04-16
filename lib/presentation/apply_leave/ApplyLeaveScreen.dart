@@ -31,8 +31,10 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
           focusColor: Colors.white54,
           backgroundColor: Colors.grey,
           onPressed: () {
-
-            Navigator.push(context, MaterialPageRoute(builder: (context) => LeaveApplicationPage()),);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LeaveApplicationPage()),
+            );
           },
           child: const Icon(
             Icons.add,
@@ -54,45 +56,43 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {
                   return CustomLoader(); // CustomLoader();
+                } else {
+                  return controller.applyLeaveModelObj!.value != null
+                      ? controller.applyLeaveModelObj!.value!.resultArray!
+                                  .length >
+                              0
+                          ? ListView.builder(
+                              itemCount: controller.applyLeaveModelObj!.value!
+                                      .resultArray?.length ??
+                                  0,
+                              itemBuilder: (context, index) {
+                                return _buildLeaveCard(
+                                    data: controller.applyLeaveModelObj!.value!
+                                        .resultArray![index]);
+                              },
+                            )
+                          : Center(
+                              child: Image.asset(
+                                  "assets/projectImages/no_data.png"))
+                      : Center(
+                          child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/projectImages/no_data.png",
+                            ),
+                            Text("No data found!")
+                          ],
+                        ));
                 }
-                else {
-
-                  return controller.applyLeaveModelObj!.value != null ? controller.applyLeaveModelObj!.value!.resultArray!.length > 0 ? ListView.builder(
-                    itemCount: controller.applyLeaveModelObj!.value!.resultArray?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      return  _buildLeaveCard(
-                          data: controller.applyLeaveModelObj!.value!.resultArray![index]
-                      );
-                    },
-                  ) : Center(child: Image.asset("assets/projectImages/no_data.png")) : Center(child: Image.asset("assets/projectImages/no_data.png"));
-
-                  // return  controller.applyLeaveModelObj!.value!.resultArray!.length > 0
-                  //     ? ListView.builder(
-                  //   itemCount:  controller.applyLeaveModelObj.value.resultArray?.length ?? 0,
-                  //   itemBuilder: (context, index) {
-                  //     // return _buildLeaveCard();
-                  //
-                  //     return _buildLeaveCard(
-                  //         data: controller.applyLeaveModelObj.value
-                  //             .resultArray![index]);
-                  //   },
-                  // )
-                  //          : Center(child: Image.asset(
-                  //     "assets/projectImages/no_data.png"));
-
-
-                }
-              }
-          );
-        }
-    );
+              });
+        });
   }
 
   Widget _buildLeaveCard({required ResultArray data}) {
     print(data.applyDate);
     // return Text(data.applyDate!);
-    return
-        Padding(
+    return Padding(
       padding: EdgeInsets.all(12.0),
       child: Container(
         decoration: BoxDecoration(boxShadow: [
@@ -115,7 +115,9 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 8,),
+              padding: EdgeInsets.symmetric(
+                horizontal: 8,
+              ),
               height: 45,
               decoration: BoxDecoration(
                   color: Colors.green.shade100,
@@ -134,7 +136,6 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                     ),
                   ),
                   Spacer(),
-
                 ],
               ),
             ),
@@ -143,22 +144,47 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  InfoRow(title: 'From Date', value: "${data.fromDate}"),
-                  InfoRow(title: 'To  Date', value: "${data.toDate}"),
-                  InfoRow(title: 'Reason', value: '${data.reason}'),
-                 Row(children: [
-                   Text("Leave Status",style: theme.textTheme.titleMedium,),
-                   Spacer(),
-                   Text(
-                     "${_getStatusString(data.status!)}",
-                     //'{homework.} (Code)',
-                     style: TextStyle(
-                       color: _getStatusColor(data.status!),
-                       fontWeight: FontWeight.w600,
-                       fontSize: 14,
-                     ),
-                   ),
-                 ],)
+                  InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      title: 'From Date',
+                      value: "${data.fromDate}"),
+                  InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      title: 'To  Date',
+                      value: "${data.toDate}"),
+                  InfoRow(
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      title: 'Reason',
+                      value: '${data.reason}'),
+                  Row(
+                    children: [
+                      Text(
+                        "Leave Status",
+                        style:
+                            theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                      ),
+                      Spacer(),
+                      Container(
+                        height: 25,
+                        decoration: BoxDecoration(
+                            color: _getStatusColor(data.status!),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5),
+                            )),
+                        child: Center(
+                          child: Text(
+                            " ${_getStatusString(data.status!)} ",
+                            //'{homework.} (Code)',
+                            style: theme.textTheme.titleSmall!
+                                .copyWith(fontSize: 14, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -178,6 +204,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
       return Colors.red;
     }
   }
+
   String _getStatusString(String status) {
     print(status);
     if (status.toString() == "1") {
