@@ -22,8 +22,6 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
       imageUrl: 'assets/projectImages/hostelpage.jpg',
       AppbarTitle: 'Hostel Room',
       widget: _buildChildWidget(),
-
-
     );
   }
 
@@ -32,33 +30,34 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
       init: controller,
       builder: (_) {
         return FutureBuilder(
-          future:  controller.fetchDataFuture,//controller.getData(context),
+          future: controller.fetchDataFuture, //controller.getData(context),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
-            }
-            else {
+            } else {
+              return controller.hostelListModelObj.value.hostelarray!.length > 0
+                  ? ListView.builder(
+                      itemCount: controller
+                          .hostelListModelObj.value.hostelarray!.length,
+                      itemBuilder: (context, index) {
+                        // return _buildLeaveCard();
 
-              return controller.hostelListModelObj.value.hostelarray!.length > 0 ? ListView.builder(
-                itemCount: controller.hostelListModelObj.value.hostelarray!.length ,
-                itemBuilder: (context, index) {
-                  // return _buildLeaveCard();
-
-                  return  _buildLeaveCard(
-                    data: controller.hostelListModelObj.value.hostelarray![index],
-                  );
-                },
-              ) : Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/projectImages/no_data.png",
-                      ),
-                      Text("No data found!")
-                    ],
-                  ));
-
+                        return _buildLeaveCard(
+                          data: controller
+                              .hostelListModelObj.value.hostelarray![index],
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/projectImages/no_data.png",
+                        ),
+                        Text("No data found!")
+                      ],
+                    ));
             }
           },
         );
@@ -112,7 +111,24 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
                     ),
                   ),
                   Spacer(),
-                  data.assign == 1 ? Text("Assigned") : SizedBox(),
+                  data.assign == 1
+                      ?  Container(
+                    height: 25,
+                    decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        )),
+                    child: Center(
+                      child: Text(
+                        " Assigned ",
+                        //'{homework.} (Code)',
+                        style: theme.textTheme.titleSmall!
+                            .copyWith(fontSize: 13, color: Colors.white),
+                      ),
+                    ),
+                  )
+                      : SizedBox(),
                 ],
               ),
             ),
@@ -125,19 +141,23 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
                   InfoRow(
                       style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                       style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                      title: 'Room Type', value: data.roomType!),
+                      title: 'Room Type',
+                      value: data.roomType!),
                   InfoRow(
                       style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                       style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                      title: 'Room no.', value: data.roomNo!),
+                      title: 'Room no.',
+                      value: data.roomNo!),
                   InfoRow(
                       style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                       style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                      title: 'No. of Bed', value: data.noOfBed!),
+                      title: 'No. of Bed',
+                      value: data.noOfBed!),
                   InfoRow(
                       style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                       style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                      title: 'Cost per Bed', value: data.costPerBed!)
+                      title: 'Cost per Bed',
+                      value: data.costPerBed!)
                 ],
               ),
             ),

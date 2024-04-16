@@ -42,46 +42,55 @@ class _FeesPageState extends State<FeesPage> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return controller.feesDataModal.value!.studentDueFee!.length >0 ? Column(
-                children: [
-                  _buildRouteCard(data: controller.feesDataModal.value.grandFee!),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: controller.feesDataModal.value!.studentDueFee!.length ?? 0,
-                      itemBuilder: (context, index) {
-                        return controller.feesDataModal.value!.studentDueFee![index].fees!.length > 0
-                            ? timeLine(
-                                data: controller.feesDataModal.value!.studentDueFee![index].fees,
-                              )
-                            : Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  "assets/projectImages/no_data.png",
-                                ),
-                                Text("No data found!")
-                              ],
-                            ));
-                      },
-                    ),
-                  ),
-                  // Expanded(
-                  //   child: transportFee(
-                  //     data: controller.feesDataModal.value!.transportFees!,
-                  //   ),
-                  // )
-                ],
-              ) : Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/projectImages/no_data.png",
-                      ),
-                      Text("No data found!")
-                    ],
-                  ));
+              return controller.feesDataModal.value!.studentDueFee!.length > 0
+                  ? Column(
+                      children: [
+                        _buildRouteCard(
+                            data: controller.feesDataModal.value.grandFee!),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: controller.feesDataModal.value!
+                                    .studentDueFee!.length ??
+                                0,
+                            itemBuilder: (context, index) {
+                              return controller.feesDataModal.value!
+                                          .studentDueFee![index].fees!.length >
+                                      0
+                                  ? timeLine(
+                                      data: controller.feesDataModal.value!
+                                          .studentDueFee![index].fees,
+                                    )
+                                  : Center(
+                                      child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          "assets/projectImages/no_data.png",
+                                        ),
+                                        Text("No data found!")
+                                      ],
+                                    ));
+                            },
+                          ),
+                        ),
+                        // Expanded(
+                        //   child: transportFee(
+                        //     data: controller.feesDataModal.value!.transportFees!,
+                        //   ),
+                        // )
+                      ],
+                    )
+                  : Center(
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/projectImages/no_data.png",
+                        ),
+                        Text("No data found!")
+                      ],
+                    ));
               ;
             }
           },
@@ -90,33 +99,29 @@ class _FeesPageState extends State<FeesPage> {
     );
   }
 
-  Widget _buildRouteCard({ GrandFee? data}) {
+  Widget _buildRouteCard({GrandFee? data}) {
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(8),
           child: Container(
             width: double.infinity,
-
-            decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade400,
-                    offset: const Offset(
-                      0.3,
-                      3.0,
-                    ),
-                    blurRadius: 4.0,
-                  ), //BoxShadow
-                  BoxShadow(
-                    color: Colors.white,
-                    offset: const Offset(0.0, 0.0),
-                    blurRadius: 0.0,
-                    spreadRadius: 0.0,
-                  ), //BoxShadow
-                ],
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade400,
+                offset: const Offset(
+                  0.3,
+                  3.0,
+                ),
+                blurRadius: 4.0,
+              ), //BoxShadow
+              BoxShadow(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(10)),
+                offset: const Offset(0.0, 0.0),
+                blurRadius: 0.0,
+                spreadRadius: 0.0,
+              ), //BoxShadow
+            ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -129,10 +134,9 @@ class _FeesPageState extends State<FeesPage> {
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10))),
                   width: Get.width,
-                  child: Text(
-                      'Grand Total',
-                      style:  theme.textTheme.titleMedium!.copyWith(fontSize: 17,fontWeight: FontWeight.w600)
-                  ),
+                  child: Text('Grand Total',
+                      style: theme.textTheme.titleMedium!
+                          .copyWith(fontSize: 17, fontWeight: FontWeight.w600)),
                 ),
                 SizedBox(height: 12.0),
                 _buildGrandTotalTable(data: data)
@@ -144,6 +148,7 @@ class _FeesPageState extends State<FeesPage> {
       ],
     );
   }
+
   Widget _buildGrandTotalTable({GrandFee? data}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -154,48 +159,79 @@ class _FeesPageState extends State<FeesPage> {
               TableCell(
                 child: Text(
                   'Amount',
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
+                  style: theme.textTheme.titleSmall!.copyWith(
+                    fontSize: 14,
+                  ),
                 ),
               ),
               TableCell(
                 child: Text(
                   'Discount',
-                  style:TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
+                  style: theme.textTheme.titleSmall!.copyWith(
+                    fontSize: 14,
+                  ),
                 ),
               ),
               TableCell(
                 child: Text(
                   'Fine',
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
+                  style: theme.textTheme.titleSmall!.copyWith(
+                    fontSize: 14,
+                  ),
                 ),
               ),
               TableCell(
                 child: Text(
                   'Paid',
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
+                  style: theme.textTheme.titleSmall!.copyWith(
+                    fontSize: 14,
+                  ),
                 ),
               ),
               TableCell(
                 child: Text(
                   'Balance',
-                  style:TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
+                  style: theme.textTheme.titleSmall!.copyWith(
+                    fontSize: 14,
+                  ),
                 ),
               ),
             ],
           ),
           TableRow(
             children: [
-              TableCell(child: Text('\Rs. ${data!.amount}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
-              TableCell(child: Text(' \Rs. ${data.amountDiscount}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
-              TableCell(child: Text(' \Rs. ${data.feeFine}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
-              TableCell(child: Text(' \Rs. ${data.amountPaid}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
-              TableCell(child: Text(' \Rs. ${data.amountRemaining}',style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),)),
+              TableCell(
+                  child: Text(
+                '\Rs. ${data!.amount}',
+                style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),
+              )),
+              TableCell(
+                  child: Text(
+                ' \Rs. ${data.amountDiscount}',
+                style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),
+              )),
+              TableCell(
+                  child: Text(
+                ' \Rs. ${data.feeFine}',
+                style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),
+              )),
+              TableCell(
+                  child: Text(
+                ' \Rs. ${data.amountPaid}',
+                style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),
+              )),
+              TableCell(
+                  child: Text(
+                ' \Rs. ${data.amountRemaining}',
+                style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),
+              )),
             ],
           ),
         ],
       ),
     );
   }
+
   Widget timeLine({List<Fees>? data}) {
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
@@ -207,7 +243,6 @@ class _FeesPageState extends State<FeesPage> {
               padding: const EdgeInsets.all(8),
               child: Container(
                 width: double.infinity,
-
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
@@ -239,37 +274,73 @@ class _FeesPageState extends State<FeesPage> {
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10))),
                       width: Get.width,
-                      child: Text(
-                        data![index].name! + " " + data![index].type!,
-                        style:  theme.textTheme.titleMedium!.copyWith(fontSize: 17,fontWeight: FontWeight.w600)
-                      ),
+                      child: Text(data![index].name! + " " + data![index].type!,
+                          style: theme.textTheme.titleMedium!.copyWith(
+                              fontSize: 17, fontWeight: FontWeight.w600)),
                     ),
                     SizedBox(height: 12.0),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(left: 12.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           InfoRow(
+                              style: theme.textTheme.titleSmall!.copyWith(
+                                fontSize: 14,
+                              ),
+                              style1: theme.textTheme.bodySmall!
+                                  .copyWith(fontSize: 14),
                               title: 'Fees Code',
                               value: data![index].code!),
                           InfoRow(
+                              style: theme.textTheme.titleSmall!.copyWith(
+                                fontSize: 14,
+                              ),
+                              style1: theme.textTheme.bodySmall!
+                                  .copyWith(fontSize: 14),
                               title: 'Due Date',
                               value: data![index].dueDate!),
                           InfoRow(
+                              style: theme.textTheme.titleSmall!.copyWith(
+                                fontSize: 14,
+                              ),
+                              style1: theme.textTheme.bodySmall!
+                                  .copyWith(fontSize: 14),
                               title: 'Amount',
                               value: "Rs ${data![index].amount!}"),
                           InfoRow(
+                              style: theme.textTheme.titleSmall!.copyWith(
+                                fontSize: 14,
+                              ),
+                              style1: theme.textTheme.bodySmall!
+                                  .copyWith(fontSize: 14),
                               title: 'Fine',
                               value: "Rs  ${data![index].fineAmount!}"),
                           InfoRow(
+                              style: theme.textTheme.titleSmall!.copyWith(
+                                fontSize: 14,
+                              ),
+                              style1: theme.textTheme.bodySmall!
+                                  .copyWith(fontSize: 14),
                               title: 'Discount',
                               value: "Rs ${data![index].totalAmountDiscount!}"),
                           InfoRow(
+                              style: theme.textTheme.titleSmall!.copyWith(
+                                fontSize: 14,
+                              ),
+                              style1: theme.textTheme.bodySmall!
+                                  .copyWith(fontSize: 14),
                               title: 'Paid Amount',
                               value: "Rs ${data![index].totalAmountPaid!}"),
                           InfoRow(
-                              title: 'Balance Amount ', value: "Rs ${data![index].totalAmountRemaining!}"),
+                              style: theme.textTheme.titleSmall!.copyWith(
+                                fontSize: 14,
+                              ),
+                              style1: theme.textTheme.bodySmall!
+                                  .copyWith(fontSize: 14),
+                              title: 'Balance Amount ',
+                              value:
+                                  "Rs ${data![index].totalAmountRemaining!}"),
                         ],
                       ),
                     ),
@@ -323,7 +394,6 @@ class _FeesPageState extends State<FeesPage> {
               padding: const EdgeInsets.all(8),
               child: Container(
                 width: double.infinity,
-
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
@@ -355,10 +425,9 @@ class _FeesPageState extends State<FeesPage> {
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10))),
                       width: Get.width,
-                      child: Text(
-                          "Transport Fee",
-                          style:  theme.textTheme.titleMedium!.copyWith(fontSize: 17,fontWeight: FontWeight.w600)
-                      ),
+                      child: Text("Transport Fee",
+                          style: theme.textTheme.titleMedium!.copyWith(
+                              fontSize: 17, fontWeight: FontWeight.w600)),
                     ),
                     SizedBox(height: 12.0),
                     Padding(
@@ -367,11 +436,9 @@ class _FeesPageState extends State<FeesPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           InfoRow(
-                              title: 'Fees Code',
-                              value: data![index].month!),
+                              title: 'Fees Code', value: data![index].month!),
                           InfoRow(
-                              title: 'Due Date',
-                              value: data![index].dueDate!),
+                              title: 'Due Date', value: data![index].dueDate!),
                           InfoRow(
                               title: 'Amount',
                               value: "Rs ${data![index].amountDetail!}"),
@@ -385,7 +452,9 @@ class _FeesPageState extends State<FeesPage> {
                               title: 'Paid Amount',
                               value: "Rs ${data![index].totalAmountPaid!}"),
                           InfoRow(
-                              title: 'Balance Amount ', value: "Rs ${data![index].totalAmountRemaining!}"),
+                              title: 'Balance Amount ',
+                              value:
+                                  "Rs ${data![index].totalAmountRemaining!}"),
                         ],
                       ),
                     ),

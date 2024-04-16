@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:learnladder/core/app_export.dart';
 import 'package:learnladder/presentation/apply_leave/uploadLeave.dart';
 
+import '../../core/utils/common_utilities.dart';
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
 import '../homework/HomeworkScreen.dart';
@@ -128,7 +129,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
               child: Row(
                 children: [
                   Text(
-                    "Apply Date - ${data.applyDate}",
+                    "Apply Date",
                     //'{homework.} (Code)',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
@@ -136,6 +137,16 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                     ),
                   ),
                   Spacer(),
+                  Text(
+                    Utils.formatDateString(data.applyDate!.toString()),
+                    //'{homework.} (Code)',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+
+
                 ],
               ),
             ),
@@ -148,12 +159,12 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                       style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                       style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                       title: 'From Date',
-                      value: "${data.fromDate}"),
+                      value:"${Utils.formatDateString(data.fromDate!.toString())}"),
                   InfoRow(
                       style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                       style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                       title: 'To  Date',
-                      value: "${data.toDate}"),
+                      value: "${Utils.formatDateString(data.toDate!.toString())}"),
                   InfoRow(
                       style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                       style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),

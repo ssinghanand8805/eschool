@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:intl/intl.dart';
 import 'package:learnladder/core/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:learnladder/presentation/class_time_table/controller/class_time_table_controller.dart';
@@ -11,6 +12,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../apiHelper/Constants.dart';
+import '../../core/utils/common_utilities.dart';
 import '../common_widgets/CommonCard.dart';
 import '../common_widgets/CommonCardExtended.dart';
 import '../common_widgets/MainBody.dart';
@@ -278,6 +280,8 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
   Widget _buildDownloadItem(
       {required DownloadCenter data,
       required List<UploadContents> uploadContents}) {
+    DateTime dateTime = DateTime.parse(data.createdAt.toString());
+    String formattedTime = DateFormat.jm().format(dateTime);
     return CommonCardExtended(
       title: data.title.toString(),
       leadingWidget: SizedBox(),
@@ -291,12 +295,12 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                 style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                 style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                 title: "Share Date",
-                value: data.shareDate.toString()),
+                value:"${ Utils.formatDateString(data.shareDate!.toString())}"),
             InfoRow(
                 style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                 style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                 title: "Valid Upto",
-                value: data.validUpto ?? ""),
+                value: data.validUpto != null? Utils.formatDateString("${data.validUpto!}"):""),
             InfoRow(
                 style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                 style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
@@ -306,9 +310,10 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                 style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                 style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                 title: "Upload Date",
-                value: data.createdAt.toString()),
+                value:Utils.formatDateString("${data.createdAt!}")+" ${formattedTime}"),
             customDownloadButton(
               onPressed: () {
+
                 showDynamicBottomSheet(context, data: uploadContents!);
               },
               backgroundColor: Colors.blue,

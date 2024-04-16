@@ -48,7 +48,13 @@ class _VisitorBookPageState extends State<VisitorBookPage> {
         data: controller.visitorModelObj.value.result![index],
         );
                 },
-              ) : Center(child: Image.asset("assets/projectImages/no_data.png"));
+              ) : Center(child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("assets/projectImages/no_data.png"),
+                  Text("No data found!")
+                ],
+              ));
 
             }
           },

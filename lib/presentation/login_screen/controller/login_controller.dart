@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
+import '../../../apiHelper/toastMessage.dart';
 import '../../../core/app_export.dart';
 
 
@@ -143,6 +144,13 @@ class LoginController extends GetxController {
       }
     } else {
       print('login failed:::::::::');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.green.shade100,
+          content: Text(data.body["message"],style: theme.textTheme.titleMedium),
+        ),
+      );
+
     }
 
     //print("DATA USING DATA MODEL ${usersData.role}");

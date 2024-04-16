@@ -48,7 +48,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                               topLeft: Radius.circular(20),
                             )),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 30.0,bottom: 5),
+                          padding: const EdgeInsets.only(left: 30.0, bottom: 5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -76,28 +76,37 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                           controller.profileModelObj.value!
                                               .studentResult!.section! +
                                           ' )',
-                                      style:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                      style: theme.textTheme.bodySmall!
+                                          .copyWith(fontSize: 13),
                                     ),
                                     Text(
-                                        'Adm. No: ${controller.profileModelObj.value!.studentResult!.admissionNo!}',
-                                      style:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),),
+                                      'Adm. No: ${controller.profileModelObj.value!.studentResult!.admissionNo!}',
+                                      style: theme.textTheme.bodySmall!
+                                          .copyWith(fontSize: 13),
+                                    ),
                                     Text(
-                                        'Roll Number: ${controller.profileModelObj.value!.studentResult!.rollNo!}',
-                                        style:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),),
+                                      'Roll Number: ${controller.profileModelObj.value!.studentResult!.rollNo!}',
+                                      style: theme.textTheme.bodySmall!
+                                          .copyWith(fontSize: 13),
+                                    ),
                                     Row(
                                       children: [
-                                        Text('BarCode:',
-                                          style:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),),
+                                        Text(
+                                          'BarCode:',
+                                          style: theme.textTheme.bodySmall!
+                                              .copyWith(fontSize: 13),
+                                        ),
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(top: 8.0),
                                           child: Image.network(
                                               Constants.imagesUrl2 +
-                                                  controller
-                                                      .profileModelObj
-                                                      .value!
-                                                      .studentResult!
-                                                      .barcode! ??"",
+                                                      controller
+                                                          .profileModelObj
+                                                          .value!
+                                                          .studentResult!
+                                                          .barcode! ??
+                                                  "",
                                               height: 20),
                                         ),
                                       ],
@@ -112,11 +121,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                                 null
                                             ? Image.network(
                                                 Constants.imagesUrl2 +
-                                                    controller
-                                                        .profileModelObj
-                                                        .value!
-                                                        .studentResult!
-                                                        .qrcode! ??'',
+                                                        controller
+                                                            .profileModelObj
+                                                            .value!
+                                                            .studentResult!
+                                                            .qrcode! ??
+                                                    '',
                                                 height: 35,
                                                 width: 35)
                                             : SizedBox(),
@@ -135,9 +145,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                             radius: 45,
                                             backgroundColor: Colors.orange,
                                             backgroundImage: NetworkImage(
-                                                Constants.imagesUrl + controller.profileModelObj
-                                                    .value!.studentResult!.image
-                                                    .toString()),
+                                                Constants.imagesUrl +
+                                                    controller
+                                                        .profileModelObj
+                                                        .value!
+                                                        .studentResult!
+                                                        .image
+                                                        .toString()),
                                           )
                                         : CircleAvatar(
                                             radius: 45,
@@ -177,10 +191,10 @@ class MyHomePage extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-
                       color: Colors.green.shade50,
                       child: TabBar(
-                        labelStyle:theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                        labelStyle:
+                            theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                         unselectedLabelColor: Colors.grey.shade700,
                         // labelColor: const Color(0xFF3baee7),
                         // indicatorWeight: 3,
@@ -204,92 +218,126 @@ class MyHomePage extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   InfoRow(
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 13),
+                                    style1: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 13),
                                     title: 'Admission Date',
-                                    value: Utils.formatDateString(controller.profileModelObj.value!
-                                        .studentResult!.admissionDate!.toString()),
+                                    value: Utils.formatDateString(controller
+                                        .profileModelObj
+                                        .value!
+                                        .studentResult!
+                                        .admissionDate!
+                                        .toString()),
                                   ),
                                   InfoRow(
                                     title: 'Date Of Birth',
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
-                                    value: Utils.formatDateString(controller.profileModelObj.value!
-                                        .studentResult!.dob!.toString()),
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 13),
+                                    style1: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 13),
+                                    value: Utils.formatDateString(controller
+                                        .profileModelObj
+                                        .value!
+                                        .studentResult!
+                                        .dob!
+                                        .toString()),
                                   ),
                                   InfoRow(
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 13),
+                                    style1: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 13),
                                     title: 'Gender',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.gender!,
                                   ),
                                   InfoRow(
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 13),
+                                    style1: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 13),
                                     title: 'Category',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.category!,
                                   ),
                                   InfoRow(
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 13),
+                                    style1: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 13),
                                     title: 'Mobile Number',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.mobileno!,
                                   ),
                                   InfoRow(
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 13),
+                                    style1: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 13),
                                     title: 'Cast',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.cast!,
                                   ),
                                   InfoRow(
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 13),
+                                    style1: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 13),
                                     title: 'Religion',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.religion!,
                                   ),
                                   InfoRow(
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 13),
+                                    style1: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 13),
                                     title: 'Email',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.email!,
                                   ),
                                   InfoRow(
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 13),
+                                    style1: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 13),
                                     title: 'Current Address',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.currentAddress!,
                                   ),
                                   InfoRow(
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 13),
+                                    style1: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 13),
                                     title: 'Blood Group',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.bloodGroup!,
                                   ),
                                   InfoRow(
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 13),
+                                    style1: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 13),
                                     title: 'Height',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.height!,
                                   ),
                                   InfoRow(
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 13),
+                                    style1: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 13),
                                     title: 'Weight',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.weight!,
                                   ),
                                   InfoRow(
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                    style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 13),
+                                    style1: theme.textTheme.bodySmall!
+                                        .copyWith(fontSize: 13),
                                     title: 'Note',
                                     value: controller.profileModelObj.value!
                                         .studentResult!.note!,
@@ -311,15 +359,18 @@ class MyHomePage extends StatelessWidget {
                                     children: [
                                       Column(
                                         children: [
-                                          controller.profileModelObj.value!
-                                                      .studentResult!.image !=
-                                                  null
+                                          controller
+                                                  .profileModelObj
+                                                  .value!
+                                                  .studentResult!
+                                                  .fatherPic!
+                                                  .isNotEmpty
                                               ? CircleAvatar(
                                                   radius: 35,
                                                   backgroundColor:
-                                                      Colors.orange,
+                                                      Colors.grey.shade200,
                                                   backgroundImage: NetworkImage(
-                                                      controller
+                                                    Constants.imagesUrl+  controller
                                                           .profileModelObj
                                                           .value!
                                                           .studentResult!
@@ -329,7 +380,7 @@ class MyHomePage extends StatelessWidget {
                                               : CircleAvatar(
                                                   radius: 35,
                                                   backgroundColor:
-                                                      Colors.orange,
+                                                      Colors.grey.shade200,
                                                   backgroundImage: AssetImage(
                                                       'assets/projectImages/placeholder_user.png'),
                                                 ),
@@ -337,16 +388,16 @@ class MyHomePage extends StatelessWidget {
                                             height: 5,
                                           ),
                                           Text("Father",
-                                              style: theme
-                                                  .textTheme.titleMedium!
-                                          ),
+                                              style:
+                                                  theme.textTheme.titleMedium!),
                                         ],
                                       ),
                                       Column(
                                         children: [
                                           Row(
                                             children: [
-                                              Icon(Icons.person,color: Colors.grey.shade700),
+                                              Icon(Icons.person,
+                                                  color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
@@ -365,7 +416,8 @@ class MyHomePage extends StatelessWidget {
                                           SizedBox(height: 10),
                                           Row(
                                             children: [
-                                              Icon(Icons.call,color: Colors.grey.shade700),
+                                              Icon(Icons.call,
+                                                  color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
@@ -385,10 +437,10 @@ class MyHomePage extends StatelessWidget {
                                           Row(
                                             children: [
                                               Image.asset(
-                                                "assets/projectImages/ic_briefcase.png",
-                                                height: 35,
-                                                width: 25,color: Colors.grey.shade700
-                                              ),
+                                                  "assets/projectImages/ic_briefcase.png",
+                                                  height: 35,
+                                                  width: 25,
+                                                  color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
@@ -440,25 +492,28 @@ class MyHomePage extends StatelessWidget {
                                     children: [
                                       Column(
                                         children: [
-                                          controller.profileModelObj.value!
-                                                      .studentResult!.image !=
-                                                  null
+                                          controller
+                                                  .profileModelObj
+                                                  .value!
+                                                  .studentResult!
+                                                  .motherPic!
+                                                  .isNotEmpty
                                               ? CircleAvatar(
                                                   radius: 35,
                                                   backgroundColor:
-                                                      Colors.orange,
+                                                      Colors.grey.shade200,
                                                   backgroundImage: NetworkImage(
-                                                      controller
+                                                      Constants.imagesUrl+  controller
                                                           .profileModelObj
                                                           .value!
                                                           .studentResult!
-                                                          .fatherPic
+                                                          .motherPic
                                                           .toString()),
                                                 )
                                               : CircleAvatar(
                                                   radius: 35,
                                                   backgroundColor:
-                                                      Colors.orange,
+                                                      Colors.grey.shade200,
                                                   backgroundImage: AssetImage(
                                                       'assets/projectImages/placeholder_user.png'),
                                                 ),
@@ -466,16 +521,16 @@ class MyHomePage extends StatelessWidget {
                                             height: 5,
                                           ),
                                           Text("Mother",
-                                              style: theme
-                                                  .textTheme.titleMedium!
-                                          ),
+                                              style:
+                                                  theme.textTheme.titleMedium!),
                                         ],
                                       ),
                                       Column(
                                         children: [
                                           Row(
                                             children: [
-                                              Icon(Icons.person,color: Colors.grey.shade700),
+                                              Icon(Icons.person,
+                                                  color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
@@ -494,7 +549,8 @@ class MyHomePage extends StatelessWidget {
                                           SizedBox(height: 10),
                                           Row(
                                             children: [
-                                              Icon(Icons.call,color: Colors.grey.shade700),
+                                              Icon(Icons.call,
+                                                  color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
@@ -514,10 +570,10 @@ class MyHomePage extends StatelessWidget {
                                           Row(
                                             children: [
                                               Image.asset(
-                                                "assets/projectImages/ic_briefcase.png",
-                                                height: 35,
-                                                width: 25,color: Colors.grey.shade700
-                                              ),
+                                                  "assets/projectImages/ic_briefcase.png",
+                                                  height: 35,
+                                                  width: 25,
+                                                  color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
@@ -569,25 +625,27 @@ class MyHomePage extends StatelessWidget {
                                     children: [
                                       Column(
                                         children: [
-                                          controller.profileModelObj.value!
-                                                      .studentResult!.image !=
-                                                  null
+                                          controller
+                                                  .profileModelObj
+                                                  .value!
+                                                  .studentResult!
+                                                  .guardianPic!
+                                                  .isNotEmpty
                                               ? CircleAvatar(
                                                   radius: 35,
                                                   backgroundColor:
-                                                      Colors.orange,
+                                                      Colors.grey.shade200,
                                                   backgroundImage: NetworkImage(
-                                                      controller
+                                                      Constants.imagesUrl+   controller
                                                           .profileModelObj
                                                           .value!
                                                           .studentResult!
-                                                          .fatherPic
+                                                          .guardianPic
                                                           .toString()),
                                                 )
                                               : CircleAvatar(
                                                   radius: 35,
-                                                  backgroundColor:
-                                                      Colors.orange,
+                                                  backgroundColor: Colors.grey.shade200,
                                                   backgroundImage: AssetImage(
                                                       'assets/projectImages/placeholder_user.png'),
                                                 ),
@@ -595,16 +653,16 @@ class MyHomePage extends StatelessWidget {
                                             height: 5,
                                           ),
                                           Text("Guardian",
-                                              style: theme
-                                                  .textTheme.titleMedium!
-                                                 ),
+                                              style:
+                                                  theme.textTheme.titleMedium!),
                                         ],
                                       ),
                                       Column(
                                         children: [
                                           Row(
                                             children: [
-                                              Icon(Icons.person,color: Colors.grey.shade700),
+                                              Icon(Icons.person,
+                                                  color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
@@ -623,7 +681,8 @@ class MyHomePage extends StatelessWidget {
                                           SizedBox(height: 10),
                                           Row(
                                             children: [
-                                              Icon(Icons.call,color: Colors.grey.shade700),
+                                              Icon(Icons.call,
+                                                  color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
@@ -643,10 +702,10 @@ class MyHomePage extends StatelessWidget {
                                           Row(
                                             children: [
                                               Image.asset(
-                                                "assets/projectImages/ic_briefcase.png",
-                                                height: 35,
-                                                width: 25,color: Colors.grey.shade700
-                                              ),
+                                                  "assets/projectImages/ic_briefcase.png",
+                                                  height: 35,
+                                                  width: 25,
+                                                  color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
@@ -665,10 +724,10 @@ class MyHomePage extends StatelessWidget {
                                           Row(
                                             children: [
                                               Image.asset(
-                                                "assets/projectImages/ic_relation.png",
-                                                height: 35,
-                                                width: 25,color: Colors.grey.shade700
-                                              ),
+                                                  "assets/projectImages/ic_relation.png",
+                                                  height: 35,
+                                                  width: 25,
+                                                  color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
@@ -687,11 +746,10 @@ class MyHomePage extends StatelessWidget {
                                           Row(
                                             children: [
                                               Image.asset(
-                                                "assets/projectImages/ic_email_filled.png",
-                                                height: 35,
-                                                width: 25,
-                                                 color: Colors.grey.shade700
-                                              ),
+                                                  "assets/projectImages/ic_email_filled.png",
+                                                  height: 35,
+                                                  width: 25,
+                                                  color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
@@ -710,10 +768,10 @@ class MyHomePage extends StatelessWidget {
                                           Row(
                                             children: [
                                               Image.asset(
-                                                "assets/projectImages/ic_location.png",
-                                                height: 35,
-                                                width: 25,color: Colors.grey.shade700
-                                              ),
+                                                  "assets/projectImages/ic_location.png",
+                                                  height: 35,
+                                                  width: 25,
+                                                  color: Colors.grey.shade700),
                                               SizedBox(
                                                 width: 5,
                                               ),
@@ -743,116 +801,147 @@ class MyHomePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Previous School',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.previousSchool!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'National id Number',
                                   value: controller.profileModelObj.value!
                                       .studentFields!.nationalIdentificationNo
                                       .toString(),
                                 ),
                                 InfoRow(
-
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Local id Number',
                                   value: controller.profileModelObj.value!
                                       .studentFields!.localIdentificationNo
                                       .toString()!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Bank Name',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.bankName!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Bank Account Number',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.bankAccountNo!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Ifsc Code',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.ifscCode!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Previous School',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.previousSchool!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'RTE',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.rte!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Pickup Point',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.pickupPointName!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Vehicle Route',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.vehrouteId!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Vehicle Number',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.vehicleNo!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Driver Name',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.driverName!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Driver Contact',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.driverContact!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Hostels Room',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.hostelRoomId!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Room No',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.roomNo!,
                                 ),
                                 InfoRow(
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                                  style1:  theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                                  style: theme.textTheme.titleSmall!
+                                      .copyWith(fontSize: 13),
+                                  style1: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 13),
                                   title: 'Room Type',
                                   value: controller.profileModelObj.value!
                                       .studentResult!.roomType!,

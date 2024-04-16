@@ -59,26 +59,37 @@ class _AboutSchoolScreenState extends State<AboutSchoolScreen> {
                         ),
                         SizedBox(height: 16.0),
                         InfoRow(
+                            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                             title: 'Address',
                             value: controller.schoolAddress.value!),
                         InfoRow(
+                            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                             title: 'Phone',
                             value: controller.schoolPhone.value!),
                         InfoRow(
+                            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                             title: 'Email',
                             value: controller.schoolEmail.value!),
                         InfoRow(
+                            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                             title: 'School Code',
                             value: controller.schoolSchoolCode.value!),
                         InfoRow(
+                            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                             title: 'Current Session',
                             value: controller.schoolCurrentSession.value!),
                         InfoRow(
+                            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                             title: 'Session Stat Month',
                             value: controller.schoolStartMonth.value!),
                         ElevatedButton(
                           onPressed: () {
-                            // Action to perform when the button is pressed
                             print('Change School button pressed');
                             controller.changeSchool();
                           },

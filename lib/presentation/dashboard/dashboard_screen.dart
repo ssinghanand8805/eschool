@@ -215,7 +215,7 @@ class DashboardScreen extends GetView<DashboardController> {
                       style: theme.textTheme.titleSmall!.copyWith(fontSize: 14)
                     ),
                     onTap: () {
-                      controller.logout();
+                      controller.logOutDialog(context);
                     },
                   ),
                   const Divider(
@@ -264,7 +264,7 @@ class DashboardScreen extends GetView<DashboardController> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              userData.getIsUserImage
+                              userData.getIsUserImage == true
                                   ? CircleAvatar(
                                       radius: 45,
                                       backgroundColor: Colors.orange,

@@ -430,4 +430,70 @@ getSchoolDetails() async {
   }
 
 
+  Future<void> logOutDialog(context) async {
+    return showDialog<void>(
+
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        var screenWidth = MediaQuery.of(context).size.width;
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          title: Text(
+           'Logout',
+            style: theme.textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600,fontSize: 19),
+          ),
+          content: Text("Are you sure you want to logout?", style: theme.textTheme.bodyMedium,),
+          actions: <Widget>[
+            TextButton(
+              style: ButtonStyle(
+
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  Colors.green.shade300,
+                ),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2.0),
+                  ),
+                ),
+              ),
+              child: Text(
+                'Cancel',
+                style: theme.textTheme.bodyMedium,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: TextButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    Colors.red.shade200,
+                  ),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2.0),
+                    ),
+                  ),
+                ),
+                child: Text(
+                   'Logout',style: theme.textTheme.bodyMedium,
+                ),
+                onPressed: () async {
+                  logout();
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
