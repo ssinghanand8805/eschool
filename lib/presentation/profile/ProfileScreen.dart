@@ -139,7 +139,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                             radius: 45,
                                             backgroundColor: Colors.orange,
                                             backgroundImage: NetworkImage(
-                                                controller.profileModelObj
+                                                Constants.imagesUrl + controller.profileModelObj
                                                     .value!.studentResult!.image
                                                     .toString()),
                                           )
