@@ -28,7 +28,7 @@ class SchoolUrlController extends GetxController {
     super.onInit();
     // fetchDataFuture = getData(); // Initialize the future when the controller is created
   }
-  Future<void> getData() async
+  Future<void> getData(context) async
   {
     var httpClient = HttpClient();
     try {
@@ -85,12 +85,27 @@ class SchoolUrlController extends GetxController {
             AppRoutes.sScreen,
           );
       } else {
-        print('Error: ${response.statusCode}');
-        Ui.ErrorSnackBar(message: response.statusCode.toString());
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green.shade100,
+            content: Text("Not Found",style: theme.textTheme.titleMedium),
+          ),
+        );
+
+        print('Error from school: ${response.statusCode}');
+
+
+
       }
     } catch (e) {
       print("Error occurred: $e");
-       Ui.ErrorSnackBar(message: e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.green.shade100,
+          content: Text("Not Found",style: theme.textTheme.titleMedium),
+        ),
+      );
+
     } finally {
       httpClient.close();
     }
