@@ -234,34 +234,42 @@ class HomeworkTabContent extends GetWidget<HomeWorkController> {
     return GetBuilder(
       init: controller,
       builder: (_) {
-        return FutureBuilder(
-          future: controller.fetchDataFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return CustomLoader();
-            } else if (controller.homeworkModelObj.value.homeworklist != null &&
-                controller.homeworkModelObj.value.homeworklist?.length == 0) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset("assets/projectImages/no_data.png"),
-                  Text("No data found"),
-                ],
-              );
-            } else {
-              return ListView.builder(
-                itemCount:
-                controller.homeworkModelObj.value.homeworklist?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return HomeworkCard(
-                    status: status,
-                    homework:
-                    controller.homeworkModelObj.value.homeworklist![index],
-                  );
-                },
-              );
-            }
+        return RefreshIndicator(
+          onRefresh: () async {
+            // Implement your refresh logic here
+            print("Refresh Called");
+            await controller.fetchDataFutureForSubjects; // Example method to load data
+            await controller.fetchDataFuture; // Example method to load data
           },
+          child: FutureBuilder(
+            future: controller.fetchDataFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return CustomLoader();
+              } else if (controller.homeworkModelObj.value.homeworklist != null &&
+                  controller.homeworkModelObj.value.homeworklist?.length == 0) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset("assets/projectImages/no_data.png"),
+                    Text("No data found"),
+                  ],
+                );
+              } else {
+                return ListView.builder(
+                  itemCount:
+                  controller.homeworkModelObj.value.homeworklist?.length ?? 0,
+                  itemBuilder: (context, index) {
+                    return HomeworkCard(
+                      status: status,
+                      homework:
+                      controller.homeworkModelObj.value.homeworklist![index],
+                    );
+                  },
+                );
+              }
+            },
+          ),
         );
       },
     );

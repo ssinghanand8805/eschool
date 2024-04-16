@@ -23,7 +23,14 @@ class DownloadCenterController extends GetxController {
     fetchDataFuture = getDownloadImageData();
     fetchDataFuture = getShowVideoData();
   }
-
+  Future<void> refreshDataImage() async {
+    await getDownloadImageData(); // Assuming getData fetches and updates the list
+    update(); // This triggers a UI update if using GetX for state management
+  }
+  Future<void> refreshDataVideo() async {
+    await getShowVideoData(); // Assuming getData fetches and updates the list
+    update(); // This triggers a UI update if using GetX for state management
+  }
   Future<void> getDownloadImageData() async {
     Map<String, dynamic> body = {
       "student_id": userData.getUserStudentId,

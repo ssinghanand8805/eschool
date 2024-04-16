@@ -115,31 +115,35 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
     return GetBuilder(
       init: controller,
       builder: (_) {
-        return FutureBuilder(
-          future: controller.fetchDataFuture, //controller.getData(context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return CustomLoader(); // CustomLoader();
-            } else {
-              return ListView.builder(
-                itemCount: controller.downloadModelObj.length ?? 0,
-                itemBuilder: (context, index) {
-                  return controller.downloadModelObj.length > 0
-                      ? _buildDownloadItem(
-                          data: controller.downloadModelObj[index],
-                          uploadContents: controller.downloadModelObj.subject
-                              .value![index].uploadContents![index],
-                        )
-                      : Center(
-                          child: Image.asset(
-                          "assets/projectImages/no_data.png",
-                          height: 100,
-                        ));
-                },
-              );
-              ;
-            }
-          },
+        return RefreshIndicator(
+          onRefresh:  controller.refreshDataImage,
+          child: FutureBuilder(
+            future: controller.fetchDataFuture, //controller.getData(context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return CustomLoader(); // CustomLoader();
+              } else {
+                return ListView.builder(
+                  itemCount: controller.downloadModelObj.length ?? 0,
+                  itemBuilder: (context, index) {
+                    print("##############${controller.downloadModelObj[index]}");
+                    return controller.downloadModelObj.length > 0
+                        ? _buildDownloadItem(
+                            data: controller.downloadModelObj[index],
+                            uploadContents: controller.downloadModelObj.subject
+                                .value![index].uploadContents!,
+                          )
+                        : Center(
+                            child: Image.asset(
+                            "assets/projectImages/no_data.png",
+                            height: 100,
+                          ));
+                  },
+                );
+                ;
+              }
+            },
+          ),
         );
       },
     );
@@ -149,31 +153,34 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
     return GetBuilder(
       init: controller,
       builder: (_) {
-        return FutureBuilder(
-          future: controller.fetchDataFuture, //controller.getData(context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return CustomLoader(); // CustomLoader();
-            } else {
-              return ListView.builder(
-                itemCount:
-                    controller.videoDataModalObj.value.result!.length ?? 0,
-                itemBuilder: (context, index) {
-                  return controller.videoDataModalObj.value.result!.length > 0
-                      ? _buildVideoTutorialTab(
-                          data:
-                              controller.videoDataModalObj.value.result![index],
-                        )
-                      : Center(
-                          child: Image.asset(
-                          "assets/projectImages/no_data.png",
-                          height: 100,
-                        ));
-                },
-              );
-              ;
-            }
-          },
+        return RefreshIndicator(
+          onRefresh:  controller.refreshDataVideo,
+          child: FutureBuilder(
+            future: controller.fetchDataFuture, //controller.getData(context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return CustomLoader(); // CustomLoader();
+              } else {
+                return ListView.builder(
+                  itemCount:
+                      controller.videoDataModalObj.value.result!.length ?? 0,
+                  itemBuilder: (context, index) {
+                    return controller.videoDataModalObj.value.result!.length > 0
+                        ? _buildVideoTutorialTab(
+                            data:
+                                controller.videoDataModalObj.value.result![index],
+                          )
+                        : Center(
+                            child: Image.asset(
+                            "assets/projectImages/no_data.png",
+                            height: 100,
+                          ));
+                  },
+                );
+
+              }
+            },
+          ),
         );
       },
     );
@@ -260,7 +267,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
   }
 
   Widget _buildDownloadItem(
-      {required DownloadCenter data, required UploadContents uploadContents}) {
+      {required DownloadCenter data, required List<UploadContents> uploadContents}) {
     return CommonCardExtended(
       title: data.title.toString(),
       leadingWidget: SizedBox(),
@@ -279,10 +286,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
             customDownloadButton(
               onPressed: () {
                 showDynamicBottomSheet(context,
-                    title: uploadContents.realName.toString(),
-                    fileName: uploadContents.realName.toString(),
-                    fileUrl:
-                        "${Constants.imagesUrl + uploadContents.dirPath! + uploadContents.imgName!}");
+                    data: uploadContents!);
               },
               backgroundColor: Colors.blue,
               textColor: Colors.white,
@@ -294,70 +298,75 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
     );
   }
 
+
+
   void showDynamicBottomSheet(BuildContext context,
-      {String? title, String? fileUrl, String? fileName}) {
+      {required List<UploadContents> data}) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.zero,
-          ),
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.drive_file_move_sharp,
-                    color: Colors.grey,
+
+        return ListView.builder(
+          itemCount:
+          data.length ?? 0,
+          itemBuilder: (context, index) {
+            return data.length > 0
+                ? Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.zero,
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Attachment',
-                    style: TextStyle(
-                      fontSize: 15.0,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16.0),
-              Expanded(
-                child: controller.downloadModelObj.subject.value!.length > 0
-                    ? ListView.builder(
-                        itemCount:
-                            controller.downloadModelObj.subject.value!.length ??
-                                0,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(title.toString()),
-                            trailing: IconButton(
-                              onPressed: () {
-                                downloadFileFromAPI(fileUrl!, fileName!);
-                              },
-                              icon: Icon(
-                                Icons.download,
-                                size: 15,
-                                color: Colors.blue,
-                              ),
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.drive_file_move_sharp,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Attachment',
+                            style: TextStyle(
+                              fontSize: 15.0,
                             ),
-                          );
-                        },
-                      )
-                    : Center(
-                        child: Image.asset(
-                        "assets/projectImages/no_data.png",
-                        height: 100,
-                      )),
-              ),
-            ],
-          ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.0),
+                      Container(
+                        child: ListTile(
+                          title: Text(data[index].realName.toString()),
+                          trailing: IconButton(
+                            onPressed: () {
+                              downloadFileFromAPI("${Constants.imagesUrl + data[index].dirPath! + data[index].imgName!}", "fileName"!);
+                            },
+                            icon: Icon(
+                              Icons.download,
+                              size: 15,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        )
+                        ,
+                      ),
+                    ],
+                  ),
+                ))
+                : Center(
+                child: Image.asset(
+                  "assets/projectImages/no_data.png",
+                ));
+          },
         );
+
+
       },
     );
   }
