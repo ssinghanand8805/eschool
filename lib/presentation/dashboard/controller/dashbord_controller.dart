@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/userData.dart';
 import '../../../core/app_export.dart';
@@ -355,7 +356,9 @@ logout() async {
 getSchoolDetails() async {
   Map<String,dynamic> body = {
   };
+  String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
   var data  = await apiRespository.postApiCallByJson("webservice/getSchoolDetails", body);
+
   final prefs = await SharedPreferences.getInstance();
   print("###################${data.body}");
   await  prefs.setString("schoolName",data.body["name"] ?? "");
@@ -367,7 +370,7 @@ getSchoolDetails() async {
   await prefs.setString("schoolStartMonth",data.body["start_month_name"] ?? "");
   await  prefs.setString("schoolStartMonthNumber",data.body["start_month"] ?? "");
   await  prefs.setString("schoolImage",data.body["image"] ?? "");
-  schoolImageUrl.value = (data.body["image"] == null || data.body["image"] == null) ? "" : Constants.imagesUrl + "uploads/school_content/logo/app_logo/" + data.body["image"];
+  schoolImageUrl.value = (data.body["image"] == null || data.body["image"] == null) ? "" : baseUrlFromPref + "uploads/school_content/logo/app_logo/" + data.body["image"];
   update();
   print("+++++++++++++++++++++${schoolImageUrl.value}");
 }

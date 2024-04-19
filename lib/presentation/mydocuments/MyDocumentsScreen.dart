@@ -5,6 +5,7 @@ import 'package:learnladder/presentation/class_time_table/controller/class_time_
 import 'package:learnladder/presentation/mydocuments/model/MyDocuments.dart';
 import 'package:learnladder/presentation/notice_board/model/NoticeBoard.dart';
 import 'package:flutter_html/flutter_html.dart';
+import '../../apiHelper/GlobalData.dart';
 import '../../apiHelper/userData.dart';
 import '../common_widgets/CommonCard.dart';
 import '../common_widgets/CommonCardExtended.dart';
@@ -138,8 +139,9 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
   }
 
   void onPressDownload(String fileUrl, String name) {
+    String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
     UserData userData = Get.put(UserData());
-    String fullUrl = Constants.imagesUrl +
+    String fullUrl = baseUrlFromPref +
         "uploads/student_documents/" +
         userData.getUserStudentId +
         "/" +

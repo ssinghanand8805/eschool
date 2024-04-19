@@ -4,6 +4,7 @@ import 'package:learnladder/presentation/homework/HomeworkScreen.dart';
 import 'package:learnladder/presentation/profile/controller/ProfileController.dart';
 
 import '../../apiHelper/Constants.dart';
+import '../../apiHelper/GlobalData.dart';
 import '../../apiHelper/userData.dart';
 import '../../core/utils/common_utilities.dart';
 import '../../theme/theme_helper.dart';
@@ -18,6 +19,7 @@ class UserProfilePage extends StatefulWidget {
 
 class _UserProfilePageState extends State<UserProfilePage> {
   UserData userData = UserData();
+  String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
   ProfileController controller = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
@@ -100,7 +102,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                           padding:
                                               const EdgeInsets.only(top: 8.0),
                                           child: Image.network(
-                                              Constants.imagesUrl2 +
+                                              baseUrlFromPref +
                                                       controller
                                                           .profileModelObj
                                                           .value!
@@ -120,7 +122,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                                     .studentResult!.qrcode !=
                                                 null
                                             ? Image.network(
-                                                Constants.imagesUrl2 +
+                                            baseUrlFromPref +
                                                         controller
                                                             .profileModelObj
                                                             .value!
@@ -145,7 +147,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                             radius: 45,
                                             backgroundColor: Colors.orange,
                                             backgroundImage: NetworkImage(
-                                                Constants.imagesUrl +
+                                                baseUrlFromPref +
                                                     controller
                                                         .profileModelObj
                                                         .value!
@@ -178,6 +180,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 // ignore: must_be_immutable
 class MyHomePage extends StatelessWidget {
   ProfileController controller = Get.put(ProfileController());
+  String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
@@ -370,7 +373,7 @@ class MyHomePage extends StatelessWidget {
                                                   backgroundColor:
                                                       Colors.grey.shade200,
                                                   backgroundImage: NetworkImage(
-                                                    Constants.imagesUrl+  controller
+                                                      baseUrlFromPref +  controller
                                                           .profileModelObj
                                                           .value!
                                                           .studentResult!
@@ -503,7 +506,7 @@ class MyHomePage extends StatelessWidget {
                                                   backgroundColor:
                                                       Colors.grey.shade200,
                                                   backgroundImage: NetworkImage(
-                                                      Constants.imagesUrl+  controller
+                                                      baseUrlFromPref+  controller
                                                           .profileModelObj
                                                           .value!
                                                           .studentResult!
@@ -636,7 +639,7 @@ class MyHomePage extends StatelessWidget {
                                                   backgroundColor:
                                                       Colors.grey.shade200,
                                                   backgroundImage: NetworkImage(
-                                                      Constants.imagesUrl+   controller
+                                                      baseUrlFromPref+   controller
                                                           .profileModelObj
                                                           .value!
                                                           .studentResult!

@@ -23,12 +23,17 @@ class _SchoolUrlState extends State<SchoolUrl> {
   SchoolUrlController controller = Get.put(SchoolUrlController());
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffEEF1F3),
         body: Column(
           children: [
-             PageHeader(),
+            SizedBox(
+              width: double.infinity,
+              height: size.height * 0.3,
+              child:  Image.asset('assets/projectImages/friendship.png') ,
+            ),
             Expanded(
               child: Container(
                 decoration: const BoxDecoration(

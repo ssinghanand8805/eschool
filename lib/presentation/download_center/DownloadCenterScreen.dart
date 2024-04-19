@@ -12,6 +12,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../apiHelper/Constants.dart';
+import '../../apiHelper/GlobalData.dart';
 import '../../core/utils/common_utilities.dart';
 import '../common_widgets/CommonCard.dart';
 import '../common_widgets/CommonCardExtended.dart';
@@ -204,6 +205,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
   }
 
   Widget _buildVideoTutorialTab({required Result data}) {
+    String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
@@ -233,7 +235,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Image.network(
-                    Constants.imagesUrl + data.dirPath! + data.imgName!,
+                    baseUrlFromPref + data.dirPath! + data.imgName!,
                     fit: BoxFit.cover),
                 SizedBox(
                   height: 10,
@@ -328,6 +330,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
 
   void showDynamicBottomSheet(BuildContext context,
       {required List<UploadContents> data}) {
+    String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -370,7 +373,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                             trailing: IconButton(
                               onPressed: () {
                                 downloadFileFromAPI(
-                                    "${Constants.imagesUrl + data[index].dirPath! + data[index].imgName!}",
+                                    "${baseUrlFromPref + data[index].dirPath! + data[index].imgName!}",
                                     "fileName"!);
                               },
                               icon: Icon(

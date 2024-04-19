@@ -87,7 +87,6 @@ class Assets {
   static const String projectImagesGreyOutline = 'assets/projectImages/grey_outline.xml';
   static const String projectImagesGreyRightTabs = 'assets/projectImages/grey_right_tabs.xml';
   static const String projectImagesHalfCircleLeft = 'assets/projectImages/half_circle_left.png';
-  static const String projectImagesHalfCircleRight = 'assets/projectImages/half_circle_right.png';
   static const String projectImagesHomeworkpage = 'assets/projectImages/homeworkpage.jpg';
   static const String projectImagesHostelpage = 'assets/projectImages/hostelpage.jpg';
   static const String projectImagesIcAccessTimeBlack24dp = 'assets/projectImages/ic_access_time_black_24dp.xml';

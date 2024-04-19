@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../routes/app_routes.dart';
 import 'Constants.dart';
+import 'GlobalData.dart';
 
 
 
@@ -145,13 +146,13 @@ class UserData extends GetxController {
       usersData.addAccessToken(jsonData1["token"].toString());
 
       Map<dynamic, dynamic> jsonData = data.body['record'];
-
+      String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
       usersData.addSchoolName(jsonData["sch_name"].toString());
       usersData.addCurrency_symbol(jsonData["currency_symbol"].toString());
       usersData.addCurrency_short_name(jsonData["currency_short_name"].toString());
       usersData.addStart_week(jsonData["startWeek"].toString());
       usersData.addStudent_session_id(jsonData["student_session_id"].toString());
-      String imgUrl = Constants.imagesUrl + jsonData["image"].toString();
+      String imgUrl = baseUrlFromPref + jsonData["image"].toString();
       bool isUserImage = (jsonData["image"].toString() == "null" || jsonData["image"].toString() == "" || jsonData["image"] == null) ? false : true;
       print("**********${jsonData["image"].toString()}");
       usersData.addIsUserImage(isUserImage);

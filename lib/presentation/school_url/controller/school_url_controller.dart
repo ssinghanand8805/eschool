@@ -34,8 +34,9 @@ class SchoolUrlController extends GetxController {
     try {
       String baseUrl = urlController.value.text.toString()!.endsWith("/") ? urlController.value.text.toString().toString() : urlController.value.text.toString().toString() + "/";
       // Define the Uri. Replace 'https://example.com/api' with your API endpoint.
-      Uri uri = Uri.parse('${baseUrl}api/webservice/getSchoolDetails');
 
+      Uri uri = Uri.parse('${baseUrl}api/webservice/getSchoolDetails');
+      print("############${uri}");
       // Prepare the request
       HttpClientRequest request = await httpClient.postUrl(uri);
       request.headers.set(HttpHeaders.contentTypeHeader, "application/json"); // Content-Type header

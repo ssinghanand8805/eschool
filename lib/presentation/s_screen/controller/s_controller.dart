@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/userData.dart';
 import '../../../core/app_export.dart';
 import '../models/s_model.dart';
@@ -15,7 +16,7 @@ class SController extends GetxController {
   @override
   void onReady() async {
     final prefs = await SharedPreferences.getInstance();
-
+    await GlobalData().loadPreferences();
     bool isBaseUrlFound = prefs.containsKey("schoolBaseUrl");
 
     // if(!isBaseUrlFound)

@@ -4,6 +4,7 @@ import 'package:learnladder/apiHelper/userData.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
 import '../../../core/app_export.dart';
@@ -41,6 +42,7 @@ class LoginController extends GetxController {
 
     print("DATA @@@@ ${data.body}");
     //UsersData usersData = UsersData.fromJson(data.body);
+    String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
     Map<dynamic, dynamic> jsonData = data.body; //json.decode(data.body);
     if (jsonData["status"].toString() == "1") {
       UserData usersData = UserData();
@@ -56,7 +58,7 @@ class LoginController extends GetxController {
       usersData.addStart_week(jsonData["startWeek"].toString());
       usersData
           .addStudent_session_id(jsonData["student_session_id"].toString());
-      String imgUrl = Constants.imagesUrl + jsonData["image"].toString();
+      String imgUrl = baseUrlFromPref + jsonData["image"].toString();
       bool isUserImage = jsonData["image"].toString() == "null" ? false : true;
       usersData.addIsUserImage(isUserImage);
       usersData.addUserImage(imgUrl);
@@ -99,7 +101,7 @@ class LoginController extends GetxController {
                 childArray[i]["image"].toString() == "null" ? false : true;
             usersData.addIsUserImage(isUserImage);
             String imgUrl = isUserImage
-                ? Constants.imagesUrl + childArray[i]["image"].toString()
+                ? baseUrlFromPref + childArray[i]["image"].toString()
                 : "";
             String image = imgUrl;
             childImagefoundList.add(isUserImage);
