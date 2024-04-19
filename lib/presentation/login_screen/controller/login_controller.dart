@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:learnladder/apiHelper/userData.dart';
+import 'package:learnladderfaculity/apiHelper/userData.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../apiHelper/Constants.dart';
@@ -8,6 +8,7 @@ import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
 import '../../../core/app_export.dart';
+import '../models/Faculity.dart';
 
 
 class LoginController extends GetxController {
@@ -41,125 +42,135 @@ class LoginController extends GetxController {
     var data = await apiRespository.postApiCallByJson(Constants.authUrl, body);
 
     print("DATA @@@@ ${data.body}");
-    //UsersData usersData = UsersData.fromJson(data.body);
-    String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
-    Map<dynamic, dynamic> jsonData = data.body; //json.decode(data.body);
-    if (jsonData["status"].toString() == "1") {
-      UserData usersData = UserData();
-      usersData.addLastUserId(idController.text.toString());
-      usersData.addLastUserPwd(passwordController.text.toString());
-      usersData.addRole(jsonData["role"].toString());
-      usersData.addUserId(jsonData["id"].toString());
-      usersData.addAccessToken(jsonData["token"].toString());
-      usersData.addSchoolName(jsonData["sch_name"].toString());
-      usersData.addCurrency_symbol(jsonData["currency_symbol"].toString());
-      usersData
-          .addCurrency_short_name(jsonData["currency_short_name"].toString());
-      usersData.addStart_week(jsonData["startWeek"].toString());
-      usersData
-          .addStudent_session_id(jsonData["student_session_id"].toString());
-      String imgUrl = baseUrlFromPref + jsonData["image"].toString();
-      bool isUserImage = jsonData["image"].toString() == "null" ? false : true;
-      usersData.addIsUserImage(isUserImage);
-      usersData.addUserImage(imgUrl);
-      usersData.addUsername(jsonData["username"].toString());
-      Map<String, dynamic> recordData =
-          jsonData["record"]; //json.decode(jsonData["record"]);
-      if (jsonData["role"].toString() == "parent") {
-        List<dynamic> childArray = recordData['parent_childs'];
-        if (childArray.length == 1) {
-          usersData.addUserIsLoggedIn(true);
-          usersData.addUserHasMultipleChild(false);
-          var firstChild = childArray[0]; //json.decode(childArray[0]);
-          usersData.addUserStudentId(firstChild["student_id"]);
-          usersData.addUserClassSection(
-              firstChild["class"] + " - " + firstChild["section"]);
-          usersData.addUserStudentName(firstChild["name"]);
-
-          ///navigate here to dashboard
-          print('one child found:::::::::');
-          usersData.saveAllDataToSharedPreferences();
-          Get.toNamed(AppRoutes.formScreen);
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => DashboardScreen()),
-          // );
-        } else {
-          List<String> childNameList = [];
-          List<String> childIdList = [];
-          List<String> childImageList = [];
-          List<String> childClassList = [];
-          List<bool> childImagefoundList = [];
-          for (int i = 0; i < childArray.length; i++) {
-            print("*****************${childArray[i]}");
-            String name = childArray[i]["name"];
-            childNameList.add(name);
-            String id = childArray[i]["student_id"];
-            childIdList.add(id);
-
-            bool isUserImage =
-                childArray[i]["image"].toString() == "null" ? false : true;
-            usersData.addIsUserImage(isUserImage);
-            String imgUrl = isUserImage
-                ? baseUrlFromPref + childArray[i]["image"].toString()
-                : "";
-            String image = imgUrl;
-            childImagefoundList.add(isUserImage);
-            childImageList.add(image);
-            String clss =
-                childArray[i]["class"] + " - " + childArray[i]["section"];
-            childClassList.add(clss);
-          }
-          print('child name List:::::::::');
-          print(childIdList);
-          print(childNameList);
-          print(childImageList);
-          print(childClassList);
-          print(childImagefoundList);
-          saveArray("childIdList",childIdList);
-          saveArray("childNameList",childNameList);
-          saveArray("childImageList",childImageList);
-          saveArray("childClassList",childClassList);
-          saveArray("childImagefoundList",childImagefoundList);
-          print('child name List:::::::::');
-
-          /// show Child List here
-          ///
-          showChildList(context, childNameList, childIdList, childImageList,
-              childClassList,childImagefoundList);
-        }
-      } else if (jsonData["role"] == "student") {
-        usersData.addUserIsLoggedIn(true);
-        usersData.addUserStudentId(recordData["student_id"]);
-        usersData.addUserClassSection(
-            recordData["className"] + " - " + recordData["section"]);
-        usersData.addUserAdmissionNo(recordData["admission_no"]);
-
-        ///checking for profile lock
-        Map<String, dynamic> body2 = {"student_id": usersData.getUserStudentId};
-        var data = await apiRespository.postApiCallByJson(
-            "webservice/lock_student_panel", body2);
-        print('start profile lock data:::::::::');
-        print(data);
-        print('end profile lock data:::::::::');
-        usersData.saveAllDataToSharedPreferences();
+    Faculity fac = Faculity.fromJson(data.body);
+    UserData usersData = UserData();
+    usersData.saveFaculity(fac);
+    if(fac.roles!.roleId.toString() == '7')
+      {
+        //superadmin found no restriction
+        //navigate to dashboard
+        Get.toNamed(AppRoutes.formScreen);
       }
-    } else {
-      print('login failed:::::::::');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.green.shade100,
-          content: Text(data.body["message"],style: theme.textTheme.titleMedium),
-        ),
-      );
+    else
+      {
+        Get.toNamed(AppRoutes.formScreen);
+        //check permission wise and navigate to dashboard
+      }
 
-    }
+    // Map<dynamic, dynamic> jsonData = data.body; //json.decode(data.body);
+    // if (jsonData["status"].toString() == "1") {
+    //   UserData usersData = UserData();
+    //   usersData.addLastUserId(idController.text.toString());
+    //   usersData.addLastUserPwd(passwordController.text.toString());
+    //   usersData.addRole(jsonData["role"].toString());
+    //   usersData.addUserId(jsonData["id"].toString());
+    //   usersData.addAccessToken(jsonData["token"].toString());
+    //   usersData.addSchoolName(jsonData["sch_name"].toString());
+    //   usersData.addCurrency_symbol(jsonData["currency_symbol"].toString());
+    //   usersData
+    //       .addCurrency_short_name(jsonData["currency_short_name"].toString());
+    //   usersData.addStart_week(jsonData["startWeek"].toString());
+    //   usersData
+    //       .addStudent_session_id(jsonData["student_session_id"].toString());
+    //   String imgUrl = baseUrlFromPref + jsonData["image"].toString();
+    //   bool isUserImage = jsonData["image"].toString() == "null" ? false : true;
+    //   usersData.addIsUserImage(isUserImage);
+    //   usersData.addUserImage(imgUrl);
+    //   usersData.addUsername(jsonData["username"].toString());
+    //   Map<String, dynamic> recordData =
+    //       jsonData["record"]; //json.decode(jsonData["record"]);
+    //   if (jsonData["role"].toString() == "parent") {
+    //     List<dynamic> childArray = recordData['parent_childs'];
+    //     if (childArray.length == 1) {
+    //       usersData.addUserIsLoggedIn(true);
+    //       usersData.addUserHasMultipleChild(false);
+    //       var firstChild = childArray[0]; //json.decode(childArray[0]);
+    //       usersData.addUserStudentId(firstChild["student_id"]);
+    //       usersData.addUserClassSection(
+    //           firstChild["class"] + " - " + firstChild["section"]);
+    //       usersData.addUserStudentName(firstChild["name"]);
+    //
+    //       ///navigate here to dashboard
+    //       print('one child found:::::::::');
+    //       usersData.saveAllDataToSharedPreferences();
+    //       Get.toNamed(AppRoutes.formScreen);
+    //       // Navigator.push(
+    //       //   context,
+    //       //   MaterialPageRoute(builder: (context) => DashboardScreen()),
+    //       // );
+    //     } else {
+    //       List<String> childNameList = [];
+    //       List<String> childIdList = [];
+    //       List<String> childImageList = [];
+    //       List<String> childClassList = [];
+    //       List<bool> childImagefoundList = [];
+    //       for (int i = 0; i < childArray.length; i++) {
+    //         print("*****************${childArray[i]}");
+    //         String name = childArray[i]["name"];
+    //         childNameList.add(name);
+    //         String id = childArray[i]["student_id"];
+    //         childIdList.add(id);
+    //
+    //         bool isUserImage =
+    //             childArray[i]["image"].toString() == "null" ? false : true;
+    //         usersData.addIsUserImage(isUserImage);
+    //         String imgUrl = isUserImage
+    //             ? baseUrlFromPref + childArray[i]["image"].toString()
+    //             : "";
+    //         String image = imgUrl;
+    //         childImagefoundList.add(isUserImage);
+    //         childImageList.add(image);
+    //         String clss =
+    //             childArray[i]["class"] + " - " + childArray[i]["section"];
+    //         childClassList.add(clss);
+    //       }
+    //       print('child name List:::::::::');
+    //       print(childIdList);
+    //       print(childNameList);
+    //       print(childImageList);
+    //       print(childClassList);
+    //       print(childImagefoundList);
+    //       saveArray("childIdList",childIdList);
+    //       saveArray("childNameList",childNameList);
+    //       saveArray("childImageList",childImageList);
+    //       saveArray("childClassList",childClassList);
+    //       saveArray("childImagefoundList",childImagefoundList);
+    //       print('child name List:::::::::');
+    //
+    //       /// show Child List here
+    //       ///
+    //       showChildList(context, childNameList, childIdList, childImageList,
+    //           childClassList,childImagefoundList);
+    //     }
+    //   } else if (jsonData["role"] == "student") {
+    //     usersData.addUserIsLoggedIn(true);
+    //     usersData.addUserStudentId(recordData["student_id"]);
+    //     usersData.addUserClassSection(
+    //         recordData["className"] + " - " + recordData["section"]);
+    //     usersData.addUserAdmissionNo(recordData["admission_no"]);
+    //
+    //     ///checking for profile lock
+    //     Map<String, dynamic> body2 = {"student_id": usersData.getUserStudentId};
+    //     var data = await apiRespository.postApiCallByJson(
+    //         "webservice/lock_student_panel", body2);
+    //     print('start profile lock data:::::::::');
+    //     print(data);
+    //     print('end profile lock data:::::::::');
+    //     usersData.saveAllDataToSharedPreferences();
+    //   }
+    // }
+    // else {
+    //   print('login failed:::::::::');
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(
+    //       backgroundColor: Colors.green.shade100,
+    //       content: Text(data.body["message"],style: theme.textTheme.titleMedium),
+    //     ),
+    //   );
+    //
+    // }
 
-    //print("DATA USING DATA MODEL ${usersData.role}");
-    // userData.saveData("userData", usersData);
-    //  print("GET USER DATA ${userData.getData("userData",)}");
 
-    // Get.to( AppRoutes.teacherLoginScreen);
   }
   Future<bool> saveArray(String name,List<dynamic> array) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

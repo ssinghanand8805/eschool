@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "628246522471",
+    "project_id": "learnladder2",
+    "storage_bucket": "learnladder2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628246522471:android:8fd741dae304c0f36802c2",
+        "android_client_info": {
+          "package_name": "com.learnladder.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9PANXHWbfUQUpirg5paqC6-BAtTNmM3A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628246522471:android:ce57ba5cbee550a36802c2",
+        "android_client_info": {
+          "package_name": "com.learnladderfaculity.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9PANXHWbfUQUpirg5paqC6-BAtTNmM3A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

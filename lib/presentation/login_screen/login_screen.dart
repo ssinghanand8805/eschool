@@ -8,12 +8,12 @@ import '../../widgets/pageHeder.dart';
 import '../../widgets/pageHeding.dart';
 import 'controller/login_controller.dart';
 
-class LoginScreen extends GetWidget<LoginController> {
+class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key})
       : super(
           key: key,
         );
-
+  final LoginController controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class LoginScreen extends GetWidget<LoginController> {
         backgroundColor: const Color(0xffEEF1F3),
         body: Column(
           children: [
-             PageHeader(),
+             PageHeader(name: "Login",),
             Expanded(
               child: Container(
                 decoration: const BoxDecoration(
@@ -34,7 +34,7 @@ class LoginScreen extends GetWidget<LoginController> {
                 ),
                 child: SingleChildScrollView(
                   child: Form(
-                    key: controller.loginFormKey,
+                     key: controller.loginFormKey,
                     child: Column(
                       children: [
                         const PageHeading(

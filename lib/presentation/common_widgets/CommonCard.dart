@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:learnladder/core/app_export.dart';
+import 'package:learnladderfaculity/core/app_export.dart';
 
 Widget CommonCard({
   required String title,required Widget newWidget

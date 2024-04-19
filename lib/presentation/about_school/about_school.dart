@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:learnladder/presentation/about_school/controller/about_schoolController.dart';
-import 'package:learnladder/presentation/homework/HomeworkScreen.dart';
+import 'package:learnladderfaculity/presentation/about_school/controller/about_schoolController.dart';
+
 
 import '../../core/app_export.dart';
 import '../../theme/theme_helper.dart';
+import '../common_widgets/InfoRow.dart';
 import '../common_widgets/custom_loader.dart';
 
 class AboutSchoolScreen extends StatefulWidget {

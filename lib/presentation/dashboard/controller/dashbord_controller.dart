@@ -7,6 +7,8 @@ import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/userData.dart';
 import '../../../core/app_export.dart';
+import '../../login_screen/models/Faculity.dart';
+import '../models/Menus.dart';
 import '../models/dashboard_model.dart';
 
 /// A controller class for the FormScreen.
@@ -18,7 +20,8 @@ class DashboardController extends GetxController {
   UserData userData = Get.put(UserData());
   ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
   RxString schoolImageUrl = "".obs;
-
+  RxList<MenuResponse> menuResponseModelObj = <MenuResponse>[].obs;
+  // List<Response> filteredResponses =
   loadChildList(context) async
   {
     List<dynamic> childNameList = [];
@@ -163,84 +166,58 @@ class DashboardController extends GetxController {
     );
   }
 
-  List eLearningData = [];
-  List<ModuleList> get getElearningList => List<ModuleList>.from(eLearningData.map((e) => ModuleList.fromJson(e)));
+  List menuData = [];
+  List<MenuResponse> get getMenuDataList => menuResponseModelObj.value;//List<MenuResponse>.from(menuData.map((e) => MenuResponse.fromJson(e)));
   set updateELearningData(List val){
     gridViewWidgets.removeAt(0);
-    eLearningData = val;
+    menuData = val;
     update();
   }
 
 
-  List academicData = [];
-  List<ModuleList> get getAcademicList => List<ModuleList>.from(academicData.map((e) => ModuleList.fromJson(e)));
-  set updateAcademicData(List val){
-    gridViewWidgets.removeAt(0);
-    academicData = val;
-    update();
-  }
 
 
-  List communicationData = [];
-  List<ModuleList> get getCommunicationList => List<ModuleList>.from(communicationData.map((e) => ModuleList.fromJson(e)));
-  set updateCommunicationData(List val){
-    gridViewWidgets.removeAt(0);
-    communicationData = val;
-    update();
-  }
-
-
-  List otherData = [];
-  List<ModuleList> get getOtherDataList => List<ModuleList>.from(otherData.map((e) => ModuleList.fromJson(e)));
-  set updateOtherData(List val){
-    gridViewWidgets.removeAt(0);
-    otherData = val;
-    update();
-  }
-
-  List eLearningImagesPath = [
+  List menuImageImagesPath = [
     "ic_dashboard_homework.png",
     "ic_assignment.png",
     "ic_lessonplan.png",
     "ic_onlineexam.png",
     "ic_downloadcenter.png",
     "ic_onlinecourse.png",
-    "ic_videocam.png",
-    "ic_videocam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+    "ic_onlineexam.png",
+
   ];
 
-  List academicImages =[
-    "ic_lessonplan.png",
-    "ic_calender_cross.png",
-    "ic_nav_attendance.png",
-    "ic_nav_reportcard.png",
-    "ic_nav_timeline.png",
-    "ic_documents_certificate.png",
-    "ic_dashboard_homework.png",
-    "ic_nav_reportcard.png",
-  ];
 
-  List communicationImages = [
-    "ic_notice.png",
-    "ic_notification.png"
-  ];
-
-  List otherImages = [
-   "ic_nav_fees.png",
-    "ic_leave.png",
-   "ic_visitors.png",
-    "ic_nav_transport.png",
-    "ic_nav_hostel.png",
-    "ic_dashboard_pandingtask.png",
-    "ic_library.png",
-    "ic_teacher.png"
-  ];
 
   List gridViewWidgets = <Widget>[];
 
    ScrollController?scrollController;
   Color textColor = Colors.white;
-
+  late Future<void> fetchDataFuture;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -252,11 +229,12 @@ class DashboardController extends GetxController {
             textColor = isSliverAppBarExpanded ? Colors.white : Colors.blue;
             update();
         });
+    fetchDataFuture =  eLearningapi();
       gridViewWidgets.add(customContainer());
-      gridViewWidgets.add(customContainer());
-      gridViewWidgets.add(customContainer());
-      gridViewWidgets.add(customContainer());
-    eLearningapi();
+      // gridViewWidgets.add(customContainer());
+      // gridViewWidgets.add(customContainer());
+      // gridViewWidgets.add(customContainer());
+   // eLearningapi();
   }
 
   bool get isSliverAppBarExpanded {
@@ -266,7 +244,7 @@ class DashboardController extends GetxController {
 
 
   /// Section Widget
-  Widget buildGridItem(String heading,List<ModuleList> items, List images) {
+  Widget buildGridItem(String heading,List<MenuResponse> items, List images) {
 
     return Container(
       padding: EdgeInsets.all(8.0),
@@ -314,11 +292,12 @@ class DashboardController extends GetxController {
             ),
             itemCount: items.length,
             itemBuilder: (context, index) {
-              ModuleList data = items[index];
+              MenuResponse data = items[index];
               return InkWell(
                 onTap: (){
                   print("========${data.shortCode.toString()}");
-Get.toNamed("/"+data.shortCode.toString());
+// Get.toNamed("/"+data.shortCode.toString());
+                  showDynamicBottomSheet(context,data: data.permissionCategory!, images: images);
                 },
                 child: Container(
                   decoration: BoxDecoration(// Change this to your preferred color
@@ -347,9 +326,70 @@ Get.toNamed("/"+data.shortCode.toString());
       ),
     );
   }
+  void showDynamicBottomSheet(BuildContext context,
+      {required List<PermissionCategory> data,required List<dynamic> images}) {
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return GridView.builder(
+          padding: EdgeInsets.all(8),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3, // Adjust number of columns
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            childAspectRatio: 3 / 2, // Adjust tile height
+          ),
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return GridTile(
+              child: InkWell(
+                onTap: (){
+                  Get.toNamed("/"+data[index].shortCode.toString());
+                },
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                  Image.asset("assets/projectImages/"+images[index].toString(),height: 25,color: Colors.indigo,),
+                      SizedBox(height: 8),
+                      Text(
+                        data[index].name!,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                        ),
+                      )
+
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 logout() async {
   final prefs = await SharedPreferences.getInstance();
+  String vUrl = prefs.getString('schoolBaseUrl')!;
   prefs.clear();
+  prefs.setString('schoolBaseUrl', vUrl);
   Get.toNamed('/s_screen');
 }
 
@@ -376,61 +416,35 @@ getSchoolDetails() async {
 }
   eLearningapi()async{
     getSchoolDetails();
+    UserData usersData = UserData();
+    Faculity? f = await usersData.getFaculity();
     Map<String,dynamic> body = {
-      "user" : "student",
+      "roleId":f!.roles!.roleId.toString(),
     };
-    var data  = await apiRespository.postApiCallByJson("webservice/getELearningModuleStatus", body);
-    var data1 = await data.body['module_list'];
-    updateELearningData = data1.where((item) => item['status'].toString() == "1").toList();
-    gridViewWidgets.add(buildGridItem("E Learning", getElearningList,eLearningImagesPath));
-    academicStatusApi();
+    var data  = await apiRespository.postApiCallByJson(Constants.findPermissionsUrl, body);
+    Menus menus = Menus.fromJson(data.body);
+
+    List<MenuResponse>? filteredResponses;
+    if(f!.roles!.roleId.toString() == "7")
+      {
+          filteredResponses = menus.response;
+      }
+    else
+      {
+       filteredResponses = menus.getResponsesWhereCanView();
+      }
+    menuResponseModelObj.value = filteredResponses!;
+    // update();
+    print(filteredResponses);
+      updateELearningData = filteredResponses.toList();
+    gridViewWidgets.add(buildGridItem("", getMenuDataList,menuImageImagesPath));
+   // academicStatusApi();
     update();
-    print("E LEARNING DATA ${getElearningList[0].name}");
+    print("E LEARNING DATA ${getMenuDataList.length}");
   }
 
-  academicStatusApi()async{
-    Map<String,dynamic> body = {
-      "user" : "student",
-    };
-    var data  = await apiRespository.postApiCallByJson("webservice/getAcademicsModuleStatus", body);
-    // updateAcademicData = data.body['module_list'].where((item) => item['status'] == 1).toList();
-    var data1 = await data.body['module_list'];
-    print(data1);
-    updateAcademicData = data1.where((item) => item['status'].toString() == "1").toList();
-    gridViewWidgets.add(buildGridItem("Academics", getAcademicList,academicImages));
-    communicationStatusApi();
-    update();
-    print("ACADEMIC DATA ${getAcademicList[0].name}");
 
-  }
 
-  communicationStatusApi()async{
-    Map<String,dynamic> body = {
-      "user" : "student",
-    };
-    var data  = await apiRespository.postApiCallByJson("webservice/getCommunicateModuleStatus", body);
-    // updateCommunicationData = data.body['module_list'].where((item) => item['status'] == 1).toList();
-    var data1 = await data.body['module_list'];
-    updateCommunicationData = data1.where((item) => item['status'].toString() == "1").toList();
-    gridViewWidgets.add(buildGridItem("Communicate", getCommunicationList,communicationImages));
-    otherModuleApi();
-    update();
-    print("COMMUNICATION STATUS DATA ${getCommunicationList[0].name}");
-  }
-
-  otherModuleApi()async{
-    Map<String,dynamic> body = {
-      "user" : "student",
-    };
-    var data  = await apiRespository.postApiCallByJson("webservice/getOthersModuleStatus", body);
-    // updateOtherData = data.body['module_list'].where((item) => item['status'] == 1).toList();
-    var data1 = await data.body['module_list'];
-    updateOtherData = data1.where((item) => item['status'].toString() == "1").toList();
-    gridViewWidgets.add(buildGridItem("Other ",getOtherDataList,otherImages));
-
-    update();
-    print("OTHER MODULE DATA ${getOtherDataList[0].name}");
-  }
 
 
   Future<void> logOutDialog(context) async {

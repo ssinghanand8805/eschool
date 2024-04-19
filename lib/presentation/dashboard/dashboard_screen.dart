@@ -1,13 +1,14 @@
-import 'package:learnladder/presentation/login_screen/models/userDataModal.dart';
+import 'package:learnladderfaculity/presentation/login_screen/models/userDataModal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import '../../apiHelper/userData.dart';
 import '../../core/app_export.dart';
+import '../../notifications/controller/NotificationController.dart';
 import '../../widgets/custom_elevated_button.dart';
-import '../notifications/controller/NotificationController.dart';
 import 'controller/dashbord_controller.dart';
+import 'models/Menus.dart';
 // ignore_for_file: must_be_immutable
 
 class DashboardScreen extends GetView<DashboardController> {
@@ -281,12 +282,12 @@ class DashboardScreen extends GetView<DashboardController> {
                                 height: 10,
                               ),
                               Text(
-                                userData.getUserStudentName,
+                                userData.getFaculity()!.name!,
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                "Admission No. ${userData.getUserAdmissionNo}  Class: ${userData.getUserClassSection}",
+                                "Role. ${userData.getFaculity()!.roles!.roleName!} ",
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.normal),
@@ -316,4 +317,6 @@ class DashboardScreen extends GetView<DashboardController> {
       ),
     );
   }
+
+
 }

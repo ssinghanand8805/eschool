@@ -5,7 +5,8 @@ import '../presentation/login_screen/controller/login_controller.dart';
 import '../presentation/school_url/controller/pageHeaderController.dart';
 
 class PageHeader extends StatelessWidget {
-   PageHeader({Key? key}) : super(key: key);
+  final String name;
+   PageHeader({Key? key,required this.name}) : super(key: key);
    PageHeaderController controller = Get.put(PageHeaderController());
   @override
   Widget build(BuildContext context) {

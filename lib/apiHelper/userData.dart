@@ -1,11 +1,14 @@
 
 
-import 'package:learnladder/apiHelper/popular_product_repo.dart';
-import 'package:learnladder/presentation/login_screen/models/userDataModal.dart';
+import 'dart:convert';
+
+import 'package:learnladderfaculity/apiHelper/popular_product_repo.dart';
+import 'package:learnladderfaculity/presentation/login_screen/models/userDataModal.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../presentation/login_screen/models/Faculity.dart';
 import '../routes/app_routes.dart';
 import 'Constants.dart';
 import 'GlobalData.dart';
@@ -14,6 +17,8 @@ import 'GlobalData.dart';
 
 class UserData extends GetxController {
   final userData = GetStorage();
+
+
 
   String get getAccessToken => userData.read('accessToken') ?? '';
   String get getUserId => userData.read('userId') ?? '';
@@ -37,6 +42,19 @@ class UserData extends GetxController {
   String get getLastUserPwd => userData.read('lastUserPwd') ?? "";
 
 
+  void saveFaculity(Faculity user) async {
+    userData.write('faculityData', user.toJson()); // Saving the user model as JSON
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("faculityData", json.encode(user.toJson()));
+    await prefs.setBool('isLoggegIn', true);
+  }
+  Faculity? getFaculity() {
+    final json = userData.read('faculityData');
+    if (json != null) {
+      return Faculity.fromJson(json); // Reading the user model from JSON
+    }
+    return null;
+  }
   addAccessToken(String val) {userData.write('accessToken', val);}
   addUserFCMDeviceToken(String val) {userData.write('fcm_tocken', val);}
   addUserId(String val) {userData.write('userId', val);}

@@ -7,7 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../apiHelper/userData.dart';
 import '../core/app_export.dart';
-import '../presentation/notifications/controller/NotificationController.dart';
+// import '../presentation/notifications/controller/NotificationController.dart';
+import '../notifications/controller/NotificationController.dart';
 import 'NotificationController.dart';
 
 

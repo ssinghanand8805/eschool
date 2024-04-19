@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:learnladder/presentation/homework/HomeworkScreen.dart';
-import 'package:learnladder/presentation/profile/controller/ProfileController.dart';
+import 'package:learnladderfaculity/presentation/profile/controller/ProfileController.dart';
 
 import '../../apiHelper/Constants.dart';
 import '../../apiHelper/GlobalData.dart';
 import '../../apiHelper/userData.dart';
 import '../../core/utils/common_utilities.dart';
 import '../../theme/theme_helper.dart';
+import '../common_widgets/InfoRow.dart';
 import '../common_widgets/custom_loader.dart';
 
 class UserProfilePage extends StatefulWidget {
