@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../widgets/myCustomsd.dart';
 import '../../theme/theme_helper.dart';
+import '../../widgets/button.dart';
+import '../common_widgets/CommonForm.dart';
+import '../common_widgets/controller/CommonController.dart';
 import 'controller/student_attendance_controller.dart';
 
 class StudentAttendanceScreen extends StatefulWidget {
@@ -31,7 +34,8 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
     );
     return date;
   }
-
+  CommonController controller2 =
+  Get.put(CommonController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,135 +44,112 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
         backgroundColor: Colors.green.shade100,
         title: Text('Attendance'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            MyCustomSD(
-              hideSearch: true,
-              borderColor: Colors.grey,
-              listToSearch: _students,
-              valFrom: "name",
-              label: 'Class',
-              labelText: 'Class',
-              onChanged: (val) {
-                print(val);
-                // if(val!=null){
-                //   controller.updateDutyFor = val['id'];
-                //
-                // }
-                // else{
-                //   controller.updateDutyFor=0;
-                // }
-              },
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            MyCustomSD(
-              hideSearch: true,
-              borderColor: Colors.grey,
-              listToSearch: _students,
-              valFrom: "name",
-              label: 'Section',
-              labelText: 'Section',
-              onChanged: (val) {
-                print(val);
-                // if(val!=null){
-                //   controller.updateDutyFor = val['id'];
-                //
-                // }
-                // else{
-                //   controller.updateDutyFor=0;
-                // }
-              },
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 3.0),
-                  child: Text("Attendance Date",
-                      style: theme.textTheme.bodySmall!.copyWith(fontSize: 14)),
-                ),
-                SizedBox(
-                  height: 3,
-                ),
-                Container(
-                  height: 43,
-                  child: TextField(
-                    style: theme.textTheme.bodySmall,
-                    decoration: InputDecoration(
-                      hintText: DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
-                    ),
-                    readOnly: true,
-                    controller: controller.attendanceDate.value,
-                    onTap: () async {
-                      final date = await getDate();
-                      if (date != null) {
-                        controller.attendanceDate.value.text =
-                            DateFormat('dd/MM/yyyy').format(date);
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 17,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    print("Perform search action here");
-                  },
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      height: 32,
-                      width: 110,
-                      decoration: BoxDecoration(
-                        color: Colors.green.shade200,
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                      child: Center(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.search,
-                              color: Colors.black,
-                            ),
-                            SizedBox(width: 8.0),
-                            Text('Search', style: theme.textTheme.bodyMedium),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Text(
-              'Student List',
-              style: theme.textTheme.titleLarge,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Set attendance for all students as',
-              style: theme.textTheme.titleMedium,
-            ),
-            Expanded(child: StudentListPage())
-          ],
-        ),
+      body: GetBuilder(
+        init: controller,
+        builder: (context) {
+         return CommonForm(
+           widgetFilterData: Column(
+                            children: [
+                              MyCustomSD(
+                                hideSearch: true,
+                                borderColor: Colors.grey,
+                                listToSearch: _students,
+                                valFrom: "name",
+                                label: 'Class',
+                                labelText: 'Class',
+                                onChanged: (val) {
+                                  print(val);
+
+                                },
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              MyCustomSD(
+                                hideSearch: true,
+                                borderColor: Colors.grey,
+                                listToSearch: _students,
+                                valFrom: "name",
+                                label: 'Section',
+                                labelText: 'Section',
+                                onChanged: (val) {
+                                  print(val);
+
+                                },
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 3.0),
+                                    child: Text("Attendance Date",
+                                        style: theme.textTheme.bodySmall!.copyWith(fontSize: 14)),
+                                  ),
+                                  SizedBox(
+                                    height: 3,
+                                  ),
+                                  Container(
+                                    height: 43,
+                                    child: TextField(
+                                      style: theme.textTheme.bodySmall,
+                                      decoration: InputDecoration(
+                                        hintText: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.grey),
+                                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                                      ),
+                                      readOnly: true,
+                                      controller: controller.attendanceDate.value,
+                                      onTap: () async {
+                                        final date = await getDate();
+                                        if (date != null) {
+                                          controller.attendanceDate.value.text =
+                                              DateFormat('dd/MM/yyyy').format(date);
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 17,
+                                  ),
+
+                                ],
+                              ),
+                            ],
+                          ),
+           widgetformData: Column(
+           children:[  Row(
+             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+             children: [
+               Text(
+                 'Student List',
+                 style: theme.textTheme.titleLarge,
+               ),
+
+             ],
+           ),
+           SizedBox(
+             height: 10,
+           ),
+           Text(
+             'Set attendance for all students as',
+             style: theme.textTheme.titleMedium,
+           ),
+           Expanded(child: StudentListPage())
+          ]
+           ,),
+           onTapAction: filterData,);
+
+        }
       ),
     );
+  }
+
+  filterData() {
+    print("Perform search action here");
   }
 }
 

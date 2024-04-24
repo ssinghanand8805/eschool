@@ -19,6 +19,7 @@ class StudentAttendanceController extends GetxController {
   ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
   Rx<String> year = "".obs;
   Rx<String> month = "".obs;
+  Rx<bool> isSearchExpand = true.obs;
    Rx<Attendance> attendanceModelObj = Attendance().obs;
   RxMap<DateTime, List<Event>> _kEventSource = <DateTime, List<Event>>{}.obs;
   final Rx<LinkedHashMap<DateTime, List<Event>>> kEvents = Rx<LinkedHashMap<DateTime, List<Event>>>(LinkedHashMap());
