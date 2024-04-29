@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../widgets/myCustomsd.dart';
 import '../../theme/theme_helper.dart';
+import '../../widgets/button.dart';
 import 'controller/student_attendance_controller.dart';
 
 class StudentAttendanceScreen extends StatefulWidget {
@@ -122,36 +123,11 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
                 SizedBox(
                   height: 17,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    print("Perform search action here");
-                  },
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      height: 32,
-                      width: 110,
-                      decoration: BoxDecoration(
-                        color: Colors.green.shade200,
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                      child: Center(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.search,
-                              color: Colors.black,
-                            ),
-                            SizedBox(width: 8.0),
-                            Text('Search', style: theme.textTheme.bodyMedium),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                )
+
               ],
+            ),
+            Button(icon: Icons.search, onTap: () {  }, text: 'Search'
+
             ),
             Text(
               'Student List',
@@ -222,9 +198,9 @@ class _StudentListPageState extends State<StudentListPage> {
             ),
           ),
         ),
-        SizedBox(
-          height: 20,
-        ),
+        // SizedBox(
+        //   height: 10,
+        // ),
         Expanded(
           child: ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -244,10 +220,12 @@ class _StudentListPageState extends State<StudentListPage> {
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
             width: 200,
-            height: 40,
+            height: 35,
             child: ElevatedButton(
               onPressed: () {
-                print(" Handle save attendance logic here");
+
+                print("Handle save attendance logic here");
+
               },
               child: Text(
                 'Save Attendance',

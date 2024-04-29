@@ -57,7 +57,7 @@ Widget Button(
       alignment: Alignment.topRight,
       child: Container(
         height: 30,
-        width: 85,
+       width: 85,
         decoration: BoxDecoration(
           color: Colors.green.shade200,
           borderRadius: BorderRadius.circular(4.0),

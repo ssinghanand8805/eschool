@@ -1,6 +1,8 @@
 
 
 import 'package:learnladderfaculity/presentation/school_url/bindings/school_url_binding.dart';
+import 'package:learnladderfaculity/presentation/teacher_lesson_plan/binding/teacher_lesson_plan_binding.dart';
+import 'package:learnladderfaculity/presentation/teacher_lesson_plan/teacher_lesson_plan.dart';
 import '../core/app_export.dart';
 import '../presentation/about_school/about_school.dart';
 import '../presentation/about_school/binding/about_school.dart';
@@ -41,6 +43,7 @@ class AppRoutes {
   static const String studentAttendanceRoute = '/student_attendance';
   static const String addHomeworkRoute = '/homework_evaluation';
   static const String teacherDailyAssignmentRoute = '/daily_assignment';
+  static const String copyoldlessonRoute = '/copy_old_lesson';
 
 
 
@@ -118,6 +121,10 @@ class AppRoutes {
       name: studentAttendanceRoute,
       page: () => StudentAttendanceScreen(),
       bindings: [StudentAttendanceBinding()],
+    ),GetPage(
+      name: copyoldlessonRoute,
+      page: () => TeacherLessonPlanScreen(),
+      bindings: [TeacherLessonPlanBinding()],
     ),
 
   ];
