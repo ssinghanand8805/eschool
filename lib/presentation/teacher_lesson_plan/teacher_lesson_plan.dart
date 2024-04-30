@@ -1,4 +1,3 @@
-import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,13 +8,29 @@ import '../../widgets/myCustomsd.dart';
 import '../common_widgets/CommonCard.dart';
 import '../common_widgets/CommonCardExtended.dart';
 import '../common_widgets/custom_loader.dart';
+import 'add_lesson_plan.dart';
 import 'controller/teacher_lesson_plan_controller.dart';
 import 'modal/lesson_modal.dart';
 
-class TeacherLessonPlanScreen extends GetWidget<TeacherLessonPlanController> {
+
+  class TeacherLessonPlanScreen extends StatefulWidget {
+  const TeacherLessonPlanScreen({Key? key});
+
+  @override
+  State<TeacherLessonPlanScreen> createState() =>
+  _TeacherLessonPlanScreenState();
+  }
+
+  class _TeacherLessonPlanScreenState extends State<TeacherLessonPlanScreen> {
+  TeacherLessonPlanController controller =
+  Get.put(TeacherLessonPlanController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Manage Lesson Plan',style: theme.textTheme.titleMedium,),
+      ),
       body: GetBuilder(
         init: controller,
         builder: (_) {
@@ -26,64 +41,60 @@ class TeacherLessonPlanScreen extends GetWidget<TeacherLessonPlanController> {
                 return CustomLoader(); // CustomLoader();
               } else {
                 return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
 
-                      MyCustomSD(
-                        labelText: 'Teachers',
-                        hideSearch: true,
-                        borderColor: Colors.grey,
-                        listToSearch: controller.students,
-                        valFrom: "name",
-                        label: 'Teachers name',
-                        onChanged: (val) {
-                          print(val);
-                          // if(val!=null){
-                          //   controller.updateDutyFor = val['id'];
-                          //
-                          // }
-                          // else{
-                          //   controller.updateDutyFor=0;
-                          // }
-                        },
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Button(icon: Icons.search, onTap: () {}, text: 'Search'),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      _buildTimeTableCard(
-                          title: 'Monday',
-                          day: controller
-                              .lessonPlanModelObj.value!.timetable!.monday!),
-                      _buildTimeTableCard(
-                          title: 'Tuesday',
-                          day: controller
-                              .lessonPlanModelObj.value!.timetable!.tuesday!),
-                      _buildTimeTableCard(
-                          title: 'Wednesday',
-                          day: controller
-                              .lessonPlanModelObj.value!.timetable!.wednesday!),
-                      _buildTimeTableCard(
-                          title: 'Thursday',
-                          day: controller
-                              .lessonPlanModelObj.value!.timetable!.thursday!),
-                      _buildTimeTableCard(
-                          title: 'Friday',
-                          day: controller
-                              .lessonPlanModelObj.value!.timetable!.friday!),
-                      _buildTimeTableCard(
-                          title: 'Saturday',
-                          day: controller
-                              .lessonPlanModelObj.value!.timetable!.saturday!),
-                      _buildTimeTableCard(
-                          title: 'Sunday',
-                          day: controller
-                              .lessonPlanModelObj.value!.timetable!.sunday!),
-                    ],
+                        MyCustomSD(
+                          labelText: 'Teachers',
+                          hideSearch: true,
+                          borderColor: Colors.grey,
+                          listToSearch: controller.students,
+                          valFrom: "name",
+                          label: 'Teachers name',
+                          onChanged: (val) {
+                            print(val);
+                            // if(val!=null){
+                            //   controller.updateDutyFor = val['id'];
+                            //
+                            // }
+                            // else{
+                            //   controller.updateDutyFor=0;
+                            // }
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Button(icon: Icons.search, onTap: () {}, text: 'Search'),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        _buildTimeTableCard(
+                            title: 'Monday',
+                           ),
+                        _buildTimeTableCard(
+                            title: 'Tuesday',
+                           ),
+                        _buildTimeTableCard(
+                            title: 'Wednesday',
+                            ),
+                        _buildTimeTableCard(
+                            title: 'Thursday',
+                           ),
+                        _buildTimeTableCard(
+                            title: 'Friday',
+                           ),
+                        _buildTimeTableCard(
+                            title: 'Saturday',
+                           ),
+                        _buildTimeTableCard(
+                            title: 'Sunday',
+                          ),
+                      ],
+                    ),
                   ),
                 );
               }
@@ -94,10 +105,10 @@ class TeacherLessonPlanScreen extends GetWidget<TeacherLessonPlanController> {
     );
   }
 
-  Widget _buildTimeTableCard({required String title, required List<Day> day}) {
+  Widget _buildTimeTableCard({required String title,  List<Day>? day}) {
     return CommonCard(
         title: title,
-        newWidget: day.length > 0
+        newWidget: day != null
             ? DataTable(
                 dividerThickness: 0.1,
                 columnSpacing:
@@ -196,18 +207,20 @@ class TeacherLessonPlanScreen extends GetWidget<TeacherLessonPlanController> {
             : Center(
                 child: Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: Column(
-                  children: [
-                    Image.asset(
-                      "assets/projectImages/no_data.png",
-                      height: 80,
+                child: Container(
+                  width: 200,
+                  child: TextButton(
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddLessonPLan()),);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Add Lesson Plan"),Icon(Icons.add,size: 19,)
+                      ],
                     ),
-                    Text(
-                      'No data found!',
-                      style: theme.textTheme.titleMedium,
-                    )
-                  ],
-                ),
+                  ),
+                )
               )));
   }
 
