@@ -47,6 +47,7 @@ class AppRoutes {
   static const String teacherDailyAssignmentRoute = '/daily_assignment';
   static const String copyoldlessonRoute = '/copy_old_lesson';
   static const String managelessonplanRoute = '/manage_lesson_plan';
+  static const String uploadcontentRoute = '/upload_content';
 
 
   static List<GetPage> pages = [
