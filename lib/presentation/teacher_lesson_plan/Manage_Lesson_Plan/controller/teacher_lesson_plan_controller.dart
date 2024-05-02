@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:intl/intl.dart';
 
-import '../../../apiHelper/Constants.dart';
-import '../../../apiHelper/popular_product_repo.dart';
-import '../../../apiHelper/userData.dart';
+
+import '../../../../apiHelper/popular_product_repo.dart';
+import '../../../../apiHelper/userData.dart';
 import '../modal/lesson_modal.dart';
 
 class TeacherLessonPlanController extends GetxController {

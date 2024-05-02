@@ -1,8 +1,7 @@
 
 
 import 'package:learnladderfaculity/presentation/school_url/bindings/school_url_binding.dart';
-import 'package:learnladderfaculity/presentation/teacher_lesson_plan/binding/teacher_lesson_plan_binding.dart';
-import 'package:learnladderfaculity/presentation/teacher_lesson_plan/teacher_lesson_plan.dart';
+import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage_Lesson_Plan/teacher_lesson_plan.dart';
 import '../core/app_export.dart';
 import '../presentation/about_school/about_school.dart';
 import '../presentation/about_school/binding/about_school.dart';
@@ -27,6 +26,9 @@ import '../presentation/student_attendence/binding/student_attendance.dart';
 import '../presentation/student_attendence/student_attendance_view.dart';
 import '../presentation/teacher_daily_assignment/binding/daily_assignment.dart';
 import '../presentation/teacher_daily_assignment/daily_assignment_view.dart';
+import '../presentation/teacher_lesson_plan/Manage_Lesson_Plan/binding/teacher_lesson_plan_binding.dart';
+import '../presentation/teacher_lesson_plan/Select_Old_Session_Details/binding/select_old_session _details_binding.dart';
+import '../presentation/teacher_lesson_plan/Select_Old_Session_Details/select_old_session _details.dart';
 
 // ignore_for_file: must_be_immutable
 class AppRoutes {
@@ -44,7 +46,7 @@ class AppRoutes {
   static const String addHomeworkRoute = '/homework_evaluation';
   static const String teacherDailyAssignmentRoute = '/daily_assignment';
   static const String copyoldlessonRoute = '/copy_old_lesson';
-
+  static const String managelessonplanRoute = '/manage_lesson_plan';
 
 
   static List<GetPage> pages = [
@@ -121,10 +123,18 @@ class AppRoutes {
       name: studentAttendanceRoute,
       page: () => StudentAttendanceScreen(),
       bindings: [StudentAttendanceBinding()],
-    ),GetPage(
-      name: copyoldlessonRoute,
+    ),
+
+    GetPage(
+      name: managelessonplanRoute,
       page: () => TeacherLessonPlanScreen(),
       bindings: [TeacherLessonPlanBinding()],
+    ),
+
+    GetPage(
+      name: copyoldlessonRoute,
+      page: () => SelectOldSessionScreen(),
+      bindings: [SelectOldSessionBinding()],
     ),
 
   ];

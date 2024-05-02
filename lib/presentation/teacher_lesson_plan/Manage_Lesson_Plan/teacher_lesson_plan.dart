@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../theme/theme_helper.dart';
-import '../../widgets/button.dart';
-import '../../widgets/myCustomsd.dart';
-import '../common_widgets/CommonCard.dart';
-import '../common_widgets/CommonCardExtended.dart';
-import '../common_widgets/custom_loader.dart';
+import '../../../theme/theme_helper.dart';
+import '../../../widgets/button.dart';
+import '../../../widgets/myCustomsd.dart';
+import '../../common_widgets/CommonCard.dart';
+import '../../common_widgets/custom_loader.dart';
 import 'add_lesson_plan.dart';
+
 import 'controller/teacher_lesson_plan_controller.dart';
 import 'modal/lesson_modal.dart';
 

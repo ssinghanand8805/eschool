@@ -3,11 +3,11 @@ import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
 
-import '../../widgets/customHtmlEditor.dart';
-import '../../widgets/customTextField.dart';
-import '../../widgets/datePickerTextField.dart';
-import '../../widgets/myCustomsd.dart';
-import '../../widgets/timePickerTextField.dart';
+import '../../../widgets/customHtmlEditor.dart';
+import '../../../widgets/customTextField.dart';
+import '../../../widgets/datePickerTextField.dart';
+import '../../../widgets/myCustomsd.dart';
+import '../../../widgets/timePickerTextField.dart';
 import 'controller/teacher_lesson_plan_controller.dart';
 
 class AddLessonPLan extends StatefulWidget {
@@ -21,18 +21,16 @@ class _AddLessonPLanState extends State<AddLessonPLan> {
   TeacherLessonPlanController controller =
       Get.put(TeacherLessonPlanController());
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green.shade100,
-        title: Text('Add Homework', style: theme.textTheme.titleLarge),
+        title: Text('Add Lesson Plan', style: theme.textTheme.titleMedium),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all( 10.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -46,13 +44,6 @@ class _AddLessonPLanState extends State<AddLessonPLan> {
                 label: 'Lesson',
                 onChanged: (val) {
                   print(val);
-                  // if(val!=null){
-                  //   controller.updateDutyFor = val['id'];
-                  //
-                  // }
-                  // else{
-                  //   controller.updateDutyFor=0;
-                  // }
                 },
               ),
               SizedBox(
@@ -67,13 +58,6 @@ class _AddLessonPLanState extends State<AddLessonPLan> {
                 label: 'Topic',
                 onChanged: (val) {
                   print(val);
-                  // if(val!=null){
-                  //   controller.updateDutyFor = val['id'];
-                  //
-                  // }
-                  // else{
-                  //   controller.updateDutyFor=0;
-                  // }
                 },
               ),
               SizedBox(
@@ -95,14 +79,16 @@ class _AddLessonPLanState extends State<AddLessonPLan> {
               TimePickerTextField(
                 controller: controller.timeFrom.value,
                 onTimeSelected: (time) {
-                  controller.timeFrom.value.text =  controller.formatTimeOfDay(time);
+                  controller.timeFrom.value.text =
+                      controller.formatTimeOfDay(time);
                 },
                 title: 'Time From',
               ),
               TimePickerTextField(
                 controller: controller.timeTo.value,
                 onTimeSelected: (time) {
-                  controller.timeTo.value.text =  controller.formatTimeOfDay(time);
+                  controller.timeTo.value.text =
+                      controller.formatTimeOfDay(time);
                 },
                 title: 'Time To',
               ),
@@ -167,7 +153,6 @@ class _AddLessonPLanState extends State<AddLessonPLan> {
                     ),
                     child: TextButton(
                       onPressed: () {
-
                         Navigator.of(context).pop();
                       },
                       child: Text(
@@ -179,7 +164,6 @@ class _AddLessonPLanState extends State<AddLessonPLan> {
                 ],
               ),
               SizedBox(height: 10.0),
-
             ],
           ),
         ),
