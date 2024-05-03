@@ -6,6 +6,7 @@ class CustomTextField extends StatelessWidget {
   final String hint;
   final String title;
    VoidCallback? onTap;
+  final FormFieldValidator<String>? validator;
   ValueChanged<String>? onChanged;
 
 
@@ -16,6 +17,7 @@ class CustomTextField extends StatelessWidget {
     required this.title,
      this.onTap,
     this.onChanged,
+     this.validator,
   }) : super(key: key);
 
   @override
@@ -31,7 +33,7 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
         Container(
-          height: 43,
+          // height: 43,
           decoration: BoxDecoration(
             border: Border.all(
               color: Colors.green.shade50,
@@ -39,16 +41,17 @@ class CustomTextField extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(5.0),
           ),
-          child: TextField(
+          child: TextFormField(
             controller: controller,
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
+              contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 8),
               hintText: hint,
               hintStyle: TextStyle(color: Colors.grey),
               border: OutlineInputBorder(),
             ),
             onTap:onTap,
             onChanged: onChanged,
+              validator: validator
 
           ),
         ),

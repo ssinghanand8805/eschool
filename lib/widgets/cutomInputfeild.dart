@@ -61,7 +61,6 @@ class _CustomInputFieldState extends State<CustomInputField> {
                   maxHeight: 33
               ): null,
             ),
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: widget.validator,
           ),
         ],
