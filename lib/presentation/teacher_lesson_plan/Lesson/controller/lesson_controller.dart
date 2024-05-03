@@ -6,22 +6,15 @@ import 'package:intl/intl.dart';
 
 import '../../../../apiHelper/popular_product_repo.dart';
 import '../../../../apiHelper/userData.dart';
-import '../modal/select_old_session_details_modal.dart';
+import '../modal/lesson_modal.dart';
 
-class SelectOldSessionController extends GetxController {
+class LessonController extends GetxController {
   UserData userData = Get.put(UserData());
   ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
-  Rx<SelectOldSessionModal> lessonPlanModelObj = SelectOldSessionModal().obs;
-  Rx<TextEditingController> addLessonDate = TextEditingController().obs;
-  Rx<TextEditingController> timeFrom = TextEditingController().obs;
-  Rx<TextEditingController> timeTo = TextEditingController().obs;
-  Rx<TextEditingController> subtopic = TextEditingController().obs;
-  Rx<TextEditingController> lectureYoutubeUrl = TextEditingController().obs;
-  Rx<TextEditingController> teachingMethod = TextEditingController().obs;
-  Rx<TextEditingController> generalObjectives = TextEditingController().obs;
-  Rx<TextEditingController> previousKnowledge = TextEditingController().obs;
-  Rx<TextEditingController> comprehensiveQuestions = TextEditingController().obs;
-  Rx<HtmlEditorController> presentation = HtmlEditorController().obs;
+  Rx<LessonModal> lessonPlanModelObj = LessonModal().obs;
+
+  Rx<TextEditingController> AddMoreController = TextEditingController().obs;
+  List<TextEditingController> controllers = [];
 
   String formatTimeOfDay(TimeOfDay timeOfDay) {
     final now = DateTime.now();
@@ -77,6 +70,34 @@ class SelectOldSessionController extends GetxController {
     },
   ];
 
+
+  List<Map<String, dynamic>> data = [
+    {
+      'studentId': 18001,
+      'class': 'Class 4',
+      'section': 'A',
+      'subjectGroup': 'Class 1st Subject Group',
+      'subjects': ['Hindi (230)', 'Math (231)', 'English (235)', 'Science (232)'],
+      'homeworkDate': DateTime(2024, 4, 5),
+      'submissionDate': DateTime(2024, 4, 9),
+      'evaluationDate': DateTime(2024, 4, 9),
+      'createdBy': 'Joe Black',
+      'approvedId': 9000,
+    },
+    {
+      'studentId': 18002,
+      'class': 'Class 4',
+      'section': 'A',
+      'subjectGroup': 'Class 1st Subject Group',
+      'subjects': ['Hindi (230)', 'Math (231)', 'English (235)', 'Science (232)'],
+      'homeworkDate': DateTime(2024, 4, 5),
+      'submissionDate': DateTime(2024, 4, 9),
+      'evaluationDate': DateTime(2024, 4, 9),
+      'createdBy': 'Kirti Singh',
+      'approvedId': 9000,
+    },
+    // Add more data as needed
+  ];
 
   Future<void> getData() async
   {

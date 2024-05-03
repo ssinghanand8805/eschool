@@ -26,6 +26,8 @@ import '../presentation/student_attendence/binding/student_attendance.dart';
 import '../presentation/student_attendence/student_attendance_view.dart';
 import '../presentation/teacher_daily_assignment/binding/daily_assignment.dart';
 import '../presentation/teacher_daily_assignment/daily_assignment_view.dart';
+import '../presentation/teacher_lesson_plan/Lesson/binding/lesson_binding.dart';
+import '../presentation/teacher_lesson_plan/Lesson/lesson_details.dart';
 import '../presentation/teacher_lesson_plan/Manage_Lesson_Plan/binding/teacher_lesson_plan_binding.dart';
 import '../presentation/teacher_lesson_plan/Select_Old_Session_Details/binding/select_old_session _details_binding.dart';
 import '../presentation/teacher_lesson_plan/Select_Old_Session_Details/select_old_session _details.dart';
@@ -47,6 +49,7 @@ class AppRoutes {
   static const String teacherDailyAssignmentRoute = '/daily_assignment';
   static const String copyoldlessonRoute = '/copy_old_lesson';
   static const String managelessonplanRoute = '/manage_lesson_plan';
+  static const String lessonRoute = '/lesson';
   static const String uploadcontentRoute = '/upload_content';
 
 
@@ -89,16 +92,19 @@ class AppRoutes {
       page: () => DashboardScreen(),
       bindings: [dashBordBinding()],
     ),
+
     GetPage(
       name: appNavigationScreen,
       page: () => AppNavigationScreen(),
       bindings: [AppNavigationBinding()],
     ),
+
     GetPage(
       name: initialRoute,
       page: () => SScreen(),
       bindings: [SBinding()],
     ),
+
     GetPage(
       name: addHomeworkRoute,
       page: () => AddHomeWorkScreen(),
@@ -136,6 +142,12 @@ class AppRoutes {
       name: copyoldlessonRoute,
       page: () => SelectOldSessionScreen(),
       bindings: [SelectOldSessionBinding()],
+    ),
+
+    GetPage(
+      name: lessonRoute,
+      page: () => LessonScreen(),
+      bindings: [LessonBinding()],
     ),
 
   ];
