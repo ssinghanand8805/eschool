@@ -42,6 +42,8 @@ import '../presentation/teacher_lesson_plan/Lesson/lesson_details.dart';
 import '../presentation/teacher_lesson_plan/Manage_Lesson_Plan/binding/teacher_lesson_plan_binding.dart';
 import '../presentation/teacher_lesson_plan/Select_Old_Session_Details/binding/select_old_session _details_binding.dart';
 import '../presentation/teacher_lesson_plan/Select_Old_Session_Details/select_old_session _details.dart';
+import '../presentation/teacher_lesson_plan/Topic/topic_binding.dart';
+import '../presentation/teacher_lesson_plan/Topic/topic_view.dart';
 
 // ignore_for_file: must_be_immutable
 class AppRoutes {

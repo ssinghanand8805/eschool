@@ -48,23 +48,28 @@ class ManageSyllabusStatusController extends GetxController {
     {
       'title': '1. झूला',
       'subtopics': [
-        {'title': 'कार्यालयी की व्याख्या', 'isChecked': false},
-        {'title': 'प्रश्न-अभ्यास', 'isChecked': false},
-        {'title': 'बाटचीत :', 'isChecked': false},
-      ]
+        {
+          'title': 'कार्यालयी की व्याख्या',
+          'competitionDate': '02/08/2028',
+          'isChecked': false
+        },
+        {'title': 'प्रश्न-अभ्यास','competitionDate': '02/08/2028', 'isChecked': false},
+        {'title': 'बाटचीत :','competitionDate': '02/08/2028', 'isChecked': false},
+
+      ],
     },
     {
       'title': ' 2. आप की कहानी',
       'subtopics': [
-        {'title': 'विकेत्ता का सारांश', 'isChecked': false},
-        {'title': 'प्रश्न-अभ्यास', 'isChecked': false},
+        {'title': 'विकेत्ता का सारांश','competitionDate': '02/08/2028', 'isChecked': false},
+        {'title': 'प्रश्न-अभ्यास','competitionDate': '02/08/2028', 'isChecked': false},
       ]
     },
     {
       'title': '3. आम की टोकरी ',
       'subtopics': [
-        {'title': 'कविता का सारांश', 'isChecked': false},
-        {'title': 'कार्यालयी की व्याख्या', 'isChecked': false},
+        {'title': 'कविता का सारांश','competitionDate': '02/08/2028', 'isChecked': false},
+        {'title': 'कार्यालयी की व्याख्या','competitionDate': '02/08/2028', 'isChecked': false},
       ]
     },
   ];
