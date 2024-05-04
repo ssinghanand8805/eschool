@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
    VoidCallback? onTap;
   final FormFieldValidator<String>? validator;
   ValueChanged<String>? onChanged;
+  final maxLine;
 
 
    CustomTextField({
@@ -18,6 +19,7 @@ class CustomTextField extends StatelessWidget {
      this.onTap,
     this.onChanged,
      this.validator,
+     this.maxLine
   }) : super(key: key);
 
   @override
@@ -42,6 +44,7 @@ class CustomTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(5.0),
           ),
           child: TextFormField(
+              maxLines: maxLine,
             controller: controller,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 8),

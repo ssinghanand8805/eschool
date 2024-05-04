@@ -22,6 +22,8 @@ import '../presentation/download_center/Content Share List/content_share_list_vi
 import '../presentation/download_center/Content Type/Binding/content_type_binding.dart';
 import '../presentation/download_center/Content Type/content_type_view.dart';
 import '../presentation/download_center/Upload Content/upload_share_content_view.dart';
+import '../presentation/download_center/Video Tutorial/Binding/video_tutorial_binding.dart';
+import '../presentation/download_center/Video Tutorial/video_tutorial_view.dart';
 import '../presentation/login_screen/binding/login_binding.dart';
 import '../presentation/login_screen/login_screen.dart';
 import '../presentation/profile/ProfileScreen.dart';
@@ -61,6 +63,7 @@ class AppRoutes {
   static const String content_typeRoute = '/content_type';
   static const String content_share_listRoute = '/content_share_list';
   static const String upload_share_contentRoute = '/upload_content';
+  static const String video_tutorialRoute = '/video_tutorial';
 
 
   static List<GetPage> pages = [
@@ -176,6 +179,12 @@ class AppRoutes {
       name: upload_share_contentRoute,
       page: () => UploadShareContentView(),
       bindings: [UploadShareContentBinding()],
+    ),
+
+    GetPage(
+      name: video_tutorialRoute,
+      page: () => VideoTutorialView(),
+      bindings: [VideoTutorialBinding()],
     ),
 
   ];
