@@ -1,7 +1,11 @@
 
 
 import 'package:learnladderfaculity/presentation/school_url/bindings/school_url_binding.dart';
+import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Syllabus%20Status/manage_syllabus_status_binding.dart';
+import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Syllabus%20Status/manage_syllabus_status_view_details.dart';
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage_Lesson_Plan/teacher_lesson_plan.dart';
+import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Topic/topic_binding.dart';
+import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Topic/topic_view.dart';
 import '../core/app_export.dart';
 import '../presentation/about_school/about_school.dart';
 import '../presentation/about_school/binding/about_school.dart';
@@ -51,6 +55,8 @@ class AppRoutes {
   static const String managelessonplanRoute = '/manage_lesson_plan';
   static const String lessonRoute = '/lesson';
   static const String uploadcontentRoute = '/upload_content';
+  static const String managesyllabusstatusRoute = '/manage_syllabus_status';
+  static const String topicRoute = '/topic';
 
 
   static List<GetPage> pages = [
@@ -145,9 +151,15 @@ class AppRoutes {
     ),
 
     GetPage(
-      name: lessonRoute,
-      page: () => LessonScreen(),
-      bindings: [LessonBinding()],
+      name: managesyllabusstatusRoute,
+      page: () => ManageSyllabusStatusScreen(),
+      bindings: [ManageSyllabusStatusBinding()],
+    ),
+
+    GetPage(
+      name: topicRoute,
+      page: () => TopicScreen(),
+      bindings: [TopicBinding()],
     ),
 
   ];
