@@ -159,6 +159,11 @@ class AppRoutes {
       page: () => SelectOldSessionScreen(),
       bindings: [SelectOldSessionBinding()],
     ),
+    GetPage(
+      name: lessonRoute,
+      page: () => LessonScreen(),
+      bindings: [LessonBinding()],
+    ),
 
     GetPage(
       name: managesyllabusstatusRoute,
