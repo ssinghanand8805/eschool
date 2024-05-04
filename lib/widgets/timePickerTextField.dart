@@ -36,10 +36,11 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
           height: 3,
         ),
         Container(
-          height: 43,
+         // height: 43,
           child: TextField(
             style: theme.textTheme.bodySmall,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
               hintText: DateFormat('HH:mm').format(DateTime.now()),
               border: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),

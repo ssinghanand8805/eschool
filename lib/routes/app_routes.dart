@@ -1,5 +1,7 @@
 
 
+import 'package:learnladderfaculity/presentation/academics/Class%20Timetable/class_timetable_binding.dart';
+import 'package:learnladderfaculity/presentation/academics/Class%20Timetable/class_timetable_view.dart';
 import 'package:learnladderfaculity/presentation/download_center/Content%20Share%20List/content_share_list_controller.dart';
 import 'package:learnladderfaculity/presentation/download_center/Upload%20Content/Binding/upload_share_content_binding.dart';
 import 'package:learnladderfaculity/presentation/school_url/bindings/school_url_binding.dart';
@@ -70,6 +72,8 @@ class AppRoutes {
   static const String video_tutorialRoute = '/video_tutorial';
   static const String managesyllabusstatusRoute = '/manage_syllabus_status';
   static const String topicRoute = '/topic';
+
+  static const String classtimetableRoute = '/class_timetable';
 
 
   static List<GetPage> pages = [
@@ -196,6 +200,12 @@ class AppRoutes {
       name: upload_share_contentRoute,
       page: () => UploadShareContentView(),
       bindings: [UploadShareContentBinding()],
+    ),
+
+    GetPage(
+      name: classtimetableRoute,
+      page: () => ClassTimetableScreen(),
+      bindings: [ClassTimetableBinding()],
     ),
 
     GetPage(

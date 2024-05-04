@@ -66,7 +66,7 @@ class ThemeHelper {
 class TextThemes {
   static TextTheme textTheme(ColorScheme colorScheme) => TextTheme(
         bodyLarge: TextStyle(
-          color: appTheme.indigo400,
+          //color: appTheme.indigo400,
           fontSize: 16.fSize,
           fontFamily: 'Roboto',
           fontWeight: FontWeight.w400,

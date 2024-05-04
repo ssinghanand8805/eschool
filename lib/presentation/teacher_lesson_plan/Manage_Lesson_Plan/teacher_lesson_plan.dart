@@ -188,7 +188,7 @@ import 'modal/lesson_modal.dart';
                                   IconButton(
                                     icon: Icon(Icons.edit, size: 15),
                                     onPressed: () {
-                                      showEditLeave(context);
+                                      _showEditLeave(context);
                                     },
                                   ),
                                   IconButton(
@@ -224,7 +224,7 @@ import 'modal/lesson_modal.dart';
               )));
   }
 
-  void showEditLeave(context) {
+  void _showEditLeave(context) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
