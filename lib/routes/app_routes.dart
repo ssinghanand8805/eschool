@@ -1,5 +1,7 @@
 
 
+import 'package:learnladderfaculity/presentation/download_center/Content%20Share%20List/content_share_list_controller.dart';
+import 'package:learnladderfaculity/presentation/download_center/Upload%20Content/Binding/upload_share_content_binding.dart';
 import 'package:learnladderfaculity/presentation/school_url/bindings/school_url_binding.dart';
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Syllabus%20Status/manage_syllabus_status_binding.dart';
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Syllabus%20Status/manage_syllabus_status_view_details.dart';
@@ -19,6 +21,11 @@ import '../presentation/attendance_bydate/attendance_bydate_view.dart';
 import '../presentation/attendance_bydate/binding/attendance_bydate.dart';
 import '../presentation/dashboard/binding/dashboard_binding.dart';
 import '../presentation/dashboard/dashboard_screen.dart';
+import '../presentation/download_center/Content Share List/Binding/content_share_list_binding.dart';
+import '../presentation/download_center/Content Share List/content_share_list_view.dart';
+import '../presentation/download_center/Content Type/Binding/content_type_binding.dart';
+import '../presentation/download_center/Content Type/content_type_view.dart';
+import '../presentation/download_center/Upload Content/upload_share_content_view.dart';
 import '../presentation/login_screen/binding/login_binding.dart';
 import '../presentation/login_screen/login_screen.dart';
 import '../presentation/profile/ProfileScreen.dart';
@@ -55,6 +62,9 @@ class AppRoutes {
   static const String managelessonplanRoute = '/manage_lesson_plan';
   static const String lessonRoute = '/lesson';
   static const String uploadcontentRoute = '/upload_content';
+  static const String content_typeRoute = '/content_type';
+  static const String content_share_listRoute = '/content_share_list';
+  static const String upload_share_contentRoute = '/upload_content';
   static const String managesyllabusstatusRoute = '/manage_syllabus_status';
   static const String topicRoute = '/topic';
 
@@ -160,6 +170,24 @@ class AppRoutes {
       name: topicRoute,
       page: () => TopicScreen(),
       bindings: [TopicBinding()],
+    ),
+
+    GetPage(
+      name: content_typeRoute,
+      page: () => ContentTypeView(),
+      bindings: [ContentTypeBinding()],
+    ),
+
+    GetPage(
+      name: content_share_listRoute,
+      page: () => ContentShareView(),
+      bindings: [ContentShareListBinding()],
+    ),
+
+    GetPage(
+      name: upload_share_contentRoute,
+      page: () => UploadShareContentView(),
+      bindings: [UploadShareContentBinding()],
     ),
 
   ];
