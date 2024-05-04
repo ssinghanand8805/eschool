@@ -4,51 +4,24 @@ import 'package:learnladderfaculity/core/app_export.dart';
 import '../../../widgets/button.dart';
 import '../../../widgets/customTextField.dart';
 import '../../../widgets/myCustomsd.dart';
-import 'controller/lesson_controller.dart';
+import 'manage_syllabus_status_controller.dart';
 
-class LessonScreen extends StatefulWidget {
-  const LessonScreen({Key? key});
+class ManageSyllabusStatusScreen extends StatefulWidget {
+  const ManageSyllabusStatusScreen({Key? key});
 
   @override
-  State<LessonScreen> createState() => _LessonScreenState();
+  State<ManageSyllabusStatusScreen> createState() => _ManageSyllabusStatusState();
 }
 
-class _LessonScreenState extends State<LessonScreen> {
-  LessonController controller = Get.put(LessonController());
-
-  Widget buildCustomTextFields() {
-    List<Widget> textFields = [];
-    for (int i = 0; i < controller.controllers.length; i++) {
-      textFields.add(
-        Row(
-          children: [
-            Expanded(
-              child: CustomTextField(
-                controller: controller.controllers[i],
-                hint: 'lesson name',
-                title: 'Lesson Name',
-              ),
-            ),
-            IconButton(
-              icon: Icon(Icons.delete_forever, size: 18),
-              onPressed: () {
-                controller.controllers.removeAt(i);
-                setState(() {});
-              },
-            ),
-          ],
-        ),
-      );
-    }
-    return Column(children: textFields);
-  }
+class _ManageSyllabusStatusState extends State<ManageSyllabusStatusScreen> {
+  ManageSyllabusStatusController controller = Get.put(ManageSyllabusStatusController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green.shade100,
-        title: Text('Add Lesson', style: theme.textTheme.titleMedium),
+        title: Text('Manage Syllabus Status', style: theme.textTheme.titleMedium),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -116,26 +89,10 @@ class _LessonScreenState extends State<LessonScreen> {
               SizedBox(
                 height: 10,
               ),
-              Button(icon: Icons.save, onTap: () {}, text: 'Save'),
+              Button(icon: Icons.search, onTap: () {}, text: 'Search'),
               SizedBox(
                 height: 10,
               ),
-              Button(
-                icon: Icons.add,
-                onTap: () {
-                  controller.controllers.add(TextEditingController());
-                  setState(() {});
-                },
-                text: 'Add More',
-              ),
-              SizedBox(height: 10),
-              CustomTextField(
-                controller: controller.AddMoreController.value,
-                hint: 'lesson name',
-                title: 'Lesson Name',
-              ),
-              SizedBox(height: 10),
-              buildCustomTextFields(),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: FittedBox(
@@ -193,7 +150,6 @@ class _LessonScreenState extends State<LessonScreen> {
                   ),
                 ),
               ),
-
             ],
           ),
         ),

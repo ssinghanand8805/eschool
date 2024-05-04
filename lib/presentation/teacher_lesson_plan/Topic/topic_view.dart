@@ -4,17 +4,17 @@ import 'package:learnladderfaculity/core/app_export.dart';
 import '../../../widgets/button.dart';
 import '../../../widgets/customTextField.dart';
 import '../../../widgets/myCustomsd.dart';
-import 'controller/lesson_controller.dart';
+import 'topic_controller.dart';
 
-class LessonScreen extends StatefulWidget {
-  const LessonScreen({Key? key});
+class TopicScreen extends StatefulWidget {
+  const TopicScreen({Key? key});
 
   @override
-  State<LessonScreen> createState() => _LessonScreenState();
+  State<TopicScreen> createState() => _TopicScreenState();
 }
 
-class _LessonScreenState extends State<LessonScreen> {
-  LessonController controller = Get.put(LessonController());
+class _TopicScreenState extends State<TopicScreen> {
+  TopicController controller = Get.put(TopicController());
 
   Widget buildCustomTextFields() {
     List<Widget> textFields = [];
@@ -48,7 +48,7 @@ class _LessonScreenState extends State<LessonScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green.shade100,
-        title: Text('Add Lesson', style: theme.textTheme.titleMedium),
+        title: Text('Add Topic', style: theme.textTheme.titleMedium),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -144,7 +144,8 @@ class _LessonScreenState extends State<LessonScreen> {
                     columns: const [
                       DataColumn(label: Text('Class Section')),
                       DataColumn(label: Text('Subject Group')),
-                      DataColumn(label: Text('Subject')),
+                      DataColumn(label: Text('Lesson')),
+                      DataColumn(label: Text('Topic')),
                       DataColumn(label: Text('Action')),
                     ],
                     rows: controller.data.asMap().entries.map((entry) {
@@ -156,6 +157,8 @@ class _LessonScreenState extends State<LessonScreen> {
                           ),
                           DataCell(
                             Text(entry.value['subjectGroup'], style: theme.textTheme.bodySmall!),
+                          ), DataCell(
+                            Text(entry.value['lesson'], style: theme.textTheme.bodySmall!),
                           ),
                           DataCell(
                             Container(
