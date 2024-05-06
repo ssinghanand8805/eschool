@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
@@ -137,6 +138,9 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
 
             SizedBox(height: 20,),
 
+    Align(
+      alignment: Alignment.topLeft,
+        child: Text("Class Teachers",style: TextStyle(fontWeight: FontWeight.bold))),
     
     ListView.builder(
       shrinkWrap: true,
