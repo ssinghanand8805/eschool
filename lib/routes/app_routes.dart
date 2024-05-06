@@ -1,5 +1,6 @@
 
 
+import 'package:learnladderfaculity/presentation/academics/Assign%20class%20teacher/assign_class_teacher_view.dart';
 import 'package:learnladderfaculity/presentation/academics/Class%20Timetable/class_timetable_binding.dart';
 import 'package:learnladderfaculity/presentation/academics/Class%20Timetable/class_timetable_view.dart';
 import 'package:learnladderfaculity/presentation/download_center/Content%20Share%20List/content_share_list_controller.dart';
@@ -11,6 +12,7 @@ import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage_Less
 import '../core/app_export.dart';
 import '../presentation/about_school/about_school.dart';
 import '../presentation/about_school/binding/about_school.dart';
+import '../presentation/academics/Assign class teacher/Binding/assign_class_teacher_binding.dart';
 import '../presentation/add_homework/add_homework_view.dart';
 import '../presentation/add_homework/binding/add_homework.dart';
 import '../presentation/app_navigation_screen/app_navigation_screen.dart';
@@ -74,6 +76,7 @@ class AppRoutes {
   static const String topicRoute = '/topic';
 
   static const String classtimetableRoute = '/class_timetable';
+  static const String assign_class_teacherRoute = '/assign_class_teacher';
 
 
   static List<GetPage> pages = [
@@ -212,6 +215,12 @@ class AppRoutes {
       name: video_tutorialRoute,
       page: () => VideoTutorialView(),
       bindings: [VideoTutorialBinding()],
+    ),
+
+    GetPage(
+      name: assign_class_teacherRoute,
+      page: () => AssignClassTeacherView(),
+      bindings: [AssignClassTeacherBinding()],
     ),
 
   ];

@@ -76,7 +76,7 @@ class ClassTimetableController extends GetxController {
   List<Map<String, dynamic>> data = [
     {
       'studentId': 18001,
-      'class': 'Class 4',
+      'subject': 'Class',
       'section': 'A',
       'subjectGroup': 'Class 1st Subject Group',
       'subjects': ['Hindi (230)', 'Math (231)', 'English (235)', 'Science (232)'],
@@ -88,6 +88,7 @@ class ClassTimetableController extends GetxController {
     },
     {
       'studentId': 18002,
+      'subject': 'Class 4',
       'class': 'Class 4',
       'section': 'A',
       'subjectGroup': 'Class 1st Subject Group',
@@ -98,8 +99,26 @@ class ClassTimetableController extends GetxController {
       'createdBy': 'Kirti Singh',
       'approvedId': 9000,
     },
+    {
+      'studentId': 18002,
+      'class': 'Class 4',
+      'subject': 'Class 4',
+      'section': 'A',
+      'subjectGroup': 'Class 1st Subject Group',
+      'subjects': ['Hindi (230)', 'Math (231)', 'English (235)', 'Science (232)'],
+      'lesson': "A Kite (Poem)",
+      'submissionDate': DateTime(2024, 4, 9),
+      'evaluationDate': DateTime(2024, 4, 9),
+      'createdBy': 'Kirti Singh',
+      'approvedId': 9000,
+    },
+
     // Add more data as needed
   ];
+
+  Rx<TextEditingController> timeFromC = TextEditingController().obs;
+  Rx<TextEditingController> timeTo = TextEditingController().obs;
+  Rx<TextEditingController> roomNumberC = TextEditingController().obs;
 
   Future<void> getData() async
   {
@@ -115,4 +134,17 @@ class ClassTimetableController extends GetxController {
     // print("111111111111111111111 ${lessonPlanModelObj.value.toJson()}");
     update();
   }
+
+  final List<String> days = [
+    'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
+  ];
+
+  String isTapped = "Monday";
+  String get getIsTapped => isTapped;
+  set updateIsTapped(String val){
+    isTapped = val;
+    update();
+  }
+
+
 }
