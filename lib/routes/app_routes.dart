@@ -3,6 +3,9 @@
 import 'package:learnladderfaculity/presentation/academics/Assign%20class%20teacher/assign_class_teacher_view.dart';
 import 'package:learnladderfaculity/presentation/academics/Class%20Timetable/class_timetable_binding.dart';
 import 'package:learnladderfaculity/presentation/academics/Class%20Timetable/class_timetable_view.dart';
+import 'package:learnladderfaculity/presentation/academics/Class/Binding/class_binding.dart';
+import 'package:learnladderfaculity/presentation/academics/Promote%20Student/Binding/promote_student_bindding.dart';
+import 'package:learnladderfaculity/presentation/academics/Subject/subject_view.dart';
 import 'package:learnladderfaculity/presentation/download_center/Content%20Share%20List/content_share_list_controller.dart';
 import 'package:learnladderfaculity/presentation/download_center/Upload%20Content/Binding/upload_share_content_binding.dart';
 import 'package:learnladderfaculity/presentation/school_url/bindings/school_url_binding.dart';
@@ -13,6 +16,11 @@ import '../core/app_export.dart';
 import '../presentation/about_school/about_school.dart';
 import '../presentation/about_school/binding/about_school.dart';
 import '../presentation/academics/Assign class teacher/Binding/assign_class_teacher_binding.dart';
+import '../presentation/academics/Class/class_view.dart';
+import '../presentation/academics/Promote Student/promote_student_view.dart';
+import '../presentation/academics/Subject Group/Binding/subject_group_binding.dart';
+import '../presentation/academics/Subject Group/subject_group_view.dart';
+import '../presentation/academics/Subject/Binding/subject_binding.dart';
 import '../presentation/add_homework/add_homework_view.dart';
 import '../presentation/add_homework/binding/add_homework.dart';
 import '../presentation/app_navigation_screen/app_navigation_screen.dart';
@@ -77,6 +85,10 @@ class AppRoutes {
 
   static const String classtimetableRoute = '/class_timetable';
   static const String assign_class_teacherRoute = '/assign_class_teacher';
+  static const String promote_studentRoute = '/promote_student';
+  static const String subject_groupRoute = '/subject_group';
+  static const String subjectRoute = '/subject';
+  static const String classRoute = '/class';
 
 
   static List<GetPage> pages = [
@@ -221,6 +233,30 @@ class AppRoutes {
       name: assign_class_teacherRoute,
       page: () => AssignClassTeacherView(),
       bindings: [AssignClassTeacherBinding()],
+    ),
+
+    GetPage(
+      name: promote_studentRoute,
+      page: () => PromoteStudentView(),
+      bindings: [PromoteStudentBinding()],
+    ),
+
+    GetPage(
+      name: subject_groupRoute,
+      page: () => SubjectGroupView(),
+      bindings: [SubjectGroupBinding()],
+    ),
+
+    GetPage(
+      name: subjectRoute,
+      page: () => SubjectView(),
+      bindings: [SubjectBinding()],
+    ),
+
+    GetPage(
+      name: classRoute,
+      page: () => ClassView(),
+      bindings: [ClassBinding()],
     ),
 
   ];

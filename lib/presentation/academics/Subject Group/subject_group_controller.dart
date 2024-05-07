@@ -1,10 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 
-class PromoteStudentController extends GetxController{
+class SubjectGroupController extends GetxController{
 
-  RxBool isChecked = false.obs;
-  RxBool isPassed = false.obs;
+  Rx<TextEditingController> nameC = TextEditingController().obs;
+  Rx<TextEditingController> descriptionC = TextEditingController().obs;
 
   List demo = [
     {
@@ -17,6 +18,8 @@ class PromoteStudentController extends GetxController{
       'name':"Faheem"
     },
   ];
+
+  RxBool isChecked = false.obs;
 
   List<Map<String, dynamic>> data = [
     {
