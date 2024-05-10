@@ -13,14 +13,20 @@ import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Sy
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Syllabus%20Status/manage_syllabus_status_view_details.dart';
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage_Lesson_Plan/teacher_lesson_plan.dart';
 import '../core/app_export.dart';
+import '../presentation/CBSE Examination/Term/Binding/trem_binding.dart';
+import '../presentation/CBSE Examination/Term/trem_view.dart';
 import '../presentation/about_school/about_school.dart';
 import '../presentation/about_school/binding/about_school.dart';
 import '../presentation/academics/Assign class teacher/Binding/assign_class_teacher_binding.dart';
 import '../presentation/academics/Class/class_view.dart';
 import '../presentation/academics/Promote Student/promote_student_view.dart';
+import '../presentation/academics/Section/Binding/section_binding.dart';
+import '../presentation/academics/Section/section_view.dart';
 import '../presentation/academics/Subject Group/Binding/subject_group_binding.dart';
 import '../presentation/academics/Subject Group/subject_group_view.dart';
 import '../presentation/academics/Subject/Binding/subject_binding.dart';
+import '../presentation/academics/Teacher Time Table/Binding/teacher_time_table_binding.dart';
+import '../presentation/academics/Teacher Time Table/teacher_time_table_view.dart';
 import '../presentation/add_homework/add_homework_view.dart';
 import '../presentation/add_homework/binding/add_homework.dart';
 import '../presentation/app_navigation_screen/app_navigation_screen.dart';
@@ -89,6 +95,13 @@ class AppRoutes {
   static const String subject_groupRoute = '/subject_group';
   static const String subjectRoute = '/subject';
   static const String classRoute = '/class';
+  static const String sectionRoute = '/section';
+  static const String teachers_time_tableRoute = '/teachers_time_table';
+
+
+
+  static const String termRoute = '/term';
+
 
 
   static List<GetPage> pages = [
@@ -257,6 +270,24 @@ class AppRoutes {
       name: classRoute,
       page: () => ClassView(),
       bindings: [ClassBinding()],
+    ),
+
+    GetPage(
+      name: sectionRoute,
+      page: () => SectionView(),
+      bindings: [SectionBinding()],
+    ),
+
+    GetPage(
+      name: teachers_time_tableRoute,
+      page: () => TeacherTimeTableView(),
+      bindings: [TeacherTimeTableBinding()],
+    ),
+
+    GetPage(
+      name: termRoute,
+      page: () => TermView(),
+      bindings: [TermBinding()],
     ),
 
   ];

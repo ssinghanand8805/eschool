@@ -76,6 +76,66 @@ class DashboardScreen extends GetView<DashboardController> {
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(Icons.message),
+                      title: Text('Term'),
+                      onTap: () async {
+                        await Get.toNamed(AppRoutes.termRoute);
+                        Navigator.pop(context); // Close the bottom sheet
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.email),
+                      title: Text('Assessment'),
+                      onTap: () {
+                        // Add your logic here
+                        Navigator.pop(context); // Close the bottom sheet
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.email),
+                      title: Text('Grade'),
+                      onTap: () {
+                        // Add your logic here
+                        Navigator.pop(context); // Close the bottom sheet
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.email),
+                      title: Text('Exam'),
+                      onTap: () {
+                        // Add your logic here
+                        Navigator.pop(context); // Close the bottom sheet
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.email),
+                      title: Text('Exam Schedule'),
+                      onTap: () {
+                        // Add your logic here
+                        Navigator.pop(context); // Close the bottom sheet
+                      },
+                    ),
+
+                    // Add more ListTiles for additional buttons
+                  ],
+                ),
+              );
+            },
+          );
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.green.shade400,
+      ),
       drawer: Drawer(
         child: SingleChildScrollView(
           child: Column(

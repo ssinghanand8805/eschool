@@ -544,4 +544,28 @@ class DashboardController extends GetxController {
       },
     );
   }
+
+
+
+  RxList FAB = [
+    {
+      'name':"Term"
+    },
+    {
+      'name':"Assessment"
+    },
+    {
+      'name':"Grade"
+    },
+    {
+      'name':"Exam"
+    },
+    {
+      'name':"Exam Schedule"
+    },
+  ].obs;
+
+
+
+
 }
