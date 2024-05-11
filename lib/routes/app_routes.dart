@@ -13,6 +13,16 @@ import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Sy
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Syllabus%20Status/manage_syllabus_status_view_details.dart';
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage_Lesson_Plan/teacher_lesson_plan.dart';
 import '../core/app_export.dart';
+import '../presentation/CBSE Examination/Assessment/Binding/assessment_ binding.dart';
+import '../presentation/CBSE Examination/Assessment/assessment_view.dart';
+import '../presentation/CBSE Examination/Exam Grade/Binding/exam_grade_binding.dart';
+import '../presentation/CBSE Examination/Exam Grade/exam_grade_view.dart';
+import '../presentation/CBSE Examination/Exam/AssignViewStudent/assign_view_student_binding.dart';
+import '../presentation/CBSE Examination/Exam/AssignViewStudent/assign_view_student_view.dart';
+import '../presentation/CBSE Examination/Exam/Binding/exam_binding.dart';
+import '../presentation/CBSE Examination/Exam/Exam Subject/exam_subject_binding.dart';
+import '../presentation/CBSE Examination/Exam/Exam Subject/exam_subject_view.dart';
+import '../presentation/CBSE Examination/Exam/exam_view.dart';
 import '../presentation/CBSE Examination/Term/Binding/trem_binding.dart';
 import '../presentation/CBSE Examination/Term/trem_view.dart';
 import '../presentation/about_school/about_school.dart';
@@ -101,6 +111,11 @@ class AppRoutes {
 
 
   static const String termRoute = '/term';
+  static const String exam_gradeRoute = '/exam_grade';
+  static const String assessmentRoute = '/assessment';
+  static const String examRoute = '/exam';
+  static const String assign_view_studentRoute = '/assign_view_student';
+  static const String exam_subjectRoute = '/exam_subject';
 
 
 
@@ -288,6 +303,36 @@ class AppRoutes {
       name: termRoute,
       page: () => TermView(),
       bindings: [TermBinding()],
+    ),
+
+    GetPage(
+      name: exam_gradeRoute,
+      page: () => ExamGradeView(),
+      bindings: [ExamGradeBinding()],
+    ),
+
+    GetPage(
+      name: assessmentRoute,
+      page: () => AssessmentView(),
+      bindings: [AssessmentBinding()],
+    ),
+
+    GetPage(
+      name: examRoute,
+      page: () => ExamView(),
+      bindings: [ExamBinding()],
+    ),
+
+    GetPage(
+      name: assign_view_studentRoute,
+      page: () => AssignViewStudentView(),
+      bindings: [AssignViewStudentBinding()],
+    ),
+
+    GetPage(
+      name: exam_subjectRoute,
+      page: () => ExamSubjectView(),
+      bindings: [ExamSubjectBinding()],
     ),
 
   ];

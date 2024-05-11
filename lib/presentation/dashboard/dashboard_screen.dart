@@ -96,24 +96,25 @@ class DashboardScreen extends GetView<DashboardController> {
                     ListTile(
                       leading: Icon(Icons.email),
                       title: Text('Assessment'),
-                      onTap: () {
-                        // Add your logic here
+                      onTap: () async {
+                        await Get.toNamed(AppRoutes.assessmentRoute);
+
                         Navigator.pop(context); // Close the bottom sheet
                       },
                     ),
                     ListTile(
                       leading: Icon(Icons.email),
-                      title: Text('Grade'),
-                      onTap: () {
-                        // Add your logic here
+                      title: Text('Exam Grade'),
+                      onTap: () async {
+                        await Get.toNamed(AppRoutes.exam_gradeRoute);
                         Navigator.pop(context); // Close the bottom sheet
                       },
                     ),
                     ListTile(
                       leading: Icon(Icons.email),
                       title: Text('Exam'),
-                      onTap: () {
-                        // Add your logic here
+                      onTap: () async {
+                        await Get.toNamed(AppRoutes.examRoute);
                         Navigator.pop(context); // Close the bottom sheet
                       },
                     ),

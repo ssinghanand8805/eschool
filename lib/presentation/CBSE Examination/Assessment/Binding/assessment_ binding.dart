@@ -1,12 +1,14 @@
 import 'package:get/get.dart';
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Exam%20Grade/exam_grade_controller.dart';
 
+import '../assessment_ controller.dart';
 
 
-class ExamGradeBinding extends Bindings {
+
+class AssessmentBinding extends Bindings {
   @override
   void dependencies() {
     // Get.lazyPut(() => TermController());
-    Get.put(ExamGradeController());
+    Get.put(AssessmentController());
   }
 }
