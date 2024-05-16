@@ -126,6 +126,22 @@ class DashboardScreen extends GetView<DashboardController> {
                         Navigator.pop(context); // Close the bottom sheet
                       },
                     ),
+                    ListTile(
+                      leading: Icon(Icons.email),
+                      title: Text('Assign Observation'),
+                      onTap: () async {
+                        await Get.toNamed(AppRoutes.assign_observationRoute);
+                        Navigator.pop(context); // Close the bottom sheet
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.email),
+                      title: Text('Observation Parameter'),
+                      onTap: () async {
+                        await Get.toNamed(AppRoutes.observation_ParameterRoute);
+                        Navigator.pop(context); // Close the bottom sheet
+                      },
+                    ),
 
                     // Add more ListTiles for additional buttons
                   ],

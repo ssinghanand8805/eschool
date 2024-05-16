@@ -1,5 +1,11 @@
 
 
+import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Observation/Assign%20Marks/assign_marks_binding.dart';
+import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Observation/Assign%20Marks/assign_marks_view.dart';
+import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Observation/assign_observation_controller.dart';
+import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Observation/assign_observation_view.dart';
+import 'package:learnladderfaculity/presentation/CBSE%20Examination/Exam/Exam%20Marks/exam_mark_binding.dart';
+import 'package:learnladderfaculity/presentation/CBSE%20Examination/Observation%20Parameter/observation_parameter_binding.dart';
 import 'package:learnladderfaculity/presentation/academics/Assign%20class%20teacher/assign_class_teacher_view.dart';
 import 'package:learnladderfaculity/presentation/academics/Class%20Timetable/class_timetable_binding.dart';
 import 'package:learnladderfaculity/presentation/academics/Class%20Timetable/class_timetable_view.dart';
@@ -15,14 +21,21 @@ import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage_Less
 import '../core/app_export.dart';
 import '../presentation/CBSE Examination/Assessment/Binding/assessment_ binding.dart';
 import '../presentation/CBSE Examination/Assessment/assessment_view.dart';
+import '../presentation/CBSE Examination/Assign Observation/assign_observation_binding.dart';
 import '../presentation/CBSE Examination/Exam Grade/Binding/exam_grade_binding.dart';
 import '../presentation/CBSE Examination/Exam Grade/exam_grade_view.dart';
 import '../presentation/CBSE Examination/Exam/AssignViewStudent/assign_view_student_binding.dart';
 import '../presentation/CBSE Examination/Exam/AssignViewStudent/assign_view_student_view.dart';
 import '../presentation/CBSE Examination/Exam/Binding/exam_binding.dart';
+import '../presentation/CBSE Examination/Exam/Exam Attendance/exam_attendance_binding.dart';
+import '../presentation/CBSE Examination/Exam/Exam Attendance/exam_attendance_view.dart';
+import '../presentation/CBSE Examination/Exam/Exam Marks/Enter Marks/enter_marks_binding.dart';
+import '../presentation/CBSE Examination/Exam/Exam Marks/Enter Marks/enter_marks_view.dart';
+import '../presentation/CBSE Examination/Exam/Exam Marks/exam_mark_view.dart';
 import '../presentation/CBSE Examination/Exam/Exam Subject/exam_subject_binding.dart';
 import '../presentation/CBSE Examination/Exam/Exam Subject/exam_subject_view.dart';
 import '../presentation/CBSE Examination/Exam/exam_view.dart';
+import '../presentation/CBSE Examination/Observation Parameter/observation_parameter_view.dart';
 import '../presentation/CBSE Examination/Term/Binding/trem_binding.dart';
 import '../presentation/CBSE Examination/Term/trem_view.dart';
 import '../presentation/about_school/about_school.dart';
@@ -116,6 +129,12 @@ class AppRoutes {
   static const String examRoute = '/exam';
   static const String assign_view_studentRoute = '/assign_view_student';
   static const String exam_subjectRoute = '/exam_subject';
+  static const String assign_observationRoute = '/assign_observation';
+  static const String assign_marksRoute = '/assign_marks';
+  static const String observation_ParameterRoute = '/observation_Parameter';
+  static const String exam_markRoute = '/exam_mark';
+  static const String enter_marksRoute = '/enter_marks';
+  static const String exam_attendanceRoute = '/exam_attendance';
 
 
 
@@ -333,6 +352,37 @@ class AppRoutes {
       name: exam_subjectRoute,
       page: () => ExamSubjectView(),
       bindings: [ExamSubjectBinding()],
+    ),
+
+    GetPage(
+      name: assign_observationRoute,
+      page: () => AssignObservationView(),
+      bindings: [AssignObservationBinding()],
+    ),
+    GetPage(
+      name: assign_marksRoute,
+      page: () => AssignMarksView(),
+      bindings: [AssignMarksBinding()],
+    ),
+    GetPage(
+      name: observation_ParameterRoute,
+      page: () => ObservationParameterView(),
+      bindings: [ObservationParameterBinding()],
+    ),
+    GetPage(
+      name: exam_markRoute,
+      page: () => ExamMarkView(),
+      bindings: [ExamMarkBinding()],
+    ),
+    GetPage(
+      name: enter_marksRoute,
+      page: () => EnterMarksView(),
+      bindings: [EnterMarksBinding()],
+    ),
+    GetPage(
+      name: exam_attendanceRoute,
+      page: () => ExamAttendanceView(),
+      bindings: [ExamAttendanceBinding()],
     ),
 
   ];

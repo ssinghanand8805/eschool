@@ -109,15 +109,15 @@ class ExamView extends GetView<ExamController> {
                               tooltip: "Exam Marks",
                               icon: Icon(Icons.branding_watermark_sharp,
                                   size: 15),
-                              onPressed: () {
-                                //editHomework(index);
+                              onPressed: () async {
+                                await Get.toNamed(AppRoutes.exam_markRoute);
                               },
                             ),
                             IconButton(
                               tooltip: "Exam Attendance",
                               icon: Icon(Icons.fact_check, size: 15),
-                              onPressed: () {
-                                //editHomework(index);
+                              onPressed: () async {
+                                await Get.toNamed(AppRoutes.exam_attendanceRoute);
                               },
                             ),
                             IconButton(
