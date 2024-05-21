@@ -2,17 +2,16 @@
 
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Observation/Assign%20Marks/assign_marks_binding.dart';
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Observation/Assign%20Marks/assign_marks_view.dart';
-import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Observation/assign_observation_controller.dart';
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Observation/assign_observation_view.dart';
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Exam/Exam%20Marks/exam_mark_binding.dart';
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Observation%20Parameter/observation_parameter_binding.dart';
+import 'package:learnladderfaculity/presentation/Examinitaion/Exam%20Group/Add%20Exam/Exam%20Marks/Enter%20Marks/enter_marks_view.dart';
 import 'package:learnladderfaculity/presentation/academics/Assign%20class%20teacher/assign_class_teacher_view.dart';
 import 'package:learnladderfaculity/presentation/academics/Class%20Timetable/class_timetable_binding.dart';
 import 'package:learnladderfaculity/presentation/academics/Class%20Timetable/class_timetable_view.dart';
 import 'package:learnladderfaculity/presentation/academics/Class/Binding/class_binding.dart';
 import 'package:learnladderfaculity/presentation/academics/Promote%20Student/Binding/promote_student_bindding.dart';
 import 'package:learnladderfaculity/presentation/academics/Subject/subject_view.dart';
-import 'package:learnladderfaculity/presentation/download_center/Content%20Share%20List/content_share_list_controller.dart';
 import 'package:learnladderfaculity/presentation/download_center/Upload%20Content/Binding/upload_share_content_binding.dart';
 import 'package:learnladderfaculity/presentation/school_url/bindings/school_url_binding.dart';
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Syllabus%20Status/manage_syllabus_status_binding.dart';
@@ -24,6 +23,8 @@ import '../presentation/CBSE Examination/Assessment/assessment_view.dart';
 import '../presentation/CBSE Examination/Assign Observation/assign_observation_binding.dart';
 import '../presentation/CBSE Examination/Exam Grade/Binding/exam_grade_binding.dart';
 import '../presentation/CBSE Examination/Exam Grade/exam_grade_view.dart';
+import '../presentation/CBSE Examination/Exam Schedule/exam_schedule_binding.dart';
+import '../presentation/CBSE Examination/Exam Schedule/exam_schedule_view.dart';
 import '../presentation/CBSE Examination/Exam/AssignViewStudent/assign_view_student_binding.dart';
 import '../presentation/CBSE Examination/Exam/AssignViewStudent/assign_view_student_view.dart';
 import '../presentation/CBSE Examination/Exam/Binding/exam_binding.dart';
@@ -34,10 +35,49 @@ import '../presentation/CBSE Examination/Exam/Exam Marks/Enter Marks/enter_marks
 import '../presentation/CBSE Examination/Exam/Exam Marks/exam_mark_view.dart';
 import '../presentation/CBSE Examination/Exam/Exam Subject/exam_subject_binding.dart';
 import '../presentation/CBSE Examination/Exam/Exam Subject/exam_subject_view.dart';
+import '../presentation/CBSE Examination/Exam/Teacher Remark/teacher_remark_binding.dart';
+import '../presentation/CBSE Examination/Exam/Teacher Remark/teacher_remark_view.dart';
 import '../presentation/CBSE Examination/Exam/exam_view.dart';
 import '../presentation/CBSE Examination/Observation Parameter/observation_parameter_view.dart';
+import '../presentation/CBSE Examination/Observation/observation_binding.dart';
+import '../presentation/CBSE Examination/Observation/observation_view.dart';
+import '../presentation/CBSE Examination/Print Marksheet/print_marksheet_binding.dart';
+import '../presentation/CBSE Examination/Print Marksheet/print_marksheet_view.dart';
 import '../presentation/CBSE Examination/Term/Binding/trem_binding.dart';
 import '../presentation/CBSE Examination/Term/trem_view.dart';
+import '../presentation/Communicate/Email Sms Log/email_sms_log_binding.dart';
+import '../presentation/Communicate/Email Sms Log/email_sms_log_view.dart';
+import '../presentation/Communicate/Email Tamplet/email_tamplet_binding.dart';
+import '../presentation/Communicate/Email Tamplet/email_tamplet_view.dart';
+import '../presentation/Communicate/Login Credentials Send/login_credentials_send_binding.dart';
+import '../presentation/Communicate/Login Credentials Send/login_credentials_send_view.dart';
+import '../presentation/Communicate/Notice Board/Post New Message/new_message_binding.dart';
+import '../presentation/Communicate/Notice Board/Post New Message/new_message_view.dart';
+import '../presentation/Communicate/Notice Board/notice_board_binding.dart';
+import '../presentation/Communicate/Notice Board/notice_board_view.dart';
+import '../presentation/Communicate/Schedule Email Sms Log/schedule_email_sms_log_binding.dart';
+import '../presentation/Communicate/Schedule Email Sms Log/schedule_email_sms_log_view.dart';
+import '../presentation/Communicate/Send Email/send_email_binding.dart';
+import '../presentation/Communicate/Send Email/send_email_view.dart';
+import '../presentation/Communicate/Send Sms/send_sms_binding.dart';
+import '../presentation/Communicate/Send Sms/send_sms_view.dart';
+import '../presentation/Communicate/Sms Template/sms_template_binding.dart';
+import '../presentation/Communicate/Sms Template/sms_template_view.dart';
+import '../presentation/Examinitaion/Exam Group/Add Exam/AssignViewStudent/assign_view_student_binding.dart';
+import '../presentation/Examinitaion/Exam Group/Add Exam/AssignViewStudent/assign_view_student_view.dart';
+import '../presentation/Examinitaion/Exam Group/Add Exam/Exam Marks/Enter Marks/enter_marks_binding.dart';
+import '../presentation/Examinitaion/Exam Group/Add Exam/Exam Marks/exam_mark_binding.dart';
+import '../presentation/Examinitaion/Exam Group/Add Exam/Exam Marks/exam_mark_view.dart';
+import '../presentation/Examinitaion/Exam Group/Add Exam/Exam Subject/exam_subject_binding.dart';
+import '../presentation/Examinitaion/Exam Group/Add Exam/Exam Subject/exam_subject_view.dart';
+import '../presentation/Examinitaion/Exam Group/Add Exam/Teacher Remark/teacher_remark_binding.dart';
+import '../presentation/Examinitaion/Exam Group/Add Exam/Teacher Remark/teacher_remark_view.dart';
+import '../presentation/Examinitaion/Exam Group/Add Exam/exam_binding.dart';
+import '../presentation/Examinitaion/Exam Group/Add Exam/exam_view.dart';
+import '../presentation/Examinitaion/Exam Group/exam_group_binding.dart';
+import '../presentation/Examinitaion/Exam Group/exam_group_view.dart';
+import '../presentation/Examinitaion/Marks Grade/marks_grade_binding.dart';
+import '../presentation/Examinitaion/Marks Grade/marks_grade_view.dart';
 import '../presentation/about_school/about_school.dart';
 import '../presentation/about_school/binding/about_school.dart';
 import '../presentation/academics/Assign class teacher/Binding/assign_class_teacher_binding.dart';
@@ -135,6 +175,33 @@ class AppRoutes {
   static const String exam_markRoute = '/exam_mark';
   static const String enter_marksRoute = '/enter_marks';
   static const String exam_attendanceRoute = '/exam_attendance';
+  static const String teacher_remarkRoute = '/teacher_remark';
+  static const String print_marksheetRoute = '/print_marksheet';
+  static const String observationRoute = '/observation';
+  static const String exam_scheduleRoute = '/exam_schedule';
+
+      /// EXAMINATION
+  static const String marks_gradeRoute = '/marks_grade';
+  static const String exam_groupRoute = '/exam_group';
+  static const String add_exam_groupRoute = '/add_exam_group';
+  static const String add_exam_assign_view_studentRoute = '/add_exam_assign_view_student';
+  static const String add_exam_exam_subjectRoute = '/add_exam_exam_subject';
+  static const String add_exam_markRoute = '/add_exam_mark';
+  static const String add_exam_enter_marksRoute = '/add_exam_enter_marks';
+  static const String add_exam_teacher_remarksRoute = '/add_exam_teacher_remarks';
+
+
+      /// Communicate
+  static const String notice_boardRoute = '/notice_board';
+  static const String new_messageRoute = '/new_message';
+  static const String emailRoute = '/email';
+  static const String emailSmsLogRoute = '/email_sms_log';
+  static const String scheduleEmailSmsLogRoute = '/schedule_email_sms_log';
+  static const String login_credentials_sendRoute = '/login_credentials_send';
+  static const String email_templateRoute = '/email_template';
+  static const String sms_templateRoute = '/sms_template';
+  static const String smsRoute = '/sms';
+
 
 
 
@@ -383,6 +450,116 @@ class AppRoutes {
       name: exam_attendanceRoute,
       page: () => ExamAttendanceView(),
       bindings: [ExamAttendanceBinding()],
+    ),
+    GetPage(
+      name: teacher_remarkRoute,
+      page: () => TeacherRemarkView(),
+      bindings: [TeacherRemarkBinding()],
+    ),
+    GetPage(
+      name: print_marksheetRoute,
+      page: () => PrintMarksheetView(),
+      bindings: [PrintMarksheetBinding()],
+    ),
+    GetPage(
+      name: observationRoute,
+      page: () => ObservationView(),
+      bindings: [ObservationBinding()],
+    ),
+    GetPage(
+      name: exam_scheduleRoute,
+      page: () => ExamScheduleView(),
+      bindings: [ExamScheduleBinding()],
+    ),
+
+      ///EXAMINATION
+    GetPage(
+      name: marks_gradeRoute,
+      page: () => MarksGradeView(),
+      bindings: [MarksGradeBinding()],
+    ),
+    GetPage(
+      name: exam_groupRoute,
+      page: () => ExamGroupView(),
+      bindings: [ExamGroupBinding()],
+    ),
+    GetPage(
+      name: add_exam_groupRoute,
+      page: () => AddExamView(),
+      bindings: [AddExamBinding()],
+    ),
+    GetPage(
+      name: add_exam_assign_view_studentRoute,
+      page: () => AddExamAssignViewStudentView(),
+      bindings: [AddExamAssignViewStudentBinding()],
+    ),
+    GetPage(
+      name: add_exam_exam_subjectRoute,
+      page: () => AddExamExamSubjectView(),
+      bindings: [AddExamExamSubjectBinding()],
+    ),
+    GetPage(
+      name: add_exam_markRoute,
+      page: () => AddExamMarkView(),
+      bindings: [AddExamMarkBinding()],
+    ),
+    GetPage(
+      name: add_exam_enter_marksRoute,
+      page: () => AddExamEnterMarksView(),
+      bindings: [AddExamEnterMarksBinding()],
+    ),
+    GetPage(
+      name: add_exam_teacher_remarksRoute,
+      page: () => AddExamTeacherRemarkView(),
+      bindings: [AddExamTeacherRemarkBinding()],
+    ),
+
+    ///Communicate
+
+    GetPage(
+      name: notice_boardRoute,
+      page: () => NoticeBoardView(),
+      bindings: [NoticeBoardBinding()],
+    ),
+    GetPage(
+      name: new_messageRoute,
+      page: () => NewMessageView(),
+      bindings: [NewMessageBinding()],
+    ),
+    GetPage(
+      name: emailRoute,
+      page: () => SendEmailView(),
+      bindings: [SendEmailBinding()],
+    ),
+    GetPage(
+      name: emailSmsLogRoute,
+      page: () => EmailSmsLogView(),
+      bindings: [EmailSmsLogBinding()],
+    ),
+    GetPage(
+      name: scheduleEmailSmsLogRoute,
+      page: () => ScheduleEmailSmsLogView(),
+      bindings: [ScheduleEmailSmsLogBinding()],
+    ),
+    GetPage(
+      name: login_credentials_sendRoute,
+      page: () => LoginCredentialsSendView(),
+      bindings: [LoginCredentialsSendBinding()],
+    ),
+    GetPage(
+      name: email_templateRoute,
+      page: () => EmailTemplateView(),
+      bindings: [ EmailTemplateBinding()],
+    ),
+    GetPage(
+      name: sms_templateRoute,
+      page: () => SmsTemplateView(),
+      bindings: [ SmsTemplateBinding()],
+    ),
+    GetPage(
+      name: smsRoute,
+      page: () => SendSmsView(),
+      bindings: [ SendSmsBinding()],
     ),
 
   ];

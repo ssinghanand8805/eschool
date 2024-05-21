@@ -1,13 +1,9 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:get/get.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Observation/assign_observation_controller.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
-
-import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/myCustomsd.dart';
