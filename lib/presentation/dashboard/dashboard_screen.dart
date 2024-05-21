@@ -1,14 +1,10 @@
-import 'package:learnladderfaculity/presentation/login_screen/models/userDataModal.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import '../../apiHelper/userData.dart';
 import '../../core/app_export.dart';
 import '../../notifications/controller/NotificationController.dart';
-import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/alert_dialogue.dart';
 import 'controller/dashbord_controller.dart';
-import 'models/Menus.dart';
 // ignore_for_file: must_be_immutable
 
 class DashboardScreen extends GetView<DashboardController> {
@@ -78,12 +74,10 @@ class DashboardScreen extends GetView<DashboardController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return Container(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+          AlertDialogue().show(context,
+              newWidget: [
+                Column(
+                  // mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
                       leading: Icon(Icons.message),
@@ -121,8 +115,8 @@ class DashboardScreen extends GetView<DashboardController> {
                     ListTile(
                       leading: Icon(Icons.email),
                       title: Text('Exam Schedule'),
-                      onTap: () {
-                        // Add your logic here
+                      onTap: () async {
+                        await Get.toNamed(AppRoutes.exam_scheduleRoute);
                         Navigator.pop(context); // Close the bottom sheet
                       },
                     ),
@@ -142,13 +136,27 @@ class DashboardScreen extends GetView<DashboardController> {
                         Navigator.pop(context); // Close the bottom sheet
                       },
                     ),
+                    ListTile(
+                      leading: Icon(Icons.email),
+                      title: Text('Print Marksheet'),
+                      onTap: () async {
+                        await Get.toNamed(AppRoutes.print_marksheetRoute);
+                        Navigator.pop(context); // Close the bottom sheet
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.email),
+                      title: Text('Observation'),
+                      onTap: () async {
+                        await Get.toNamed(AppRoutes.observationRoute);
+                        Navigator.pop(context); // Close the bottom sheet
+                      },
+                    ),
 
                     // Add more ListTiles for additional buttons
                   ],
-                ),
-              );
-            },
-          );
+                )
+              ]);
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.green.shade400,

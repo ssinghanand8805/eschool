@@ -1,15 +1,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:learnladderfaculity/presentation/CBSE%20Examination/Exam/Exam%20Subject/exam_subject_controller.dart';
 import 'package:learnladderfaculity/widgets/customTextField.dart';
 import 'package:learnladderfaculity/widgets/custom_button.dart';
 import 'package:learnladderfaculity/widgets/myCustomsd.dart';
-import '../../../../theme/theme_helper.dart';
-import '../../../../widgets/datePickerTextField.dart';
-import '../../../../widgets/timePickerTextField.dart';
+import '../../../../../theme/theme_helper.dart';
+import '../../../../../widgets/datePickerTextField.dart';
+import '../../../../../widgets/timePickerTextField.dart';
+import 'exam_subject_controller.dart';
 
-class ExamSubjectView extends GetView<ExamSubjectController> {
+class AddExamExamSubjectView extends GetView<AddExamExamSubjectController> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -79,11 +79,13 @@ class ExamSubjectView extends GetView<ExamSubjectController> {
                 dataRowHeight: 100,
                 columns: const [
                   DataColumn(label: Text('Subject')),
-                  DataColumn(label: Text('Assessment')),
                   DataColumn(label: Text('Date')),
                   DataColumn(label: Text('Start Time')),
                   DataColumn(label: Text('Duration (minute)')),
+                  DataColumn(label: Text('Credit Hours')),
                   DataColumn(label: Text('Room No')),
+                  DataColumn(label: Text('Marks (Max..)')),
+                  DataColumn(label: Text('Marks (Min..)')),
                   DataColumn(label: Text('Action')),
                 ],
                 rows: controller.data.asMap().entries.map((entry) {
@@ -97,35 +99,7 @@ class ExamSubjectView extends GetView<ExamSubjectController> {
                         borderColor: Colors.grey,
                         onChanged: (value) {},
                       )),
-                      DataCell(
-                        SizedBox(
-                          width: Get.width/1.5,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: 3,
-                            itemBuilder: (context, index) {
-                              return Obx(() =>
-                                  Row(
-                                    children: [
-                                      Checkbox(
-                                        checkColor: Colors.white,
-                                        //fillColor: MaterialStateProperty.resolveWith(Colors.red),
-                                        value: controller.isTheoryChecked.value,
-                                        onChanged: (value) {
-                                          controller.isTheoryChecked.value = value!;
-                                          print(value);
-                                        },
-                                      ),
-                                      Text(
-                                        "Theory (TH02) Theory (TH02)",
-                                        style: theme.textTheme.titleSmall,
-                                      )
-                                    ],
-                                  ));
-                            },
-                          ),
-                        ),
-                      ),
+
                       DataCell(DatePickerTextField(
                         controller: controller.dateC.value,
                         title: '',
@@ -141,8 +115,26 @@ class ExamSubjectView extends GetView<ExamSubjectController> {
                         title: '',
                       )),
                       DataCell(CustomTextField(
+                        controller: controller.creditHoursC.value,
+                        hint: 'Credit Hours',
+                        keyboardType: TextInputType.number,
+                        title: '',
+                      )),
+                      DataCell(CustomTextField(
                         controller: controller.roomNoC.value,
                         hint: 'Room No.',
+                        keyboardType: TextInputType.number,
+                        title: '',
+                      )),
+                      DataCell(CustomTextField(
+                        controller: controller.maxMarksC.value,
+                        hint: 'Marks (Max..)',
+                        keyboardType: TextInputType.number,
+                        title: '',
+                      )),
+                      DataCell(CustomTextField(
+                        controller: controller.minMarksC.value,
+                        hint: 'Marks (Min..)',
                         keyboardType: TextInputType.number,
                         title: '',
                       )),

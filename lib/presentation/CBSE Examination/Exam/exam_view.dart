@@ -1,12 +1,8 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:get/get.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Exam/exam_controller.dart';
 import 'package:learnladderfaculity/widgets/myCustomsd.dart';
-
-import '../../../theme/theme_helper.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/customTextField.dart';
 import '../../../widgets/custom_button.dart';
@@ -123,8 +119,8 @@ class ExamView extends GetView<ExamController> {
                             IconButton(
                               tooltip: "Teacher Remark",
                               icon: Icon(Icons.chat_bubble_outline, size: 15),
-                              onPressed: () {
-                                //editHomework(index);
+                              onPressed: () async {
+                                await Get.toNamed(AppRoutes.teacher_remarkRoute);
                               },
                             ),
                             IconButton(

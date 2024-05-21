@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:learnladderfaculity/widgets/customTextField.dart';
-
 import '../../../../theme/theme_helper.dart';
 import '../../../../widgets/custom_button.dart';
 import 'exam_attendance_controller.dart';
@@ -33,6 +30,7 @@ class ExamAttendanceView extends GetView<ExamAttendanceController>{
                   child: CustomTextField(
                       controller: controller.attendanceC.value,
                       hint: "Total Attendance Days",
+                      keyboardType: TextInputType.number,
                       title: ""),
                 )
               ],
@@ -94,7 +92,5 @@ class ExamAttendanceView extends GetView<ExamAttendanceController>{
         ),
       ),
     );
-
   }
-
 }

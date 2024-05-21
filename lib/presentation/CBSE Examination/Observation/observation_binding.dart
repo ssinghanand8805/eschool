@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
-import 'exam_mark_controller.dart';
+import 'observation_controller.dart';
 
 
 
-class ExamMarkBinding extends Bindings {
+class ObservationBinding extends Bindings {
   @override
   void dependencies() {
     // Get.lazyPut(() => TermController());
-    Get.put(ExamMarkController());
+    Get.put(ObservationController());
   }
 }
