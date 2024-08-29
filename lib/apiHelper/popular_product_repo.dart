@@ -14,7 +14,7 @@ class ApiRespository extends GetxService {
 
   ApiRespository({required this.apiClient});
 
-  Future<Response> getPopularProduct(getApiEndPoint) async{
+  Future<Response> getApiCallByJson(getApiEndPoint) async{
 
     return await apiClient.getData(getApiEndPoint);
   }

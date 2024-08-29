@@ -1,12 +1,17 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:learnladderfaculity/presentation/common_widgets/controller/CommonApiController.dart';
+import 'package:learnladderfaculity/presentation/common_widgets/custom_loader.dart';
 import '../../../widgets/myCustomsd.dart';
 import '../../theme/theme_helper.dart';
 import '../../widgets/button.dart';
 import '../common_widgets/CommonForm.dart';
 import '../common_widgets/controller/CommonController.dart';
 import 'controller/student_attendance_controller.dart';
+import 'model/Student_Attendance.dart';
 
 class StudentAttendanceScreen extends StatefulWidget {
   const StudentAttendanceScreen({Key? key});
@@ -20,11 +25,7 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
   StudentAttendanceController controller =
       Get.put(StudentAttendanceController());
 
-  final List _students = [
-    {"id": 1001, "classId": "0202", "name": "Hudson1"},
-    {"id": 1002, "classId": "0203", "name": "Hudson2"},
-    {"id": 1003, "classId": "0204", "name": "Hudson2"},
-  ];
+
   getDate() async {
     var date = await showDatePicker(
       context: context,
@@ -36,6 +37,8 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
   }
   CommonController controller2 =
   Get.put(CommonController());
+  CommonApiController controller3 =
+  Get.put(CommonApiController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,33 +53,41 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
          return CommonForm(
            widgetFilterData: Column(
                             children: [
-                              MyCustomSD(
+               Obx( () => MyCustomSD(
+
                                 hideSearch: true,
                                 borderColor: Colors.grey,
-                                listToSearch: _students,
-                                valFrom: "name",
+                                listToSearch: controller3.classListModelMap.value,
+                                valFrom: "className",
                                 label: 'Class',
                                 labelText: 'Class',
                                 onChanged: (val) {
-                                  print(val);
+                                  if(controller3.classListModelMap.value.length > 0)
+                                    {
+                                      print("5555555555555");
+
+                                      controller3.selectedClassId.value = val['id'].toString();
+                                      controller3.update();
+                                      controller3.getSectionList();
+                                    }
 
                                 },
-                              ),
+                              )),
                               SizedBox(
                                 height: 10,
                               ),
-                              MyCustomSD(
+                              Obx( () => MyCustomSD(
                                 hideSearch: true,
                                 borderColor: Colors.grey,
-                                listToSearch: _students,
-                                valFrom: "name",
+                                listToSearch: controller3.sectionListModelMap.value,
+                                valFrom: "section",
                                 label: 'Section',
                                 labelText: 'Section',
                                 onChanged: (val) {
                                   print(val);
 
                                 },
-                              ),
+                              )),
                               SizedBox(
                                 height: 10,
                               ),
@@ -131,14 +142,8 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
 
              ],
            ),
-           SizedBox(
-             height: 10,
-           ),
-           Text(
-             'Set attendance for all students as',
-             style: theme.textTheme.titleMedium,
-           ),
-           Expanded(child: StudentListPage())
+
+          Expanded(child: controller.isLoadingStudentList.isTrue ? CustomLoader() : controller.studentListModel.value.length == 0 ? Text("No Data") : StudentListPage())
           ]
            ,),
            onTapAction: filterData,);
@@ -150,6 +155,9 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
 
   filterData() {
     print("Perform search action here");
+    StudentAttendanceController controller =
+    Get.put(StudentAttendanceController());
+    controller.getData();
   }
 }
 
@@ -159,18 +167,22 @@ class StudentListPage extends StatefulWidget {
 }
 
 class _StudentListPageState extends State<StudentListPage> {
-  List<Student> students = [
-    Student(admissionNo: 1001, rollNumber: 0201, name: 'Hudson'),
-    Student(admissionNo: 1020, rollNumber: 0204, name: 'Marlie'),
-    Student(admissionNo: 2152, rollNumber: 0205, name: 'Kaylen'),
-  ];
+
 
   AttendanceStatus selectedStatus = AttendanceStatus.Present;
-
+  StudentAttendanceController controller =
+  Get.put(StudentAttendanceController());
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Set attendance for all students as',
+          style: theme.textTheme.titleMedium,
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
@@ -212,10 +224,10 @@ class _StudentListPageState extends State<StudentListPage> {
             separatorBuilder: (BuildContext context, int index) => SizedBox(
               height: 15,
             ),
-            itemCount: students.length,
+            itemCount: controller.studentListModel.value.length,
             itemBuilder: (context, index) {
               return StudentTile(
-                student: students[index],
+                student: controller.studentListModel.value[index],
                 selectedStatus: selectedStatus,
               );
             },
@@ -388,16 +400,5 @@ class _StudentTileState extends State<StudentTile> {
   }
 }
 
-class Student {
-  final int admissionNo;
-  final int rollNumber;
-  final String name;
-
-  Student({
-    required this.admissionNo,
-    required this.rollNumber,
-    required this.name,
-  });
-}
 
 enum AttendanceStatus { Present, Late, Absent, Holiday, HalfDay }

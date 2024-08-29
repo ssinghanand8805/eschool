@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:learnladderfaculity/apiHelper/userData.dart';
 import 'package:get/get.dart';
 
+import '../presentation/login_screen/models/Faculity.dart';
 import '../presentation/login_screen/models/userDataModal.dart';
 
 
@@ -31,7 +32,14 @@ class ApiClient extends GetConnect implements GetxService {
 
     super.onInit();
   }
+loadHeader() async
+{
+  UserData usersData = UserData();
+  Faculity? f = await usersData.getFaculity();
+  _mainHeader['userID'] = f == null ? "" : f.id.toString();
 
+
+}
 
   Future<Response> getData(
     String uri,
@@ -41,6 +49,8 @@ class ApiClient extends GetConnect implements GetxService {
       'Auth-Key': "schoolAdmin@",
       //UserData().getUserToken
     };
+    print("Api Url  $baseUrl$uri");
+    // print("Request body $body");
     try {
      Response response= await get(uri,headers: _mainHeader);
      return response;

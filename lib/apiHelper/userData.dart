@@ -131,8 +131,15 @@ class UserData extends GetxController {
 
 
     // let chek for password change and new device token
+    if(getLastUserId != "" && getLastUserPwd != "")
+      {
+        loginApi();
+      }
+    else
+      {
 
-    loginApi();
+      }
+
 
   }
 

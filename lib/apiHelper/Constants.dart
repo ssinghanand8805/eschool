@@ -38,4 +38,10 @@ class Constants {
   static const String getLibraryBookIssuedsUrl = 'webservice/getLibraryBookIssued';
   static const String getVisitorsUrl = 'webservice/getVisitors';
   // static const int defaultAge = 30;
+
+
+//admin apis routes
+  static const String getClassListUrl = 'webservice/getClassList';
+  static const String getSectionListUrl = 'webservice/getSectionBYClass';
+
 }

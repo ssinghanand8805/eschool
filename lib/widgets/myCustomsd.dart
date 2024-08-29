@@ -42,6 +42,7 @@ class _MyCustomSDState extends State<MyCustomSD> {
   void initState() {
 // TODO: implement initState
     super.initState();
+    print("222222222222222222${widget.listToSearch}");
   }
 
   Widget build(BuildContext context) {

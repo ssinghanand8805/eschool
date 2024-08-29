@@ -29,8 +29,8 @@ class _CommonFormState extends State<CommonForm> {
               onTap: () {
 
                 widget.onTapAction();
-                controller2.isSearchExpand.value = true;
-                controller2.update();
+                // controller2.isSearchExpand.value = true;
+                // controller2.update();
               },
               child: Align(
                 alignment: Alignment.topRight,
@@ -57,8 +57,8 @@ class _CommonFormState extends State<CommonForm> {
                 ),
               ),
             )  : Button(icon: Icons.search, onTap: () {
-              controller2.isSearchExpand.value = false;
-              controller2.update();
+              // controller2.isSearchExpand.value = false;
+              // controller2.update();
             }, text: 'Search'
 
             ),
