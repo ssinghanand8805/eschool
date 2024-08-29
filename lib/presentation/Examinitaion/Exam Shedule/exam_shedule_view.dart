@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
-import 'package:learnladderfaculity/widgets/myCustomsd.dart';
-
 import '../../../theme/theme_helper.dart';
-import '../../../widgets/customTextField.dart';
 import '../../../widgets/custom_button.dart';
 import '../../CBSE Examination/Exam Schedule/exam_schedule_controller.dart';
 

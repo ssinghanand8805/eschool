@@ -167,7 +167,6 @@ class SendSmsView extends GetView<SendSmsController> {
                     "Message To",
                     style: theme.textTheme.bodyMedium,
                   ),
-
                   controller.getSelectedData == "Group"
                       ? ListView.builder(
                           shrinkWrap: true,
@@ -325,54 +324,55 @@ class SendSmsView extends GetView<SendSmsController> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
-
-              Obx(() => Column(
-                    children: [
-                      Row(
-                        children: [
-                          Radio<String>(
-                            value: 'Send Now',
-                            groupValue: controller.selectedOption.value,
-                            onChanged: (String? value) {
-
-                              controller.selectedOption.value = value!;
-                              controller.selectedTime = null; // Reset selected time
-
-                            },
-                          ),
-                          Text('Send Now'),
-                          Radio<String>(
-                            value: 'Schedule',
-                            groupValue: controller.selectedOption.value,
-                            onChanged: (String? value) {
-                              controller.selectedOption.value = value!;
-
-                              print(controller.selectedOption.toString());
-                            },
-                          ),
-                          Text('Schedule'),
-                        ],
-                      ),
-
-                      if (controller.selectedOption.value == 'Schedule')
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  Obx(
+                    () => Column(
+                      children: [
+                        Row(
                           children: [
-                           // Text("Schedule Date Time",style: theme.textTheme.bodyMedium,),
-                            DatePickerTextField(
-                              controller: controller.titleC.value,
-                              title: 'Schedule Date Time',),
-                            if (controller.selectedTime != null)
-                              Text(
-                                'Selected time: ${controller.selectedTime!.value.format(context)}',
-                                style: TextStyle(fontSize: 16),
-                              ),
+                            Radio<String>(
+                              value: 'Send Now',
+                              groupValue: controller.selectedOption.value,
+                              onChanged: (String? value) {
+                                controller.selectedOption.value = value!;
+                                controller.selectedTime =
+                                    null; // Reset selected time
+                              },
+                            ),
+                            Text('Send Now'),
+                            Radio<String>(
+                              value: 'Schedule',
+                              groupValue: controller.selectedOption.value,
+                              onChanged: (String? value) {
+                                controller.selectedOption.value = value!;
+
+                                print(controller.selectedOption.toString());
+                              },
+                            ),
+                            Text('Schedule'),
                           ],
                         ),
-                    ],
-                  ),),
-                  SizedBox(height: 10,),
-
+                        if (controller.selectedOption.value == 'Schedule')
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Text("Schedule Date Time",style: theme.textTheme.bodyMedium,),
+                              DatePickerTextField(
+                                controller: controller.titleC.value,
+                                title: 'Schedule Date Time',
+                              ),
+                              if (controller.selectedTime != null)
+                                Text(
+                                  'Selected time: ${controller.selectedTime!.value.format(context)}',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: MyButton(

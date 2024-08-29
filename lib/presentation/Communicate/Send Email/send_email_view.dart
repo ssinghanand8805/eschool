@@ -1,15 +1,10 @@
-import 'dart:ffi';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learnladderfaculity/presentation/Communicate/Send%20Email/send_email_controller.dart';
 import 'package:learnladderfaculity/widgets/customTextField.dart';
 import 'package:learnladderfaculity/widgets/myCustomsd.dart';
-
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/customHtmlEditor.dart';

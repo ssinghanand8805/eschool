@@ -6,24 +6,23 @@ import 'package:learnladderfaculity/widgets/customTextField.dart';
 import '../../../../theme/theme_helper.dart';
 import '../../../../widgets/custom_button.dart';
 
-class TeacherRemarkView extends GetView<TeacherRemarkController>{
+class TeacherRemarkView extends GetView<TeacherRemarkController> {
   @override
-  Widget build(BuildContext context) =>
-      Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green.shade100,
-        title: Text(
-          'Exam List',
-          style: theme.textTheme.titleLarge,
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.green.shade100,
+          title: Text(
+            'Exam List',
+            style: theme.textTheme.titleLarge,
+          ),
         ),
-      ),
         body: Column(
           children: [
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
-                columnSpacing: Get.width*0.2,
-                 dataRowHeight: 100,
+                columnSpacing: Get.width * 0.2,
+                dataRowHeight: 100,
                 columns: const [
                   DataColumn(label: Text('Admission No')),
                   DataColumn(label: Text('Roll No.')),
@@ -31,7 +30,8 @@ class TeacherRemarkView extends GetView<TeacherRemarkController>{
                   DataColumn(label: Text('Section')),
                   DataColumn(label: Text('Student Name')),
                   DataColumn(label: Text('Gender')),
-                  DataColumn(label: Column(
+                  DataColumn(
+                      label: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -45,32 +45,23 @@ class TeacherRemarkView extends GetView<TeacherRemarkController>{
                   int index = entry.key;
                   return DataRow(
                     cells: [
-                      DataCell(Text(entry.value['class'],
-                          style: theme.textTheme.bodySmall!)),
-                      DataCell(
-                          Text("12345")),
-                      DataCell(
-                          Text("It dept")),
-                      DataCell(
-                          Text("A")),
-                      DataCell(
-                          Text("Mohd Faheem")),
-                      DataCell(
-                          Text("Male")),
-                      DataCell(
-                          Text("450")),
-                      DataCell(
-                        CustomTextField(
-                          controller: controller.remarkC.value,
-                          hint: 'Remark',
-                          title: '',)
-                      ),
+                      DataCell(Text(entry.value['class'], style: theme.textTheme.bodySmall!)),
+                      DataCell(Text("12345")),
+                      DataCell(Text("It dept")),
+                      DataCell(Text("A")),
+                      DataCell(Text("Mohd Faheem")),
+                      DataCell(Text("Male")),
+                      DataCell(Text("450")),
+                      DataCell(CustomTextField(
+                        controller: controller.remarkC.value,
+                        hint: 'Remark',
+                        title: '',
+                      )),
                     ],
                   );
                 }).toList(),
               ),
             ),
-
             Spacer(),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -87,9 +78,7 @@ class TeacherRemarkView extends GetView<TeacherRemarkController>{
                 ),
               ),
             ),
-
           ],
         ),
-    );
-
+      );
 }

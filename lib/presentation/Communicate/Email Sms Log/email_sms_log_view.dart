@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
-import '../../../widgets/custom_button.dart';
 import 'email_sms_log_controller.dart';
 
 class EmailSmsLogView extends GetView<EmailSmsLogController>{
@@ -17,24 +15,6 @@ class EmailSmsLogView extends GetView<EmailSmsLogController>{
           'Email / SMS Log',
           style: theme.textTheme.titleLarge,
         ),
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.only(right: 8.0),
-        //     child: MyButton(
-        //       width: 160,
-        //       prefixIcon: Icon(
-        //         Icons.add,size: 14,
-        //         color: Colors.white,
-        //       ),
-        //       title: 'Post New Message',
-        //       textStyle: TextStyle(fontSize: 14, color: Colors.white),
-        //       color: theme.hintColor,
-        //       onPress: () async {
-        //        // await Get.toNamed(AppRoutes.new_messageRoute);
-        //       },
-        //     ),
-        //   ),
-        // ],
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 8.0,right: 8,),
