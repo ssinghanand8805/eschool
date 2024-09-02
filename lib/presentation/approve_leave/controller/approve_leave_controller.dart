@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,10 +23,19 @@ class ApproveLeaveController extends GetxController {
   Rx<TextEditingController> fromDateController = TextEditingController().obs;
   Rx<TextEditingController> toDateController = TextEditingController().obs;
   Rx<TextEditingController> reasonController = TextEditingController().obs;
-  Rx<String> selectedStatus = "Approve".obs;
+  Rx<String> selectedStatus = "0".obs;
   Rx<TextEditingController> searchController = TextEditingController().obs;
   RxList<Resultlist> filteredStudentListModel = <Resultlist>[].obs;
   Rx<bool> isLoadingStudentList = false.obs;
+  Rx<File?> pickedFile = Rx<File?>(null);
+  Rx<String> selectedStudent = "".obs;
+
+
+
+  Rx<EditApproveLeave> editLeave = EditApproveLeave(studentList: [],resultlist: Resultlist(id: '', studentSessionId: '', fromDate: '',toDate : '',applyDate : '',
+      status : '',docs : '',reason : '',approveBy : '',
+      approveDate : '',requestType : '',createdAt : '',applyLeaveStatus : '',firstname : '',middlename : '',lastname : '',
+      staffId : '',staffName : '',studId : '',admissionNo : '',surname : '',classId : '',sectionId : '',className : '',section : '')).obs;
 
   @override
   void onClose() {
@@ -83,7 +93,7 @@ class ApproveLeaveController extends GetxController {
       print("DATA @@@@ ${data.body}");
       ApproveLeave ss = ApproveLeave.fromJson(data.body);
       approveLeaveList.value.assignAll(ss.resultlist!);
-      students.value.assignAll(ss.studentList!);
+
       filteredStudentListModel.assignAll(ss.resultlist!);
 
       update();
@@ -93,6 +103,153 @@ class ApproveLeaveController extends GetxController {
       print("Filter Data not valid");
     }
 
+
+  }
+
+
+  editData(id) async {
+
+    CommonApiController commonApiController = Get.put(CommonApiController());
+    print(commonApiController.selectedClassId.value);
+    print(commonApiController.selectedSectionId.value);
+
+    if(commonApiController.selectedClassId.value.isNotEmpty && commonApiController.selectedSectionId.value.isNotEmpty)
+    {
+
+
+      var body = {
+        "class_id": commonApiController.selectedClassId.value,
+        "section_id": commonApiController.selectedSectionId.value,
+        "id":id,
+      };
+      print("Body @@@@ ${body}");
+      var data = await apiRespository.postApiCallByJson(
+          Constants.getApprove_leave_byIdUrl, body);
+      print("DATA @@@@ ${data.body}");
+      EditApproveLeave ss = EditApproveLeave.fromJson(data.body);
+      editLeave.value = ss;
+      applyLeaveDateController.value.text = DateFormat('dd/MM/yyyy').format(DateTime.parse(ss.resultlist!.applyDate!));
+      fromDateController.value.text = DateFormat('dd/MM/yyyy').format(DateTime.parse(ss.resultlist!.fromDate!));
+      toDateController.value.text = DateFormat('dd/MM/yyyy').format(DateTime.parse(ss.resultlist!.toDate!));
+      reasonController.value.text = ss.resultlist!.reason!;
+      selectedStatus.value = ss.resultlist!.status!;
+      selectedStudent.value = ss.resultlist!.studentSessionId!;
+      students.value.assignAll(ss.studentList!);
+      update();
+    }
+    else
+    {
+      print("Filter Data not valid");
+    }
+
+
+  }
+  getStudentsByClass() async {
+
+    CommonApiController commonApiController = Get.put(CommonApiController());
+    print(commonApiController.selectedClassId.value);
+    print(commonApiController.selectedSectionId.value);
+
+    if(commonApiController.selectedClassId.value.isNotEmpty && commonApiController.selectedSectionId.value.isNotEmpty)
+    {
+
+
+      var body = {
+        "class_id": commonApiController.selectedClassId.value,
+        "section_id": commonApiController.selectedSectionId.value,
+      };
+      print("Body @@@@ ${body}");
+      var data = await apiRespository.postApiCallByJson(
+          Constants.getStudent_by_class_sectionUrl, body);
+      print("DATA @@@@ ${data.body}");
+      data.body['studentList'].forEach((v) {
+        students.value!.add(new StudentList.fromJson(v));
+      });
+
+      update();
+    }
+    else
+    {
+      print("Filter Data not valid");
+      update();
+    }
+    update();
+
+  }
+  saveApproveLeave({leave_id}) async {
+
+    CommonApiController commonApiController = Get.put(CommonApiController());
+    print(commonApiController.selectedClassId.value);
+    print(commonApiController.selectedSectionId.value);
+
+    if(commonApiController.selectedClassId.value.isNotEmpty && commonApiController.selectedSectionId.value.isNotEmpty
+        && applyLeaveDateController.value.text.isNotEmpty && fromDateController.value.text.isNotEmpty && toDateController.value.text.isNotEmpty &&
+        selectedStudent.value.isNotEmpty && selectedStatus.value.isNotEmpty)
+    {
+
+      FormData body = FormData({});
+      Map<String, String> bodyMap = {
+        'apply_date': applyLeaveDateController.value.text.toString(),
+        'from_date': fromDateController.value.text.toString(),
+        'to_date': toDateController.value.text.toString(),
+        'student': selectedStudent.value.toString(),
+        'message': reasonController.value.text.toString(),
+        'leave_status': selectedStatus.value.toString(),
+        'leave_id': leave_id ?? ""
+      };
+
+      body.fields.addAll(bodyMap.entries);
+      if(pickedFile.value != null && await pickedFile.value!.exists())
+        {
+          body.files.add( MapEntry('userfile', MultipartFile(pickedFile.value, filename: pickedFile.value?.path.split('/').last ?? "")));
+        }
+
+      // var body = {
+      //   "class_id": commonApiController.selectedClassId.value,
+      //   "section_id": commonApiController.selectedSectionId.value,
+      // };
+      print("Body @@@@ ${bodyMap}");
+      var data = await apiRespository.postApiCallByFormData(
+          Constants.getSaveApproveLeaveUrl, body);
+      print("DATA @@@@ ${data.body}");
+      filterData();
+
+      update();
+    }
+    else
+    {
+      print("Filter Data not valid");
+      update();
+    }
+    update();
+
+  }
+
+  deleteApproveLeave(id) async {
+
+
+
+    if(id.isNotEmpty)
+    {
+
+
+      var body = {
+        "id": id
+      };
+      print("Body @@@@ ${body}");
+      var data = await apiRespository.postApiCallByJson(
+          Constants.getRemove_ApproveLeaveUrl, body);
+      print("DATA @@@@ ${data.body}");
+
+      filterData();
+      update();
+    }
+    else
+    {
+      print("Filter Data not valid");
+      update();
+    }
+    update();
 
   }
 

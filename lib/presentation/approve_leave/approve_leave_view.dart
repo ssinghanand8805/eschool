@@ -1,15 +1,18 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../../theme/theme_helper.dart';
 
 import '../../widgets/button.dart';
 import '../../widgets/myCustomsd.dart';
+import '../../widgets/permissionWidget.dart';
 import '../common_filter/CommonFilter.dart';
 import '../common_widgets/CommonForm.dart';
 import '../common_widgets/controller/CommonApiController.dart';
@@ -52,13 +55,18 @@ class _ApproveLeaveScreenState extends State<ApproveLeaveScreen> {
           builder: (context) {
             return CommonFilter(onTapAction: controller.filterData, widgetMain: MyTable(),);
           }),
-      floatingActionButton: FloatingActionButton(
-    onPressed: () {
-      print("dd");
-      showAddLeave();
-    },
-          child: Icon(Icons.add),
-      backgroundColor: Colors.green.shade400,
+      floatingActionButton: PermissionWidget(
+
+        routeName: 'approve_leave',
+        permissionType: 'can_add',
+        childWidget: FloatingActionButton(
+            onPressed: () {
+        print("dd");
+        showAddLeave();
+            },
+            child: Icon(Icons.add),
+        backgroundColor: Colors.green.shade400,
+        ),
       ),
     );
   }
@@ -78,6 +86,79 @@ class _ApproveLeaveScreenState extends State<ApproveLeaveScreen> {
     );
     return date;
   }
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> getImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      controller.pickedFile.value = File(pickedFile.path);
+      controller.update();
+    }
+  }
+
+  void _showImagePicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(16.0),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.5,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Select Image Source',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  ListTile(
+                    leading: Icon(
+                      Icons.photo_library,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    title: Text('Pick from Gallery'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      getImage(ImageSource.gallery);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.camera_alt,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    title: Text('Take a Picture'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      getImage(ImageSource.camera);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void showAddLeave() {
     CommonApiController controller3 =
     Get.put(CommonApiController());
@@ -122,8 +203,9 @@ class _ApproveLeaveScreenState extends State<ApproveLeaveScreen> {
 
                         controller3.selectedClassId.value = val['id'].toString();
                         controller3.selectedClassName.value = val['className'].toString();
-                        controller3.update();
                         controller3.getSectionList();
+                        controller3.update();
+
                       }
 
                     },
@@ -138,7 +220,7 @@ class _ApproveLeaveScreenState extends State<ApproveLeaveScreen> {
                     valFrom: "section",
                     label: 'Section',
                     labelText: 'Section',
-                    onChanged: (val) {
+                    onChanged: (val) async {
                       print(val);
                       if(controller3.sectionListModelMap.value.length > 0)
                       {
@@ -146,7 +228,8 @@ class _ApproveLeaveScreenState extends State<ApproveLeaveScreen> {
 
                         controller3.selectedSectionId.value = val['id'].toString();
                         controller3.selectedSectionName.value = val['section'].toString();
-                        controller3.update();
+                        await controller.getStudentsByClass();
+
 
                       }
 
@@ -166,6 +249,12 @@ class _ApproveLeaveScreenState extends State<ApproveLeaveScreen> {
                     label: 'Student',
                     onChanged: (val) {
                       print(val);
+                      if(val != null)
+                        {
+                          controller.selectedStudent.value = val['student_session_id'];
+                        }
+
+
                       // if(val!=null){
                       //   controller.updateDutyFor = val['id'];
                       //
@@ -377,6 +466,26 @@ class _ApproveLeaveScreenState extends State<ApproveLeaveScreen> {
                       Text('Approve', style: theme.textTheme.bodySmall),
                     ],
                   ) ),
+                  InkWell(
+                    onTap: (){
+                      _showImagePicker(context);
+                    },
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all()
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.upload_file),
+                          Text("Drag and drop a file here or click"),
+                        ],
+                      ),
+
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -389,6 +498,7 @@ class _ApproveLeaveScreenState extends State<ApproveLeaveScreen> {
                       TextButton(
                         onPressed: () {
                           // Handle form submission
+                          controller.saveApproveLeave();
                           Navigator.of(context).pop();
                         },
                         child: Text('Save'),
@@ -508,6 +618,7 @@ class ResultSource extends AdvancedDataTableSource<Resultlist>{
 
   @override
   DataRow? getRow(int index) {
+    ApproveLeaveController controller = Get.put(ApproveLeaveController());
     // Check if the index is within the bounds of the list
     if (index < 0 || index >= filteredStudentListModel.value.length) {
       return null;  // Return null if the index is out of bounds
@@ -541,17 +652,28 @@ class ResultSource extends AdvancedDataTableSource<Resultlist>{
       DataCell(
           Row(
             children: [
-              IconButton(
-                icon: Icon(Icons.edit, size: 15),
-                onPressed: () {
-                  showEditLeave(index);
-                },
+              PermissionWidget(
+
+                routeName: 'approve_leave',
+                permissionType: 'can_edit',
+                childWidget: IconButton(
+                  icon: Icon(Icons.edit, size: 15),
+                  onPressed: () {
+                    showEditLeave(currentRowData.id!);
+                  },
+                ),
               ),
-              IconButton(
-                icon: Icon(Icons.delete, size: 15),
-                onPressed: () {
-                  print("Delete leave");
-                },
+              PermissionWidget(
+
+                routeName: 'approve_leave',
+                permissionType: 'can_delete',
+                childWidget: IconButton(
+                  icon: Icon(Icons.delete, size: 15),
+                  onPressed: () {
+                    controller.deleteApproveLeave(currentRowData.id!);
+                    print("Delete leave");
+                  },
+                ),
               ),
             ],
           )
@@ -569,10 +691,12 @@ class ResultSource extends AdvancedDataTableSource<Resultlist>{
     );
     return date;
   }
-  void showEditLeave(int index) {
+  void showEditLeave(String index) async {
     CommonApiController controller3 =
     Get.put(CommonApiController());
     ApproveLeaveController controller = Get.put(ApproveLeaveController());
+    await controller.editData(index);
+
     showModalBottomSheet(
       isScrollControlled: true,
       context: Get.context!,
@@ -607,6 +731,7 @@ class ResultSource extends AdvancedDataTableSource<Resultlist>{
                     valFrom: "className",
                     label: 'Class',
                     labelText: 'Class',
+                    initialValue: [{ 'parameter': 'id','value':controller.editLeave.value.resultlist!.classId}],
                     onChanged: (val) {
                       if(controller3.classListModelMap.value.length > 0)
                       {
@@ -630,6 +755,7 @@ class ResultSource extends AdvancedDataTableSource<Resultlist>{
                     valFrom: "section",
                     label: 'Section',
                     labelText: 'Section',
+                    initialValue: [{ 'parameter': 'id','value':controller.editLeave.value.resultlist!.sectionId}],
                     onChanged: (val) {
                       print(val);
                       if(controller3.sectionListModelMap.value.length > 0)
@@ -656,8 +782,10 @@ class ResultSource extends AdvancedDataTableSource<Resultlist>{
                     }).toList(),
                     valFrom: "firstname",
                     label: 'Student',
+                    initialValue: [{ 'parameter': 'student_session_id','value':controller.editLeave.value.resultlist!.studentSessionId}],
                     onChanged: (val) {
-                      print(val);
+                      controller.selectedStudent.value = val['student_session_id'];
+                      print(val['student_session_id']);
                       // if(val!=null){
                       //   controller.updateDutyFor = val['id'];
                       //
@@ -839,7 +967,7 @@ class ResultSource extends AdvancedDataTableSource<Resultlist>{
                     children: [
                       Text('Leave Status *', style: theme.textTheme.bodySmall),
                       Radio(
-                        value: 'Pending',
+                        value: '0',
                         groupValue: controller.selectedStatus.value,
                         onChanged: (value) {
                           controller.selectedStatus.value = value.toString();
@@ -848,7 +976,7 @@ class ResultSource extends AdvancedDataTableSource<Resultlist>{
                       ),
                       Text('Pending', style: theme.textTheme.bodySmall),
                       Radio(
-                        value: 'Disapprove',
+                        value: '1',
                         groupValue:  controller.selectedStatus.value,
                         onChanged: (value) {
                           controller.selectedStatus.value = value.toString();
@@ -857,7 +985,7 @@ class ResultSource extends AdvancedDataTableSource<Resultlist>{
                       ),
                       Text('Disapprove', style: theme.textTheme.bodySmall),
                       Radio(
-                        value: 'Approve',
+                        value: '2',
                         groupValue:  controller.selectedStatus.value,
                         onChanged: (value) {
 
@@ -880,6 +1008,7 @@ class ResultSource extends AdvancedDataTableSource<Resultlist>{
                       ),
                       TextButton(
                         onPressed: () {
+                          controller.saveApproveLeave(leave_id: index);
                           // Handle form submission
                           Navigator.of(context).pop();
                         },

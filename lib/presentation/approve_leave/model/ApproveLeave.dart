@@ -1,16 +1,10 @@
 class ApproveLeave {
-  List<StudentList>? studentList;
   List<Resultlist>? resultlist;
 
-  ApproveLeave({this.studentList, this.resultlist});
+  ApproveLeave({ this.resultlist});
 
   ApproveLeave.fromJson(Map<String, dynamic> json) {
-    if (json['studentList'] != null) {
-      studentList = <StudentList>[];
-      json['studentList'].forEach((v) {
-        studentList!.add(new StudentList.fromJson(v));
-      });
-    }
+
     if (json['resultlist'] != null) {
       resultlist = <Resultlist>[];
       json['resultlist'].forEach((v) {
@@ -21,15 +15,75 @@ class ApproveLeave {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.studentList != null) {
-      data['studentList'] = this.studentList!.map((v) => v.toJson()).toList();
-    }
+
     if (this.resultlist != null) {
       data['resultlist'] = this.resultlist!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
+class EditApproveLeave {
+  List<StudentList>? studentList;
+  Resultlist? resultlist;
+
+  EditApproveLeave({this.studentList, this.resultlist});
+
+  EditApproveLeave.fromJson(Map<String, dynamic> json) {
+    Resultlist result = Resultlist(
+      id: '',
+      studentSessionId: '',
+      fromDate: '',
+      toDate: '',
+      applyDate: '',
+      status: '',
+      docs: '',
+      reason: '',
+      approveBy: '',
+      approveDate: '',
+      requestType: '',
+      createdAt: '',
+      applyLeaveStatus: '',
+      firstname: '',
+      middlename: '',
+      lastname: '',
+      staffId: '',
+      staffName: '',
+      studId: '',
+      admissionNo: '',
+      surname: '',
+      classId: '',
+      sectionId: '',
+      className: '',
+      section: '',
+    );
+    if (json['studentList'] != null) {
+      studentList = <StudentList>[];
+      json['studentList'].forEach((v) {
+        studentList!.add(new StudentList.fromJson(v));
+      });
+    }
+    if (json['resultlist'] != null) {
+      resultlist = result;
+      // json['resultlist'].forEach((v) {
+        resultlist = Resultlist.fromJson(json['resultlist']);
+      // });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.studentList != null) {
+      data['studentList'] = this.studentList!.map((v) => v.toJson()).toList();
+    }
+    if (this.resultlist != null) {
+      data['resultlist'] = this.resultlist!.toJson();
+    }
+    return data;
+  }
+}
+
+
+
 
 class StudentList {
   String? classId;

@@ -25,10 +25,44 @@ class Menus {
     if (this.response != null) {
       for (MenuResponse res in this.response!) {
         for (PermissionCategory perm in res.permissionCategory ?? []) {
-          if (perm.canView == "1") {
+          if (getStatusValue(perm.toJson(),'can_view')) {
             filteredResponses.add(res);
             break; // Add each Response only once and break after the first match
           }
+        }
+      }
+    }
+    return filteredResponses;
+  }
+
+  getStatusValue(Map<String, dynamic> perm,key)
+  {
+    if(perm.containsKey(key) && perm[key] != null && perm[key] != '0')
+      {
+return true;
+      }
+    else
+      {
+        return false;
+      }
+  }
+  List<Map<String, dynamic>> setResponsesWhereCanView({bool isSuperAdmin = false}) {
+    List<Map<String, dynamic>> filteredResponses = [];
+    if (this.response != null) {
+      for (MenuResponse res in this.response!) {
+        for (PermissionCategory perm in res.permissionCategory ?? []) {
+          if(isSuperAdmin)
+            {
+              var d = {'route_name':perm.shortCode,'can_view':true,'can_delete':true ,'can_add':true,'can_edit':true};
+              filteredResponses.add(d);
+            }
+          else
+            {
+              var d = {'route_name':perm.shortCode,'can_view':getStatusValue(perm.toJson(),'can_view'),'can_delete':getStatusValue(perm.toJson(),'can_delete') ,'can_add':getStatusValue(perm.toJson(),'can_add'),'can_edit':getStatusValue(perm.toJson(),'can_edit')};
+              filteredResponses.add(d);
+            }
+
+
         }
       }
     }

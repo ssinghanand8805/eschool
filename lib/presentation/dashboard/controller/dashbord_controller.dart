@@ -461,13 +461,26 @@ class DashboardController extends GetxController {
 
     List<MenuResponse>? filteredResponses;
     if (f!.roles!.roleId.toString() == "7") {
+      print("***********");
       filteredResponses = menus.response;
+      var e  = await menus.setResponsesWhereCanView(isSuperAdmin : true);
+      var per = jsonEncode(e);
+      final prefs = await SharedPreferences.getInstance();
+       await prefs.setString('pagePermission',per);
     } else {
       filteredResponses = menus.getResponsesWhereCanView();
+      var e  = await menus.setResponsesWhereCanView();
+      var per = jsonEncode(e);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('pagePermission',per);
     }
     menuResponseModelObj.value = filteredResponses!;
     // update();
-    print(filteredResponses);
+    //print(filteredResponses);
+    final prefs = await SharedPreferences.getInstance();
+    var per = prefs.getString('pagePermission');
+    List permArr = jsonDecode(per!);
+    permArr.forEach((element) {print(element);});
     updateELearningData = filteredResponses.toList();
     gridViewWidgets
         .add(buildGridItem("", getMenuDataList, menuImageImagesPath));
