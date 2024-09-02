@@ -43,5 +43,7 @@ class Constants {
 //admin apis routes
   static const String getClassListUrl = 'webservice/getClassList';
   static const String getSectionListUrl = 'webservice/getSectionBYClass';
+  static const String getstudentAttendenceUrl = 'webservice/studentAttendence';
+  static const String getApprove_leaveUrl = 'webservice/approve_leave';
 
 }

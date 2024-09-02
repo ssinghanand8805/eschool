@@ -7,8 +7,9 @@ import 'controller/CommonController.dart';
 class CommonForm extends StatefulWidget {
   final Widget widgetFilterData;
   final  Widget widgetformData;
+  final  Widget? widgetFilterSelectedData;
   final Function onTapAction;
-  CommonForm({Key? key, required this.widgetFilterData, required this.widgetformData,required this.onTapAction }) : super(key: key);
+  CommonForm({Key? key, required this.widgetFilterData, required this.widgetformData,  this.widgetFilterSelectedData, required this.onTapAction }) : super(key: key);
   @override
   State<CommonForm> createState() => _CommonFormState();
 }
@@ -29,8 +30,8 @@ class _CommonFormState extends State<CommonForm> {
               onTap: () {
 
                 widget.onTapAction();
-                // controller2.isSearchExpand.value = true;
-                // controller2.update();
+                controller2.isSearchExpand.value = true;
+                controller2.update();
               },
               child: Align(
                 alignment: Alignment.topRight,
@@ -56,11 +57,17 @@ class _CommonFormState extends State<CommonForm> {
                   ),
                 ),
               ),
-            )  : Button(icon: Icons.search, onTap: () {
-              // controller2.isSearchExpand.value = false;
-              // controller2.update();
-            }, text: 'Search'
+            )  : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                widget.widgetFilterSelectedData != null ? widget.widgetFilterSelectedData! : SizedBox(),
+                Button(icon: Icons.sort, onTap: () {
+                  controller2.isSearchExpand.value = false;
+                  controller2.update();
+                }, text: 'Filter'
 
+                ),
+              ],
             ),
 
             Expanded(child: widget.widgetformData)

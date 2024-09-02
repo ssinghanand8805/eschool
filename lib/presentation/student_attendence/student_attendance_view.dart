@@ -51,6 +51,16 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
         init: controller,
         builder: (context) {
          return CommonForm(
+           widgetFilterSelectedData: Row(
+             children: [
+               Text("Class :  ",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
+               Text(controller3.selectedClassName.value + " ( " + controller3.selectedSectionName.value + " )",
+                   style: TextStyle(fontSize: 14, color: Colors.grey.shade800)),
+               SizedBox(width: 20),
+               Text("Date :  ",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
+               Text(controller.attendanceDate.value.text,style: TextStyle(fontSize: 14, color: Colors.grey.shade800)),
+             ],
+           ),
            widgetFilterData: Column(
                             children: [
                Obx( () => MyCustomSD(
@@ -67,6 +77,7 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
                                       print("5555555555555");
 
                                       controller3.selectedClassId.value = val['id'].toString();
+                                      controller3.selectedClassName.value = val['className'].toString();
                                       controller3.update();
                                       controller3.getSectionList();
                                     }
@@ -85,6 +96,15 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
                                 labelText: 'Section',
                                 onChanged: (val) {
                                   print(val);
+                                  if(controller3.sectionListModelMap.value.length > 0)
+                                  {
+
+
+                                    controller3.selectedSectionId.value = val['id'].toString();
+                                    controller3.selectedSectionName.value = val['section'].toString();
+                                    controller3.update();
+
+                                  }
 
                                 },
                               )),
@@ -143,10 +163,11 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
              ],
            ),
 
-          Expanded(child: controller.isLoadingStudentList.isTrue ? CustomLoader() : controller.studentListModel.value.length == 0 ? Text("No Data") : StudentListPage())
+          Expanded(child: controller.isLoadingStudentList.isTrue ? CustomLoader() : controller.studentListModel.value.length == 0 ?
+          Text("No Data") : StudentListPage())
           ]
            ,),
-           onTapAction: filterData,);
+           onTapAction: filterData);
 
         }
       ),
@@ -157,7 +178,8 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
     print("Perform search action here");
     StudentAttendanceController controller =
     Get.put(StudentAttendanceController());
-    controller.getData();
+    controller.getFilterData();
+    controller2.isSearchExpand.value = true;
   }
 }
 
@@ -168,10 +190,18 @@ class StudentListPage extends StatefulWidget {
 
 class _StudentListPageState extends State<StudentListPage> {
 
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    StudentAttendanceController controller2 =
+    Get.put(StudentAttendanceController());
 
-  AttendanceStatus selectedStatus = AttendanceStatus.Present;
+  }
+
   StudentAttendanceController controller =
   Get.put(StudentAttendanceController());
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -194,20 +224,22 @@ class _StudentListPageState extends State<StudentListPage> {
                 childAspectRatio: 3,
                 crossAxisCount: 3,
               ),
-              itemCount: AttendanceStatus.values.length,
+              itemCount: controller.attendencetypestListModel.value.length,
               itemBuilder: (BuildContext context, int index) {
-                final status = AttendanceStatus.values[index];
-                return RadioListTile<AttendanceStatus>(
+                final status = controller.attendencetypestListModel.value[index].id!;
+                return RadioListTile<String>(
                   contentPadding: EdgeInsets.zero,
                   title: Text(
-                    status.toString().split('.').last,
+                    controller.attendencetypestListModel.value[index].type!,
                     style: theme.textTheme.bodySmall,
                   ),
                   value: status,
-                  groupValue: selectedStatus,
+                  groupValue: controller.selectedStatus.value,
                   onChanged: (value) {
                     setState(() {
-                      selectedStatus = value!;
+                      print("dddd${value!}");
+                      controller.selectedStatus.value = value!;
+                      controller.updateForAll(value!);
                     });
                   },
                 );
@@ -226,9 +258,12 @@ class _StudentListPageState extends State<StudentListPage> {
             ),
             itemCount: controller.studentListModel.value.length,
             itemBuilder: (context, index) {
+              controller.addOrUpdateRemarkController(controller.studentListModel.value[index].studentSessionId!,remarkFound: true,
+                  remark: controller.studentListModel.value[index]!.remark == null ? "" : controller.studentListModel.value[index]!.remark);
+
               return StudentTile(
                 student: controller.studentListModel.value[index],
-                selectedStatus: selectedStatus,
+                selectedStatus: controller.selectedStatus.value,
               );
             },
           ),
@@ -241,6 +276,7 @@ class _StudentListPageState extends State<StudentListPage> {
             child: ElevatedButton(
               onPressed: () {
                 print(" Handle save attendance logic here");
+                controller.saveAttendance();
               },
               child: Text(
                 'Save Attendance',
@@ -256,8 +292,8 @@ class _StudentListPageState extends State<StudentListPage> {
 }
 
 class StudentTile extends StatefulWidget {
-  final Student student;
-  final AttendanceStatus selectedStatus;
+  final Resultlist student;
+  final String selectedStatus;
 
   const StudentTile({
     Key? key,
@@ -270,17 +306,30 @@ class StudentTile extends StatefulWidget {
 }
 
 class _StudentTileState extends State<StudentTile> {
-  AttendanceStatus? attendanceStatus;
-
+  String? attendanceStatus;
+var selectedStatus = "";
   @override
   void initState() {
     super.initState();
-    attendanceStatus = widget.selectedStatus;
-  }
 
-  AttendanceStatus selectedStatus = AttendanceStatus.Present;
+    StudentAttendanceController controller2 =
+    Get.put(StudentAttendanceController());
+    attendanceStatus = controller2.selectedStatus.value;
+    selectedStatus = controller2.attendencetypestListModel.firstWhere((element) => element.id! == attendanceStatus).id!;
+  }
+  StudentAttendanceController controller =
+  Get.put(StudentAttendanceController());
+
   @override
   Widget build(BuildContext context) {
+    print(controller.selectedStatus.value);
+     //selectedStatus = controller.selectedStatus.value;
+
+   selectedStatus = controller.studentAttendenceModel.value.firstWhere((element) => element.studentSession == widget.student.studentSessionId).attendencetype!;
+    String firstName = widget.student.firstname == null ? "" : widget.student.firstname.toString();
+    String middleName = widget.student.middlename == null ? "" : widget.student.middlename.toString();
+    String lastName = widget.student.lastname == null ? "" : widget.student.lastname.toString();
+
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -310,14 +359,14 @@ class _StudentTileState extends State<StudentTile> {
           Row(
             children: [
               Text(
-                "Roll No. :",
+                "Admission No. :",
                 style: theme.textTheme.titleSmall,
               ),
               SizedBox(
                 width: 5,
               ),
               Text(
-                widget.student.rollNumber.toString(),
+                widget.student.admissionNo.toString(),
                 style: theme.textTheme.bodySmall,
               ),
             ],
@@ -332,7 +381,7 @@ class _StudentTileState extends State<StudentTile> {
                 width: 5,
               ),
               Text(
-                widget.student.name,
+                firstName + " " + middleName + " " + lastName,
                 style: theme.textTheme.bodySmall,
               ),
             ],
@@ -344,21 +393,21 @@ class _StudentTileState extends State<StudentTile> {
               childAspectRatio: 3.5,
               crossAxisCount: 3, // Number of columns
             ),
-            itemCount: AttendanceStatus.values.length,
+            itemCount: controller.attendencetypestListModel.value.length,
             itemBuilder: (BuildContext context, int index) {
-              final status = AttendanceStatus.values[index];
-              return RadioListTile<AttendanceStatus>(
+              var status = controller.attendencetypestListModel.value[index].id!;
+              return RadioListTile<String>(
                 contentPadding: EdgeInsets.zero,
                 title: Text(
-                  status.toString().split('.').last,
+                  controller.attendencetypestListModel.value[index].type!,
                   style: theme.textTheme.bodySmall,
                 ),
                 value: status,
                 groupValue: selectedStatus,
                 onChanged: (value) {
-                  setState(() {
-                    selectedStatus = value!;
-                  });
+                  controller.updateStudentAttendence(widget.student.studentSessionId,value);
+
+
                 },
               );
             },
@@ -386,10 +435,13 @@ class _StudentTileState extends State<StudentTile> {
                   ),
                   style: TextStyle(fontSize: 14.0),
                   maxLines: 1,
-                  controller: TextEditingController(),
-                  onChanged: (value) {
-                    // Handle text changes
-                  },
+                  controller: controller.getRemarkController(widget.student.studentSessionId!),
+
+                  // onChanged: (value) {
+                  //   print("OOOOOOO${value}");
+                  //   // Handle text changes
+                  //   controller.updateStudentAttendenceRemark(widget.student.studentSessionId);
+                  // },
                 ),
               ),
             ],
@@ -401,4 +453,4 @@ class _StudentTileState extends State<StudentTile> {
 }
 
 
-enum AttendanceStatus { Present, Late, Absent, Holiday, HalfDay }
+
