@@ -558,46 +558,48 @@ class _MyTableState extends State<MyTable> {
   {
     // var rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
     // final source =  ResultSource(controller.filteredStudentListModel);
-    return Column(
-      children: [
-        TextField(
-          controller: controller.searchController.value,
-          decoration: InputDecoration(
-            labelText: 'Search Students',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.search),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          TextField(
+            controller: controller.searchController.value,
+            decoration: InputDecoration(
+              labelText: 'Search Students',
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.search),
+            ),
           ),
-        ),
-        controller.filteredStudentListModel.value.length == 0 ?
-        Text("No Data") :
-        SingleChildScrollView(
-          child: AdvancedPaginatedDataTable(
-            addEmptyRows: false,
-            source: _source,
-            showFirstLastButtons: true,
-            rowsPerPage: _rowsPerPage,
-            availableRowsPerPage: [1, 5, 10, 50],
-            onRowsPerPageChanged: (newRowsPerPage) {
-              if (newRowsPerPage != null) {
-                setState(() {
-                  _rowsPerPage = newRowsPerPage;
-                });
-              }
-            },
-            columns: [
-              DataColumn(label: Text('Student Name')),
-              DataColumn(label: Text('Class')),
-              DataColumn(label: Text('Section')),
-              DataColumn(label: Text('Apply Date')),
-              DataColumn(label: Text('From Date')),
-              DataColumn(label: Text('To Date')),
-              DataColumn(label: Text('Status')),
-              DataColumn(label: Text('Approve Disapprove By')),
-              DataColumn(label: Text('Action')),
-            ],
+          controller.filteredStudentListModel.value.length == 0 ?
+          Text("No Data") :
+          SingleChildScrollView(
+            child: AdvancedPaginatedDataTable(
+              addEmptyRows: false,
+              source: _source,
+              showFirstLastButtons: true,
+              rowsPerPage: _rowsPerPage,
+              availableRowsPerPage: [1, 5, 10, 50],
+              onRowsPerPageChanged: (newRowsPerPage) {
+                if (newRowsPerPage != null) {
+                  setState(() {
+                    _rowsPerPage = newRowsPerPage;
+                  });
+                }
+              },
+              columns: [
+                DataColumn(label: Text('Student Name')),
+                DataColumn(label: Text('Class')),
+                DataColumn(label: Text('Section')),
+                DataColumn(label: Text('Apply Date')),
+                DataColumn(label: Text('From Date')),
+                DataColumn(label: Text('To Date')),
+                DataColumn(label: Text('Status')),
+                DataColumn(label: Text('Approve Disapprove By')),
+                DataColumn(label: Text('Action')),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

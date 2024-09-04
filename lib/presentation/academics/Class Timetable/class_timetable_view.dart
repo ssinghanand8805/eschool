@@ -4,8 +4,9 @@ import 'package:learnladderfaculity/core/app_export.dart';
 
 import '../../../widgets/button.dart';
 import '../../../widgets/myCustomsd.dart';
+import '../../common_filter/CommonFilter.dart';
 import '../../common_widgets/CommonCard.dart';
-import '../../teacher_lesson_plan/Lesson/modal/lesson_modal.dart';
+import './class_timetable_modal.dart';
 import 'add_class_time_table.dart';
 import 'class_timetable_controller.dart';
 
@@ -56,98 +57,86 @@ class _TopicScreenState extends State<ClassTimetableScreen> {
           ],
         ),
         body: GetBuilder(
-            init: controller,
-            builder: (_) {
-              // return FutureBuilder(
-              //   future: controller.fetchDataFuture, //controller.getData(context),
-              //   builder: (context, snapshot) {
-              //     if (snapshot.connectionState != ConnectionState.done) {
-              //       return CustomLoader(); // CustomLoader();
-              //     } else {
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      MyCustomSD(
-                        labelText: 'Teachers',
-                        hideSearch: true,
-                        borderColor: Colors.grey,
-                        listToSearch: controller.lesson,
-                        valFrom: "name",
-                        label: 'Teachers name',
-                        onChanged: (val) {
-                          print(val);
-                        },
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      MyCustomSD(
-                        labelText: 'Section',
-                        hideSearch: true,
-                        borderColor: Colors.grey,
-                        listToSearch: controller.lesson,
-                        valFrom: "name",
-                        label: 'Section',
-                        onChanged: (val) {
-                          print(val);
-                        },
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Button(icon: Icons.search, onTap: () {}, text: 'Search'),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      _buildTimeTableCard(
-                        title: 'Monday',
-                      ),
-                      _buildTimeTableCard(
-                        title: 'Tuesday',
-                      ),
-                      _buildTimeTableCard(
-                        title: 'Wednesday',
-                      ),
-                      _buildTimeTableCard(
-                        title: 'Thursday',
-                      ),
-                      _buildTimeTableCard(
-                        title: 'Friday',
-                      ),
-                      _buildTimeTableCard(
-                        title: 'Saturday',
-                      ),
-                      _buildTimeTableCard(
-                        title: 'Sunday',
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }
-            // },
-            //     );
-            //   },
-            // ),
-            ));
+    init: controller,
+    builder: (context) {
+    return CommonFilter(onTapAction: controller.filterData, widgetMain: MyTable( ),);
+    }));
+
+
+
+
   }
 
-  Widget _buildTimeTableCard({required String title, List<Day>? day}) {
+  MyTable()
+  {
+    return SingleChildScrollView(
+      child:  controller.classTimeTableList.value.timetable == null ? SizedBox() : Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            SizedBox(
+              height: 10,
+            ),
+            _buildTimeTableCard(
+              title: 'Monday'
+             , day:  controller.classTimeTableList.value.timetable!.monday!
+            ),
+            _buildTimeTableCard(
+              title: 'Tuesday',
+                day:  controller.classTimeTableList.value.timetable!.tuesday!
+            ),
+            _buildTimeTableCard(
+              title: 'Wednesday',
+                 day:  controller.classTimeTableList.value.timetable!.wednesday!
+            ),
+            _buildTimeTableCard(
+              title: 'Thursday',
+                 day:  controller.classTimeTableList.value.timetable!.thursday!
+            ),
+            _buildTimeTableCard(
+              title: 'Friday',
+                 day:  controller.classTimeTableList.value.timetable!.friday!
+            ),
+            _buildTimeTableCard(
+              title: 'Saturday',
+                 day:  controller.classTimeTableList.value.timetable!.saturday!
+            ),
+            _buildTimeTableCard(
+              title: 'Sunday',
+                  day:  controller.classTimeTableList.value.timetable!.sunday!
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTimeTableCard({required String title, required List<Day> day}) {
     return CommonCard(
         title: title,
         newWidget: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Row(children: [Icon(Icons.subject,size: 15,), SizedBox(width: 10,),Text("Subject :English (210)",style: theme.textTheme.titleMedium,)]),
-              Row(children: [Icon(Icons.timelapse,size: 15,), SizedBox(width: 10,),Text("9:00 AM - 09:40 AM",style: theme.textTheme.titleMedium,)]),
-              Row(children: [Icon(Icons.person,size: 15,), SizedBox(width: 10,),Text("Shivam Verma (9002)",style: theme.textTheme.titleMedium,)]),
-              Row(children: [Icon(Icons.meeting_room,size: 15,), SizedBox(width: 10,),Text("Room No.: 120",style: theme.textTheme.titleMedium,)]),
-            ],
+          child: day.length == 0 ? Text("No Data Found"):ListView.builder(shrinkWrap: true,
+            itemCount: day.length,
+            itemBuilder: (context,index) {
+              return Card(child: DayCard(day[index]));
+            }
           ),
         ));
+  }
+
+
+  Widget DayCard(Day? day)
+  {
+    return Column(
+      children: [
+        Row(children: [Icon(Icons.subject,size: 15,), SizedBox(width: 10,),Text("Subject :${day!.subjectName!} (${day!.code!})",style: theme.textTheme.titleMedium,)]),
+        Row(children: [Icon(Icons.timelapse,size: 15,), SizedBox(width: 10,),Text("${day!.timeFrom!} -${day!.timeTo!}",style: theme.textTheme.titleMedium,)]),
+        Row(children: [Icon(Icons.person,size: 15,), SizedBox(width: 10,),Text("${day!.name!} (${day!.id!})",style: theme.textTheme.titleMedium,)]),
+        Row(children: [Icon(Icons.meeting_room,size: 15,), SizedBox(width: 10,),Text("Room No.: ${day!.roomNo!}",style: theme.textTheme.titleMedium,)]),
+      ],
+    );
   }
 }

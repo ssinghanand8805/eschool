@@ -49,5 +49,9 @@ class Constants {
   static const String getStudent_by_class_sectionUrl = 'webservice/get_student_list';
   static const String getSaveApproveLeaveUrl = 'webservice/saveApproveLeave';
   static const String getRemove_ApproveLeaveUrl = 'webservice/remove_ApproveLeave';
+  static const String getClasstimetablelistUrl = 'webservice/classtimetablelist';
+  static const String getTimetablecreateUrl = 'webservice/timetablecreate';
+  static const String getSubjectGroupByClassSectionUrl = 'webservice/getGroupByClassandSection';
+  static const String getSaveNewTimeTableUrl = 'webservice/saveNewTimeTable';
 
 }

@@ -11,6 +11,7 @@ class CommonApiController extends GetxController {
   RxList<Sections> sectionListModel = <Sections>[].obs;
   RxList<dynamic> sectionListModelMap = <dynamic>[].obs;
   Rx<String> selectedClassId = "".obs;
+
   Rx<String> selectedSectionId = "".obs;
   Rx<bool> isLoadingStudentList = false.obs;
   Rx<String> selectedClassName = "".obs;

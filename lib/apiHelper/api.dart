@@ -91,12 +91,13 @@ loadHeader() async
 
     try{
       Response response=await post(uri, body,headers: _mainHeader ,contentType: 'application/json');
+
       return response;
     }on SocketException{
-      return const Response(statusCode: 0,statusText:"No Internet found");
+      return const Response(statusCode: -1,statusText:"No Internet found");
     }
     on TimeoutException{
-      return const Response(statusCode: 0,statusText:"Something went wrong ! please try again ");
+      return const Response(statusCode: -2,statusText:"Something went wrong ! please try again ");
     }
     catch(e){
       return Response(statusCode: 0,statusText: e.toString());

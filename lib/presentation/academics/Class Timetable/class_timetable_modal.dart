@@ -1,14 +1,12 @@
-class ClassTimetableModal {
+class CLassTimeTable {
   Timetable? timetable;
-  String? status;
 
-  ClassTimetableModal({this.timetable, this.status});
+  CLassTimeTable({this.timetable});
 
-  ClassTimetableModal.fromJson(Map<String, dynamic> json) {
+  CLassTimeTable.fromJson(Map<String, dynamic> json) {
     timetable = json['timetable'] != null
         ? new Timetable.fromJson(json['timetable'])
         : null;
-    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -16,7 +14,6 @@ class ClassTimetableModal {
     if (this.timetable != null) {
       data['timetable'] = this.timetable!.toJson();
     }
-    data['status'] = this.status;
     return data;
   }
 }
@@ -112,72 +109,113 @@ class Timetable {
 }
 
 class Day {
-  String? subjectSyllabusId;
+  String? subjectId;
+  String? subjectName;
+  String? code;
+  String? type;
+  String? name;
+  String? surname;
+  String? employeeId;
+  String? id;
+  String? sessionId;
+  String? classId;
+  String? sectionId;
+  String? subjectGroupId;
+  String? subjectGroupSubjectId;
+  String? staffId;
+  String? day;
   String? timeFrom;
   String? timeTo;
-  String? id;
-  String? subjectGroupId;
-  String? classSectionId;
-  String? sessionId;
-  Null? description;
-  String? isActive;
+  String? startTime;
+  String? endTime;
+  String? roomNo;
   String? createdAt;
-  Null? updatedAt;
-  String? className;
-  String? section;
-  String? lessonId;
-  String? topicName;
-  String? lessonName;
-  String? date;
-  String? name;
-  String? code;
+  String? subjectGroupClassSectionsId;
 
   Day(
-      {this.subjectSyllabusId, this.timeFrom, this.timeTo, this.id, this.subjectGroupId, this.classSectionId, this.sessionId, this.description, this.isActive, this.createdAt, this.updatedAt, this.className, this.section, this.lessonId, this.topicName, this.lessonName, this.date, this.name, this.code});
+      {this.subjectId,
+        this.subjectName,
+        this.code,
+        this.type,
+        this.name,
+        this.surname,
+        this.employeeId,
+        this.id,
+        this.sessionId,
+        this.classId,
+        this.sectionId,
+        this.subjectGroupId,
+        this.subjectGroupSubjectId,
+        this.staffId,
+        this.day,
+        this.timeFrom,
+        this.timeTo,
+        this.startTime,
+        this.endTime,
+        this.roomNo,
+        this.createdAt,
+        this.subjectGroupClassSectionsId});
 
   Day.fromJson(Map<String, dynamic> json) {
-    subjectSyllabusId = json['subject_syllabus_id'];
+    subjectId = json['subject_id'];
+    subjectName = json['subject_name'];
+    code = json['code'];
+    type = json['type'];
+    name = json['name'];
+    surname = json['surname'];
+    employeeId = json['employee_id'];
+    id = json['id'];
+    sessionId = json['session_id'];
+    classId = json['class_id'];
+    sectionId = json['section_id'];
+    subjectGroupId = json['subject_group_id'];
+    subjectGroupSubjectId = json['subject_group_subject_id'];
+    staffId = json['staff_id'];
+    day = json['day'];
     timeFrom = json['time_from'];
     timeTo = json['time_to'];
-    id = json['id'];
-    subjectGroupId = json['subject_group_id'];
-    classSectionId = json['class_section_id'];
-    sessionId = json['session_id'];
-    description = json['description'];
-    isActive = json['is_active'];
+    startTime = json['start_time'];
+    endTime = json['end_time'];
+    roomNo = json['room_no'];
     createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    className = json['class'];
-    section = json['section'];
-    lessonId = json['lesson_id'];
-    topicName = json['topic_name'];
-    lessonName = json['lesson_name'];
-    date = json['date'];
-    name = json['name'];
-    code = json['code'];
+    subjectGroupClassSectionsId = json['subject_group_class_sections_id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['subject_syllabus_id'] = this.subjectSyllabusId;
+    data['subject_id'] = this.subjectId;
+    data['subject_name'] = this.subjectName;
+    data['code'] = this.code;
+    data['type'] = this.type;
+    data['name'] = this.name;
+    data['surname'] = this.surname;
+    data['employee_id'] = this.employeeId;
+    data['id'] = this.id;
+    data['session_id'] = this.sessionId;
+    data['class_id'] = this.classId;
+    data['section_id'] = this.sectionId;
+    data['subject_group_id'] = this.subjectGroupId;
+    data['subject_group_subject_id'] = this.subjectGroupSubjectId;
+    data['staff_id'] = this.staffId;
+    data['day'] = this.day;
     data['time_from'] = this.timeFrom;
     data['time_to'] = this.timeTo;
-    data['id'] = this.id;
-    data['subject_group_id'] = this.subjectGroupId;
-    data['class_section_id'] = this.classSectionId;
-    data['session_id'] = this.sessionId;
-    data['description'] = this.description;
-    data['is_active'] = this.isActive;
+    data['start_time'] = this.startTime;
+    data['end_time'] = this.endTime;
+    data['room_no'] = this.roomNo;
     data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['class'] = this.className;
-    data['section'] = this.section;
-    data['lesson_id'] = this.lessonId;
-    data['topic_name'] = this.topicName;
-    data['lesson_name'] = this.lessonName;
-    data['date'] = this.date;
-    data['name'] = this.name;
-    data['code'] = this.code;
+    data['subject_group_class_sections_id'] = this.subjectGroupClassSectionsId;
     return data;
   }
+}
+
+class TimeTableSaveModel {
+  String dayName;
+  String? subjectID;
+  String? teacherID;
+  String? timeFrom;
+  String? timeTo;
+  String? roomNo;
+
+  TimeTableSaveModel({required this.dayName, this.subjectID, this.teacherID,this.timeFrom,this.timeTo,this.roomNo});
 }
