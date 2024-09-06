@@ -41,7 +41,7 @@ class LoginController extends GetxController {
 
     var data = await apiRespository.postApiCallByJson(Constants.authUrl, body);
 
-    print("DATA @@@@ ${body}");
+    print("DATA @@@@ ${data.body}");
     Faculity fac = Faculity.fromJson(data.body);
     UserData usersData = UserData();
     usersData.saveFaculity(fac);

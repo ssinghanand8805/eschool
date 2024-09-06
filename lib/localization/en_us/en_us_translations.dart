@@ -6,6 +6,7 @@ final Map<String, String> enUs = {
   "lbl_password": "Password",
   "lbl_username": "Username",
   "lbl_url" : "Enter School Url",
+  "lbl_code" : "Enter School Code",
   "msg_forgot_password": "Forgot Password ?",
   "lbl_add_account": "Add Account",
   "lbl_attendance": "Attendance",
