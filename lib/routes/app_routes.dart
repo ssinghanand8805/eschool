@@ -6,6 +6,11 @@ import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Obs
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Exam/Exam%20Marks/exam_mark_binding.dart';
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Observation%20Parameter/observation_parameter_binding.dart';
 import 'package:learnladderfaculity/presentation/Examinitaion/Exam%20Group/Add%20Exam/Exam%20Marks/Enter%20Marks/enter_marks_view.dart';
+import 'package:learnladderfaculity/presentation/Student%20Information/Disabled%20Student/disabled_student_binding.dart';
+import 'package:learnladderfaculity/presentation/Student%20Information/Disabled%20Student/disabled_student_view.dart';
+import 'package:learnladderfaculity/presentation/Student%20Information/Student%20Categories/student_categories_view.dart';
+import 'package:learnladderfaculity/presentation/Student%20Information/Student%20House/student_house_binding.dart';
+import 'package:learnladderfaculity/presentation/Student%20Information/Student%20House/student_house_view.dart';
 import 'package:learnladderfaculity/presentation/academics/Assign%20class%20teacher/assign_class_teacher_view.dart';
 import 'package:learnladderfaculity/presentation/academics/Class%20Timetable/class_timetable_binding.dart';
 import 'package:learnladderfaculity/presentation/academics/Class%20Timetable/class_timetable_view.dart';
@@ -78,6 +83,11 @@ import '../presentation/Examinitaion/Exam Group/exam_group_binding.dart';
 import '../presentation/Examinitaion/Exam Group/exam_group_view.dart';
 import '../presentation/Examinitaion/Marks Grade/marks_grade_binding.dart';
 import '../presentation/Examinitaion/Marks Grade/marks_grade_view.dart';
+import '../presentation/Student Information/Online Admission/import_student_binding.dart';
+import '../presentation/Student Information/Online Admission/import_student_view.dart';
+import '../presentation/Student Information/Student Categories/student_categories_binding.dart';
+import '../presentation/Student Information/Student Details/student_details_binding.dart';
+import '../presentation/Student Information/Student Details/student_details_view.dart';
 import '../presentation/about_school/about_school.dart';
 import '../presentation/about_school/binding/about_school.dart';
 import '../presentation/academics/Assign class teacher/Binding/assign_class_teacher_binding.dart';
@@ -201,6 +211,15 @@ class AppRoutes {
   static const String email_templateRoute = '/email_template';
   static const String sms_templateRoute = '/sms_template';
   static const String smsRoute = '/sms';
+
+
+      /// Student Information
+  static const String student = '/student';
+  static const String import_student = '/import_student';
+  static const String student_categories = '/student_categories';
+  static const String student_houses = '/student_houses';
+  static const String disable_student = '/disable_student';
+
 
 
 
@@ -560,6 +579,36 @@ class AppRoutes {
       name: smsRoute,
       page: () => SendSmsView(),
       bindings: [ SendSmsBinding()],
+    ),
+
+    GetPage(
+      name: student,
+      page: () => StudentDetailsView(),
+      bindings: [StudentDetailsBinding()],
+    ),
+
+    GetPage(
+      name: import_student,
+      page: () => ImportStudentView(),
+      bindings: [ImportStudentBinding()],
+    ),
+
+    GetPage(
+      name: student_categories,
+      page: () => StudentCategoriesView(),
+      bindings: [StudentCategoriesBinding()],
+    ),
+
+    GetPage(
+      name: student_houses,
+      page: () => StudentHouseView(),
+      bindings: [StudentHouseBinding()],
+    ),
+
+    GetPage(
+      name: disable_student,
+      page: () => DisablesStudentView(),
+      bindings: [DisabledStudentBinding()],
     ),
 
   ];

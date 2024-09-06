@@ -64,7 +64,7 @@ class _MyCustomSDState extends State<MyCustomSD> {
           primaryColor: Colors.green.shade700,
           hideSearch: widget.hideSearch ?? false,
           menuHeight: widget.height ?? 80,
-          menuMode: false,
+          menuMode: true,
           labelStyle:
               theme.textTheme.titleSmall!.copyWith(fontWeight: FontWeight.w500),
           items: widget.listToSearch,
