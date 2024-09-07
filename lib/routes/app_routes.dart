@@ -149,7 +149,7 @@ class AppRoutes {
   static const String approveLeaveRoute = '/approve_leave';
   static const String attendanceByDateRoute = '/attendance_by_date';
   static const String studentAttendanceRoute = '/student_attendance';
-  static const String addHomeworkRoute = '/homework_evaluation';
+  static const String addHomeworkRoute = '/homework';
   static const String teacherDailyAssignmentRoute = '/daily_assignment';
   static const String copyoldlessonRoute = '/copy_old_lesson';
   static const String managelessonplanRoute = '/manage_lesson_plan';

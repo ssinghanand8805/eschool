@@ -1,4 +1,3 @@
-import 'dart:core';
 
 class StudentDetailsDataModal {
   String? pickupPointName;
