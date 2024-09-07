@@ -1,6 +1,5 @@
 import 'package:learnladderfaculity/apiHelper/userData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';
 

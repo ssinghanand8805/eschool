@@ -1,6 +1,4 @@
 import 'package:learnladderfaculity/presentation/about_school/controller/about_schoolController.dart';
-
-
 import '../../../core/app_export.dart';
 
 

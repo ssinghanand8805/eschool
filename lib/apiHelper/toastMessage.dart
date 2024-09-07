@@ -7,8 +7,8 @@ class Ui {
   static GetSnackBar SuccessSnackBar({String title = 'Success', required String message}) {
     Get.log("[$title] $message");
     return GetSnackBar(
-      titleText: Text(title.tr, style: Get.textTheme.headline6?.merge(const TextStyle(color: Colors.white))),
-      messageText: Text(message, style: Get.textTheme.caption?.merge(const TextStyle(color: Colors.white))),
+      titleText: Text(title.tr, style: Get.textTheme.bodyLarge?.merge(const TextStyle(color: Colors.white))),
+      messageText: Text(message, style: Get.textTheme.bodyMedium?.merge(const TextStyle(color: Colors.white))),
       snackPosition: SnackPosition.BOTTOM,
       margin: const EdgeInsets.all(20),
       backgroundColor: const Color.fromRGBO(0, 128, 0 ,1),
@@ -23,9 +23,9 @@ class Ui {
   static GetSnackBar ErrorSnackBar({String title = 'Error', required String message}) {
     Get.log("[$title] $message", isError: true);
     return GetSnackBar(
-      titleText: Text(title.tr, style: Get.textTheme.headline6?.merge(const TextStyle(color: Colors.white))),
+      titleText: Text(title.tr, style: Get.textTheme.bodyLarge?.merge(const TextStyle(color: Colors.white))),
       messageText: Text(message.substring(0, min(message.length, 200))
-          , style: Get.textTheme.caption?.merge(const TextStyle(color:   Colors.white))),
+          , style: Get.textTheme.bodyMedium?.merge(const TextStyle(color:   Colors.white))),
       snackPosition: SnackPosition.BOTTOM,
       margin: const EdgeInsets.all(20),
       backgroundColor: const Color.fromRGBO(255, 0, 0 , 1),
@@ -39,8 +39,8 @@ class Ui {
   static GetSnackBar defaultSnackBar({String title = 'Alert', required String message}) {
     Get.log("[$title] $message", isError: false);
     return GetSnackBar(
-      titleText: Text(title.tr, style: Get.textTheme.headline6?.merge(const TextStyle(color:Colors.white))),
-      messageText: Text(message, style: Get.textTheme.caption?.merge(const TextStyle(color:Colors.white))),
+      titleText: Text(title.tr, style: Get.textTheme.bodyLarge?.merge(const TextStyle(color:Colors.white))),
+      messageText: Text(message, style: Get.textTheme.bodyMedium?.merge(const TextStyle(color:Colors.white))),
       snackPosition: SnackPosition.BOTTOM,
       margin: const EdgeInsets.all(20),
       backgroundColor: const Color.fromRGBO(0, 0, 255 ,1),
@@ -58,8 +58,8 @@ class Ui {
     return GetSnackBar(
       onTap: onTap,
       mainButton: mainButton,
-      titleText: Text(title.tr, style: Get.textTheme.headline6?.merge(const TextStyle(color: Colors.white))),
-      messageText: Text(message, style: Get.textTheme.caption?.merge(const TextStyle(color:Colors.white))),
+      titleText: Text(title.tr, style: Get.textTheme.bodyLarge?.merge(const TextStyle(color: Colors.white))),
+      messageText: Text(message, style: Get.textTheme.bodyMedium?.merge(const TextStyle(color:Colors.white))),
       snackPosition: SnackPosition.TOP,
       margin: const EdgeInsets.all(20),
       backgroundColor: const Color.fromRGBO(0,0,255,1),

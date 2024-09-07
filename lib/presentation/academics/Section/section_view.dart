@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:learnladderfaculity/presentation/academics/Section/section_controller.dart';
 import 'package:learnladderfaculity/widgets/customTextField.dart';
-
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/custom_button.dart';

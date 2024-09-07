@@ -1,9 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
-
-import '../../../widgets/button.dart';
-import '../../../widgets/myCustomsd.dart';
 import '../../common_filter/CommonFilter.dart';
 import '../../common_widgets/CommonCard.dart';
 import './class_timetable_modal.dart';

@@ -54,4 +54,11 @@ class Constants {
   static const String getSubjectGroupByClassSectionUrl = 'webservice/getGroupByClassandSection';
   static const String getSaveNewTimeTableUrl = 'webservice/saveNewTimeTable';
 
+
+
+  /// Student Information
+
+
+  static const String studentDetails = 'getStudentsByClassSection';
+
 }
