@@ -1,21 +1,25 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:intl/intl.dart';
-
 import '../../../../apiHelper/Constants.dart';
 import '../../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/userData.dart';
-import '../../approve_leave/model/ApproveLeave.dart';
 import '../../attendance_bydate/model/AttendanceByDate.dart';
+import '../DataModal/close_homework_modal.dart';
 
 
 
 class AddHomeWorkController extends GetxController {
   UserData userData = Get.put(UserData());
   ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
+
+  Rx<TextEditingController> searchC = TextEditingController().obs;
+
+  RxString isUpcomingHomeworkList = "Upcoming homework".obs;
+
+
 
 
   RxList subjectGroupList = [].obs;
@@ -26,7 +30,7 @@ class AddHomeWorkController extends GetxController {
   }
 
   RxString subjectGroupId = ''.obs;
-  RxString get getListGroupId => subjectGroupId;
+  RxString get getSubjectGroupId => subjectGroupId;
   set updateSubjectGroupId(String val) {
     subjectGroupId.value = val;
     update();
@@ -52,7 +56,52 @@ class AddHomeWorkController extends GetxController {
   Rx<HtmlEditorController> HtmlController = HtmlEditorController().obs;
 
 
-  // HtmlEditorController HtmlController = HtmlEditorController();
+  List closeHomeworkList = [];
+  List<CloseHomeworkDataModal> get getCloseHomeworkList =>
+      List<CloseHomeworkDataModal>.from(((searchC.value.text == ''
+          ? closeHomeworkList
+          : closeHomeworkList.where((element) => (element['homework_name']
+          .toString()
+          .toLowerCase()
+          .trim()+element['subject_name']
+          .toString()
+          .toLowerCase()
+          .trim())
+          .trim()
+          .contains(
+          searchC.value.text.toLowerCase().trim())))
+          .map((element) => CloseHomeworkDataModal.fromJson(element))));
+  set updateCloseHomeworkList(List val){
+    closeHomeworkList = val;
+    update();
+  }
+
+
+  List homeworkList = [];
+  List<CloseHomeworkDataModal> get getHomeworkList =>
+      List<CloseHomeworkDataModal>.from(((searchC.value.text == ''
+          ? homeworkList
+          : homeworkList.where((element) => (element['homework_name']
+          .toString()
+          .toLowerCase()
+          .trim()+element['subject_name']
+          .toString()
+          .toLowerCase()
+          .trim())
+          .trim()
+          .contains(
+          searchC.value.text.toLowerCase().trim())))
+          .map((element) => CloseHomeworkDataModal.fromJson(element))));
+  set updateHomeworkList(List val){
+    homeworkList = val;
+    update();
+  }
+
+
+
+
+
+
 
   RxMap<DateTime, List<Event>> _kEventSource = <DateTime, List<Event>>{}.obs;
   final Rx<LinkedHashMap<DateTime, List<Event>>> kEvents = Rx<LinkedHashMap<DateTime, List<Event>>>(LinkedHashMap());

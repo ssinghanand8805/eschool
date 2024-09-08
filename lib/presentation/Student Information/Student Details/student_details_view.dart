@@ -110,8 +110,6 @@ class StudentDetailsView extends GetView<StudentDetailsController>{
                     else if(val.length==0){
                       controller.updateStudentDetailsList = [];
                     }
-
-
                   },
                 ),),
                 SizedBox(height: 10,),

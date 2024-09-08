@@ -63,7 +63,11 @@ class Constants {
   static const String searchStudentInfo = 'webservice/getStudentsBySearch';
 
   /// Homework
+  static const String addHomeWork = 'webservice/createHomeWork';
   static const String subjectGroup = 'webservice/getGroupByClassandSection';
   static const String subject = 'webservice/getGroupsubjects';
+  static const String closeHomework = 'webservice/closehomeworklist';
+  static const String homework = 'webservice/gethomeworklist';
+
 
 }

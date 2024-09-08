@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../../../apiHelper/Constants.dart';
@@ -14,21 +14,30 @@ class AddHomeWorkModal{
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
 
 
-  addHomeWork() async {
+  addHomeWork(context) async {
+
+    var ff = await controller.HtmlController.value.getText().toString();
 
     Map<String, dynamic> body = {
       "modal_class_id":commonApiController.selectedClassId.value,
       "modal_section_id":commonApiController.selectedSectionId.value,
-      "homework_date":"09/06/2024",
-      "submit_date":"09/06/2024",
+      "homework_date":controller.homeWorkDate.value.text,
+      "submit_date":controller.submissionDate.value.text,
       "modal_subject_id":"1",
-      "description":"demo from api"
+      "description": ff
     };
+    print("AddHomeWorkBody ${body}");
 
-    var data = await apiRespository.postApiCallByJson(Constants.searchStudentInfo, body);
 
-    print("DATA @@@@ ${data.body}");
+    var data = await apiRespository.postApiCallByJson(Constants.addHomeWork, body);
 
+    print("AddHomeWork ${data.body}");
+    if(data.body['status']=='success'){
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Homework added successfully"),
+      ));
+      Get.back();
+    }
 
   }
 
@@ -83,6 +92,53 @@ class AddHomeWorkModal{
   //   controller.updateSubjectList = data.body;
   //
   // }
+
+
+  closeHomework(context) async {
+    Map<String, dynamic> body = {
+      "class_id":commonApiController.selectedClassId.value,
+      "section_id":commonApiController.selectedSectionId.value,
+      "subject_group_id":controller.getSubjectGroupId.value,
+      "subject_id":"1"
+    };
+
+    var data = await apiRespository.postApiCallByJson(Constants.closeHomework, body);
+    print("CloseHomeworkData ${data.body}");
+    if(data.body['status']==200){
+      controller.updateCloseHomeworkList = data.body['data'];
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(data.body.reasonPhrase),
+      ));
+      print(data.body.reasonPhrase);
+    }
+  }
+
+
+  homework(context) async {
+    Map<String, dynamic> body = {
+      "class_id":commonApiController.selectedClassId.value,
+      "section_id":commonApiController.selectedSectionId.value,
+      "subject_group_id":controller.getSubjectGroupId.value,
+      "subject_id":"1"
+    };
+
+    var data = await apiRespository.postApiCallByJson(Constants.homework, body);
+    print("CloseHomeworkData ${data.body}");
+    if(data.body['status']==200){
+      controller.updateCloseHomeworkList = data.body['data'];
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(data.body.reasonPhrase),
+      ));
+      print(data.body.reasonPhrase);
+    }
+  }
+
+
+
+
+
 
 
 
