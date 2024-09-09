@@ -34,5 +34,6 @@ class Constants {
   static const String getHostelListUrl = 'webservice/getHostelList';
   static const String getLibraryBookIssuedsUrl = 'webservice/getLibraryBookIssued';
   static const String getVisitorsUrl = 'webservice/getVisitors';
+  static const String updateDeviceToken = 'webservice/updateDeviceToken';
   // static const int defaultAge = 30;
 }

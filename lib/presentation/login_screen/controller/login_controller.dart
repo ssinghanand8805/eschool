@@ -19,12 +19,12 @@ class LoginController extends GetxController {
 
   Rx<bool> isShowPassword = true.obs;
   RxString schoolImageUrl = "".obs;
-  final PushNotificationService _notificationService = PushNotificationService();
+
   @override
   void onInit() {
 
     super.onInit();
-    _notificationService.initialize();
+
 
   }
   @override

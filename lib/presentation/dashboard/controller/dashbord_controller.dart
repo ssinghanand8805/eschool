@@ -257,8 +257,25 @@ class DashboardController extends GetxController {
       gridViewWidgets.add(customContainer());
       gridViewWidgets.add(customContainer());
       gridViewWidgets.add(customContainer());
+    updateDeviceToken();
     eLearningapi();
   }
+  final PushNotificationService _notificationService = PushNotificationService();
+  updateDeviceToken() async
+  {
+    print("PPPPP");
+   String? deToken = await _notificationService.initialize();
+
+   Map<String,dynamic> body = {
+     "deviceToken" : deToken,
+     "userId" : userData.getUserId,
+     "role" : userData.getRole,
+   };
+   print(body);
+   var data  =  apiRespository.postApiCallByJson("webservice/updateDeviceToken", body);
+
+  }
+
 
   bool get isSliverAppBarExpanded {
     return scrollController!.hasClients &&
