@@ -42,7 +42,7 @@ class PushNotificationService {
   }
 
   Future initialize() async {
-
+print("requesting perm");
     requestPermission();
     NotificationHelperController.initializeLocalNotifications();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -50,7 +50,7 @@ class PushNotificationService {
       var title = message!.data['title']!;
       var body = message!.data['body']!;
 
-      print('Got a message whilst in the foreground!');
+      print('Got a message whilst in the foreground!${message.sentTime}');
       print('Message data: ${message.data}');
       showNotification(message!.data['title']!,message!.data['body']!);
       // if (message.notification != null) {

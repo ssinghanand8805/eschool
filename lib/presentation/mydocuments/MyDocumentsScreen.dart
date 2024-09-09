@@ -1,9 +1,9 @@
-import 'package:learnladder/apiHelper/Constants.dart';
-import 'package:learnladder/core/app_export.dart';
+import 'package:lerno/apiHelper/Constants.dart';
+import 'package:lerno/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:learnladder/presentation/class_time_table/controller/class_time_table_controller.dart';
-import 'package:learnladder/presentation/mydocuments/model/MyDocuments.dart';
-import 'package:learnladder/presentation/notice_board/model/NoticeBoard.dart';
+import 'package:lerno/presentation/class_time_table/controller/class_time_table_controller.dart';
+import 'package:lerno/presentation/mydocuments/model/MyDocuments.dart';
+import 'package:lerno/presentation/notice_board/model/NoticeBoard.dart';
 import 'package:flutter_html/flutter_html.dart';
 import '../../apiHelper/GlobalData.dart';
 import '../../apiHelper/userData.dart';

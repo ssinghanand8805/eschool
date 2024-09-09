@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC9PANXHWbfUQUpirg5paqC6-BAtTNmM3A',
-    appId: '1:628246522471:android:8fd741dae304c0f36802c2',
-    messagingSenderId: '628246522471',
-    projectId: 'learnladder2',
-    storageBucket: 'learnladder2.appspot.com',
+    apiKey: 'AIzaSyDgMiU92tuRbFjKFCFHfxkjiMdC-sKYUBQ',
+    appId: '1:258682634663:android:866be4c4f59f055804b682',
+    messagingSenderId: '258682634663',
+    projectId: 'lerno-8d9c1',
+    storageBucket: 'lerno-8d9c1.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAm84m_PZWWy67Uw-CqXIwwPd0MWAizr40',
-    appId: '1:628246522471:ios:b456ae6d98fe659d6802c2',
-    messagingSenderId: '628246522471',
-    projectId: 'learnladder2',
-    storageBucket: 'learnladder2.appspot.com',
-    iosBundleId: 'com.learnladder.app',
+    apiKey: 'AIzaSyABpOpAhsp9sMc1f4yP8Cd3b7MCdcanE-s',
+    appId: '1:258682634663:ios:c32b8fcf94b472ae04b682',
+    messagingSenderId: '258682634663',
+    projectId: 'lerno-8d9c1',
+    storageBucket: 'lerno-8d9c1.appspot.com',
+    iosBundleId: 'lerno.info.app',
   );
+
 }

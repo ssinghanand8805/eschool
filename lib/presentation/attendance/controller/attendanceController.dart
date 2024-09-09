@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:intl/intl.dart';
-import 'package:learnladder/apiHelper/userData.dart';
+import 'package:lerno/apiHelper/userData.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';

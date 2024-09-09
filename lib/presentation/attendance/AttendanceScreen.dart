@@ -2,7 +2,7 @@ import 'dart:collection';
 
 
 import 'package:flutter/material.dart';
-import 'package:learnladder/presentation/attendance/controller/attendanceController.dart';
+import 'package:lerno/presentation/attendance/controller/attendanceController.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/app_export.dart';

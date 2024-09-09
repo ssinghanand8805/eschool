@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:learnladder/presentation/homework/HomeworkScreen.dart';
-import 'package:learnladder/presentation/profile/controller/ProfileController.dart';
+import 'package:lerno/presentation/homework/HomeworkScreen.dart';
+import 'package:lerno/presentation/profile/controller/ProfileController.dart';
 
 import '../../apiHelper/Constants.dart';
 import '../../apiHelper/GlobalData.dart';

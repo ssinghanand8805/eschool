@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:learnladder/presentation/apply_leave/controller/ApplyLeaveController.dart';
-import 'package:learnladder/presentation/common_widgets/MainBody.dart';
+import 'package:lerno/presentation/apply_leave/controller/ApplyLeaveController.dart';
+import 'package:lerno/presentation/common_widgets/MainBody.dart';
 
 import '../../core/app_export.dart';
 

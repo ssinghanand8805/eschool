@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:learnladder/presentation/about_school/controller/about_schoolController.dart';
-import 'package:learnladder/presentation/homework/HomeworkScreen.dart';
+import 'package:lerno/presentation/about_school/controller/about_schoolController.dart';
+import 'package:lerno/presentation/homework/HomeworkScreen.dart';
 
 import '../../core/app_export.dart';
 import '../../theme/theme_helper.dart';

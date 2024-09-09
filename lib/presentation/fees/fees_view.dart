@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:learnladder/core/app_export.dart';
+import 'package:lerno/core/app_export.dart';
 
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';

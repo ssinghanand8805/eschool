@@ -29,13 +29,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final PushNotificationService _notificationService = PushNotificationService();
+
 
   @override
   void initState() {
     NotificationHelperController.startListeningNotificationEvents();
     // TODO: implement initState
-    _notificationService.initialize();
+
     super.initState();
   }
   @override
@@ -48,16 +48,8 @@ class _MyAppState extends State<MyApp> {
         translations: AppLocalization(),
         locale: Get.deviceLocale,
         fallbackLocale: Locale('en', 'US'),
-        title: 'anand_s_application1',
+        title: 'Lerno',
         initialRoute: AppRoutes.initialRoute,
-        // onLaunch: (Map<String, dynamic> message) async {
-        //   print('onLaunch: $message');
-        //   // Handle the notification
-        // },
-        // onResume: (Map<String, dynamic> message) async {
-        //   print('onResume: $message');
-        //   // Handle the notification
-        // },
         getPages: AppRoutes.pages,
       );
     });

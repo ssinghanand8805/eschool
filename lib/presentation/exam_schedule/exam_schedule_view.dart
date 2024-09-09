@@ -1,6 +1,6 @@
-import 'package:learnladder/core/app_export.dart';
+import 'package:lerno/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:learnladder/presentation/homework/HomeworkScreen.dart';
+import 'package:lerno/presentation/homework/HomeworkScreen.dart';
 
 import '../common_widgets/CommonCardExtended.dart';
 import '../common_widgets/MainBody.dart';

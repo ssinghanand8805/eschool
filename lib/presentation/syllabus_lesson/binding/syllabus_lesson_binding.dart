@@ -1,4 +1,4 @@
-import 'package:learnladder/presentation/syllabus_lesson/controller/syllabus_lesson_controller.dart';
+import 'package:lerno/presentation/syllabus_lesson/controller/syllabus_lesson_controller.dart';
 
 import '../../../core/app_export.dart';
 

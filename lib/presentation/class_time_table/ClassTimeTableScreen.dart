@@ -1,7 +1,7 @@
 import 'package:get_storage/get_storage.dart';
-import 'package:learnladder/core/app_export.dart';
+import 'package:lerno/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:learnladder/presentation/class_time_table/controller/class_time_table_controller.dart';
+import 'package:lerno/presentation/class_time_table/controller/class_time_table_controller.dart';
 
 import '../common_widgets/CommonCard.dart';
 import '../common_widgets/MainBody.dart';

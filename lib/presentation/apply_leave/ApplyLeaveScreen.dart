@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:learnladder/core/app_export.dart';
-import 'package:learnladder/presentation/apply_leave/uploadLeave.dart';
+import 'package:lerno/core/app_export.dart';
+import 'package:lerno/presentation/apply_leave/uploadLeave.dart';
 
 import '../../core/utils/common_utilities.dart';
 import '../common_widgets/MainBody.dart';

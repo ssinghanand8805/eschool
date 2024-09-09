@@ -14,7 +14,7 @@ class LoginScreen extends GetWidget<LoginController> {
           key: key,
         );
 
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -34,7 +34,7 @@ class LoginScreen extends GetWidget<LoginController> {
                 ),
                 child: SingleChildScrollView(
                   child: Form(
-                    key: controller.loginFormKey,
+                    key: _formKey,
                     child: Column(
                       children: [
                         const PageHeading(
@@ -114,12 +114,14 @@ class LoginScreen extends GetWidget<LoginController> {
                     ],
                   ),
                 ),
+
                       ],
                     ),
                   ),
                 ),
               ),
             ),
+
           ],
         ),
       ),
@@ -127,7 +129,7 @@ class LoginScreen extends GetWidget<LoginController> {
   }
 
   void _handleLoginUser(context) {
-    if (controller.loginFormKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) {
       controller.loginApi(context);
     }
   }

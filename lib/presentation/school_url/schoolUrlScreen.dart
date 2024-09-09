@@ -45,15 +45,15 @@ class _SchoolUrlState extends State<SchoolUrl> {
                     key: _forgetPasswordFormKey,
                     child: Column(
                       children: [
-                        const PageHeading(title: 'School Url',),
+                        const PageHeading(title: 'School Code',),
                         CustomInputField(
                           controller: controller.urlController.value,
-                          labelText: "lbl_url".tr,
-                          hintText: "lbl_url".tr,
+                          labelText: "lbl_code".tr,
+                          hintText: "lbl_code".tr,
                             isDense: true,
                             validator: (textValue) {
                               if(textValue == null || textValue.isEmpty) {
-                                return 'Url is required!';
+                                return 'Code is required!';
                               }
 
                               return null;

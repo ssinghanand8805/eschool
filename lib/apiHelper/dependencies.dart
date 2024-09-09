@@ -1,6 +1,6 @@
 
 import 'package:get_storage/get_storage.dart';
-import 'package:learnladder/apiHelper/popular_product_repo.dart';
+import 'package:lerno/apiHelper/popular_product_repo.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

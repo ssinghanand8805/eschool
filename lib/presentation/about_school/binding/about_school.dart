@@ -1,4 +1,4 @@
-import 'package:learnladder/presentation/about_school/controller/about_schoolController.dart';
+import 'package:lerno/presentation/about_school/controller/about_schoolController.dart';
 
 
 import '../../../core/app_export.dart';

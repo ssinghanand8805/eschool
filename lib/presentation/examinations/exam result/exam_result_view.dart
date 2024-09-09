@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:learnladder/presentation/examinations/exam%20result/controller/exam_result_controller.dart';
+import 'package:lerno/presentation/examinations/exam%20result/controller/exam_result_controller.dart';
 
 import '../../common_widgets/MainBody.dart';
 

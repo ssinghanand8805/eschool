@@ -1,4 +1,4 @@
-import 'package:learnladder/presentation/login_screen/models/userDataModal.dart';
+import 'package:lerno/presentation/login_screen/models/userDataModal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

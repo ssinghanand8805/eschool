@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import 'package:learnladder/apiHelper/userData.dart';
+import 'package:lerno/apiHelper/userData.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../NotificationServices/PushNotificationService.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
@@ -15,19 +16,34 @@ class LoginController extends GetxController {
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   TextEditingController passwordController = TextEditingController();
   TextEditingController idController = TextEditingController();
-  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+
   Rx<bool> isShowPassword = true.obs;
   RxString schoolImageUrl = "".obs;
+  final PushNotificationService _notificationService = PushNotificationService();
+  @override
+  void onInit() {
+
+    super.onInit();
+    _notificationService.initialize();
+
+  }
   @override
   void onClose() {
-    super.onClose();
+    // Dispose all controllers here
     passwordController.dispose();
+    idController.dispose();
+
+    // If you have other disposables, dispose them here as well
+    super.onClose(); // Always call super.onClose() at the end
   }
 
   changeSchool() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
+    idController.clear();
+    passwordController.clear();
     Get.toNamed('/s_screen');
+
   }
 
   loginApi(context) async {
@@ -40,6 +56,7 @@ class LoginController extends GetxController {
 
     var data = await apiRespository.postApiCallByJson(Constants.authUrl, body);
 
+    print("DATA @@@@ ${body}");
     print("DATA @@@@ ${data.body}");
     //UsersData usersData = UsersData.fromJson(data.body);
     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;

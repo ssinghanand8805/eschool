@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:learnladder/apiHelper/userData.dart';
+import 'package:lerno/apiHelper/userData.dart';
 import 'package:get/get.dart';
 
 import '../presentation/login_screen/models/userDataModal.dart';

@@ -1,4 +1,4 @@
-import 'package:learnladder/core/app_export.dart';
+import 'package:lerno/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 import '../common_widgets/CommonCardExtended.dart';

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:learnladder/apiHelper/userData.dart';
-import 'package:learnladder/presentation/login_screen/models/userDataModal.dart';
+import 'package:lerno/apiHelper/userData.dart';
+import 'package:lerno/presentation/login_screen/models/userDataModal.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../apiHelper/Constants.dart';

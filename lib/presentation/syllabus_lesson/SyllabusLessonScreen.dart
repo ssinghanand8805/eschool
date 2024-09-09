@@ -1,7 +1,7 @@
-import 'package:learnladder/core/app_export.dart';
+import 'package:lerno/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:learnladder/presentation/class_time_table/controller/class_time_table_controller.dart';
-import 'package:learnladder/presentation/notice_board/model/NoticeBoard.dart';
+import 'package:lerno/presentation/class_time_table/controller/class_time_table_controller.dart';
+import 'package:lerno/presentation/notice_board/model/NoticeBoard.dart';
 import 'package:flutter_html/flutter_html.dart';
 import '../common_widgets/CommonCard.dart';
 import '../common_widgets/CommonCardExtended.dart';

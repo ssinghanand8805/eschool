@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:learnladder/core/app_export.dart';
-import 'package:learnladder/presentation/hostel_rooms/model/Hostel.dart';
+import 'package:lerno/core/app_export.dart';
+import 'package:lerno/presentation/hostel_rooms/model/Hostel.dart';
 
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';

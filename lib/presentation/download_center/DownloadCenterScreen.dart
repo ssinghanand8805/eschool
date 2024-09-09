@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:intl/intl.dart';
-import 'package:learnladder/core/app_export.dart';
+import 'package:lerno/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:learnladder/presentation/class_time_table/controller/class_time_table_controller.dart';
-import 'package:learnladder/presentation/download_center/model/videoModal.dart';
-import 'package:learnladder/presentation/homework/HomeworkScreen.dart';
-import 'package:learnladder/presentation/notice_board/model/NoticeBoard.dart';
+import 'package:lerno/presentation/class_time_table/controller/class_time_table_controller.dart';
+import 'package:lerno/presentation/download_center/model/videoModal.dart';
+import 'package:lerno/presentation/homework/HomeworkScreen.dart';
+import 'package:lerno/presentation/notice_board/model/NoticeBoard.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';

@@ -1,4 +1,4 @@
-import 'package:learnladder/presentation/attendance/controller/attendanceController.dart';
+import 'package:lerno/presentation/attendance/controller/attendanceController.dart';
 
 import '../../../core/app_export.dart';
 

@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:learnladder/apiHelper/userData.dart';
-import 'package:learnladder/presentation/common_widgets/custom_loader.dart';
+import 'package:lerno/apiHelper/userData.dart';
+import 'package:lerno/presentation/common_widgets/custom_loader.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';

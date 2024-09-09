@@ -1,6 +1,6 @@
-import 'package:learnladder/core/app_export.dart';
-import 'package:learnladder/presentation/homework/controller/homework_controller.dart';
-import 'package:learnladder/presentation/homework/model/Homework.dart';
+import 'package:lerno/core/app_export.dart';
+import 'package:lerno/presentation/homework/controller/homework_controller.dart';
+import 'package:lerno/presentation/homework/model/Homework.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/utils/common_utilities.dart';
