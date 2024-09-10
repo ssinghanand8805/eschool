@@ -62,8 +62,8 @@ class _SyllabusLessonScreenState extends State<SyllabusLessonScreen> {
   Widget _buildTimeTableCard({required SyllabusLesson data,required int sr}) {
     return CommonCardExtended(
         title: data.name!,
-        leadingWidget: Text(sr.toString()),
-        subtitle: data.totalComplete! + "Complete",
+        leadingWidget: Text(sr.toString(),style: TextStyle(fontSize: 15),),
+        subtitle: data.totalComplete! + " Complete",
         newWidget: _buildTopicCard(topics : data.topics!,parentSr: sr.toString()));
   }
   Widget _buildTopicCard({required List<Topics> topics,required String parentSr }) {
@@ -72,18 +72,20 @@ class _SyllabusLessonScreenState extends State<SyllabusLessonScreen> {
      physics: ClampingScrollPhysics(),
       itemCount: topics?.length ?? 0,
       itemBuilder: (context, index) {
-        return topics!.length > 0 ? Row(
-          children: [
-            // Spacer(),
-            Text(parentSr + "." + (index+1).toString()),
-            Spacer(),
-            Text(topics[index].name!,),
-            Spacer(),
-            Text(
-              topics[index].completeDate == null ? "Incomplete" : topics[index].completeDate!,
+        return topics!.length > 0 ? Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Row(
+            children: [
+              Text(parentSr + "." + (index+1).toString(),style: theme.textTheme.titleMedium,),
+              Spacer(),
+              Text(topics[index].name!,style: theme.textTheme.titleMedium,),
+              Spacer(),
+              Text(
+                topics[index].completeDate == null ? "Incomplete" : topics[index].completeDate!,style: theme.textTheme.titleMedium,
 
-            ),
-          ],
+              ),
+            ],
+          ),
         ): Container();
       },
     );

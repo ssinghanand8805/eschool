@@ -42,7 +42,21 @@ class HomeWorkController extends GetxController {
   //   studentSubjectsModelObj.value
   //
   // }
+  Rx<DateTime> selectedDate = DateTime.now().obs;
 
+  selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate.value,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != selectedDate)
+
+        selectedDate.value = picked;
+    getData(selectedDate: selectedDate.value);
+  update();
+  }
 
   Future<void> getSubjects()async{
     Map<String,dynamic> body = {
@@ -66,20 +80,57 @@ class HomeWorkController extends GetxController {
 
 
   }
+  Future<void> getData({DateTime? selectedDate}) async {
+    String formattedDate = selectedDate != null
+        ? "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}"
+        : "";
 
-  Future<void> getData() async
-  {
-    Map<String,dynamic> body = {
-      "student_id" : userData.getUserStudentId,
-      "homework_status" : status.value,
-      "subject_group_subject_id" : currentSelectedSubejectId.value == "0" ? "" : currentSelectedSubejectId.value
+    Map<String, dynamic> body = {
+      "student_id": userData.getUserStudentId,
+      "homework_status": status.value,
+      "subject_group_subject_id": currentSelectedSubejectId.value == "0"
+          ? ""
+          : currentSelectedSubejectId.value,
+      "date": formattedDate // Pass the formatted date if provided
     };
-    print("Body @@@@ ${body}");
-    var data  = await apiRespository.postApiCallByJson(Constants.getHomeworkUrl, body);
+
+    print("Body @@@@ $body");
+
+    var data = await apiRespository.postApiCallByJson(Constants.getHomeworkUrl, body);
+
     print("DATA @@@@ ${data.body}");
 
     homeworkModelObj.value = Homework.fromJson(data.body);
-    print("111111111111111111111 ${homeworkModelObj.value.toJson()}");
-    update();
+    print("homework data ${homeworkModelObj.value.toJson()}");
+
+
+    if (homeworkModelObj.value.homeworklist != null && selectedDate != null) {
+      homeworkModelObj.value.homeworklist = homeworkModelObj.value.homeworklist!
+          .where((homework) =>
+      homework.homeworkDate == formattedDate) // Compare the string format
+          .toList();
+      update();
+    }
+
+    print("Filtered homework list: ${homeworkModelObj.value.homeworklist}");
+    // update();
   }
+
+
+
+  // Future<void> getData() async
+  // {
+  //   Map<String,dynamic> body = {
+  //     "student_id" : userData.getUserStudentId,
+  //     "homework_status" : status.value,
+  //     "subject_group_subject_id" : currentSelectedSubejectId.value == "0" ? "" : currentSelectedSubejectId.value
+  //   };
+  //   print("Body @@@@ ${body}");
+  //   var data  = await apiRespository.postApiCallByJson(Constants.getHomeworkUrl, body);
+  //   print("DATA @@@@ ${data.body}");
+  //
+  //   homeworkModelObj.value = Homework.fromJson(data.body);
+  //   print("111111111111111111111 ${homeworkModelObj.value.toJson()}");
+  //   update();
+  // }
 }

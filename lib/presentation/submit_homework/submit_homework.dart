@@ -9,26 +9,17 @@ import '../../core/app_export.dart';
 import '../../theme/theme_helper.dart';
 
 class UploadHomework extends StatefulWidget {
+  final String? homeworkid;
+
+  const UploadHomework({Key? key,  this.homeworkid}) : super(key: key);
+
   @override
   _UploadHomeworkState createState() => _UploadHomeworkState();
 }
 
 class _UploadHomeworkState extends State<UploadHomework> {
   SubmitHomeworkController controller = Get.put(SubmitHomeworkController());
-  File? image;
 
-  final ImagePicker _picker = ImagePicker();
-
-  Future<void> getImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
-
-    if (pickedFile != null) {
-      setState(() {
-        image = File(pickedFile.path);
-        print("image $image");
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +42,13 @@ class _UploadHomeworkState extends State<UploadHomework> {
               children: [
                 SizedBox(height: 20),
                 TextField(
+                  controller: controller.textController,
                   decoration: InputDecoration(
                     hintText: 'Message',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+
+                    ),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -62,11 +57,16 @@ class _UploadHomeworkState extends State<UploadHomework> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 10),
-                Image.asset(
+                controller.selectedImage == null
+                    ? Image.asset(
                   'assets/projectImages/upload_file.jpg',
-                  height: 300,
-                ), // Replace with your asset
-                SizedBox(height: 20),
+                  height: 150,
+                )
+                    : Image.file(
+                  controller.selectedImage!,
+                  height: 150,
+                ),
+                SizedBox(height: 50),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 35, vertical: 25),
@@ -91,7 +91,9 @@ class _UploadHomeworkState extends State<UploadHomework> {
                     ),
                     backgroundColor: Colors.green.shade400,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.submitHomework(widget.homeworkid!);
+                  },
                   child: Text("Submit"),
                 ),
               ],
@@ -141,7 +143,7 @@ class _UploadHomeworkState extends State<UploadHomework> {
                     title: Text('Pick from Gallery'),
                     onTap: () {
                       Navigator.pop(context);
-                      getImage(ImageSource.gallery);
+                      controller.getImage(ImageSource.gallery);
                     },
                   ),
                   ListTile(
@@ -152,7 +154,8 @@ class _UploadHomeworkState extends State<UploadHomework> {
                     title: Text('Take a Picture'),
                     onTap: () {
                       Navigator.pop(context);
-                      getImage(ImageSource.camera);
+                      controller.getImage(ImageSource.camera);
+
                     },
                   ),
                 ],

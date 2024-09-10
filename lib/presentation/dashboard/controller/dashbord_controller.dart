@@ -15,13 +15,11 @@ import '../models/dashboard_model.dart';
 /// This class manages the state of the FormScreen, including the
 /// current formModelObj
 class DashboardController extends GetxController {
-
   UserData userData = Get.put(UserData());
-  ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
+  ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   RxString schoolImageUrl = "".obs;
 
-  loadChildList(context) async
-  {
+  loadChildList(context) async {
     List<dynamic> childNameList = [];
     List<dynamic> childIdList = [];
     List<dynamic> childImageList = [];
@@ -34,17 +32,14 @@ class DashboardController extends GetxController {
     childIdList = i!;
     var img = await loadArray("childImageList");
     childImageList = img!;
-     var cls = await  loadArray("childClassList");
+    var cls = await loadArray("childClassList");
     childClassList = cls!;
-     var imgNot = await loadArray("childImagefoundList");
+    var imgNot = await loadArray("childImagefoundList");
     childImagefoundList = imgNot!;
     print(childNameList);
 
     showChildList(context, childNameList, childIdList, childImageList,
-        childClassList,childImagefoundList);
-
-
-
+        childClassList, childImagefoundList);
   }
 
   onSelectChildStudent(student_id, classNameSection, name) {
@@ -60,15 +55,15 @@ class DashboardController extends GetxController {
     usersData.saveAllDataToSharedPreferences();
     Get.toNamed(AppRoutes.sScreen);
   }
-  void showChildList(
-      BuildContext context,
-      List<dynamic> childNameList,
-      List<dynamic> childIdList,
-      List<dynamic> childImageList,
-      List<dynamic> childClassList,
-      List<dynamic> childImagefoundList,
 
-      ) {
+  void showChildList(
+    BuildContext context,
+    List<dynamic> childNameList,
+    List<dynamic> childIdList,
+    List<dynamic> childImageList,
+    List<dynamic> childClassList,
+    List<dynamic> childImagefoundList,
+  ) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -76,7 +71,7 @@ class DashboardController extends GetxController {
           builder: (BuildContext context, BoxConstraints constraints) {
             final double itemHeight = 100.0; // Set a fixed height for each item
             final double bottomSheetHeight = (childNameList.length *
-                itemHeight) +
+                    itemHeight) +
                 kBottomNavigationBarHeight; // Calculate the total height of the bottom sheet
             return SizedBox(
               height: bottomSheetHeight,
@@ -93,16 +88,15 @@ class DashboardController extends GetxController {
                         child: ListTile(
                           leading: childImagefoundList[index] != false
                               ? CircleAvatar(
-                              radius: itemHeight / 4,
-                              backgroundImage:
-                              NetworkImage(childImageList[index])
-
-                          )
+                                  radius: itemHeight / 4,
+                                  backgroundImage:
+                                      NetworkImage(childImageList[index]))
                               : CircleAvatar(
-                            radius: itemHeight / 4,
-                            backgroundImage: AssetImage(
-                              'assets/projectImages/placeholder_user.png',),
-                          ),
+                                  radius: itemHeight / 4,
+                                  backgroundImage: AssetImage(
+                                    'assets/projectImages/placeholder_user.png',
+                                  ),
+                                ),
                           title: Text(childNameList[index]),
                           subtitle: Text(childClassList[index]),
                         ),
@@ -118,13 +112,17 @@ class DashboardController extends GetxController {
       },
     );
   }
+
   Future<List<dynamic>?> loadArray(String name) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? encodedData = prefs.getString(name);
-    return encodedData == null ? null : List<dynamic>.from(json.decode(encodedData)); // Decode JSON string to a List
+    return encodedData == null
+        ? null
+        : List<dynamic>.from(
+            json.decode(encodedData)); // Decode JSON string to a List
   }
 
-  Widget customContainer(){
+  Widget customContainer() {
     return Container(
       padding: EdgeInsets.all(10),
       height: 100,
@@ -151,51 +149,55 @@ class DashboardController extends GetxController {
         child: Column(
           children: [
             CircularProgressIndicator(),
-            SizedBox(height: 10,),
-            Text('Loading',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-              color: Colors.grey.shade600
-            ),)
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              'Loading',
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.grey.shade600),
+            )
           ],
         ),
       ),
     );
   }
 
-  List eLearningData = [];
-  List<ModuleList> get getElearningList => List<ModuleList>.from(eLearningData.map((e) => ModuleList.fromJson(e)));
-  set updateELearningData(List val){
+  RxList eLearningData = [].obs;
+  List<ModuleList> get getElearningList =>
+      List<ModuleList>.from(eLearningData.map((e) => ModuleList.fromJson(e)));
+  set updateELearningData(List val) {
     gridViewWidgets.removeAt(0);
-    eLearningData = val;
+    eLearningData.value = val;
     update();
   }
 
-
-  List academicData = [];
-  List<ModuleList> get getAcademicList => List<ModuleList>.from(academicData.map((e) => ModuleList.fromJson(e)));
-  set updateAcademicData(List val){
+  RxList academicData = [].obs;
+  List<ModuleList> get getAcademicList =>
+      List<ModuleList>.from(academicData.map((e) => ModuleList.fromJson(e)));
+  set updateAcademicData(List val) {
     gridViewWidgets.removeAt(0);
-    academicData = val;
+    academicData.value = val;
     update();
   }
 
-
-  List communicationData = [];
-  List<ModuleList> get getCommunicationList => List<ModuleList>.from(communicationData.map((e) => ModuleList.fromJson(e)));
-  set updateCommunicationData(List val){
+  RxList communicationData = [].obs;
+  List<ModuleList> get getCommunicationList => List<ModuleList>.from(
+      communicationData.map((e) => ModuleList.fromJson(e)));
+  set updateCommunicationData(List val) {
     gridViewWidgets.removeAt(0);
-    communicationData = val;
+    communicationData.value = val;
     update();
   }
 
-
-  List otherData = [];
-  List<ModuleList> get getOtherDataList => List<ModuleList>.from(otherData.map((e) => ModuleList.fromJson(e)));
-  set updateOtherData(List val){
+  RxList otherData = [].obs;
+  List<ModuleList> get getOtherDataList =>
+      List<ModuleList>.from(otherData.map((e) => ModuleList.fromJson(e)));
+  set updateOtherData(List val) {
     gridViewWidgets.removeAt(0);
-    otherData = val;
+    otherData.value = val;
     update();
   }
 
@@ -210,7 +212,7 @@ class DashboardController extends GetxController {
     "ic_videocam.png",
   ];
 
-  List academicImages =[
+  List academicImages = [
     "ic_lessonplan.png",
     "ic_calender_cross.png",
     "ic_nav_attendance.png",
@@ -221,15 +223,12 @@ class DashboardController extends GetxController {
     "ic_nav_reportcard.png",
   ];
 
-  List communicationImages = [
-    "ic_notice.png",
-    "ic_notification.png"
-  ];
+  List communicationImages = ["ic_notice.png", "ic_notification.png"];
 
   List otherImages = [
-   "ic_nav_fees.png",
+    "ic_nav_fees.png",
     "ic_leave.png",
-   "ic_visitors.png",
+    "ic_visitors.png",
     "ic_nav_transport.png",
     "ic_nav_hostel.png",
     "ic_dashboard_pandingtask.png",
@@ -239,113 +238,123 @@ class DashboardController extends GetxController {
 
   List gridViewWidgets = <Widget>[];
 
-   ScrollController?scrollController;
+  ScrollController? scrollController;
   Color textColor = Colors.white;
+  RxBool isLoading = true.obs;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
 
-      // TODO: implement initState
-      scrollController = ScrollController()
-        ..addListener(() {
-            textColor = isSliverAppBarExpanded ? Colors.white : Colors.blue;
-            update();
-        });
-      gridViewWidgets.add(customContainer());
-      gridViewWidgets.add(customContainer());
-      gridViewWidgets.add(customContainer());
-      gridViewWidgets.add(customContainer());
+    // TODO: implement initState
+    scrollController = ScrollController()
+      ..addListener(() {
+        textColor = isSliverAppBarExpanded ? Colors.white : Colors.blue;
+        update();
+      });
+    gridViewWidgets.add(customContainer());
+    gridViewWidgets.add(customContainer());
+    gridViewWidgets.add(customContainer());
+    gridViewWidgets.add(customContainer());
     updateDeviceToken();
     eLearningapi();
+    checkCacheAndFetchData();
+    printSharedPreferencesData();
   }
-  final PushNotificationService _notificationService = PushNotificationService();
-  updateDeviceToken() async
-  {
+
+  final PushNotificationService _notificationService =
+      PushNotificationService();
+  updateDeviceToken() async {
     print("PPPPP");
-   String? deToken = await _notificationService.initialize();
+    String? deToken = await _notificationService.initialize();
 
-   Map<String,dynamic> body = {
-     "deviceToken" : deToken,
-     "userId" : userData.getUserId,
-     "role" : userData.getRole,
-   };
-   print(body);
-   var data  =  apiRespository.postApiCallByJson("webservice/updateDeviceToken", body);
-
+    Map<String, dynamic> body = {
+      "deviceToken": deToken,
+      "userId": userData.getUserId,
+      "role": userData.getRole,
+    };
+    print(body);
+    var data =
+        apiRespository.postApiCallByJson("webservice/updateDeviceToken", body);
   }
-
 
   bool get isSliverAppBarExpanded {
     return scrollController!.hasClients &&
         scrollController!.offset > (200 - kToolbarHeight);
   }
 
-
   /// Section Widget
-  Widget buildGridItem(String heading,List<ModuleList> items, List images) {
-
+  Widget buildGridItem(String heading, List<ModuleList> items, List images) {
     return Container(
       padding: EdgeInsets.all(8.0),
       margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade400,
-            offset: const Offset(
-              3.0,
-              5.0,
-            ),
-            blurRadius: 8.0,
-            spreadRadius: 2.0,
-          ), //BoxShadow
-          BoxShadow(
-            color: Colors.white,
-            offset: const Offset(0.0, 0.0),
-            blurRadius: 0.0,
-            spreadRadius: 0.0,
-          ), //BoxShadow
-        ],
-        borderRadius: BorderRadius.circular(10)
-      ),// Add padding around the grid
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade400,
+              offset: const Offset(
+                3.0,
+                5.0,
+              ),
+              blurRadius: 8.0,
+              spreadRadius: 2.0,
+            ), //BoxShadow
+            BoxShadow(
+              color: Colors.white,
+              offset: const Offset(0.0, 0.0),
+              blurRadius: 0.0,
+              spreadRadius: 0.0,
+            ), //BoxShadow
+          ],
+          borderRadius:
+              BorderRadius.circular(10)), // Add padding around the grid
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("${heading}",
+          Text(
+            "${heading}",
             textAlign: TextAlign.start,
             style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-            color: Colors.grey.shade800
-          ),),
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+                color: Colors.grey.shade800),
+          ),
           GridView.builder(
-            padding: EdgeInsets.fromLTRB(0, 15,0,0),
+            padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             // Creates a grid with 2 rows, adjust `crossAxisCount` for more columns
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4, // Number of items per row
-              crossAxisSpacing: 8.0, // Horizontal space between cells
-              mainAxisSpacing: 8.0,
-              childAspectRatio: 1.2// Vertical space between cells
-            ),
+                crossAxisCount: 4, // Number of items per row
+                crossAxisSpacing: 8.0, // Horizontal space between cells
+                mainAxisSpacing: 8.0,
+                childAspectRatio: 1.2 // Vertical space between cells
+                ),
             itemCount: items.length,
             itemBuilder: (context, index) {
               ModuleList data = items[index];
               return InkWell(
-                onTap: (){
+                onTap: () {
                   print("========${data.shortCode.toString()}");
-Get.toNamed("/"+data.shortCode.toString());
+                  Get.toNamed("/" + data.shortCode.toString());
                 },
                 child: Container(
-                  decoration: BoxDecoration(// Change this to your preferred color
-                    borderRadius: BorderRadius.circular(8), // Optional rounded corners
+                  decoration: BoxDecoration(
+                    // Change this to your preferred color
+                    borderRadius:
+                        BorderRadius.circular(8), // Optional rounded corners
                   ),
                   child: Column(
                     children: [
-                      Image.asset("assets/projectImages/"+images[index].toString(),height: 25,color: Colors.indigo,),
-                      SizedBox(height: 10,),
+                      Image.asset(
+                        "assets/projectImages/" + images[index].toString(),
+                        height: 25,
+                        color: Colors.indigo,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Text(
                         '${data.name}',
                         textAlign: TextAlign.center,
@@ -365,95 +374,179 @@ Get.toNamed("/"+data.shortCode.toString());
       ),
     );
   }
-logout() async {
-  final prefs = await SharedPreferences.getInstance();
-  prefs.clear();
-  Get.toNamed('/s_screen');
-}
 
-getSchoolDetails() async {
-  Map<String,dynamic> body = {
-  };
-  String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
-  var data  = await apiRespository.postApiCallByJson("webservice/getSchoolDetails", body);
+  logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    Get.toNamed('/s_screen');
+  }
 
-  final prefs = await SharedPreferences.getInstance();
-  print("###################${data.body}");
-  await  prefs.setString("schoolName",data.body["name"] ?? "");
-  await  prefs.setString("schoolAddress",data.body["address"] ?? "");
-  await  prefs.setString("schoolPhone",data.body["phone"] ?? "");
-  await  prefs.setString("schoolEmail",data.body["email"] ?? "");
-  await prefs.setString("schoolSchoolCode",data.body["dise_code"] ?? "");
-  await  prefs.setString("schoolCurrentSession",data.body["session"] ?? "");
-  await prefs.setString("schoolStartMonth",data.body["start_month_name"] ?? "");
-  await  prefs.setString("schoolStartMonthNumber",data.body["start_month"] ?? "");
-  await  prefs.setString("schoolImage",data.body["image"] ?? "");
-  schoolImageUrl.value = (data.body["image"] == null || data.body["image"] == null) ? "" : baseUrlFromPref + "uploads/school_content/logo/app_logo/" + data.body["image"];
-  update();
-  print("+++++++++++++++++++++${schoolImageUrl.value}");
-}
-  eLearningapi()async{
+
+
+
+  Future<void> printSharedPreferencesData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey('eLearningData')) {
+      String? eLearningDataStr = prefs.getString('eLearningData');
+      var eLearningDataJson = jsonDecode(eLearningDataStr!);
+      print('eLearning Data: $eLearningDataJson');
+    } else {
+      print('eLearning Data not found in SharedPreferences.');
+    }
+
+    if (prefs.containsKey('academicData')) {
+      String? academicDataStr = prefs.getString('academicData');
+      var academicDataJson = jsonDecode(academicDataStr!);
+      print('Academic Data: $academicDataJson');
+    } else {
+      print('Academic Data not found in SharedPreferences.');
+    }
+
+    if (prefs.containsKey('communicationData')) {
+      String? communicationDataStr = prefs.getString('communicationData');
+      var communicationDataJson = jsonDecode(communicationDataStr!);
+      print('Communication Data: $communicationDataJson');
+    } else {
+      print('Communication Data not found in SharedPreferences.');
+    }
+
+    if (prefs.containsKey('otherData')) {
+      String? otherDataStr = prefs.getString('otherData');
+      var otherDataJson = jsonDecode(otherDataStr!);
+      print('Other Data: $otherDataJson');
+    } else {
+      print('Other Data not found in SharedPreferences.');
+    }
+  }
+
+
+  Future<void> checkCacheAndFetchData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey('eLearningData')) {
+      eLearningData.value = jsonDecode(prefs.getString('eLearningData')!);
+      academicData.value = jsonDecode(prefs.getString('academicData')!);
+      communicationData.value = jsonDecode(prefs.getString('communicationData')!);
+      otherData.value = jsonDecode(prefs.getString('otherData')!);
+      isLoading.value = false;
+    } else {
+      isLoading.value = true;
+      await fetchFreshData();
+    }
+  }
+
+  Future<void> saveDataToCache() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('eLearningData', jsonEncode(eLearningData));
+    await prefs.setString('academicData', jsonEncode(academicData));
+    await prefs.setString('communicationData', jsonEncode(communicationData));
+    await prefs.setString('otherData', jsonEncode(otherData));
+  }
+  Future<void> fetchFreshData() async {
+    await eLearningapi();
+    await academicStatusApi();
+    await communicationStatusApi();
+    await otherModuleApi();
+    await saveDataToCache();
+    isLoading.value = false;
+  }
+  getSchoolDetails() async {
+    Map<String, dynamic> body = {};
+    String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
+    var data = await apiRespository.postApiCallByJson(
+        "webservice/getSchoolDetails", body);
+    final prefs = await SharedPreferences.getInstance();
+    print("###################${data.body}");
+    await prefs.setString("schoolName", data.body["name"] ?? "");
+    await prefs.setString("schoolAddress", data.body["address"] ?? "");
+    await prefs.setString("schoolPhone", data.body["phone"] ?? "");
+    await prefs.setString("schoolEmail", data.body["email"] ?? "");
+    await prefs.setString("schoolSchoolCode", data.body["dise_code"] ?? "");
+    await prefs.setString("schoolCurrentSession", data.body["session"] ?? "");
+    await prefs.setString(
+        "schoolStartMonth", data.body["start_month_name"] ?? "");
+    await prefs.setString(
+        "schoolStartMonthNumber", data.body["start_month"] ?? "");
+    await prefs.setString("schoolImage", data.body["image"] ?? "");
+    schoolImageUrl.value =
+        (data.body["image"] == null || data.body["image"] == null)
+            ? ""
+            : baseUrlFromPref +
+                "uploads/school_content/logo/app_logo/" +
+                data.body["image"];
+    update();
+    print("+++++++++++++++++++++${schoolImageUrl.value}");
+  }
+
+  eLearningapi() async {
     getSchoolDetails();
-    Map<String,dynamic> body = {
-      "user" : "student",
+    Map<String, dynamic> body = {
+      "user": "student",
     };
-    var data  = await apiRespository.postApiCallByJson("webservice/getELearningModuleStatus", body);
+    var data = await apiRespository.postApiCallByJson(
+        "webservice/getELearningModuleStatus", body);
     var data1 = await data.body['module_list'];
-    updateELearningData = data1.where((item) => item['status'].toString() == "1").toList();
-    gridViewWidgets.add(buildGridItem("E Learning", getElearningList,eLearningImagesPath));
+    updateELearningData =
+        data1.where((item) => item['status'].toString() == "1").toList();
+    gridViewWidgets.add(
+        buildGridItem("E Learning", getElearningList, eLearningImagesPath));
     academicStatusApi();
     update();
     print("E LEARNING DATA ${getElearningList[0].name}");
   }
 
-  academicStatusApi()async{
-    Map<String,dynamic> body = {
-      "user" : "student",
+  academicStatusApi() async {
+    Map<String, dynamic> body = {
+      "user": "student",
     };
-    var data  = await apiRespository.postApiCallByJson("webservice/getAcademicsModuleStatus", body);
+    var data = await apiRespository.postApiCallByJson(
+        "webservice/getAcademicsModuleStatus", body);
     // updateAcademicData = data.body['module_list'].where((item) => item['status'] == 1).toList();
     var data1 = await data.body['module_list'];
     print(data1);
-    updateAcademicData = data1.where((item) => item['status'].toString() == "1").toList();
-    gridViewWidgets.add(buildGridItem("Academics", getAcademicList,academicImages));
+    updateAcademicData =
+        data1.where((item) => item['status'].toString() == "1").toList();
+    gridViewWidgets
+        .add(buildGridItem("Academics", getAcademicList, academicImages));
     communicationStatusApi();
     update();
     print("ACADEMIC DATA ${getAcademicList[0].name}");
-
   }
 
-  communicationStatusApi()async{
-    Map<String,dynamic> body = {
-      "user" : "student",
+  communicationStatusApi() async {
+    Map<String, dynamic> body = {
+      "user": "student",
     };
-    var data  = await apiRespository.postApiCallByJson("webservice/getCommunicateModuleStatus", body);
+    var data = await apiRespository.postApiCallByJson(
+        "webservice/getCommunicateModuleStatus", body);
     // updateCommunicationData = data.body['module_list'].where((item) => item['status'] == 1).toList();
     var data1 = await data.body['module_list'];
-    updateCommunicationData = data1.where((item) => item['status'].toString() == "1").toList();
-    gridViewWidgets.add(buildGridItem("Communicate", getCommunicationList,communicationImages));
+    updateCommunicationData =
+        data1.where((item) => item['status'].toString() == "1").toList();
+    gridViewWidgets.add(buildGridItem(
+        "Communicate", getCommunicationList, communicationImages));
     otherModuleApi();
     update();
     print("COMMUNICATION STATUS DATA ${getCommunicationList[0].name}");
   }
 
-  otherModuleApi()async{
-    Map<String,dynamic> body = {
-      "user" : "student",
+  otherModuleApi() async {
+    Map<String, dynamic> body = {
+      "user": "student",
     };
-    var data  = await apiRespository.postApiCallByJson("webservice/getOthersModuleStatus", body);
+    var data = await apiRespository.postApiCallByJson(
+        "webservice/getOthersModuleStatus", body);
     // updateOtherData = data.body['module_list'].where((item) => item['status'] == 1).toList();
     var data1 = await data.body['module_list'];
-    updateOtherData = data1.where((item) => item['status'].toString() == "1").toList();
-    gridViewWidgets.add(buildGridItem("Other ",getOtherDataList,otherImages));
+    updateOtherData =
+        data1.where((item) => item['status'].toString() == "1").toList();
+    gridViewWidgets.add(buildGridItem("Other ", getOtherDataList, otherImages));
 
     update();
     print("OTHER MODULE DATA ${getOtherDataList[0].name}");
   }
 
-
   Future<void> logOutDialog(context) async {
     return showDialog<void>(
-
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
@@ -464,14 +557,17 @@ getSchoolDetails() async {
             borderRadius: BorderRadius.circular(8.0),
           ),
           title: Text(
-           'Logout',
-            style: theme.textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600,fontSize: 19),
+            'Logout',
+            style: theme.textTheme.bodyMedium!
+                .copyWith(fontWeight: FontWeight.w600, fontSize: 19),
           ),
-          content: Text("Are you sure you want to logout?", style: theme.textTheme.bodyMedium,),
+          content: Text(
+            "Are you sure you want to logout?",
+            style: theme.textTheme.bodyMedium,
+          ),
           actions: <Widget>[
             TextButton(
               style: ButtonStyle(
-
                 backgroundColor: MaterialStateProperty.all<Color>(
                   Colors.green.shade300,
                 ),
@@ -503,7 +599,8 @@ getSchoolDetails() async {
                   ),
                 ),
                 child: Text(
-                   'Logout',style: theme.textTheme.bodyMedium,
+                  'Logout',
+                  style: theme.textTheme.bodyMedium,
                 ),
                 onPressed: () async {
                   logout();
@@ -516,5 +613,4 @@ getSchoolDetails() async {
       },
     );
   }
-
 }
