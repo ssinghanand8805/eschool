@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:learnladderfaculity/presentation/Student%20Information/Student%20Details/student_details_controller.dart';
-import 'package:learnladderfaculity/presentation/common_widgets/controller/CommonApiController.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
 import '../../../widgets/custom_button.dart';

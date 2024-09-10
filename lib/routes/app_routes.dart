@@ -6,6 +6,10 @@ import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Obs
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Exam/Exam%20Marks/exam_mark_binding.dart';
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Observation%20Parameter/observation_parameter_binding.dart';
 import 'package:learnladderfaculity/presentation/Examinitaion/Exam%20Group/Add%20Exam/Exam%20Marks/Enter%20Marks/enter_marks_view.dart';
+import 'package:learnladderfaculity/presentation/Front%20Office/Follow%20Up%20Enquiry/follow_up_enquiry_binding.dart';
+import 'package:learnladderfaculity/presentation/Front%20Office/Follow%20Up%20Enquiry/follow_up_enquiry_view.dart';
+import 'package:learnladderfaculity/presentation/Front%20Office/admission%20_enquiry/binding.dart';
+import 'package:learnladderfaculity/presentation/Front%20Office/admission%20_enquiry/view.dart';
 import 'package:learnladderfaculity/presentation/Student%20Information/Disabled%20Student/disabled_student_binding.dart';
 import 'package:learnladderfaculity/presentation/Student%20Information/Disabled%20Student/disabled_student_view.dart';
 import 'package:learnladderfaculity/presentation/Student%20Information/Student%20Categories/student_categories_view.dart';
@@ -220,6 +224,9 @@ class AppRoutes {
   static const String student_houses = '/student_houses';
   static const String disable_student = '/disable_student';
 
+  /// Admission Enquiry
+  static const String admission_enquiry = '/admission_enquiry';
+  static const String follow_up_enquiry = '/follow_up_admission_enquiry';
 
 
 
@@ -609,6 +616,18 @@ class AppRoutes {
       name: disable_student,
       page: () => DisablesStudentView(),
       bindings: [DisabledStudentBinding()],
+    ),
+
+    GetPage(
+      name: admission_enquiry,
+      page: () => AdmissionEnquiryView(),
+      bindings: [AdmissionEnquiryBinding()],
+    ),
+
+    GetPage(
+      name: follow_up_enquiry,
+      page: () => FollowUpEnquiryView(),
+      bindings: [FollowUpBinding()],
     ),
 
   ];

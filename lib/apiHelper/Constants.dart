@@ -69,5 +69,8 @@ class Constants {
   static const String closeHomework = 'webservice/closehomeworklist';
   static const String homework = 'webservice/gethomeworklist';
 
+  /// Front Office
+  static const String admissionEnquiry = 'enquiry/getEnquiryList';
+
 
 }
