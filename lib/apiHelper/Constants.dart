@@ -27,6 +27,7 @@ class Constants {
   static const String getCbseexamtimetableUrl = 'webservice/cbseexamtimetable';
   static const String getCbseexamresultUrl = 'webservice/cbseexamresult';
   static const String getsubmitHomeWorkByStudent = 'webservice/submitHomeWorkByStudent';
+  static const String getAssignment = 'webservice/getAssignment';
 
 
 

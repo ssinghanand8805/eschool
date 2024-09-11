@@ -386,12 +386,6 @@ class HomeworkCard extends GetView<HomeWorkController> {
                       title: 'Evaluation Date',
                       value:
                           '${Utils.formatDateString(homework.evaluationDate.toString())}'),
-                  InfoRow(
-                      title: 'Max Marks',
-                      value: '${homework.marks.toString()}'),
-                  InfoRow(
-                      title: 'Marks Obtained',
-                      value: '${homework.evaluationMarks.toString()}'),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

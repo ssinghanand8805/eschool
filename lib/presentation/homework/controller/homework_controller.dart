@@ -25,6 +25,7 @@ class HomeWorkController extends GetxController {
   Rx<Subjectlist> currentSelectedSubject = Subjectlist().obs;
   late Future<void> fetchDataFuture;
   late Future<void> fetchDataFutureForSubjects;
+  late TabController tabController;
   @override
   void onClose() {
     super.onClose();

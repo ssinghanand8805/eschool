@@ -25,6 +25,7 @@ class DailyAssignmentController extends GetxController {
   Rx<Subjectlist> currentSelectedSubject = Subjectlist().obs;
   late Future<void> fetchDataFuture;
   late Future<void> fetchDataFutureForSubjects;
+  late TabController tabController;
   @override
   void onClose() {
     super.onClose();
@@ -96,7 +97,7 @@ class DailyAssignmentController extends GetxController {
 
     print("Body @@@@ $body");
 
-    var data = await apiRespository.postApiCallByJson(Constants.getHomeworkUrl, body);
+    var data = await apiRespository.postApiCallByJson(Constants.getAssignment, body);
 
     print("DATA @@@@ ${data.body}");
 
