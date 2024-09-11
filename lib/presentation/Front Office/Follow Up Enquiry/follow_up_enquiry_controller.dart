@@ -8,4 +8,12 @@ class FollowUpEnquiryController extends GetxController{
   Rx<TextEditingController> responseC = TextEditingController().obs;
   Rx<TextEditingController> noteC = TextEditingController().obs;
 
+  List demo = [
+    {'name':"Faheem"},
+    {'name':"Faheem"},
+    {'name':"Faheem"},
+    {'name':"Faheem"},
+    {'name':"Faheem"},
+  ];
 }
+

@@ -294,11 +294,12 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                     visible: modal.controller.isUpcomingHomeworkList ==
                         "Upcoming homework",
                     child: Expanded(
-                      child: ListView.builder(
-                        itemCount: 5,
+                      child: modal.controller.getHomeworkList.isEmpty?Center(child: Text("No data found!")):ListView.builder(
+                        itemCount:  modal.controller.getHomeworkList.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          return upcomingHomeWork();
+                          CloseHomeworkDataModal upcomingHomeWorkData = modal.controller.getHomeworkList[index];
+                          return upcomingHomeWork(upcomingHomeWorkData);
                         },),
                     ),
                   ),
@@ -650,7 +651,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
 }
 
 
-upcomingHomeWork() {
+upcomingHomeWork(CloseHomeworkDataModal upcomingHomeWork) {
   return
     Padding(
       padding: const EdgeInsets.all(8.0),
@@ -700,7 +701,7 @@ upcomingHomeWork() {
                                 "Class: ",
                                 style: theme.textTheme.bodySmall,),
                               Text(
-                                "Class1",
+                                upcomingHomeWork.className.toString(),
                                 style: theme.textTheme.bodySmall,),
                             ],
                           ),
@@ -708,7 +709,7 @@ upcomingHomeWork() {
                             children: [
                               Text("Section.: ",
                                 style: theme.textTheme.bodySmall,),
-                              Text("A", style: theme.textTheme.bodySmall,),
+                              Text(upcomingHomeWork.section.toString(), style: theme.textTheme.bodySmall,),
                             ],
                           ),
                         ],
@@ -727,7 +728,7 @@ upcomingHomeWork() {
                                   style: theme.textTheme.bodySmall,),
                                 Expanded(
                                   child: Text(
-                                    "Class 1st Subject Group",
+                                    "Class 1",
                                     style: theme.textTheme.bodySmall,),
                                 ),
                               ],
@@ -744,7 +745,7 @@ upcomingHomeWork() {
                                   style: theme.textTheme.bodySmall,),
                                 Expanded(
                                   child: Text(
-                                    "English",
+                                    upcomingHomeWork.subjectName.toString(),
                                     style: theme.textTheme.bodySmall,),
                                 ),
                               ],
@@ -767,7 +768,7 @@ upcomingHomeWork() {
                                     "Homework Date: ",
                                     style: theme.textTheme.bodySmall,),
                                   Text(
-                                    "02/08/2024",
+                                    upcomingHomeWork.homeworkDate.toString(),
                                     style: theme.textTheme.bodySmall,),
                                 ],
                               ),
@@ -779,7 +780,7 @@ upcomingHomeWork() {
                                     "Submission Date: ",
                                     style: theme.textTheme.bodySmall,),
                                   Text(
-                                    "02/12/2024",
+                                    upcomingHomeWork.submitDate.toString(),
                                     style: theme.textTheme.bodySmall,),
                                 ],
                               ),
@@ -800,7 +801,7 @@ upcomingHomeWork() {
                                       style: theme.textTheme.bodySmall,),
                                     Expanded(
                                       child: Text(
-                                        "05/06/2025",
+                                        upcomingHomeWork.evaluationDate.toString(),
                                         style: theme.textTheme.bodySmall,),
                                     ),
                                   ],
@@ -817,7 +818,7 @@ upcomingHomeWork() {
                                       style: theme.textTheme.bodySmall,),
                                     Expanded(
                                       child: Text(
-                                        "Mohd Faheem",
+                                        upcomingHomeWork.staffInfo.toString(),
                                         style: theme.textTheme.bodySmall,),
                                     ),
                                   ],

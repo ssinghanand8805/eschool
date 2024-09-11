@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:learnladderfaculity/core/app_export.dart';
 
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/alert_dialogue.dart';
@@ -42,397 +43,346 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: GetBuilder(
+        init: controller,
+        builder: (_) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+            child: Column(
               children: [
-                Expanded(
-                  child: MyCustomSD(
+                Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            child: MyCustomSD(
 
-                    hideSearch: true,
-                    borderColor: Colors.grey,
-                    listToSearch: controller.getAdmissionEnquiryList.classList!.map((item) {
-                      return item.toJson();
-                    }).toList(),
-                    valFrom: "class",
-                    label: 'Class',
-                    labelText: 'Class',
-                    onChanged: (val) {
-                      // if(controller.commonApiController.classListModelMap.value.length > 0)
-                      // {
-                      //   print("5555555555555");
-                      //
-                      //   controller.commonApiController.selectedClassId.value = val['id'].toString();
-                      //   controller.commonApiController.selectedClassName.value = val['className'].toString();
-                      //   controller.commonApiController.update();
-                      //   controller.commonApiController.getSectionList();
-                      // }
+                              hideSearch: true,
+                              borderColor: Colors.grey,
+                              listToSearch: controller.getAdmissionEnquiryList.classList!.map((item) {
+                                return item.toJson();
+                              }).toList(),
+                              valFrom: "class",
+                              label: 'Class',
+                              labelText: 'Class',
+                              onChanged: (val) {
+                                if(val!=null){
+                                  print(val);
+                                  controller.classId.value = val['id'];
+                                  print(controller.classId.value.toString());
+                                }
 
-                    },
-                  )
-                ),
+                              },
+                            )
+                        ),
 
-                SizedBox(width: 10,),
+                        SizedBox(width: 10,),
 
-                Expanded(
-                  child: MyCustomSD(
-                    hideSearch: true,
-                    borderColor: Colors.grey,
-                    listToSearch:controller.getAdmissionEnquiryList.sourcelist!.map((item) {
-                      return item.toJson();
-                    }).toList(),
-                    valFrom: "source",
-                    label: 'Source',
-                    labelText: 'Source',
-                    onChanged: (val) {
-                      print(val);
-                      // if(controller.commonApiController.sectionListModelMap.value.length > 0)
-                      // {
-                      //
-                      //
-                      //   controller.commonApiController.selectedSectionId.value = val['id'].toString();
-                      //   controller.commonApiController.selectedSectionName.value = val['section'].toString();
-                      //
-                      //   controller.commonApiController.update();
-                      //
-                      // }
+                        Expanded(
+                            child: MyCustomSD(
+                              hideSearch: true,
+                              borderColor: Colors.grey,
+                              listToSearch:controller.getAdmissionEnquiryList.sourcelist!.map((item) {
+                                return item.toJson();
+                              }).toList(),
+                              valFrom: "source",
+                              label: 'Source',
+                              labelText: 'Source',
+                              onChanged: (val) {
+                                print(val);
+                                if(val!=null){
+                                  controller.sourceId.value = val['id'];
+                                  print(controller.sourceId.value.toString());
+                                }
 
-                    },
-                  )
-                ),
-              ],
-            ),
-            SizedBox(height: 10,),
-
-            Row(
-              children: [
-                Expanded(
-                  child: DatePickerTextField(
-                    controller: controller.fromDateC.value,
-                    title: 'Follow Up Date',
-                    onDateSelected: (date) {
-                      controller.fromDateC.value.text =
-                          DateFormat('dd/MM/yyyy').format(date);
-                    },),
-                ),
-
-                SizedBox(width: 10,),
-                Expanded(
-                  child: DatePickerTextField(
-                      controller: controller.toDateC.value,
-                      title: 'Next Follow Up Date',
-                      onDateSelected: (date) {
-                        controller.toDateC.value.text =
-                            DateFormat('dd/MM/yyyy').format(date);
-                      }),
-                ),
-              ],
-            ),
-            // Row(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     Expanded(
-            //         child:
-            //         MyCustomSD(
-            //
-            //           hideSearch: true,
-            //           borderColor: Colors.grey,
-            //           listToSearch: controller.demo,
-            //           valFrom: "name",
-            //           label: 'Enquiry From Date ',
-            //           labelText: 'Enquiry From Date ',
-            //           onChanged: (val) {
-            //             // if(controller.commonApiController.classListModelMap.value.length > 0)
-            //             // {
-            //             //   print("5555555555555");
-            //             //
-            //             //   controller.commonApiController.selectedClassId.value = val['id'].toString();
-            //             //   controller.commonApiController.selectedClassName.value = val['className'].toString();
-            //             //   controller.commonApiController.update();
-            //             //   controller.commonApiController.getSectionList();
-            //             // }
-            //
-            //           },
-            //         )
-            //     ),
-            //
-            //     SizedBox(width: 10,),
-            //
-            //     Expanded(
-            //         child:
-            //         MyCustomSD(
-            //           hideSearch: true,
-            //           borderColor: Colors.grey,
-            //           listToSearch:controller.demo,
-            //           valFrom: "name",
-            //           label: 'Enquiry To Date',
-            //           labelText: 'Enquiry To Date',
-            //           onChanged: (val) {
-            //             print(val);
-            //             // if(controller.commonApiController.sectionListModelMap.value.length > 0)
-            //             // {
-            //             //
-            //             //
-            //             //   controller.commonApiController.selectedSectionId.value = val['id'].toString();
-            //             //   controller.commonApiController.selectedSectionName.value = val['section'].toString();
-            //             //
-            //             //   controller.commonApiController.update();
-            //             //
-            //             // }
-            //
-            //           },
-            //         )
-            //     ),
-            //   ],
-            // ),
-            SizedBox(height: 10,),
-            Row(
-              children: [
-                Expanded(
-                  child: MyCustomSD(
-                    hideSearch: true,
-                    borderColor: Colors.grey,
-                    listToSearch:controller.getAdmissionEnquiryList.enquiryStatus!.toJson().entries.map((entry) {
-                    return {
-                    'id': entry.key,  // The key of the map (e.g., "active")
-                    'name': entry.value  // The value of the map (e.g., "Active")
-                    };
-                    }).toList(),
-                    valFrom: "name",
-                    label: 'Status',
-                    labelText: 'Status',
-                    onChanged: (val) {
-                      // if(controller.commonApiController.classListModelMap.value.length > 0)
-                      // {
-                      //   print("5555555555555");
-                      //
-                      //   controller.commonApiController.selectedClassId.value = val['id'].toString();
-                      //   controller.commonApiController.selectedClassName.value = val['className'].toString();
-                      //   controller.commonApiController.update();
-                      //   controller.commonApiController.getSectionList();
-                      // }
-
-                    },
-                  ),
-                ),
-                SizedBox(width: 20,),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: MyButton(
-                    width: 100,
-                    prefixIcon: Icon(Icons.search,size: 18,),
-                    title: 'Search',
-                    textStyle: TextStyle(
-                      color: Colors.black,
+                              },
+                            )
+                        ),
+                      ],
                     ),
-                    color: Colors.green.shade100,
-                    onPress: () {
-                      //controller.studentByClassSection();
-                    },
-                  ),
+                    SizedBox(height: 10,),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DatePickerTextField(
+                            controller: controller.fromDateC.value,
+                            title: 'Follow Up Date',
+                            onDateSelected: (date) {
+                              controller.fromDateC.value.text =
+                                  DateFormat('dd/MM/yyyy').format(date);
+                            },),
+                        ),
+
+                        SizedBox(width: 10,),
+                        Expanded(
+                          child: DatePickerTextField(
+                              controller: controller.toDateC.value,
+                              title: 'Next Follow Up Date',
+                              onDateSelected: (date) {
+                                controller.toDateC.value.text =
+                                    DateFormat('dd/MM/yyyy').format(date);
+                              }),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: MyCustomSD(
+                            hideSearch: true,
+                            borderColor: Colors.grey,
+                            listToSearch:controller.getAdmissionEnquiryList.enquiryStatus!.toJson().entries.map((entry) {
+                              return {
+                                'id': entry.key,  // The key of the map (e.g., "active")
+                                'name': entry.value  // The value of the map (e.g., "Active")
+                              };
+                            }).toList(),
+                            valFrom: "name",
+                            label: 'Status',
+                            labelText: 'Status',
+                            onChanged: (val) {
+                              // if(controller.commonApiController.classListModelMap.value.length > 0)
+                              // {
+                              //   print("5555555555555");
+                              //
+                              //   controller.commonApiController.selectedClassId.value = val['id'].toString();
+                              //   controller.commonApiController.selectedClassName.value = val['className'].toString();
+                              //   controller.commonApiController.update();
+                              //   controller.commonApiController.getSectionList();
+                              // }
+
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 20,),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: MyButton(
+                            width: 100,
+                            prefixIcon: Icon(Icons.search,size: 18,),
+                            title: 'Search',
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                            ),
+                            color: Colors.green.shade100,
+                            onPress: () {
+                              controller.enquiry();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    Align(
+                        alignment: Alignment.topLeft,
+                        child: Text("Admission Enquiry",style: theme.textTheme.titleLarge)),
+                  ],
                 ),
-              ],
-            ),
-            SizedBox(height: 10,),
-            Align(
-              alignment: Alignment.topLeft,
-                child: Text("Admission Enquiry",style: theme.textTheme.titleLarge)),
 
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                 // EnquiryList enData = controller.getAdmissionEnquiryList.enquiryList![index];
+                Expanded(
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: controller.getAdmissionEnquiryList.enquiryList!.length,
+                    itemBuilder: (context, index) {
+                      EnquiryList enqData = controller.getAdmissionEnquiryList.enquiryList![index];
 
-                  return  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Container(
-                     width: Get.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.grey.shade500)
-                      ),
-                      child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 5,
-                                    offset: Offset(1, 4), // Shadow position
-                                  ),
-                                ],
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets.only(top: 10, bottom: 10),
-                                    child: Container(
-                                      width: 4,
-                                      decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius: BorderRadius.circular(5.0)),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 8.0,bottom: 8),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                  height: 25,
-                                                  width: 25,
-                                                  child: Icon(Icons.person)),
-                                              const SizedBox(width: 5),
-                                              Expanded(
-                                                  child: Text("firstname",
-                                                    style: theme.textTheme.bodySmall,)),
-
-                                              Row(
-                                                children: [
-                                                  Icon(Icons.edit),
-                                                  SizedBox(width: 5,),
-                                                  Icon(Icons.delete),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 8,),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      return  Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: controller.getAdmissionEnquiryList.enquiryList!.isEmpty?Text("No data found!"):
+                        Container(
+                         width: Get.width,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.grey.shade500)
+                          ),
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 5,
+                                        offset: Offset(1, 4), // Shadow position
+                                      ),
+                                    ],
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.only(top: 10, bottom: 10),
+                                        child: Container(
+                                          width: 4,
+                                          decoration: BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius: BorderRadius.circular(5.0)),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(top: 8.0,bottom: 8),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    "Source: ",
-                                                    style: theme.textTheme.bodySmall,),
-                                                  Text(
-                                                    "Front office",
-                                                    style: theme.textTheme.bodySmall,),
-                                                ],
-                                              ),
-                                              SizedBox(width: 5,),
-
-                                              Row(
-
-                                                children: [
-                                                  Text(
-                                                    "Enquiry Date.: ",
-                                                    style: theme.textTheme.bodySmall,),
-                                                  Text(
-                                                    "02/02/2024",
-                                                    style: theme.textTheme.bodySmall,),
-                                                ],
-                                              ),
-
-
-                                            ],
-                                          ),
-                                          SizedBox(height: 8,),
-                                          Column(
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
+                                                  SizedBox(
+                                                      height: 25,
+                                                      width: 25,
+                                                      child: Icon(Icons.person)),
+                                                  const SizedBox(width: 5),
                                                   Expanded(
-                                                    child: Row(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Expanded(
-                                                          child: Text(
-                                                            "Last Follow Up Date: ",
-                                                            style: theme.textTheme.bodySmall,),
-                                                        ),
-                                                        Text(
-                                                          "04/02/2024",
-                                                          style: theme.textTheme.bodySmall,),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 10,),
+                                                      child: Text(enqData.name.toString(),
+                                                        style: theme.textTheme.bodySmall,)),
 
-                                                  Expanded(
-                                                    child: Row(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Expanded(
-                                                          child: Text(
-                                                            "Next Follow Up Date: ",
-                                                            style: theme.textTheme.bodySmall,),
-                                                        ),
-                                                        Text("09/22/2024",
-                                                          style: theme.textTheme.bodySmall,),
-                                                      ],
-                                                    ),
+                                                  Row(
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: (){
+                                                          Get.toNamed(AppRoutes.follow_up_enquiry);
+                                                        },
+                                                          child: Icon(Icons.phone)),
+                                                      SizedBox(width: 10,),
+                                                      Icon(Icons.edit),
+                                                      SizedBox(width: 10,),
+                                                      Icon(Icons.delete),
+                                                    ],
                                                   ),
-
                                                 ],
                                               ),
                                               SizedBox(height: 8,),
-
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "Source: ",
+                                                        style: theme.textTheme.bodySmall,),
+                                                      Text(
+                                                        enqData.source.toString(),
+                                                        style: theme.textTheme.bodySmall,),
+                                                    ],
+                                                  ),
+                                                  SizedBox(width: 5,),
+
                                                   Row(
 
                                                     children: [
                                                       Text(
-                                                        "	Status: ",
+                                                        "Enquiry Date.: ",
                                                         style: theme.textTheme.bodySmall,),
-                                                      Text("Active",
+                                                      Text(
+                                                        enqData.date.toString(),
                                                         style: theme.textTheme.bodySmall,),
                                                     ],
                                                   ),
-
-                                                  Row(
-                                                    children: [
-                                                      Text("Phone No.: ",style: theme.textTheme.bodySmall,),
-                                                      Text("8577850281",style: theme.textTheme.bodySmall,),
-                                                    ],
-                                                  ),
-
 
 
                                                 ],
                                               ),
+                                              SizedBox(height: 8,),
+                                              Column(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Expanded(
+                                                              child: Text(
+                                                                "Last Follow Up Date: ",
+                                                                style: theme.textTheme.bodySmall,),
+                                                            ),
+                                                            Text(
+                                                              enqData.followUpDate.toString(),
+                                                              style: theme.textTheme.bodySmall,),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 10,),
+
+                                                      Expanded(
+                                                        child: Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Expanded(
+                                                              child: Text(
+                                                                "Next Follow Up Date: ",
+                                                                style: theme.textTheme.bodySmall,),
+                                                            ),
+                                                            Text(enqData.nextDate.toString(),
+                                                              style: theme.textTheme.bodySmall,),
+                                                          ],
+                                                        ),
+                                                      ),
+
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 8,),
+
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Row(
+
+                                                        children: [
+                                                          Text(
+                                                            "	Status: ",
+                                                            style: theme.textTheme.bodySmall,),
+                                                          Text("Active",
+                                                            style: theme.textTheme.bodySmall,),
+                                                        ],
+                                                      ),
+
+                                                      Row(
+                                                        children: [
+                                                          Text("Phone No.: ",style: theme.textTheme.bodySmall,),
+                                                          Text(enqData.contact.toString(),style: theme.textTheme.bodySmall,),
+                                                        ],
+                                                      ),
+
+
+
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+
                                             ],
                                           ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )
+                          ),
+                        ),
+                      );
+                    },),
+                )
 
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                      ),
-                    ),
-                  );
-                },),
-            )
-
-          ],
-        ),
+              ],
+            ),
+          );
+        }
       ),
     );
   }
@@ -550,10 +500,16 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                   hideSearch: true,
                   labelText: '',
                   borderColor: Colors.grey,
-                  listToSearch: controller.demo,
+                  listToSearch: controller.getAdmissionEnquiryList.stffList!.map((item) {
+                    return item.toJson();
+                  }).toList(),
                   valFrom: "name",
                    label: 'Assigned',
                   onChanged: (val) {
+                    print(val);
+                    if(val!=null){
+                      controller.assignedId.value = val['id'];
+                    }
 
                   },
                 ),),
@@ -564,12 +520,14 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                   labelText: '',
                   hideSearch: true,
                   borderColor: Colors.grey,
-                  listToSearch: controller.demo,
-                  valFrom: "name",
+                  listToSearch: controller.getAdmissionEnquiryList.reference!.map((item) {
+                    return item.toJson();
+                  }).toList(),
+                  valFrom: "reference",
                    label: 'Reference',
                   onChanged: (val) {
                     if (val != null) {
-
+                      controller.referenceId.value = val['id'];
                     }
                   },
                 ),)
@@ -587,8 +545,10 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                   hideSearch: true,
                   labelText: '',
                   borderColor: Colors.grey,
-                  listToSearch: controller.demo,
-                  valFrom: "name",
+                  listToSearch: controller.getAdmissionEnquiryList.sourcelist!.map((item) {
+                    return item.toJson();
+                  }).toList(),
+                  valFrom: "source",
                    label: 'Source',
                   onChanged: (val) {
 
@@ -602,12 +562,14 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                   labelText: '',
                   hideSearch: true,
                   borderColor: Colors.grey,
-                  listToSearch: controller.demo,
-                  valFrom: "name",
+                  listToSearch: controller.getAdmissionEnquiryList.classList!.map((item) {
+                    return item.toJson();
+                  }).toList(),
+                  valFrom: "class",
                   label: 'Class',
                   onChanged: (val) {
                     if (val != null) {
-
+                      controller.classId.value = val['id'];
                     }
                   },
                 ),)
@@ -624,7 +586,9 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                   color: Colors.black,
                 ),
                 color: Colors.green.shade100,
-                onPress: () {},
+                onPress: () async {
+                  await controller.addAdmissionEnquiry();
+                },
               ),
             ),
           ],

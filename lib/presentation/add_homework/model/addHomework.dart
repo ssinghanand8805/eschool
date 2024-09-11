@@ -64,7 +64,7 @@ class AddHomeWorkModal{
     };
     var request = http.Request('POST', Uri.parse('http://172.16.19.96/school3/api/webservice/getGroupsubjects'));
     request.body = json.encode({
-      "subject_group_id": 1
+      "subject_group_id": controller.getSubjectGroupId.value.toString()
     });
     request.headers.addAll(headers);
 
@@ -83,7 +83,7 @@ class AddHomeWorkModal{
 
   // subject() async {
   //   Map<String, dynamic> body = {
-  //     "subject_group_id": controller.getListGroupId.value
+  //     "subject_group_id": controller.getSubjectGroupId.value
   //   };
   //
   //   var data = await apiRespository.postApiCallByJson(Constants.subject, body);
@@ -126,7 +126,7 @@ class AddHomeWorkModal{
     var data = await apiRespository.postApiCallByJson(Constants.homework, body);
     print("CloseHomeworkData ${data.body}");
     if(data.body['status']==200){
-      controller.updateCloseHomeworkList = data.body['data'];
+      controller.updateHomeworkList = data.body['data'];
     }else{
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(data.body.reasonPhrase),

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import 'enquiry_data_modal.dart';
 
@@ -25,7 +26,11 @@ class AdmissionEnquiryController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    admissionEnquiry();
+    enquiry();
+    fromDateC.value.text =
+        DateFormat('dd/MM/yyyy').format(DateTime.now());
+    toDateC.value.text =
+        DateFormat('dd/MM/yyyy').format(DateTime.now());
   }
 
   // admissionEnquiry() async {
@@ -41,7 +46,7 @@ class AdmissionEnquiryController extends GetxController {
   //   // updateStudentDetailsList = data.body;
   // }
 
-  admissionEnquiry() async {
+  enquiry() async {
     var headers = {
       'Auth-Key': 'schoolAdmin@',
       'Client-Service': 'smartschool',
@@ -53,8 +58,8 @@ class AdmissionEnquiryController extends GetxController {
     };
     var request = http.Request('POST', Uri.parse('http://aatreya.avadhconnect.com/api/enquiry/getEnquiryList'));
     request.body = json.encode({
-      "from_date": "09/10/2024",
-      "to_date": "09/10/2024"
+      "from_date": "09/10/2024",  //fromDateC.value.text,
+      "to_date":   "09/10/2024"   //toDateC.value.text
     });
     request.headers.addAll(headers);
 
@@ -79,6 +84,51 @@ class AdmissionEnquiryController extends GetxController {
     update();
   }
 
+  RxString classId = "".obs;
+  RxString sourceId = "".obs;
+  RxString assignedId = "".obs;
+  RxString referenceId = "".obs;
+
+
+
+  addAdmissionEnquiry() async {
+    var headers = {
+      'Auth-Key': 'schoolAdmin@',
+      'Client-Service': 'smartschool',
+      'Staff-Id': '1',
+      'Role': '1',
+      'userID': '2',
+      'Content-Type': 'application/json'
+    };
+    var request = http.Request('POST', Uri.parse('http://172.16.19.96/school3/api/enquiry/add'));
+    request.body = json.encode({
+      "name": nameC.value.text.toString(),
+      "contact": phoneC.value.text.toString(),
+      "source": sourceId.value.toString(),
+      "date": dateC.value.text.toString(),
+      "follow_up_date": nextFollowUpDateC.value.text.toString(),
+      "address": addressC.value.text.toString(),
+      "reference_id": referenceId,
+      "description": descriptionC.value.text.toString(),
+      "note": noteC.value.text.toString(),
+      "email": emailC.value.text.toString(),
+      "assigned": assignedId,
+      "class_id": classId,
+      "no_of_child": "1"
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    }
+    else {
+    print(response.reasonPhrase);
+    }
+
+
+  }
 
 
 
