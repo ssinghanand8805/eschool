@@ -10,6 +10,7 @@ import '../../../widgets/custom_button.dart';
 import '../../../widgets/datePickerTextField.dart';
 import '../../../widgets/myCustomsd.dart';
 import 'admission_Enquiry_controller.dart';
+import 'enquiry_data_modal.dart';
 
 class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
   @override
@@ -53,8 +54,10 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
 
                     hideSearch: true,
                     borderColor: Colors.grey,
-                    listToSearch: controller.demo,
-                    valFrom: "name",
+                    listToSearch: controller.getAdmissionEnquiryList.classList!.map((item) {
+                      return item.toJson();
+                    }).toList(),
+                    valFrom: "class",
                     label: 'Class',
                     labelText: 'Class',
                     onChanged: (val) {
@@ -78,8 +81,10 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                   child: MyCustomSD(
                     hideSearch: true,
                     borderColor: Colors.grey,
-                    listToSearch:controller.demo,
-                    valFrom: "name",
+                    listToSearch:controller.getAdmissionEnquiryList.sourcelist!.map((item) {
+                      return item.toJson();
+                    }).toList(),
+                    valFrom: "source",
                     label: 'Source',
                     labelText: 'Source',
                     onChanged: (val) {
@@ -101,61 +106,88 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
               ],
             ),
             SizedBox(height: 10,),
+
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                    child: MyCustomSD(
-
-                      hideSearch: true,
-                      borderColor: Colors.grey,
-                      listToSearch: controller.demo,
-                      valFrom: "name",
-                      label: 'Enquiry From Date ',
-                      labelText: 'Enquiry From Date ',
-                      onChanged: (val) {
-                        // if(controller.commonApiController.classListModelMap.value.length > 0)
-                        // {
-                        //   print("5555555555555");
-                        //
-                        //   controller.commonApiController.selectedClassId.value = val['id'].toString();
-                        //   controller.commonApiController.selectedClassName.value = val['className'].toString();
-                        //   controller.commonApiController.update();
-                        //   controller.commonApiController.getSectionList();
-                        // }
-
-                      },
-                    )
+                  child: DatePickerTextField(
+                    controller: controller.fromDateC.value,
+                    title: 'Follow Up Date',
+                    onDateSelected: (date) {
+                      controller.fromDateC.value.text =
+                          DateFormat('dd/MM/yyyy').format(date);
+                    },),
                 ),
 
                 SizedBox(width: 10,),
-
                 Expanded(
-                    child: MyCustomSD(
-                      hideSearch: true,
-                      borderColor: Colors.grey,
-                      listToSearch:controller.demo,
-                      valFrom: "name",
-                      label: 'Enquiry To Date',
-                      labelText: 'Enquiry To Date',
-                      onChanged: (val) {
-                        print(val);
-                        // if(controller.commonApiController.sectionListModelMap.value.length > 0)
-                        // {
-                        //
-                        //
-                        //   controller.commonApiController.selectedSectionId.value = val['id'].toString();
-                        //   controller.commonApiController.selectedSectionName.value = val['section'].toString();
-                        //
-                        //   controller.commonApiController.update();
-                        //
-                        // }
-
-                      },
-                    )
+                  child: DatePickerTextField(
+                      controller: controller.toDateC.value,
+                      title: 'Next Follow Up Date',
+                      onDateSelected: (date) {
+                        controller.toDateC.value.text =
+                            DateFormat('dd/MM/yyyy').format(date);
+                      }),
                 ),
               ],
             ),
+            // Row(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     Expanded(
+            //         child:
+            //         MyCustomSD(
+            //
+            //           hideSearch: true,
+            //           borderColor: Colors.grey,
+            //           listToSearch: controller.demo,
+            //           valFrom: "name",
+            //           label: 'Enquiry From Date ',
+            //           labelText: 'Enquiry From Date ',
+            //           onChanged: (val) {
+            //             // if(controller.commonApiController.classListModelMap.value.length > 0)
+            //             // {
+            //             //   print("5555555555555");
+            //             //
+            //             //   controller.commonApiController.selectedClassId.value = val['id'].toString();
+            //             //   controller.commonApiController.selectedClassName.value = val['className'].toString();
+            //             //   controller.commonApiController.update();
+            //             //   controller.commonApiController.getSectionList();
+            //             // }
+            //
+            //           },
+            //         )
+            //     ),
+            //
+            //     SizedBox(width: 10,),
+            //
+            //     Expanded(
+            //         child:
+            //         MyCustomSD(
+            //           hideSearch: true,
+            //           borderColor: Colors.grey,
+            //           listToSearch:controller.demo,
+            //           valFrom: "name",
+            //           label: 'Enquiry To Date',
+            //           labelText: 'Enquiry To Date',
+            //           onChanged: (val) {
+            //             print(val);
+            //             // if(controller.commonApiController.sectionListModelMap.value.length > 0)
+            //             // {
+            //             //
+            //             //
+            //             //   controller.commonApiController.selectedSectionId.value = val['id'].toString();
+            //             //   controller.commonApiController.selectedSectionName.value = val['section'].toString();
+            //             //
+            //             //   controller.commonApiController.update();
+            //             //
+            //             // }
+            //
+            //           },
+            //         )
+            //     ),
+            //   ],
+            // ),
             SizedBox(height: 10,),
             Row(
               children: [
@@ -163,7 +195,12 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                   child: MyCustomSD(
                     hideSearch: true,
                     borderColor: Colors.grey,
-                    listToSearch: controller.demo,
+                    listToSearch:controller.getAdmissionEnquiryList.enquiryStatus!.toJson().entries.map((entry) {
+                    return {
+                    'id': entry.key,  // The key of the map (e.g., "active")
+                    'name': entry.value  // The value of the map (e.g., "Active")
+                    };
+                    }).toList(),
                     valFrom: "name",
                     label: 'Status',
                     labelText: 'Status',
@@ -210,6 +247,7 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                 shrinkWrap: true,
                 itemCount: 5,
                 itemBuilder: (context, index) {
+                 // EnquiryList enData = controller.getAdmissionEnquiryList.enquiryList![index];
 
                   return  Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),

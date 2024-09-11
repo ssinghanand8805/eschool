@@ -1,52 +1,61 @@
-class AdmiddionEnquiryDataModal {
+class AdmissionEnquiryDataModal {
   List<ClassList>? classList;
-  List<Null>? selectedClass;
-  List<Null>? sourceSelect;
-  List<Null>? status;
+  String? selectedClass;
+  String? sourceSelect;
+  String? status;
   List<StffList>? stffList;
   List<EnquiryList>? enquiryList;
-  List<Null>? enquiryStatus;
+  EnquiryStatus? enquiryStatus;
   List<Reference>? reference;
   List<Sourcelist>? sourcelist;
 
-  AdmiddionEnquiryDataModal({this.classList, this.selectedClass, this.sourceSelect, this.status, this.stffList, this.enquiryList, this.enquiryStatus, this.reference, this.sourcelist});
+  AdmissionEnquiryDataModal(
+      {this.classList,
+        this.selectedClass,
+        this.sourceSelect,
+        this.status,
+        this.stffList,
+        this.enquiryList,
+        this.enquiryStatus,
+        this.reference,
+        this.sourcelist});
 
-  AdmiddionEnquiryDataModal.fromJson(Map<String, dynamic> json) {
+  AdmissionEnquiryDataModal.fromJson(Map<String, dynamic> json) {
     if (json['class_list'] != null) {
       classList = <ClassList>[];
-      json['class_list'].forEach((v) { classList!.add(new ClassList.fromJson(v)); });
+      json['class_list'].forEach((v) {
+        classList!.add(new ClassList.fromJson(v));
+      });
     }
-    // if (json['selected_class'] != null) {
-    //   selectedClass = <Null>[];
-    //   json['selected_class'].forEach((v) { selectedClass!.add(new Null.fromJson(v)); });
-    // }
-    // if (json['source_select'] != null) {
-    //   sourceSelect = <Null>[];
-    //   json['source_select'].forEach((v) { sourceSelect!.add(new Null.fromJson(v)); });
-    // }
-    // if (json['status'] != null) {
-    //   status = <Null>[];
-    //   json['status'].forEach((v) { status!.add(new Null.fromJson(v)); });
-    // }
+    selectedClass = json['selected_class'];
+    sourceSelect = json['source_select'];
+    status = json['status'];
     if (json['stff_list'] != null) {
       stffList = <StffList>[];
-      json['stff_list'].forEach((v) { stffList!.add(new StffList.fromJson(v)); });
+      json['stff_list'].forEach((v) {
+        stffList!.add(new StffList.fromJson(v));
+      });
     }
     if (json['enquiry_list'] != null) {
       enquiryList = <EnquiryList>[];
-      json['enquiry_list'].forEach((v) { enquiryList!.add(new EnquiryList.fromJson(v)); });
+      json['enquiry_list'].forEach((v) {
+        enquiryList!.add(new EnquiryList.fromJson(v));
+      });
     }
-    // if (json['enquiry_status'] != null) {
-    //   enquiryStatus = <Null>[];
-    //   json['enquiry_status'].forEach((v) { enquiryStatus!.add(new Null.fromJson(v)); });
-    // }
+    enquiryStatus = json['enquiry_status'] != null
+        ? new EnquiryStatus.fromJson(json['enquiry_status'])
+        : null;
     if (json['Reference'] != null) {
       reference = <Reference>[];
-      json['Reference'].forEach((v) { reference!.add(new Reference.fromJson(v)); });
+      json['Reference'].forEach((v) {
+        reference!.add(new Reference.fromJson(v));
+      });
     }
     if (json['sourcelist'] != null) {
       sourcelist = <Sourcelist>[];
-      json['sourcelist'].forEach((v) { sourcelist!.add(new Sourcelist.fromJson(v)); });
+      json['sourcelist'].forEach((v) {
+        sourcelist!.add(new Sourcelist.fromJson(v));
+      });
     }
   }
 
@@ -55,24 +64,18 @@ class AdmiddionEnquiryDataModal {
     if (this.classList != null) {
       data['class_list'] = this.classList!.map((v) => v.toJson()).toList();
     }
-    // if (this.selectedClass != null) {
-    //   data['selected_class'] = this.selectedClass!.map((v) => v.toJson()).toList();
-    // }
-    // if (this.sourceSelect != null) {
-    //   data['source_select'] = this.sourceSelect!.map((v) => v.toJson()).toList();
-    // }
-    // if (this.status != null) {
-    //   data['status'] = this.status!.map((v) => v.toJson()).toList();
-    // }
+    data['selected_class'] = this.selectedClass;
+    data['source_select'] = this.sourceSelect;
+    data['status'] = this.status;
     if (this.stffList != null) {
       data['stff_list'] = this.stffList!.map((v) => v.toJson()).toList();
     }
     if (this.enquiryList != null) {
       data['enquiry_list'] = this.enquiryList!.map((v) => v.toJson()).toList();
     }
-    // if (this.enquiryStatus != null) {
-    //   data['enquiry_status'] = this.enquiryStatus!.map((v) => v.toJson()).toList();
-    // }
+    if (this.enquiryStatus != null) {
+      data['enquiry_status'] = this.enquiryStatus!.toJson();
+    }
     if (this.reference != null) {
       data['Reference'] = this.reference!.map((v) => v.toJson()).toList();
     }
@@ -85,29 +88,30 @@ class AdmiddionEnquiryDataModal {
 
 class ClassList {
   String? id;
-  String? class_name;
+  String? className;
   String? isActive;
   String? createdAt;
-  Null? updatedAt;
+  String? updatedAt;
 
-  ClassList({this.id, this.class_name, this.isActive, this.createdAt, this.updatedAt});
+  ClassList(
+      {this.id, this.className, this.isActive, this.createdAt, this.updatedAt});
 
   ClassList.fromJson(Map<String, dynamic> json) {
-  id = json['id'];
-  class_name = json['class'];
-  isActive = json['is_active'];
-  createdAt = json['created_at'];
-  updatedAt = json['updated_at'];
+    id = json['id'];
+    className = json['class'];
+    isActive = json['is_active'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
-  final Map<String, dynamic> data = new Map<String, dynamic>();
-  data['id'] = this.id;
-  data['class'] = this.class_name;
-  data['is_active'] = this.isActive;
-  data['created_at'] = this.createdAt;
-  data['updated_at'] = this.updatedAt;
-  return data;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['class'] = this.className;
+    data['is_active'] = this.isActive;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
   }
 }
 
@@ -116,8 +120,8 @@ class StffList {
   String? employeeId;
   String? langId;
   String? currencyId;
-  Null? department;
-  Null? designation;
+  String? department;
+  String? designation;
   String? qualification;
   String? workExp;
   String? name;
@@ -129,8 +133,8 @@ class StffList {
   String? email;
   String? dob;
   String? maritalStatus;
-  Null? dateOfJoining;
-  Null? dateOfLeaving;
+  String? dateOfJoining;
+  String? dateOfLeaving;
   String? localAddress;
   String? permanentAddress;
   String? note;
@@ -160,13 +164,66 @@ class StffList {
   String? userId;
   String? isActive;
   String? verificationCode;
-  Null? disableAt;
-  Null? language;
-  Null? isRtl;
+  String? disableAt;
+  String? language;
+  String? isRtl;
   String? userType;
   String? roleId;
 
-  StffList({this.id, this.employeeId, this.langId, this.currencyId, this.department, this.designation, this.qualification, this.workExp, this.name, this.surname, this.fatherName, this.motherName, this.contactNo, this.emergencyContactNo, this.email, this.dob, this.maritalStatus, this.dateOfJoining, this.dateOfLeaving, this.localAddress, this.permanentAddress, this.note, this.image, this.password, this.gender, this.accountTitle, this.bankAccountNo, this.bankName, this.ifscCode, this.bankBranch, this.payscale, this.basicSalary, this.epfNo, this.contractType, this.shift, this.location, this.facebook, this.twitter, this.linkedin, this.instagram, this.resume, this.joiningLetter, this.resignationLetter, this.otherDocumentName, this.otherDocumentFile, this.userId, this.isActive, this.verificationCode, this.disableAt, this.language, this.isRtl, this.userType, this.roleId});
+  StffList(
+      {this.id,
+        this.employeeId,
+        this.langId,
+        this.currencyId,
+        this.department,
+        this.designation,
+        this.qualification,
+        this.workExp,
+        this.name,
+        this.surname,
+        this.fatherName,
+        this.motherName,
+        this.contactNo,
+        this.emergencyContactNo,
+        this.email,
+        this.dob,
+        this.maritalStatus,
+        this.dateOfJoining,
+        this.dateOfLeaving,
+        this.localAddress,
+        this.permanentAddress,
+        this.note,
+        this.image,
+        this.password,
+        this.gender,
+        this.accountTitle,
+        this.bankAccountNo,
+        this.bankName,
+        this.ifscCode,
+        this.bankBranch,
+        this.payscale,
+        this.basicSalary,
+        this.epfNo,
+        this.contractType,
+        this.shift,
+        this.location,
+        this.facebook,
+        this.twitter,
+        this.linkedin,
+        this.instagram,
+        this.resume,
+        this.joiningLetter,
+        this.resignationLetter,
+        this.otherDocumentName,
+        this.otherDocumentFile,
+        this.userId,
+        this.isActive,
+        this.verificationCode,
+        this.disableAt,
+        this.language,
+        this.isRtl,
+        this.userType,
+        this.roleId});
 
   StffList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -295,21 +352,45 @@ class EnquiryList {
   String? note;
   String? sourceId;
   String? email;
-  Null? assigned;
+  String? assigned;
   String? classId;
   String? noOfChild;
   String? status;
   String? createdBy;
   String? createdAt;
   String? classname;
-  Null? source;
-  Null? reference;
+  String? source;
+  String? reference;
   String? followupdate;
   String? nextDate;
   String? response;
   String? followupBy;
 
-  EnquiryList({this.id, this.name, this.contact, this.address, this.referenceId, this.date, this.description, this.followUpDate, this.note, this.sourceId, this.email, this.assigned, this.classId, this.noOfChild, this.status, this.createdBy, this.createdAt, this.classname, this.source, this.reference, this.followupdate, this.nextDate, this.response, this.followupBy});
+  EnquiryList(
+      {this.id,
+        this.name,
+        this.contact,
+        this.address,
+        this.referenceId,
+        this.date,
+        this.description,
+        this.followUpDate,
+        this.note,
+        this.sourceId,
+        this.email,
+        this.assigned,
+        this.classId,
+        this.noOfChild,
+        this.status,
+        this.createdBy,
+        this.createdAt,
+        this.classname,
+        this.source,
+        this.reference,
+        this.followupdate,
+        this.nextDate,
+        this.response,
+        this.followupBy});
 
   EnquiryList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -364,6 +445,34 @@ class EnquiryList {
     data['next_date'] = this.nextDate;
     data['response'] = this.response;
     data['followup_by'] = this.followupBy;
+    return data;
+  }
+}
+
+class EnquiryStatus {
+  String? active;
+  String? passive;
+  String? dead;
+  String? won;
+  String? lost;
+
+  EnquiryStatus({this.active, this.passive, this.dead, this.won, this.lost});
+
+  EnquiryStatus.fromJson(Map<String, dynamic> json) {
+    active = json['active'];
+    passive = json['passive'];
+    dead = json['dead'];
+    won = json['won'];
+    lost = json['lost'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['active'] = this.active;
+    data['passive'] = this.passive;
+    data['dead'] = this.dead;
+    data['won'] = this.won;
+    data['lost'] = this.lost;
     return data;
   }
 }

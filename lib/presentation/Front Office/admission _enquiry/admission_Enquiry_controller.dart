@@ -9,8 +9,8 @@ class AdmissionEnquiryController extends GetxController {
 
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
 
-  Rx<TextEditingController> fromDate = TextEditingController().obs;
-  Rx<TextEditingController> toDate = TextEditingController().obs;
+  Rx<TextEditingController> fromDateC = TextEditingController().obs;
+  Rx<TextEditingController> toDateC = TextEditingController().obs;
 
   Rx<TextEditingController> nameC = TextEditingController().obs;
   Rx<TextEditingController> phoneC = TextEditingController().obs;
@@ -65,18 +65,16 @@ class AdmissionEnquiryController extends GetxController {
       var data = jsonDecode(await response.stream.bytesToString());
       print("APIRESPONSE "+data.toString());
       updateAdmissionEnquiryController = data;
-     // print("ddd "+getAdmissionEnquiryList.toString());
+     print("ddd "+getAdmissionEnquiryList.toString());
     }
     else {
     print(response.reasonPhrase);
     }
   }
 
-  List admissionEnquiryList = [];
-  List<AdmiddionEnquiryDataModal> get getAdmissionEnquiryList =>
-      List<AdmiddionEnquiryDataModal>.from((admissionEnquiryList
-          .map((element) => AdmiddionEnquiryDataModal.fromJson(element))));
-  set updateAdmissionEnquiryController(List val){
+  var admissionEnquiryList ;
+ AdmissionEnquiryDataModal get getAdmissionEnquiryList => AdmissionEnquiryDataModal.fromJson(admissionEnquiryList);
+  set updateAdmissionEnquiryController( val){
     admissionEnquiryList = val;
     update();
   }
