@@ -47,6 +47,8 @@ import '../presentation/exam_schedule/binding/exam_schedule_binding.dart';
 import '../presentation/examinations/ExaminationScreen.dart';
 import '../presentation/examinations/bindings/Examination.dart';
 import '../presentation/fees/bindings/fees.dart';
+import '../presentation/gallery/bindings/gallery.dart';
+import '../presentation/gallery/gallery_view.dart';
 import '../presentation/homework/binding/homework_binding.dart';
 import '../presentation/lesson_plan/binding/lesson_plan_binding.dart';
 import '../presentation/lesson_plan/lesson_plan.dart';
@@ -119,6 +121,7 @@ class AppRoutes {
 
   static const String enterSchoolUrlRoute = '/enterSchoolUrl';
   static const String examScheduleRoute = '/examSchedule';
+  static const String galleryRoute = '/galleryRoute';
 
   static List<GetPage> pages = [
     GetPage(
@@ -271,6 +274,13 @@ class AppRoutes {
       page: () => LibraryPage(),
       bindings: [LibraryBinding()],
     ),
+
+    GetPage(
+      name: galleryRoute,
+      page: () => GalleryPage(),
+      bindings: [GalleryBinding()],
+    ),
+
     GetPage(
       name: teachersratingRoute,
       page: () => TeacherRatingPage(),

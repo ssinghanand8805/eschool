@@ -23,11 +23,12 @@ class NoticeBoardController extends GetxController {
   Future<void> getData() async
   {
     Map<String,dynamic> body = {
-      "student_id" : userData.getUserStudentId
+      "type" : userData.getRole
     };
     print("Body @@@@ ${body}");
     var data  = await apiRespository.postApiCallByJson(Constants.getNotificationsUrl, body);
     print("DATA @@@@ ${data.body}");
+    print("userData getRole ${userData.getRole}");
     noticeBoardModelObj.value = NotiiceBoard.fromJson(data.body);
     print("111111111111111111111 ${noticeBoardModelObj.value.toJson()}");
     update();

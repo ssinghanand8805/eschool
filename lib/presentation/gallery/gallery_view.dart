@@ -7,15 +7,16 @@ import '../common_widgets/CommonCardExtended.dart';
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
 import '../homework/HomeworkScreen.dart';
-import 'controller/library_controller.dart';
+import 'controller/gallery_controller.dart';
+import 'model/gallery.dart';
 
-class LibraryPage extends StatefulWidget {
+class GalleryPage extends StatefulWidget {
   @override
-  State<LibraryPage> createState() => _LibraryPageState();
+  State<GalleryPage> createState() => _GalleryPageState();
 }
 
-class _LibraryPageState extends State<LibraryPage> {
-  LibraryController controller = Get.put(LibraryController());
+class _GalleryPageState extends State<GalleryPage> {
+  GalleryController controller = Get.put(GalleryController());
   @override
   Widget build(BuildContext context) {
     return MainBody(
@@ -54,7 +55,7 @@ class _LibraryPageState extends State<LibraryPage> {
     );
   }
 
-  Widget _buildTimeTableCard({required IssuedBook data}) {
+  Widget _buildTimeTableCard({required GalleryImage data}) {
     print("object${data.isReturned.toString()}");
     return CommonCardExtended(
         style: TextStyle(
@@ -68,7 +69,7 @@ class _LibraryPageState extends State<LibraryPage> {
         newWidget: _buildLeaveCard(data: data));
   }
 
-  Widget _buildLeaveCard({required IssuedBook data}) {
+  Widget _buildLeaveCard({required GalleryImage data}) {
     return Column(
       children: [
         InfoRow(
