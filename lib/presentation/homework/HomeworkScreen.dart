@@ -378,16 +378,16 @@ class HomeworkCard extends GetView<HomeWorkController> {
                       value: Utils.formatDateString(
                           homework.submitDate.toString())),
                   InfoRow(
-                      title: 'Created By',
+                      title: 'Document',
                       value:
-                          '${homework.createdByName.toString()} (${homework.createdByEmployeeId.toString()})'),
-                  InfoRow(
-                      title: 'Evaluated By',
-                      value: '${homework.evaluatedBy.toString()}'),
-                  InfoRow(
-                      title: 'Evaluation Date',
-                      value:
-                          '${Utils.formatDateString(homework.evaluationDate.toString())}'),
+                          '${homework.document.toString()}})'),
+                  // InfoRow(
+                  //     title: 'Evaluated By',
+                  //     value: '${homework.evaluatedBy.toString()}'),
+                  // InfoRow(
+                  //     title: 'Evaluation Date',
+                  //     value:
+                  //         '${Utils.formatDateString(homework.evaluationDate.toString())}'),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

@@ -67,8 +67,9 @@ class SubmitHomeworkController extends GetxController {
           Constants.submitHomeWorkByStudent, body);
 
       if (data.statusCode == 200) {
-        homeWorkMessageC.clear();
         Get.showSnackbar( Ui.SuccessSnackBar(message: "Homework submitted successfully"));
+        homeWorkMessageC.clear();
+
         Navigator.pop(context);
 
         print('Homework submitted successfully');
@@ -105,9 +106,10 @@ class SubmitHomeworkController extends GetxController {
           Constants.adddailyassignment, body);
 
       if (data.statusCode == 200) {
+        Get.showSnackbar(Ui.SuccessSnackBar(message: "Assignment submitted successfully"));
         assignmentTitleC.clear();
         assignmentMessageC.clear();
-        Get.showSnackbar(Ui.SuccessSnackBar(message: "Assignment submitted successfully"));
+
         Navigator.pop(context);
         print('Assignment submitted successfully');
       } else {
