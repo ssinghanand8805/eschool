@@ -44,8 +44,13 @@ class SubmitHomeworkController extends GetxController {
     update();
   }
 
-  Future<void> submitHomework(String id,BuildContext context,) async {
+  Future<void> submitHomework(String id, BuildContext context) async {
     try {
+      if (homeWorkMessageC.value.text.isEmpty) {
+        Get.showSnackbar(Ui.ErrorSnackBar(message: "Message is required"));
+        return;
+      }
+
       Map<String, dynamic> body = {
         'student_id': userData.getUserStudentId,
         'homework_id': id,
@@ -57,13 +62,13 @@ class SubmitHomeworkController extends GetxController {
       } else {
         print('No image selected, submitting without image...');
       }
+
       var data = await apiRespository.postApiCallByFormData(
           Constants.submitHomeWorkByStudent, body);
 
       if (data.statusCode == 200) {
-
         homeWorkMessageC.clear();
-        Ui.SuccessSnackBar(message: "Assignment submitted successfully");
+        Get.showSnackbar( Ui.SuccessSnackBar(message: "Homework submitted successfully"));
         Navigator.pop(context);
 
         print('Homework submitted successfully');
@@ -75,8 +80,14 @@ class SubmitHomeworkController extends GetxController {
     }
   }
 
+
   Future<void> submitAssignment(BuildContext context,String id, String subjectGroupSubjectId) async {
     try {
+      if ( assignmentTitleC.value.text.isEmpty) {
+        Get.showSnackbar(Ui.ErrorSnackBar(message: "Tittle is required"));
+        return;
+      }
+
       Map<String, dynamic> body = {
         'student_id': userData.getUserStudentId,
         'homework_id': id,
@@ -96,15 +107,14 @@ class SubmitHomeworkController extends GetxController {
       if (data.statusCode == 200) {
         assignmentTitleC.clear();
         assignmentMessageC.clear();
-        selectedImage = null;
-        Ui.SuccessSnackBar(message: "Assignment submitted successfully");
+        Get.showSnackbar(Ui.SuccessSnackBar(message: "Assignment submitted successfully"));
         Navigator.pop(context);
-        print('Homework submitted successfully');
+        print('Assignment submitted successfully');
       } else {
-        print('Failed to submit homework: ${data.body.toString()}');
+        print('Failed to submit Assignment: ${data.body.toString()}');
       }
     } catch (e) {
-      print('Error submitting homework: $e');
+      print('Error submitting Assignment: $e');
     }
   }
 }
