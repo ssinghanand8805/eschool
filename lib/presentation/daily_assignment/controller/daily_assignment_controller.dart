@@ -25,7 +25,7 @@ class DailyAssignmentController extends GetxController {
   Rx<Subjectlist> currentSelectedSubject = Subjectlist().obs;
   late Future<void> fetchDataFuture;
   late Future<void> fetchDataFutureForSubjects;
-  late TabController tabController;
+ late  TabController tabController;
   @override
   void onClose() {
     super.onClose();

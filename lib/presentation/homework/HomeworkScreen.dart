@@ -15,13 +15,13 @@ class HomeworkScreen extends StatefulWidget {
 
 class _HomeworkScreenState extends State<HomeworkScreen>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+
   HomeWorkController controller = Get.put(HomeWorkController());
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 3);
-    _tabController.addListener(onTabChanged);
+    controller.tabController = TabController(vsync: this, length: 3);
+    controller.tabController.addListener(onTabChanged);
     // getSubjects();
   }
 
@@ -32,21 +32,21 @@ class _HomeworkScreenState extends State<HomeworkScreen>
 
   @override
   void dispose() {
-    _tabController.dispose();
-    _tabController.removeListener(onTabChanged);
+    controller.tabController.dispose();
+    controller.tabController.removeListener(onTabChanged);
     super.dispose();
   }
 
   void onTabChanged() {
     // Your code here
-    if (!_tabController.indexIsChanging) {
+    if (! controller.tabController.indexIsChanging) {
       // Your code here
-      print('Tab changed to: ${_tabController.index}');
+      print('Tab changed to: ${ controller.tabController.index}');
       // controller.homeworkModelObj.value.homeworklist = [];
       // controller.currentSelectedSubejectId.value =  1;
-      controller.status.value = _tabController.index == 0
+      controller.status.value =  controller.tabController.index == 0
           ? 'pending'
-          : _tabController.index == 1
+          :  controller.tabController.index == 1
               ? 'submitted'
               : 'evaluated';
       controller.getData(selectedDate: controller.selectedDate.value);
@@ -72,11 +72,11 @@ class _HomeworkScreenState extends State<HomeworkScreen>
           ],
         ),
         bottom: MyTabBar(
-          tabController: _tabController,
+          tabController: controller.tabController,
         ),
       ),
       body: TabBarView(
-        controller: _tabController,
+        controller: controller.tabController,
         children: [
           HomeworkTabContent(status: 'Pending'),
           HomeworkTabContent(status: 'Submitted'),
@@ -358,7 +358,9 @@ class HomeworkCard extends GetView<HomeWorkController> {
                   SizedBox(
                     width: 5,
                   ),
-                  submitButton(context,homework.id!),
+                  controller.tabController.index == 0
+                      ? submitButton(context, homework.id!)
+                      : SizedBox(),
                 ],
               ),
             ),
@@ -434,7 +436,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
     );
   }
 
-  Widget submitButton(context,String  id) {
+  Widget submitButton(context, String id) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.symmetric(horizontal: 23, vertical: 20),
@@ -447,7 +449,8 @@ class HomeworkCard extends GetView<HomeWorkController> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => UploadHomework( homeworkid:id)),
+          MaterialPageRoute(
+              builder: (context) => UploadHomework(homeworkid: id)),
         );
       },
       child: Text("Submit"),

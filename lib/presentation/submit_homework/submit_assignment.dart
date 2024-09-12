@@ -7,33 +7,38 @@ import 'package:lerno/presentation/submit_homework/controller/SubmitHomeworkCont
 
 import '../../core/app_export.dart';
 import '../../theme/theme_helper.dart';
+import '../../widgets/cutomInputfeild.dart';
+import '../../widgets/textfield.dart';
 
-class UploadHomework extends StatefulWidget {
+class UploadAssignment extends StatefulWidget {
   final String? homeworkid;
+  final String? subjectGroupSubjectId;
 
-  const UploadHomework({Key? key,  this.homeworkid}) : super(key: key);
+  const UploadAssignment({Key? key, this.homeworkid, this.subjectGroupSubjectId}) : super(key: key);
 
   @override
-  _UploadHomeworkState createState() => _UploadHomeworkState();
+  _UploadAssignmentState createState() => _UploadAssignmentState();
 }
 
-class _UploadHomeworkState extends State<UploadHomework> {
+class _UploadAssignmentState extends State<UploadAssignment> {
   SubmitHomeworkController controller = Get.put(SubmitHomeworkController());
 
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
-    controller.homeWorkMessageC.clear();
+    controller.assignmentMessageC.clear();
+    controller.assignmentTitleC.clear();
     controller.selectedImage = null;
+
   }
+
 
   @override
   Widget build(BuildContext context) {
     return MainBody(
-      label: "Upload Homework\nfrom here!",
+      label: "Upload Assignment\nfrom here!",
       imageUrl: "assets/projectImages/homeworkpage.jpg",
-      AppbarTitle: "Upload Homework",
+      AppbarTitle: "Upload Assignment",
       widget: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(
@@ -47,16 +52,16 @@ class _UploadHomeworkState extends State<UploadHomework> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                CustomTextField(
+                  hint: 'Tittle',
+                  validator: (String) {},
+                  controller: controller.assignmentTitleC, title: 'Tittle',
+                ),
                 SizedBox(height: 20),
-                TextField(
-                  controller: controller.homeWorkMessageC,
-                  decoration: InputDecoration(
-                    hintText: 'Message',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-
-                    ),
-                  ),
+                CustomTextField(
+                  hint: 'Message',
+                  validator: (String) {},
+                  controller: controller.assignmentMessageC, title: 'Message',
                 ),
                 SizedBox(height: 20),
                 Text(
@@ -66,13 +71,13 @@ class _UploadHomeworkState extends State<UploadHomework> {
                 SizedBox(height: 10),
                 controller.selectedImage == null
                     ? Image.asset(
-                  'assets/projectImages/upload_file.jpg',
-                  height: 150,
-                )
+                        'assets/projectImages/upload_file.jpg',
+                        height: 150,
+                      )
                     : Image.file(
-                  controller.selectedImage!,
-                  height: 150,
-                ),
+                        controller.selectedImage!,
+                        height: 150,
+                      ),
                 SizedBox(height: 50),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -99,7 +104,7 @@ class _UploadHomeworkState extends State<UploadHomework> {
                     backgroundColor: Colors.green.shade400,
                   ),
                   onPressed: () {
-                    controller.submitHomework(widget.homeworkid!,context);
+                    controller.submitAssignment(context,widget.homeworkid!,widget.subjectGroupSubjectId!);
                   },
                   child: Text("Submit"),
                 ),
@@ -162,7 +167,6 @@ class _UploadHomeworkState extends State<UploadHomework> {
                     onTap: () {
                       Navigator.pop(context);
                       controller.getImage(ImageSource.camera);
-
                     },
                   ),
                 ],

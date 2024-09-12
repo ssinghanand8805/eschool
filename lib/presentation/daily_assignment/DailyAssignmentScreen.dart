@@ -6,6 +6,7 @@ import '../../core/utils/common_utilities.dart';
 import '../common_widgets/CommonCardExtended.dart';
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
+import '../submit_homework/submit_assignment.dart';
 import '../submit_homework/submit_homework.dart';
 import 'controller/daily_assignment_controller.dart';
 import 'model/DailyAssignment.dart';
@@ -65,7 +66,7 @@ class _DailyAssignmentScreenState extends State<DailyAssignmentScreen>  with Sin
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Daily Assignment'),
+            Text('Daily Assignment',style: theme.textTheme.titleLarge,),
             IconButton(
               icon: Icon(Icons.calendar_month),
               onPressed: () => controller.selectDate(context),
@@ -359,7 +360,9 @@ class HomeworkCard extends GetView<DailyAssignmentController> {
                   SizedBox(
                     width: 5,
                   ),
-                  controller.tabController == 0 ?submitButton(context,homework.id!):SizedBox(),
+
+                 // submitButton(context,homework.id,homework.subjectGroupSubjectId!)
+                  controller.tabController.index == 0 ?submitButton(context,homework.id,homework.subjectGroupSubjectId!):SizedBox(),
                 ],
               ),
             ),
@@ -369,28 +372,43 @@ class HomeworkCard extends GetView<DailyAssignmentController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   InfoRow(
-                      title: 'Homework Date',
+                    style: TextStyle(fontSize: 14),
+                    style1: TextStyle(fontSize: 14),
+                      title: 'Assignment Date',
                       value: Utils.formatDateString(
                           homework.homeworkDate.toString())),
                   InfoRow(
+                      style: TextStyle(fontSize: 14),
+                      style1: TextStyle(fontSize: 14),
                       title: 'Submission Date',
                       value: Utils.formatDateString(
                           homework.submitDate.toString())),
                   InfoRow(
+                      style: TextStyle(fontSize: 14),
+                      style1: TextStyle(fontSize: 14),
                       title: 'Created By',
                       value:
                       '${homework.createdByName.toString()} (${homework.createdByEmployeeId.toString()})'),
                   InfoRow(
+
+                      style: TextStyle(fontSize: 14),
+                      style1: TextStyle(fontSize: 14),
                       title: 'Evaluated By',
                       value: '${homework.evaluatedBy.toString()}'),
                   InfoRow(
+                      style: TextStyle(fontSize: 14),
+                      style1: TextStyle(fontSize: 14),
                       title: 'Evaluation Date',
                       value:
                       '${Utils.formatDateString(homework.evaluationDate.toString())}'),
                   InfoRow(
+                      style: TextStyle(fontSize: 14),
+                      style1: TextStyle(fontSize: 14),
                       title: 'Max Marks',
                       value: '${homework.marks.toString()}'),
                   InfoRow(
+                      style: TextStyle(fontSize: 14),
+                      style1: TextStyle(fontSize: 14),
                       title: 'Marks Obtained',
                       value: '${homework.evaluationMarks.toString()}'),
                   Row(
@@ -441,7 +459,7 @@ class HomeworkCard extends GetView<DailyAssignmentController> {
     );
   }
 
-  Widget submitButton(context,String  id) {
+  Widget submitButton(context,String?id,String subjectGroupSubjectId) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.symmetric(horizontal: 23, vertical: 20),
@@ -454,7 +472,7 @@ class HomeworkCard extends GetView<DailyAssignmentController> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => UploadHomework( homeworkid:id)),
+          MaterialPageRoute(builder: (context) => UploadAssignment(homeworkid:id,subjectGroupSubjectId: subjectGroupSubjectId,)),
         );
       },
       child: Text("Submit"),
