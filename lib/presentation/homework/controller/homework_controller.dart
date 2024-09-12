@@ -60,7 +60,7 @@ class HomeWorkController extends GetxController {
   }
 
   Future<void> getSubjects()async{
-    Map<String,dynamic> body = {
+    Map<String,dynamic> body = await {
       "student_id" : userData.getUserStudentId };
 
       var data  = await apiRespository.postApiCallByJson(Constants.getstudentsubjectUrl, body);
@@ -68,7 +68,7 @@ class HomeWorkController extends GetxController {
     //
     print("DATA @@@@ ${data.body}");
     studentSubjectsModelObj.value = StudentSubjects.fromJson(data.body);
-   var newSubjet =  Subjectlist(
+   var newSubjet = await  Subjectlist(
       subjectGroupSubjectsId: "0",
       subjectGroupClassSectionsId: "0",
       name: "All",
@@ -83,7 +83,7 @@ class HomeWorkController extends GetxController {
   }
   Future<void> getData({DateTime? selectedDate}) async {
     String formattedDate = selectedDate != null
-        ? "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}"
+        ? "${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.year}"
         : "";
 
     Map<String, dynamic> body = {
@@ -104,18 +104,21 @@ class HomeWorkController extends GetxController {
     homeworkModelObj.value = Homework.fromJson(data.body);
     print("homework data ${homeworkModelObj.value.toJson()}");
 
-
-    if (homeworkModelObj.value.homeworklist != null && selectedDate != null) {
-      homeworkModelObj.value.homeworklist = homeworkModelObj.value.homeworklist!
-          .where((homework) =>
-      homework.homeworkDate == formattedDate) // Compare the string format
-          .toList();
-      update();
-    }
+    // Optional: If you need to filter homework based on the date
+    /*
+  if (homeworkModelObj.value.homeworklist != null && selectedDate != null) {
+    homeworkModelObj.value.homeworklist = homeworkModelObj.value.homeworklist!
+        .where((homework) =>
+    homework.homeworkDate == formattedDate) // Compare the string format
+        .toList();
+    update();
+  }
+  */
 
     print("Filtered homework list: ${homeworkModelObj.value.homeworklist}");
     // update();
   }
+
 
 
 

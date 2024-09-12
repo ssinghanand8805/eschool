@@ -1,10 +1,10 @@
-class GalleryModal {
+class EventModal {
   String? id;
   String? type;
   String? slug;
   String? url;
   String? title;
-  String? date;
+  Null? date;
   String? eventStart;
   String? eventEnd;
   String? eventVenue;
@@ -19,7 +19,7 @@ class GalleryModal {
   String? publish;
   Null? sidebar;
 
-  GalleryModal(
+  EventModal(
       {this.id,
         this.type,
         this.slug,
@@ -40,7 +40,7 @@ class GalleryModal {
         this.publish,
         this.sidebar});
 
-  GalleryModal.fromJson(Map<String, dynamic> json) {
+  EventModal.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     type = json['type'];
     slug = json['slug'];

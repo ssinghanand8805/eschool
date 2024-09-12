@@ -2,6 +2,8 @@ import 'package:lerno/core/app_export.dart';
 import 'package:lerno/presentation/homework/controller/homework_controller.dart';
 import 'package:lerno/presentation/homework/model/Homework.dart';
 import 'package:flutter/material.dart';
+import 'package:lerno/presentation/homework/viewPdf.dart';
+import 'package:readmore/readmore.dart';
 
 import '../../core/utils/common_utilities.dart';
 import '../common_widgets/custom_loader.dart';
@@ -317,7 +319,123 @@ class HomeworkCard extends GetView<HomeWorkController> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(16.0),
-      child: Container(
+      child: controller.tabController.index == 0?Container(
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade400,
+            offset: const Offset(
+              0.3,
+              3.0,
+            ),
+            blurRadius: 4.0,
+          ), //BoxShadow
+          BoxShadow(
+            color: Colors.white,
+            offset: const Offset(0.0, 0.0),
+            blurRadius: 0.0,
+            spreadRadius: 0.0,
+          ), //BoxShadow
+        ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              height: 45,
+              decoration: BoxDecoration(
+                  color: Colors.green.shade100,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10))),
+              width: Get.width,
+              child: Row(
+                children: [
+                  Text(
+                      "${homework.subjectName.toString()} (${homework.subjectCode.toString()})",
+                      //'{homework.} (Code)',
+                      style: theme.textTheme.titleMedium!
+                          .copyWith(fontWeight: FontWeight.w600)),
+                  Spacer(),
+                  statusButton(status),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  controller.tabController.index == 0
+                      ? submitButton(context, homework.id!)
+                      : SizedBox(),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InfoRow(
+                      title: 'Homework Date',
+                      value: Utils.formatDateString(
+                          homework.homeworkDate.toString())),
+                  InfoRow(
+                      title: 'Submission Date',
+                      value: Utils.formatDateString(
+                          homework.submitDate.toString())),
+
+             InkWell(
+               onTap: (){
+
+                 Navigator.push(
+                   context,
+                   MaterialPageRoute(
+                       builder: (context) => DocumentViewerScreen(documentUrl: homework.document!,)),
+                 );
+
+               },
+               child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                      Text("Document"),
+                      Text(homework.document.toString()),
+                      Icon(Icons.remove_red_eye_sharp, color: Colors.blue,)
+                    ],),
+             ),
+                  // InfoRow(
+                  //     title: 'Evaluated By',
+                  //     value: '${homework.evaluatedBy.toString()}'),
+                  // InfoRow(
+                  //     title: 'Evaluation Date',
+                  //     value:
+                  //         '${Utils.formatDateString(homework.evaluationDate.toString())}'),
+                  SizedBox(height: 5,),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Description  ',
+                          style: theme.textTheme.titleMedium!
+                              .copyWith(fontWeight: FontWeight.w600)),
+                Expanded(
+                  child: ReadMoreText(
+                    homework.description.toString(),
+                    trimMode: TrimMode.Line,
+                    trimLines: 2,
+                    colorClickableText: Colors.pink,
+                    trimCollapsedText: 'Show more',
+                    trimExpandedText: 'Show less',
+                    moreStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                      // Flexible(
+                      //     child: Text(
+                      //  homework.description.toString(),
+                      //   style: theme.textTheme.titleMedium!,
+                      // )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ):controller.tabController.index == 1?Container(
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
             color: Colors.grey.shade400,
@@ -378,9 +496,18 @@ class HomeworkCard extends GetView<HomeWorkController> {
                       value: Utils.formatDateString(
                           homework.submitDate.toString())),
                   InfoRow(
-                      title: 'Document',
-                      value:
-                          '${homework.document.toString()}})'),
+                      title: 'Student Submit Message',
+                      value: Utils.formatDateString(
+                          homework.studentSubmitMessage.toString())),
+                  InfoRow(
+                      title: 'Student Submit file',
+                      value: Utils.formatDateString(
+                          homework.studentSubmitFileName.toString())),
+                  InfoRow(
+                      title: 'Student Submit File',
+                      value: Utils.formatDateString(
+                          homework.studentSubmitFileName.toString())),
+
                   // InfoRow(
                   //     title: 'Evaluated By',
                   //     value: '${homework.evaluatedBy.toString()}'),
@@ -388,17 +515,145 @@ class HomeworkCard extends GetView<HomeWorkController> {
                   //     title: 'Evaluation Date',
                   //     value:
                   //         '${Utils.formatDateString(homework.evaluationDate.toString())}'),
+                  SizedBox(height: 5,),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Description  ',
                           style: theme.textTheme.titleMedium!
                               .copyWith(fontWeight: FontWeight.w600)),
-                      Flexible(
-                          child: Text(
-                        'Please submit homework before last date.',
-                        style: theme.textTheme.titleMedium!,
-                      )),
+                      Expanded(
+                        child: ReadMoreText(
+                          homework.description.toString(),
+                          trimMode: TrimMode.Line,
+                          trimLines: 2,
+                          colorClickableText: Colors.blue,
+                          trimCollapsedText: 'Read more',
+                          trimExpandedText: 'Show less',
+                          moreStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      // Flexible(
+                      //     child: Text(
+                      //  homework.description.toString(),
+                      //   style: theme.textTheme.titleMedium!,
+                      // )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ):Container(
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade400,
+            offset: const Offset(
+              0.3,
+              3.0,
+            ),
+            blurRadius: 4.0,
+          ), //BoxShadow
+          BoxShadow(
+            color: Colors.white,
+            offset: const Offset(0.0, 0.0),
+            blurRadius: 0.0,
+            spreadRadius: 0.0,
+          ), //BoxShadow
+        ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              height: 45,
+              decoration: BoxDecoration(
+                  color: Colors.green.shade100,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10))),
+              width: Get.width,
+              child: Row(
+                children: [
+                  Text(
+                      "${homework.subjectName.toString()} (${homework.subjectCode.toString()})",
+                      //'{homework.} (Code)',
+                      style: theme.textTheme.titleMedium!
+                          .copyWith(fontWeight: FontWeight.w600)),
+                  Spacer(),
+                  statusButton(status),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  controller.tabController.index == 0
+                      ? submitButton(context, homework.id!)
+                      : SizedBox(),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InfoRow(
+                      title: 'Homework Date',
+                      value: Utils.formatDateString(
+                          homework.homeworkDate.toString())),
+                  InfoRow(
+                      title: 'Submission Date',
+                      value: Utils.formatDateString(
+                          homework.submitDate.toString())),
+
+                  InkWell(
+                    onTap: (){
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DocumentViewerScreen(documentUrl: homework.document!,)),
+                      );
+
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Document"),
+                        Text(homework.document.toString()),
+                        Icon(Icons.remove_red_eye_sharp, color: Colors.blue,)
+                      ],),
+                  ),
+                  // InfoRow(
+                  //     title: 'Evaluated By',
+                  //     value: '${homework.evaluatedBy.toString()}'),
+                  // InfoRow(
+                  //     title: 'Evaluation Date',
+                  //     value:
+                  //         '${Utils.formatDateString(homework.evaluationDate.toString())}'),
+                  SizedBox(height: 5,),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Description  ',
+                          style: theme.textTheme.titleMedium!
+                              .copyWith(fontWeight: FontWeight.w600)),
+                      Expanded(
+                        child: ReadMoreText(
+                          homework.description.toString(),
+                          trimMode: TrimMode.Line,
+                          trimLines: 2,
+                          colorClickableText: Colors.pink,
+                          trimCollapsedText: 'Show more',
+                          trimExpandedText: 'Show less',
+                          moreStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      // Flexible(
+                      //     child: Text(
+                      //  homework.description.toString(),
+                      //   style: theme.textTheme.titleMedium!,
+                      // )),
                     ],
                   ),
                 ],

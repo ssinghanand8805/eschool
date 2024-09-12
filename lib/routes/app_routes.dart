@@ -1,3 +1,4 @@
+import 'package:lerno/presentation/ClassWork/classWork_view.dart';
 import 'package:lerno/presentation/calender_todo/bindings/calendar_todo.dart';
 import 'package:lerno/presentation/calender_todo/calendar_todo_view.dart';
 import 'package:lerno/presentation/cbse_examniations/cbse_examinations_view.dart';
@@ -5,6 +6,7 @@ import 'package:lerno/presentation/class_time_table/ClassTimeTableScreen.dart';
 import 'package:lerno/presentation/class_time_table/binding/class_time_table_binding.dart';
 import 'package:lerno/presentation/download_center/DownloadCenterScreen.dart';
 import 'package:lerno/presentation/download_center/binding/syllabus_status_binding.dart';
+import 'package:lerno/presentation/event/binding/event_binding.dart';
 import 'package:lerno/presentation/exam_schedule/exam_schedule_view.dart';
 import 'package:lerno/presentation/examinations/exam%20result/bindings/exam_result_bindings.dart';
 import 'package:lerno/presentation/examinations/exam%20result/exam_result_view.dart';
@@ -27,6 +29,7 @@ import 'package:lerno/presentation/transport_routes/bindings/transportrouts.dart
 import 'package:lerno/presentation/transport_routes/transport_route_view.dart';
 
 import '../core/app_export.dart';
+import '../presentation/ClassWork/bindings/classWork.dart';
 import '../presentation/about_school/about_school.dart';
 import '../presentation/about_school/binding/about_school.dart';
 import '../presentation/app_navigation_screen/app_navigation_screen.dart';
@@ -43,6 +46,7 @@ import '../presentation/daily_assignment/DailyAssignmentScreen.dart';
 import '../presentation/daily_assignment/binding/daily_assignment_binding.dart';
 import '../presentation/dashboard/binding/dashboard_binding.dart';
 import '../presentation/dashboard/dashboard_screen.dart';
+import '../presentation/dashboard/event.dart';
 import '../presentation/exam_schedule/binding/exam_schedule_binding.dart';
 import '../presentation/examinations/ExaminationScreen.dart';
 import '../presentation/examinations/bindings/Examination.dart';
@@ -121,7 +125,9 @@ class AppRoutes {
 
   static const String enterSchoolUrlRoute = '/enterSchoolUrl';
   static const String examScheduleRoute = '/examSchedule';
-  static const String galleryRoute = '/galleryRoute';
+  static const String galleryRoute = '/gallery';
+  static const String classworkRoute = '/classwork';
+  static const String events = '/events';
 
   static List<GetPage> pages = [
     GetPage(
@@ -274,13 +280,11 @@ class AppRoutes {
       page: () => LibraryPage(),
       bindings: [LibraryBinding()],
     ),
-
     GetPage(
       name: galleryRoute,
       page: () => GalleryPage(),
       bindings: [GalleryBinding()],
     ),
-
     GetPage(
       name: teachersratingRoute,
       page: () => TeacherRatingPage(),
@@ -305,6 +309,16 @@ class AppRoutes {
       name: feesRoute,
       page: () => FeesPage(),
       bindings: [FeesBinding()],
+    ),
+    GetPage(
+      name: classworkRoute,
+      page: () => ClassWorkView(),
+      bindings: [ClassWorkBinding()],
+    ),
+    GetPage(
+      name: events,
+      page: () => EventCalendar(),
+      bindings: [EventBinding()],
     ),
   ];
 }

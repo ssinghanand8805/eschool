@@ -202,6 +202,7 @@ class DashboardController extends GetxController {
   }
 
   List eLearningImagesPath = [
+    "ic_onlinecourse.png",
     "ic_dashboard_homework.png",
     "ic_assignment.png",
     "ic_lessonplan.png",
@@ -223,7 +224,14 @@ class DashboardController extends GetxController {
     "ic_nav_reportcard.png",
   ];
 
-  List communicationImages = ["ic_notice.png", "ic_notification.png"];
+  List communicationImages = [
+    "ic_notice.png",
+    "ic_notification.png",
+    "ic_notice.png",
+    "ic_notification.png",
+    "ic_notice.png",
+    "ic_notification.png"
+  ];
 
   List otherImages = [
     "ic_nav_fees.png",
@@ -231,6 +239,9 @@ class DashboardController extends GetxController {
     "ic_visitors.png",
     "ic_nav_transport.png",
     "ic_nav_hostel.png",
+    "ic_dashboard_pandingtask.png",
+    "ic_library.png",
+    "ic_teacher.png",
     "ic_dashboard_pandingtask.png",
     "ic_library.png",
     "ic_teacher.png"
@@ -381,9 +392,6 @@ class DashboardController extends GetxController {
     Get.toNamed('/s_screen');
   }
 
-
-
-
   Future<void> printSharedPreferencesData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey('eLearningData')) {
@@ -419,13 +427,13 @@ class DashboardController extends GetxController {
     }
   }
 
-
   Future<void> checkCacheAndFetchData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey('eLearningData')) {
       eLearningData.value = jsonDecode(prefs.getString('eLearningData')!);
       academicData.value = jsonDecode(prefs.getString('academicData')!);
-      communicationData.value = jsonDecode(prefs.getString('communicationData')!);
+      communicationData.value =
+          jsonDecode(prefs.getString('communicationData')!);
       otherData.value = jsonDecode(prefs.getString('otherData')!);
       isLoading.value = false;
     } else {
@@ -441,6 +449,7 @@ class DashboardController extends GetxController {
     await prefs.setString('communicationData', jsonEncode(communicationData));
     await prefs.setString('otherData', jsonEncode(otherData));
   }
+
   Future<void> fetchFreshData() async {
     await eLearningapi();
     await academicStatusApi();
@@ -449,6 +458,7 @@ class DashboardController extends GetxController {
     await saveDataToCache();
     isLoading.value = false;
   }
+
   getSchoolDetails() async {
     Map<String, dynamic> body = {};
     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;

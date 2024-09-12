@@ -30,7 +30,9 @@ class Constants {
   static const String getAssignment = 'webservice/getAssignment';
   static const String adddailyassignment = 'webservice/adddailyassignment';
   static const String submitHomeWorkByStudent = 'webservice/submitHomeWorkByStudent';
-
+  static const String getClasswork = 'webservice/getClasswork';
+  static const String getEventList = 'webservice/getEventList';
+  static const String getGalleryList = 'webservice/getGalleryList';
 
 
 
@@ -38,5 +40,10 @@ class Constants {
   static const String getLibraryBookIssuedsUrl = 'webservice/getLibraryBookIssued';
   static const String getVisitorsUrl = 'webservice/getVisitors';
   static const String updateDeviceToken = 'webservice/updateDeviceToken';
+
+
+
+
+
   // static const int defaultAge = 30;
 }

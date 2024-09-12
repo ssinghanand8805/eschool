@@ -39,6 +39,7 @@ class Homeworklist {
   String? submitDate;
   String? marks;
   String? description;
+  String? isAssignment;
   String? createDate;
   String? evaluationDate;
   String? document;
@@ -59,76 +60,122 @@ class Homeworklist {
   String? createdBySurname;
   String? createdByEmployeeId;
   String? status;
+  String? studentSubmitMessage;
+  String? studentSubmitFile;
+  String? studentSubmitFileName;
 
-  Homeworklist({this.id, this.classId, this.sectionId, this.sessionId, this.staffId, this.subjectGroupSubjectId, this.subjectId, this.homeworkDate, this.submitDate, this.marks, this.description, this.createDate, this.evaluationDate, this.document, this.createdBy, this.evaluatedBy, this.createdAt, this.homeworkEvaluationId, this.homeworkSubmittedId, this.note, this.evaluationMarks, this.className, this.section, this.subjectName, this.subjectCode, this.subjectGroupsId, this.name, this.createdByName, this.createdBySurname, this.createdByEmployeeId, this.status});
+  Homeworklist(
+      {this.id,
+        this.classId,
+        this.sectionId,
+        this.sessionId,
+        this.staffId,
+        this.subjectGroupSubjectId,
+        this.subjectId,
+        this.homeworkDate,
+        this.submitDate,
+        this.marks,
+        this.description,
+        this.isAssignment,
+        this.createDate,
+        this.evaluationDate,
+        this.document,
+        this.createdBy,
+        this.evaluatedBy,
+        this.createdAt,
+        this.homeworkEvaluationId,
+        this.homeworkSubmittedId,
+        this.note,
+        this.evaluationMarks,
+        this.className,
+        this.section,
+        this.subjectName,
+        this.subjectCode,
+        this.subjectGroupsId,
+        this.name,
+        this.createdByName,
+        this.createdBySurname,
+        this.createdByEmployeeId,
+        this.status,
+        this.studentSubmitMessage,
+        this.studentSubmitFile,
+        this.studentSubmitFileName});
 
   Homeworklist.fromJson(Map<String, dynamic> json) {
-  id = json['id'];
-  classId = json['class_id'];
-  sectionId = json['section_id'];
-  sessionId = json['session_id'];
-  staffId = json['staff_id'];
-  subjectGroupSubjectId = json['subject_group_subject_id'];
-  subjectId = json['subject_id'];
-  homeworkDate = json['homework_date'];
-  submitDate = json['submit_date'];
-  marks = json['marks'];
-  description = json['description'];
-  createDate = json['create_date'];
-  evaluationDate = json['evaluation_date'];
-  document = json['document'];
-  createdBy = json['created_by'];
-  evaluatedBy = json['evaluated_by'];
-  createdAt = json['created_at'];
-  homeworkEvaluationId = json['homework_evaluation_id'];
-  homeworkSubmittedId = json['homework_submitted_id'];
-  note = json['note'];
-  evaluationMarks = json['evaluation_marks'];
-  className = json['class'];
-  section = json['section'];
-  subjectName = json['subject_name'];
-  subjectCode = json['subject_code'];
-  subjectGroupsId = json['subject_groups_id'];
-  name = json['name'];
-  createdByName = json['created_by_name'];
-  createdBySurname = json['created_by_surname'];
-  createdByEmployeeId = json['created_by_employee_id'];
-  status = json['status'];
+    id = json['id'];
+    classId = json['class_id'];
+    sectionId = json['section_id'];
+    sessionId = json['session_id'];
+    staffId = json['staff_id'];
+    subjectGroupSubjectId = json['subject_group_subject_id'];
+    subjectId = json['subject_id'];
+    homeworkDate = json['homework_date'];
+    submitDate = json['submit_date'];
+    marks = json['marks'];
+    description = json['description'];
+    isAssignment = json['isAssignment'];
+    createDate = json['create_date'];
+    evaluationDate = json['evaluation_date'];
+    document = json['document'];
+    createdBy = json['created_by'];
+    evaluatedBy = json['evaluated_by'];
+    createdAt = json['created_at'];
+    homeworkEvaluationId = json['homework_evaluation_id'];
+    homeworkSubmittedId = json['homework_submitted_id'];
+    note = json['note'];
+    evaluationMarks = json['evaluation_marks'];
+    className = json['class'];
+    section = json['section'];
+    subjectName = json['subject_name'];
+    subjectCode = json['subject_code'];
+    subjectGroupsId = json['subject_groups_id'];
+    name = json['name'];
+    createdByName = json['created_by_name'];
+    createdBySurname = json['created_by_surname'];
+    createdByEmployeeId = json['created_by_employee_id'];
+    status = json['status'];
+    studentSubmitMessage = json['student_submit_message'];
+    studentSubmitFile = json['student_submit_file'];
+    studentSubmitFileName = json['student_submit_file_name'];
   }
 
   Map<String, dynamic> toJson() {
-  final Map<String, dynamic> data = new Map<String, dynamic>();
-  data['id'] = this.id;
-  data['class_id'] = this.classId;
-  data['section_id'] = this.sectionId;
-  data['session_id'] = this.sessionId;
-  data['staff_id'] = this.staffId;
-  data['subject_group_subject_id'] = this.subjectGroupSubjectId;
-  data['subject_id'] = this.subjectId;
-  data['homework_date'] = this.homeworkDate;
-  data['submit_date'] = this.submitDate;
-  data['marks'] = this.marks;
-  data['description'] = this.description;
-  data['create_date'] = this.createDate;
-  data['evaluation_date'] = this.evaluationDate;
-  data['document'] = this.document;
-  data['created_by'] = this.createdBy;
-  data['evaluated_by'] = this.evaluatedBy;
-  data['created_at'] = this.createdAt;
-  data['homework_evaluation_id'] = this.homeworkEvaluationId;
-  data['homework_submitted_id'] = this.homeworkSubmittedId;
-  data['note'] = this.note;
-  data['evaluation_marks'] = this.evaluationMarks;
-  data['class'] = this.className;
-  data['section'] = this.section;
-  data['subject_name'] = this.subjectName;
-  data['subject_code'] = this.subjectCode;
-  data['subject_groups_id'] = this.subjectGroupsId;
-  data['name'] = this.name;
-  data['created_by_name'] = this.createdByName;
-  data['created_by_surname'] = this.createdBySurname;
-  data['created_by_employee_id'] = this.createdByEmployeeId;
-  data['status'] = this.status;
-  return data;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['class_id'] = this.classId;
+    data['section_id'] = this.sectionId;
+    data['session_id'] = this.sessionId;
+    data['staff_id'] = this.staffId;
+    data['subject_group_subject_id'] = this.subjectGroupSubjectId;
+    data['subject_id'] = this.subjectId;
+    data['homework_date'] = this.homeworkDate;
+    data['submit_date'] = this.submitDate;
+    data['marks'] = this.marks;
+    data['description'] = this.description;
+    data['isAssignment'] = this.isAssignment;
+    data['create_date'] = this.createDate;
+    data['evaluation_date'] = this.evaluationDate;
+    data['document'] = this.document;
+    data['created_by'] = this.createdBy;
+    data['evaluated_by'] = this.evaluatedBy;
+    data['created_at'] = this.createdAt;
+    data['homework_evaluation_id'] = this.homeworkEvaluationId;
+    data['homework_submitted_id'] = this.homeworkSubmittedId;
+    data['note'] = this.note;
+    data['evaluation_marks'] = this.evaluationMarks;
+    data['class'] = this.className;
+    data['section'] = this.section;
+    data['subject_name'] = this.subjectName;
+    data['subject_code'] = this.subjectCode;
+    data['subject_groups_id'] = this.subjectGroupsId;
+    data['name'] = this.name;
+    data['created_by_name'] = this.createdByName;
+    data['created_by_surname'] = this.createdBySurname;
+    data['created_by_employee_id'] = this.createdByEmployeeId;
+    data['status'] = this.status;
+    data['student_submit_message'] = this.studentSubmitMessage;
+    data['student_submit_file'] = this.studentSubmitFile;
+    data['student_submit_file_name'] = this.studentSubmitFileName;
+    return data;
   }
 }
