@@ -43,6 +43,13 @@ class AddHomeWorkController extends GetxController {
     update();
   }
 
+  RxString subjectId = ''.obs;
+  RxString get getSubjectId => subjectId;
+  set updateSubjectId(String val) {
+    subjectId.value = val;
+    update();
+  }
+
 
 
   Rx<String> year = "".obs;

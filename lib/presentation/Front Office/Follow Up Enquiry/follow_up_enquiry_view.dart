@@ -7,11 +7,13 @@ import '../../../theme/theme_helper.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/datePickerTextField.dart';
+import '../admission _enquiry/admission_Enquiry_controller.dart';
 import 'follow_up_enquiry_controller.dart';
 
 class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
   @override
   Widget build(BuildContext context) {
+    AdmissionEnquiryController admissionEnquiryController = Get.put(AdmissionEnquiryController());
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -41,11 +43,12 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
-        child: Column(
+        child: ListView(
           children: [
             Container(
+              padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.grey.shade200,
+                color: Colors.green.shade50,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Padding(
@@ -65,7 +68,7 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("Assigned: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                                  Expanded(child: Text(" James Deckar (9004)",style: theme.textTheme.bodySmall,)),
+                                  controller.getFollowUpList.enquiryData != null ? Expanded(child: Text(controller.getFollowUpList.enquiryData!.name.toString(),style: theme.textTheme.bodySmall,)):Container(),
                                 ],
                               )
                             ],
@@ -75,7 +78,12 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
                         Expanded(
                           child: MyCustomSD(
                             labelText: "Status",
-                              listToSearch: controller.demo,
+                              listToSearch: controller.getFollowUpList.enquiryStatus!.toJson().entries.map((entry) {
+                                return {
+                                  'id': entry.key,  // The key of the map (e.g., "active")
+                                  'name': entry.value  // The value of the map (e.g., "Active")
+                                };
+                              }).toList(),
                               valFrom: 'name',
                               onChanged: (val){
                           
@@ -208,7 +216,73 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
                   ],
                 ),
               ),
-            )
+            ),
+
+            SizedBox(height: 10,),
+
+            Row(
+              children: [
+                Expanded(
+                  child: CustomTextField(
+                    controller: controller.followUpDateC.value,
+                    hint: "Follow Up Date",
+                    title: "Follow Up Date",
+                  ),
+                ),
+                SizedBox(width: 5,),
+                Expanded(
+                  child: CustomTextField(
+                    controller: controller.followUpDateC.value,
+                    hint: "Next Follow Up Date",
+                    title: "Next Follow Up Date",
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 10,),
+            Row(
+              children: [
+                Expanded(
+                  child: CustomTextField(
+                    controller: controller.followUpDateC.value,
+                    hint: "Response",
+                    title: "Response",
+                  ),
+                ),
+                SizedBox(width: 5,),
+                Expanded(
+                  child: CustomTextField(
+                    controller: controller.followUpDateC.value,
+                    hint: "Note...",
+                    title: "Note",
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 10,),
+
+            Align(
+              alignment: Alignment.bottomRight,
+              child: MyButton(
+                width: 120,
+                title: 'Save',
+                textStyle: TextStyle(
+                  color: Colors.black,
+                ),
+                color: Colors.green.shade100,
+                onPress: () {},
+              ),
+            ),
+
+
+            Align(
+              alignment: Alignment.topLeft,
+                child: Text("Follow Up (Jack)",style: theme.textTheme.bodyMedium,)),
+            SizedBox(height: 10,),
+
+            timeLine()
+
+            
 
           ],
         ),
@@ -284,6 +358,115 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
           ],
         )
       ],
+    );
+  }
+
+
+  Widget timeLine() {
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: 3,
+      itemBuilder: (BuildContext context, int index) {
+        return new Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 50.0, right: 15, bottom: 15),
+              child: Container(
+                width: double.infinity,
+                height: 150.0,
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade400,
+                        offset: const Offset(
+                          0.3,
+                          3.0,
+                        ),
+                        blurRadius: 4.0,
+                      ), //BoxShadow
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: const Offset(0.0, 0.0),
+                        blurRadius: 0.0,
+                        spreadRadius: 0.0,
+                      ), //BoxShadow
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                      height: 35,
+                      decoration: BoxDecoration(
+                          color: Colors.green.shade100,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10))),
+                      width: Get.width,
+                      child: Text(
+                          "pickupPoint",
+                          style:  theme.textTheme.titleMedium!.copyWith(fontSize: 18,fontWeight: FontWeight.w600)
+                      ),
+                    ),
+                    SizedBox(height: 12.0),
+                    Row(
+                      children: [
+                        Icon(Icons.location_on,),
+                        SizedBox(width: 8.0),
+                        Text("Distance(km)"),
+                        SizedBox(width: 8.0),
+                        Text("destinationDistance",style:  theme.textTheme.titleMedium!,),
+                      ],
+                    ),
+                    SizedBox(height: 12.0),
+                    Row(
+                      children: [
+                        Icon(Icons.timer),
+                        SizedBox(width: 8.0),
+                        Text("Pickup Time"),
+                        SizedBox(width: 8.0),
+                        Text("pickupTime",style:  theme.textTheme.titleMedium!,),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            new Positioned(
+              top: 0.0,
+              bottom: 0.0,
+              left: 18.0,
+              child: new Container(
+                height: double.infinity,
+                width: 5.0,
+                color: Colors.green.shade100,
+              ),
+            ),
+            new Positioned(
+              top: 0.0,
+              left: 0.0,
+              child: new Container(
+                height: 25.0,
+                width: 40.0,
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.green.shade200,
+                ),
+                child: new Container(
+                  child: Icon(Icons.location_on, size: 15),
+                  margin: new EdgeInsets.all(5.0),
+                  height: 15.0,
+                  width: 30.0,
+                ),
+              ),
+            )
+          ],
+        );
+      },
+
     );
   }
 

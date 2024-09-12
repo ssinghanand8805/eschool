@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'custom_button.dart';
@@ -237,12 +238,12 @@ class AlertDialogue {
 
 }
 
-// alertToast(context,message){
-//   FocusScope.of(context).unfocus();
-//   Fluttertoast.showToast(
-//     msg: message,
-//   );
-// }
+alertToast(context,message){
+  FocusScope.of(context).unfocus();
+  Fluttertoast.showToast(
+    msg: message,
+  );
+}
 
 
 

@@ -52,46 +52,46 @@ class AddHomeWorkModal{
     controller.updateSubjectGroup = data.body;
   }
 
-  subject() async {
-    var headers = {
-      'Auth-Key': 'schoolAdmin@',
-      'Client-Service': 'smartschool',
-      'Staff-Id': '1',
-      'Role': '1',
-      'userID': '2',
-      'Content-Type': 'application/json',
-      'Cookie': 'ci_session=eaacoc5i2vqe7bisibtqndud6panmgtc'
-    };
-    var request = http.Request('POST', Uri.parse('http://172.16.19.96/school3/api/webservice/getGroupsubjects'));
-    request.body = json.encode({
-      "subject_group_id": controller.getSubjectGroupId.value.toString()
-    });
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      var data = jsonDecode(await response.stream.bytesToString());
-      print("ffff"+data.toString());
-      controller.updateSubjectList = data;
-    }
-    else {
-    print(response.reasonPhrase);
-    }
-
-  }
-
   // subject() async {
-  //   Map<String, dynamic> body = {
-  //     "subject_group_id": controller.getSubjectGroupId.value
+  //   var headers = {
+  //     'Auth-Key': 'schoolAdmin@',
+  //     'Client-Service': 'smartschool',
+  //     'Staff-Id': '1',
+  //     'Role': '1',
+  //     'userID': '2',
+  //     'Content-Type': 'application/json',
+  //     'Cookie': 'ci_session=eaacoc5i2vqe7bisibtqndud6panmgtc'
   //   };
+  //   var request = http.Request('POST', Uri.parse('http://172.16.19.96/school3/api/webservice/getGroupsubjects'));
+  //   request.body = json.encode({
+  //     "subject_group_id": controller.getSubjectGroupId.value.toString()
+  //   });
+  //   request.headers.addAll(headers);
   //
-  //   var data = await apiRespository.postApiCallByJson(Constants.subject, body);
-  //   print("DATA @@@@ ${data.body}");
+  //   http.StreamedResponse response = await request.send();
   //
-  //   controller.updateSubjectList = data.body;
+  //   if (response.statusCode == 200) {
+  //     var data = jsonDecode(await response.stream.bytesToString());
+  //     print("ffff"+data.toString());
+  //     controller.updateSubjectList = data;
+  //   }
+  //   else {
+  //   print(response.reasonPhrase);
+  //   }
   //
   // }
+
+  subject() async {
+    Map<String, dynamic> body = {
+      "subject_group_id": controller.getSubjectGroupId.value
+    };
+
+    var data = await apiRespository.postApiCallByJson(Constants.subject, body);
+    print("DATA @@@@ ${data.body}");
+
+    controller.updateSubjectList = data.body;
+
+  }
 
 
   closeHomework(context) async {
@@ -99,7 +99,7 @@ class AddHomeWorkModal{
       "class_id":commonApiController.selectedClassId.value,
       "section_id":commonApiController.selectedSectionId.value,
       "subject_group_id":controller.getSubjectGroupId.value,
-      "subject_id":"1"
+      "subject_id": controller.getSubjectId
     };
 
     var data = await apiRespository.postApiCallByJson(Constants.closeHomework, body);
@@ -120,7 +120,7 @@ class AddHomeWorkModal{
       "class_id":commonApiController.selectedClassId.value,
       "section_id":commonApiController.selectedSectionId.value,
       "subject_group_id":controller.getSubjectGroupId.value,
-      "subject_id":"1"
+      "subject_id": controller.getSubjectId
     };
 
     var data = await apiRespository.postApiCallByJson(Constants.homework, body);

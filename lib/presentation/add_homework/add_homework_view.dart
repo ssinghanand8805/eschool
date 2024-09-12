@@ -147,8 +147,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                         onChanged: (val) {
                           print(val);
                           if (val != null) {
-                            controller.updateSubjectGroupId =
-                            val['subject_group_id'];
+                            controller.updateSubjectGroupId = val['subject_group_id'];
                             modal.subject();
                           }
                         },
@@ -160,19 +159,16 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                       Expanded(child: MyCustomSD(
                         hideSearch: true,
                         borderColor: Colors.grey,
-                        listToSearch: controller.students,
+                        listToSearch: controller.getSubjectList.value,
                         valFrom: "name",
                         label: 'Subject',
                         labelText: 'Subject',
                         onChanged: (val) {
                           print(val);
-                          // if(val!=null){
-                          //   controller.updateDutyFor = val['id'];
-                          //
-                          // }
-                          // else{
-                          //   controller.updateDutyFor=0;
-                          // }
+                          if(val!=null){
+                            controller.updateSubjectId = val['id'];
+
+                          }
                         },
                       ),)
                     ],

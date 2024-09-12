@@ -71,6 +71,8 @@ class Constants {
 
   /// Front Office
   static const String admissionEnquiry = 'enquiry/getEnquiryList';
+  static const String addEntry = 'enquiry/add';
+  static const String followUp = 'enquiry/follow_up';
 
 
 }

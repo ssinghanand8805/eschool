@@ -35,6 +35,7 @@ dependencies:
   custom_searchable_dropdown: ^2.1.1
   html_editor_enhanced: ^2.5.1
   advanced_datatable: ^0.0.9
+  fluttertoast: ^8.2.8
 
 
 dev_dependencies: 
