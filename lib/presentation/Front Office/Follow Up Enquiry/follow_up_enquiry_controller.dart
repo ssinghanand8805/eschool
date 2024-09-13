@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
 
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
@@ -18,6 +20,10 @@ class FollowUpEnquiryController extends GetxController{
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    followUpDateC.value.text =
+        DateFormat('dd/MM/yyyy').format(DateTime.now());
+    nextFollowUpDateC.value.text =
+        DateFormat('dd/MM/yyyy').format(DateTime.now());
     followUp();
   }
 
@@ -46,6 +52,26 @@ class FollowUpEnquiryController extends GetxController{
   set updateFollowUpList( val){
     followUpList = val;
     update();
+  }
+
+  addFollowUp(context) async {
+    Map<String, dynamic> body = {
+      "response":responseC.value.text,
+      "date":followUpDateC.value.text,
+      "follow_up_date":nextFollowUpDateC.value.text,
+      "enquiry_id":"28",
+      "note":noteC.value.text
+    };
+    print("ssss "+body.toString());
+    var data = await apiRespository.postApiCallByJson(Constants.addFollowUp, body);
+    print(data.body);
+    if (data.statusCode == 200) {
+      alertToast(context, data.body['message']);
+      Get.back();
+    }else{
+      alertToast(context, data.body['message']);
+    }
+
   }
 
 

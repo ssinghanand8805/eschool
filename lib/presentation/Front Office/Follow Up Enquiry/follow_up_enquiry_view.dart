@@ -41,151 +41,82 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
-        child: ListView(
-          children: [
-            Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.green.shade50,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: GetBuilder(
+        init: controller,
+        builder: (_) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
+            child: ListView(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade50,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Summary",style: theme.textTheme.bodyMedium,),
-                              Row(
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Assigned: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                                  controller.getFollowUpList.enquiryData != null ? Expanded(child: Text(controller.getFollowUpList.enquiryData!.name.toString(),style: theme.textTheme.bodySmall,)):Container(),
+                                  Text("Summary",style: theme.textTheme.bodyMedium,),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Assigned: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
+                                      controller.getFollowUpList.enquiryData != null ?
+                                      Expanded(child: Text(controller.getFollowUpList.enquiryData!.name.toString(),
+                                        style: theme.textTheme.bodySmall,)):Container(),
+                                    ],
+                                  )
                                 ],
-                              )
-                            ],
-                          ),
-                        ),
-
-                        Expanded(
-                          child: MyCustomSD(
-                            labelText: "Status",
-                              listToSearch: controller.getFollowUpList.enquiryStatus!.toJson().entries.map((entry) {
-                                return {
-                                  'id': entry.key,  // The key of the map (e.g., "active")
-                                  'name': entry.value  // The value of the map (e.g., "Active")
-                                };
-                              }).toList(),
-                              valFrom: 'name',
-                              onChanged: (val){
-                          
-                              }),
-                        )
-
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text("Enquiry Date: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                            Text("10/10/2024",style: theme.textTheme.bodySmall)
-                          ],
-                        ),
-                        SizedBox(width: 10,),
-                        Row(
-                          children: [
-                            Text("Last Follow Up Date: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                            Text("10/10/2024",style: theme.textTheme.bodySmall)
-                          ],
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text("Next Follow Up Date: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                            Text("10/10/2024",style: theme.textTheme.bodySmall)
-                          ],
-                        ),
-                        SizedBox(width: 10,),
-                        Row(
-                          children: [
-                            Text("Phone: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                            Text("858587857",style: theme.textTheme.bodySmall)
-                          ],
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text("Reference: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                            Text("Partner School",style: theme.textTheme.bodySmall)
-                          ],
-                        ),
-                        SizedBox(width: 10,),
-                        Row(
-                          children: [
-                            Text("Source: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                            Text("Front Office",style: theme.textTheme.bodySmall)
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text("Email: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                                Text("demo@gmail.com",style: theme.textTheme.bodySmall)
-                              ],
+                              ),
                             ),
-                            SizedBox(width: 10,),
-                            Row(
-                              children: [
-                                Text("Address: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                                Text("Front Office Address",style: theme.textTheme.bodySmall)
-                              ],
+
+                            Expanded(
+                              child: MyCustomSD(
+                                labelText: "Status",
+                                  listToSearch: controller.getFollowUpList.enquiryStatus!.toJson().entries.map((entry) {
+                                    return {
+                                      'id': entry.key,  // The key of the map (e.g., "active")
+                                      'name': entry.value  // The value of the map (e.g., "Active")
+                                    };
+                                  }).toList(),
+                                  initialValue: [{ 'parameter': 'id',
+                                    'value': "active"}],
+                                  valFrom: 'name',
+                                  onChanged: (val){
+
+                                  }),
                             )
+
                           ],
                         ),
-                    SizedBox(height: 5,),
+                        SizedBox(height: 5,),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
                               children: [
-                                Text("Number Of Child: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                                Text("5",style: theme.textTheme.bodySmall)
+                                Text("Enquiry Date: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
+                                controller.getFollowUpList.enquiryData != null ?
+                                Text(controller.getFollowUpList.enquiryData!.date.toString(),style: theme.textTheme.bodySmall):Container(),
                               ],
                             ),
                             SizedBox(width: 10,),
                             Row(
                               children: [
-                                Text("Description: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                                Text("Description Address",style: theme.textTheme.bodySmall)
+                                Text("Last Follow Up Date: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
+                                controller.getFollowUpList.enquiryData != null ?
+                                Text(controller.getFollowUpList.enquiryData!.followUpDate.toString(),style: theme.textTheme.bodySmall):Container(),
                               ],
                             )
                           ],
@@ -197,95 +128,191 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
                           children: [
                             Row(
                               children: [
-                                Text("Note: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                                Text("Note Address",style: theme.textTheme.bodySmall)
+                                Text("Next Follow Up Date: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
+                                Text("10/10/2024",style: theme.textTheme.bodySmall)
                               ],
                             ),
                             SizedBox(width: 10,),
                             Row(
                               children: [
-                                Text("Created By: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
-                                Text(" Joe Black (9000)",style: theme.textTheme.bodySmall)
+                                Text("Phone: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
+                                controller.getFollowUpList.enquiryData != null ?
+                                Text(controller.getFollowUpList.enquiryData!.contact.toString(),style: theme.textTheme.bodySmall):Container(),
                               ],
                             )
                           ],
                         ),
-                    SizedBox(height: 10,),
+                        SizedBox(height: 5,),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Text("Reference: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
+                                controller.getFollowUpList.enquiryData != null ?
+                                Text(controller.getFollowUpList.enquiryData!.referenceId.toString(),style: theme.textTheme.bodySmall):Container(),
+                              ],
+                            ),
+                            SizedBox(width: 10,),
+                            Row(
+                              children: [
+                                Text("Source: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
+                                controller.getFollowUpList.enquiryData != null ?
+                                Text(controller.getFollowUpList.enquiryData!.sourceId.toString(),style: theme.textTheme.bodySmall):Container(),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("Email: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
+                                    controller.getFollowUpList.enquiryData != null ?
+                                    Text(controller.getFollowUpList.enquiryData!.email.toString(),style: theme.textTheme.bodySmall):Container(),
+                                  ],
+                                ),
+                                SizedBox(width: 10,),
+                                Row(
+                                  children: [
+                                    Text("Address: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
+                                    controller.getFollowUpList.enquiryData != null ?
+                                    Text(controller.getFollowUpList.enquiryData!.address.toString(),style: theme.textTheme.bodySmall):Container(),
+                                  ],
+                                )
+                              ],
+                            ),
+                        SizedBox(height: 5,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("Number Of Child: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
+                                    controller.getFollowUpList.enquiryData != null ?
+                                    Text(controller.getFollowUpList.enquiryData!.noOfChild.toString(),style: theme.textTheme.bodySmall):Container(),
+                                  ],
+                                ),
+                                SizedBox(width: 10,),
+                                Row(
+                                  children: [
+                                    Text("Description: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
+                                    controller.getFollowUpList.enquiryData != null ?
+                                    Text(controller.getFollowUpList.enquiryData!.description.toString(),style: theme.textTheme.bodySmall):Container(),
+                                  ],
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 5,),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("Note: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
+                                    controller.getFollowUpList.enquiryData != null ?
+                                    Text(controller.getFollowUpList.enquiryData!.note.toString(),style: theme.textTheme.bodySmall):Container(),
+                                  ],
+                                ),
+                                SizedBox(width: 10,),
+                                Row(
+                                  children: [
+                                    Text("Created By: ",style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),),
+                                    controller.getFollowUpList.enquiryData != null ?
+                                    Text(controller.getFollowUpList.enquiryData!.createdBy.toString(),style: theme.textTheme.bodySmall):Container(),
+                                  ],
+                                )
+                              ],
+                            ),
+                        SizedBox(height: 10,),
 
 
-                  ],
-                ),
-              ),
-            ),
-
-            SizedBox(height: 10,),
-
-            Row(
-              children: [
-                Expanded(
-                  child: CustomTextField(
-                    controller: controller.followUpDateC.value,
-                    hint: "Follow Up Date",
-                    title: "Follow Up Date",
+                      ],
+                    ),
                   ),
                 ),
-                SizedBox(width: 5,),
-                Expanded(
-                  child: CustomTextField(
-                    controller: controller.followUpDateC.value,
-                    hint: "Next Follow Up Date",
-                    title: "Next Follow Up Date",
-                  ),
-                )
+                SizedBox(height: 10,),
+
+                // SizedBox(height: 10,),
+                //
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: DatePickerTextField(
+                //         controller: controller.followUpDateC.value,
+                //         title: 'Follow Up Date',
+                //         onDateSelected: (date) {
+                //           controller.followUpDateC.value.text =
+                //               DateFormat('dd/MM/yyyy').format(date);
+                //         },),
+                //     ),
+                //
+                //     SizedBox(width: 10,),
+                //     Expanded(
+                //       child: DatePickerTextField(
+                //           controller: controller.nextFollowUpDateC.value,
+                //           title: 'Next Follow Up Date',
+                //           onDateSelected: (date) {
+                //             controller.nextFollowUpDateC.value.text =
+                //                 DateFormat('dd/MM/yyyy').format(date);
+                //           }),
+                //     ),
+                //   ],
+                // ),
+                //
+                // SizedBox(height: 10,),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: CustomTextField(
+                //         controller: controller.followUpDateC.value,
+                //         hint: "Response",
+                //         title: "Response",
+                //       ),
+                //     ),
+                //     SizedBox(width: 5,),
+                //     Expanded(
+                //       child: CustomTextField(
+                //         controller: controller.followUpDateC.value,
+                //         hint: "Note...",
+                //         title: "Note",
+                //       ),
+                //     )
+                //   ],
+                // ),
+                // SizedBox(height: 10,),
+                //
+                // Align(
+                //   alignment: Alignment.bottomRight,
+                //   child: MyButton(
+                //     width: 120,
+                //     title: 'Save',
+                //     textStyle: TextStyle(
+                //       color: Colors.black,
+                //     ),
+                //     color: Colors.green.shade100,
+                //     onPress: () {},
+                //   ),
+                // ),
+
+
+                Align(
+                  alignment: Alignment.topLeft,
+                    child: Text("Follow Up (Jack)",style: theme.textTheme.bodyMedium,)),
+                SizedBox(height: 10,),
+
+                timeLine()
+
+
+
               ],
             ),
-            SizedBox(height: 10,),
-            Row(
-              children: [
-                Expanded(
-                  child: CustomTextField(
-                    controller: controller.followUpDateC.value,
-                    hint: "Response",
-                    title: "Response",
-                  ),
-                ),
-                SizedBox(width: 5,),
-                Expanded(
-                  child: CustomTextField(
-                    controller: controller.followUpDateC.value,
-                    hint: "Note...",
-                    title: "Note",
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 10,),
-
-            Align(
-              alignment: Alignment.bottomRight,
-              child: MyButton(
-                width: 120,
-                title: 'Save',
-                textStyle: TextStyle(
-                  color: Colors.black,
-                ),
-                color: Colors.green.shade100,
-                onPress: () {},
-              ),
-            ),
-
-
-            Align(
-              alignment: Alignment.topLeft,
-                child: Text("Follow Up (Jack)",style: theme.textTheme.bodyMedium,)),
-            SizedBox(height: 10,),
-
-            timeLine()
-
-            
-
-          ],
-        ),
+          );
+        }
       ),
     );
   }
@@ -352,7 +379,9 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
                   color: Colors.black,
                 ),
                 color: Colors.green.shade100,
-                onPress: () {},
+                onPress: () async {
+                  await controller.addFollowUp(context);
+                },
               ),
             ),
           ],
@@ -406,9 +435,15 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10))),
                       width: Get.width,
-                      child: Text(
-                          "pickupPoint",
-                          style:  theme.textTheme.titleMedium!.copyWith(fontSize: 18,fontWeight: FontWeight.w600)
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                              "Joe Black (9000)",
+                              style:  theme.textTheme.titleMedium!.copyWith(fontSize: 18,fontWeight: FontWeight.w600)
+                          ),
+                          Icon(Icons.delete_outline)
+                        ],
                       ),
                     ),
                     SizedBox(height: 12.0),
@@ -416,9 +451,9 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
                       children: [
                         Icon(Icons.location_on,),
                         SizedBox(width: 8.0),
-                        Text("Distance(km)"),
-                        SizedBox(width: 8.0),
-                        Text("destinationDistance",style:  theme.textTheme.titleMedium!,),
+                        Text("test"),
+                        //SizedBox(width: 8.0),
+                        //Text("",style:  theme.textTheme.titleMedium!,),
                       ],
                     ),
                     SizedBox(height: 12.0),
@@ -426,9 +461,9 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
                       children: [
                         Icon(Icons.timer),
                         SizedBox(width: 8.0),
-                        Text("Pickup Time"),
-                        SizedBox(width: 8.0),
-                        Text("pickupTime",style:  theme.textTheme.titleMedium!,),
+                        Text("test"),
+                        // SizedBox(width: 8.0),
+                        // Text("pickupTime",style:  theme.textTheme.titleMedium!,),
                       ],
                     ),
                   ],
@@ -456,7 +491,7 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
                   color: Colors.green.shade200,
                 ),
                 child: new Container(
-                  child: Icon(Icons.location_on, size: 15),
+                  child: Icon(Icons.phone, size: 15),
                   margin: new EdgeInsets.all(5.0),
                   height: 15.0,
                   width: 30.0,

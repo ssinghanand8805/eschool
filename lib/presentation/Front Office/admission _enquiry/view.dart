@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
-
-import '../../../theme/theme_helper.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/customTextField.dart';
 import '../../../widgets/custom_button.dart';
