@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'Images.dart';
 import 'controller/gallery_controller.dart';
 import 'model/gallery.dart';
 
@@ -36,8 +36,6 @@ class _GalleryPageState extends State<GalleryPage> {
   }
 }
 
-
-
 class GridItemWidget extends StatelessWidget {
   final GalleryModal item;
 
@@ -46,28 +44,39 @@ class GridItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color:Colors.green,
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              item.title.toString(),
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Expanded(
-            child: item.featureImage != null
-                ? Image.network(item.featureImage!, fit: BoxFit.cover)
-                : Center(
+      color: Colors.green,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ImagesPage(id: item.id!)),
+          );
+        },
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Text(
-                item.title ?? '',
-                style: TextStyle(color: Colors.white),
-                textAlign: TextAlign.center,
+                item.title.toString(),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: item.featureImage != null
+                  ? Image.network(item.featureImage!,
+                      fit: BoxFit.cover)
+                  : Center(
+                      child: Text(
+                        item.title ?? '',
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }

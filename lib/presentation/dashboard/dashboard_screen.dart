@@ -8,7 +8,6 @@ import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../notifications/controller/NotificationController.dart';
 import 'controller/dashbord_controller.dart';
-import 'event.dart';
 // ignore_for_file: must_be_immutable
 
 class DashboardScreen extends GetView<DashboardController> {
@@ -206,11 +205,6 @@ class DashboardScreen extends GetView<DashboardController> {
                     ),
                     onTap: () {
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => EventCalendar(),
-                        ));
 
                     },
                   ),

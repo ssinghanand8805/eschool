@@ -1,7 +1,7 @@
 import 'package:lerno/presentation/attendance/model/Attendance.dart';
 
 import '../../../core/app_export.dart';
-import '../../dashboard/controller/event_controller.dart';
+import '../controller/event_controller.dart';
 
 /// A binding class for the FormScreen.
 ///

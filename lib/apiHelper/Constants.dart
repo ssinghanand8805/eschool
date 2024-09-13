@@ -33,6 +33,9 @@ class Constants {
   static const String getClasswork = 'webservice/getClasswork';
   static const String getEventList = 'webservice/getEventList';
   static const String getGalleryList = 'webservice/getGalleryList';
+  static const String getGalleryDetailById = 'webservice/getGalleryDetailById';
+  static const String addComplaintByStudent = 'webservice/addComplaintByStudent';
+  static const String getComplainType = 'webservice/getComplainType';
 
 
 

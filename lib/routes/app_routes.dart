@@ -4,6 +4,7 @@ import 'package:lerno/presentation/calender_todo/calendar_todo_view.dart';
 import 'package:lerno/presentation/cbse_examniations/cbse_examinations_view.dart';
 import 'package:lerno/presentation/class_time_table/ClassTimeTableScreen.dart';
 import 'package:lerno/presentation/class_time_table/binding/class_time_table_binding.dart';
+import 'package:lerno/presentation/complaint/addComplaint.dart';
 import 'package:lerno/presentation/download_center/DownloadCenterScreen.dart';
 import 'package:lerno/presentation/download_center/binding/syllabus_status_binding.dart';
 import 'package:lerno/presentation/event/binding/event_binding.dart';
@@ -42,11 +43,13 @@ import '../presentation/cbse_examniations/binding/cbse_examinations_binding.dart
 import '../presentation/choose_your_option_screen/binding/choose_your_option_binding.dart';
 import '../presentation/choose_your_option_screen/choose_your_option_screen.dart';
 
+import '../presentation/complaint/bindings/complaint.dart';
+import '../presentation/complaint/complaintScreen.dart';
 import '../presentation/daily_assignment/DailyAssignmentScreen.dart';
 import '../presentation/daily_assignment/binding/daily_assignment_binding.dart';
 import '../presentation/dashboard/binding/dashboard_binding.dart';
 import '../presentation/dashboard/dashboard_screen.dart';
-import '../presentation/dashboard/event.dart';
+import '../presentation/event/event.dart';
 import '../presentation/exam_schedule/binding/exam_schedule_binding.dart';
 import '../presentation/examinations/ExaminationScreen.dart';
 import '../presentation/examinations/bindings/Examination.dart';
@@ -128,6 +131,7 @@ class AppRoutes {
   static const String galleryRoute = '/gallery';
   static const String classworkRoute = '/classwork';
   static const String events = '/events';
+  static const String complaint = '/complaint';
 
   static List<GetPage> pages = [
     GetPage(
@@ -319,6 +323,12 @@ class AppRoutes {
       name: events,
       page: () => EventCalendar(),
       bindings: [EventBinding()],
+    ),
+
+    GetPage(
+      name: complaint,
+      page: () => ComplaintsPage(),
+      bindings: [ComplaintBinding()],
     ),
   ];
 }

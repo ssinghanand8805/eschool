@@ -32,6 +32,7 @@ dependencies:
   pdf_render: ^1.4.12
   permission_handler:
   syncfusion_flutter_calendar: ^20.3.60
+  custom_searchable_dropdown: ^2.1.1
 
 
 
