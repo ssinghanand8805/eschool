@@ -32,6 +32,11 @@ dependencies:
   pdf_render: ^1.4.12
   permission_handler:
   syncfusion_flutter_calendar: ^20.3.60
+
+
+
+
+
 dev_dependencies:
   flutter_test: 
     sdk: flutter
