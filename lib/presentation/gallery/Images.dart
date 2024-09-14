@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,72 +15,144 @@ class ImagesPage extends StatefulWidget {
 
 class _ImagesPageState extends State<ImagesPage> {
   GalleryController controller = Get.put(GalleryController());
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
     controller.getGalleryDetailById(widget.id);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Images",style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
+        title: Text(
+          "Images",
+          style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),
+        ),
         backgroundColor: Colors.green.shade200,
       ),
       body: GetBuilder(
-        init: GalleryController(),
-        builder: (context) {
-          return GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1.0,
-              crossAxisSpacing: 4.0,
-              mainAxisSpacing: 4.0,
-            ),
-            itemCount: controller.PageContentsModalObj.length,
-            itemBuilder: (context, index) {
-              return GridItemWidget(item: controller.PageContentsModalObj[index]);
-            },
-          );
-        }
-      ),
+          init: GalleryController(),
+          builder: (context) {
+            return GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1.0,
+                crossAxisSpacing: 4.0,
+                mainAxisSpacing: 4.0,
+              ),
+              itemCount: controller.PageContentsModalObj.length,
+              itemBuilder: (context, index) {
+                return GridItemWidget(
+                    item: controller.PageContentsModalObj[index]);
+              },
+            );
+          }),
     );
   }
 }
-
-
 
 class GridItemWidget extends StatelessWidget {
   final PageContents item;
 
   GridItemWidget({required this.item});
 
+  void navigateToImageGallery(BuildContext context, List<String> imageUrls) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ImageGalleryPage(imageUrls: imageUrls),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color:Colors.green,
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              item.image.toString(),
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    final String imageUrl =
+        "http://172.16.19.96/school3/uploads/gallery/media/${item.imgName}";
+
+    final List<String> imageUrls = [imageUrl];
+    return InkWell(
+      onTap: () {
+        navigateToImageGallery(context, imageUrls);
+      },
+      child: Card(
+          child: ImagePage(
+              imageUrl:
+                  "http://172.16.19.96/school3/uploads/gallery/media/${item.imgName!}")),
+    );
+  }
+}
+
+class ImageGalleryPage extends StatelessWidget {
+  final List<String> imageUrls;
+  final PageContents? item;
+
+  ImageGalleryPage({required this.imageUrls, this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(item?.imgName ?? ""),
+      ),
+      body: PageView.builder(
+        itemCount: imageUrls.length,
+        itemBuilder: (context, index) {
+          return Center(
+            child: Image.network(
+              imageUrls[index],
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, progress) {
+                if (progress == null) {
+                  return child;
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return Center(
+                  child: Icon(Icons.error, color: Colors.red),
+                );
+              },
             ),
-          ),
-          Expanded(
-            child: item.image != null
-                ? Image.network(item.image!, fit: BoxFit.cover)
-                : Center(
-              child: Text(
-                item.imgName ?? '',
-                style: TextStyle(color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-        ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class ImagePage extends StatelessWidget {
+  final String imageUrl;
+
+  ImagePage({required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Image.network(
+          imageUrl,
+          fit: BoxFit.cover,
+          loadingBuilder: (context, child, progress) {
+            if (progress == null) {
+              return child;
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+          errorBuilder: (context, error, stackTrace) {
+            return Center(
+              child: Icon(Icons.error, color: Colors.red),
+            );
+          },
+        ),
       ),
     );
   }

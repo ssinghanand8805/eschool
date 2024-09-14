@@ -49,54 +49,57 @@ class GridItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.green.shade400,
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ImagesPage(id: item.id!)),
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Text(
-                item.title.toString(),
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              Expanded(
-                child: item.featureImage != null
-                    ? Image.network(
-                      item.featureImage!,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, progress) {
-                        if (progress == null) {
-                          return child;
-                        } else {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        color: Colors.green.shade400,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ImagesPage(id: item.id!)),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  item.title.toString(),
+                  style:
+                      TextStyle(color: Colors.white, fontWeight: FontWeight.w600,fontSize: 17),
+                ),
+                Expanded(
+                  child: item.featureImage != null
+                      ? Image.network(
+                        item.featureImage!,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, child, progress) {
+                          if (progress == null) {
+                            return child;
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
+                        errorBuilder: (context, error, stackTrace) {
                           return Center(
-                            child: CircularProgressIndicator(),
+                            child: Icon(Icons.error, color: Colors.red),
                           );
-                        }
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return Center(
-                          child: Icon(Icons.error, color: Colors.red),
-                        );
-                      },
-                    )
-                    : Center(
-                        child: Text(
-                          item.title ?? '',
-                          style: TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center,
+                        },
+                      )
+                      : Center(
+                          child: Text(
+                            item.title ?? '',
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                      ),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
