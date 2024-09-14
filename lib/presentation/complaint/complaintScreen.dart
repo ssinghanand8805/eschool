@@ -53,43 +53,56 @@ class _ComplaintsPageState extends State<ComplaintsPage> {
     return GetBuilder(
         init: controller,
         builder: (_) {
-          return FutureBuilder(
-              future: controller.fetchDataFuture, //controller.getData(context),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return CustomLoader(); // CustomLoader();
-                }
-                return Text("data");
-                // else {
-                //   return controller.complaintModelObj!.value != null
-                //       ? controller.complaintModelObj!.value!.resultArray!
-                //                   .length >
-                //               0
-                //           ? ListView.builder(
-                //               itemCount: controller.complaintModelObj!.value!
-                //                       .resultArray?.length ??
-                //                   0,
-                //               itemBuilder: (context, index) {
-                //                 return _buildLeaveCard(
-                //                     data: controller.complaintModelObj!.value!
-                //                         .resultArray![index]);
-                //               },
-                //             )
-                //           : Center(
-                //               child: Image.asset(
-                //                   "assets/projectImages/no_data.png"))
-                //       : Center(
-                //           child: Column(
-                //           mainAxisAlignment: MainAxisAlignment.center,
-                //           children: [
-                //             Image.asset(
-                //               "assets/projectImages/no_data.png",
-                //             ),
-                //             Text("No data found!")
-                //           ],
-                //         ));
-                // }
-              });
+          return
+            Center(
+                        child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/projectImages/no_data.png",
+                          ),
+                          Text("No data found!")
+                        ],
+                      ));
+
+
+            // FutureBuilder(
+            //   future: controller.fetchDataFuture, //controller.getData(context),
+            //   builder: (context, snapshot) {
+            //     if (snapshot.connectionState != ConnectionState.done) {
+            //       return CustomLoader(); // CustomLoader();
+            //     }
+            //     return Text("data");
+            //     // else {
+            //     //   return controller.complaintModelObj!.value != null
+            //     //       ? controller.complaintModelObj!.value!.resultArray!
+            //     //                   .length >
+            //     //               0
+            //     //           ? ListView.builder(
+            //     //               itemCount: controller.complaintModelObj!.value!
+            //     //                       .resultArray?.length ??
+            //     //                   0,
+            //     //               itemBuilder: (context, index) {
+            //     //                 return _buildLeaveCard(
+            //     //                     data: controller.complaintModelObj!.value!
+            //     //                         .resultArray![index]);
+            //     //               },
+            //     //             )
+            //     //           : Center(
+            //     //               child: Image.asset(
+            //     //                   "assets/projectImages/no_data.png"))
+            //     //       : Center(
+            //     //           child: Column(
+            //     //           mainAxisAlignment: MainAxisAlignment.center,
+            //     //           children: [
+            //     //             Image.asset(
+            //     //               "assets/projectImages/no_data.png",
+            //     //             ),
+            //     //             Text("No data found!")
+            //     //           ],
+            //     //         ));
+            //     // }
+            //   });
         });
   }
 

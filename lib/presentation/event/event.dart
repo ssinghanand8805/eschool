@@ -1,12 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:lottie/lottie.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
+import '../../theme/theme_helper.dart';
 import 'controller/event_controller.dart';
-
+import 'models/eventModal.dart';
 
 class EventCalendar extends StatefulWidget {
   @override
@@ -14,37 +12,34 @@ class EventCalendar extends StatefulWidget {
 }
 
 class _EventCalendarState extends State<EventCalendar> {
+  EventController controller = Get.put(EventController());
 
- EventController controller = Get.put(EventController());
+  List<Appointment> _getDataSource() {
+    final List<Appointment> meetings = <Appointment>[];
+    if (controller.EventModalvModelObj.isNotEmpty) {
+      for (int i = 0; i < controller.EventModalvModelObj.length; i++) {
+        List dateSplit =
+            controller.EventModalvModelObj[i].eventStart.toString().split("-");
+        final DateTime startTime = DateTime(int.parse(dateSplit[0]),
+            int.parse(dateSplit[1]), int.parse(dateSplit[2]), 0, 0, 0);
+        final DateTime endTime =
+            startTime.add(const Duration(hours: 23, minutes: 59));
+        meetings.add(Appointment(
+          startTime: startTime,
+          endTime: endTime,
+          isAllDay: false,
+          subject: controller.EventModalvModelObj[i].slug.toString(),
+          color: Colors.green.shade400,
+        ));
+        print(
+            "DATE :  ${meetings[i].startTime}  NAME : ${meetings[i].subject}");
 
+      }
+    }
+    return meetings;
+  }
 
- List<Appointment> _getDataSource() {
-   final List<Appointment> meetings = <Appointment>[];
-   if (controller.EventModalvModelObj.isNotEmpty) {
-     for (int i = 0; i < controller.EventModalvModelObj.length; i++) {
-       List dateSplit = controller.EventModalvModelObj[i].eventStart
-           .toString()
-           .split("-");
-       final DateTime startTime = DateTime(int.parse(dateSplit[0]),
-           int.parse(dateSplit[1]), int.parse(dateSplit[2]), 0, 0, 0);
-       final DateTime endTime =
-       startTime.add(const Duration(hours: 23, minutes: 59));
-       meetings.add(
-           Appointment(
-               startTime: startTime,
-               endTime: endTime,
-               isAllDay: false,
-               subject: controller.EventModalvModelObj[i].slug.toString(),
-
-               color: Colors.orange,
-           ));
-       print(
-           "DATE :  ${meetings[i].startTime}  NAME : ${meetings[i].subject}");
-     }
-   }
-   return meetings;
- }
- //  @override
+  //  @override
   void initState() {
     super.initState();
     controller.getData();
@@ -53,52 +48,55 @@ class _EventCalendarState extends State<EventCalendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
         appBar: AppBar(
-          title: const Text('Event Calendar'),
+          backgroundColor: Colors.green.shade200,
+          title:  Text('Event Calendar',style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
         ),
-        body:
-        SfCalendar(
-          onTap: (val){
-            print("DATE VALUE ${val.date}");
-          },
-          view: CalendarView.month,
+        body: GetBuilder(
+          init: EventController(),
+          builder: (context2) {
+            return SfCalendar(
+              onTap: (CalendarTapDetails details) {
+               controller.onEventTap(details, context, controller.showEventDialog); // Pass the correct function
+              },
+              view: CalendarView.month,
 
-          allowAppointmentResize: true,
-          todayHighlightColor: Colors.blue,
-          //monthCellBuilder: monthCellBuilder,
-          //appointmentBuilder: appointmentBuilder,
-          dataSource: MeetingDataSource(_getDataSource()),
-          monthViewSettings:  MonthViewSettings(
-              dayFormat: 'EEE',
-              appointmentDisplayMode:
-              MonthAppointmentDisplayMode.appointment,
-              showTrailingAndLeadingDates: false,
-              showAgenda: true,
-              agendaItemHeight: 60,
-              agendaViewHeight: 200,
-              agendaStyle: AgendaStyle(
-                backgroundColor: Colors.white,
-                appointmentTextStyle: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.normal,
-                    color: Colors.white),
-                dateTextStyle: TextStyle(
-                    fontStyle: FontStyle.normal,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black),
-                dayTextStyle: TextStyle(
-                    fontStyle: FontStyle.normal,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black),
-              ),
-              monthCellStyle: MonthCellStyle(
-                  textStyle: TextStyle(fontSize: 18,color: Colors.black)
+              allowAppointmentResize: true,
+              todayHighlightColor: Colors.blue,
+              //monthCellBuilder: monthCellBuilder,
+              //appointmentBuilder: appointmentBuilder,
+              dataSource: MeetingDataSource(_getDataSource()),
 
-              )
-          ),
+              monthViewSettings: MonthViewSettings(
+                  dayFormat: 'EEE',
+                  appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+                  showTrailingAndLeadingDates: false,
+                  showAgenda: true,
+                  agendaItemHeight: 60,
+                  agendaViewHeight: 200,
+                  agendaStyle: AgendaStyle(
+                    backgroundColor: Colors.white,
+                    appointmentTextStyle: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        fontStyle: FontStyle.normal,
+                        color: Colors.white),
+                    dateTextStyle: TextStyle(
+                        fontStyle: FontStyle.normal,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black),
+                    dayTextStyle: TextStyle(
+                        fontStyle: FontStyle.normal,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black),
+                  ),
+                  monthCellStyle: MonthCellStyle(
+                      textStyle: TextStyle(fontSize: 18, color: Colors.black))),
+            );
+          }
         ));
   }
 
@@ -135,11 +133,18 @@ class _EventCalendarState extends State<EventCalendar> {
   Widget monthCellBuilder(BuildContext context, MonthCellDetails details) {
     return Column(
       children: [
-        Container(child: Text(details.date.day.toString()),),
-        Container(child: IconButton(icon: Icon(Icons.date_range), onPressed: () {  },),)
-      ],);
+        Container(
+          child: Text(details.date.day.toString()),
+        ),
+        Container(
+          child: IconButton(
+            icon: Icon(Icons.date_range),
+            onPressed: () {},
+          ),
+        )
+      ],
+    );
   }
-
 }
 
 class MeetingDataSource extends CalendarDataSource {
@@ -172,5 +177,3 @@ class MeetingDataSource extends CalendarDataSource {
     return true;
   }
 }
-
-

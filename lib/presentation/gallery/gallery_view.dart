@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../theme/theme_helper.dart';
 import 'Images.dart';
 import 'controller/gallery_controller.dart';
 import 'model/gallery.dart';
@@ -17,20 +18,25 @@ class _GalleryPageState extends State<GalleryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Gallery"),
+        title: Text("Gallery",style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
         backgroundColor: Colors.green.shade200,
       ),
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1.0,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 4.0,
-        ),
-        itemCount: controller.galleryModalObj.length,
-        itemBuilder: (context, index) {
-          return GridItemWidget(item: controller.galleryModalObj[index]);
-        },
+      body: GetBuilder(
+        init: GalleryController(),
+        builder: (context) {
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1.0,
+              crossAxisSpacing: 4.0,
+              mainAxisSpacing: 4.0,
+            ),
+            itemCount: controller.galleryModalObj.length,
+            itemBuilder: (context, index) {
+              return GridItemWidget(item: controller.galleryModalObj[index]);
+            },
+          );
+        }
       ),
     );
   }
@@ -44,7 +50,7 @@ class GridItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.green,
+      color: Colors.green.shade400,
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -53,29 +59,45 @@ class GridItemWidget extends StatelessWidget {
                 builder: (context) => ImagesPage(id: item.id!)),
           );
         },
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              Text(
                 item.title.toString(),
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
-            ),
-            Expanded(
-              child: item.featureImage != null
-                  ? Image.network(item.featureImage!,
-                      fit: BoxFit.cover)
-                  : Center(
-                      child: Text(
-                        item.title ?? '',
-                        style: TextStyle(color: Colors.white),
-                        textAlign: TextAlign.center,
+              Expanded(
+                child: item.featureImage != null
+                    ? Image.network(
+                      item.featureImage!,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, progress) {
+                        if (progress == null) {
+                          return child;
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return Center(
+                          child: Icon(Icons.error, color: Colors.red),
+                        );
+                      },
+                    )
+                    : Center(
+                        child: Text(
+                          item.title ?? '',
+                          style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../theme/theme_helper.dart';
 import 'controller/gallery_controller.dart';
 import 'model/gallery.dart';
 import 'model/images.dart';
@@ -25,20 +26,25 @@ class _ImagesPageState extends State<ImagesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Images"),
+        title: Text("Images",style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
         backgroundColor: Colors.green.shade200,
       ),
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1.0,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 4.0,
-        ),
-        itemCount: controller.PageContentsModalObj.length,
-        itemBuilder: (context, index) {
-          return GridItemWidget(item: controller.PageContentsModalObj[index]);
-        },
+      body: GetBuilder(
+        init: GalleryController(),
+        builder: (context) {
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1.0,
+              crossAxisSpacing: 4.0,
+              mainAxisSpacing: 4.0,
+            ),
+            itemCount: controller.PageContentsModalObj.length,
+            itemBuilder: (context, index) {
+              return GridItemWidget(item: controller.PageContentsModalObj[index]);
+            },
+          );
+        }
       ),
     );
   }
@@ -60,7 +66,7 @@ class GridItemWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              item.id.toString(),
+              item.image.toString(),
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ),

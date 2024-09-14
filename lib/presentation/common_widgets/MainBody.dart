@@ -27,7 +27,7 @@ class MainBody extends StatelessWidget {
       appBar: AppBar(
         actions:  actionWidget?? [],
         backgroundColor: Colors.green.shade100,
-        title: Text(AppbarTitle,style: theme.textTheme.titleLarge!.copyWith(fontSize: 19),),
+        title: Text(AppbarTitle,style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
       ),
       body: Container(
 

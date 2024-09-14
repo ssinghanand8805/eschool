@@ -226,11 +226,9 @@ class DashboardController extends GetxController {
 
   List communicationImages = [
     "ic_notice.png",
-    "ic_notification.png",
+    "ic_lock_filled.png",
     "ic_notice.png",
-    "ic_notification.png",
-    "ic_notice.png",
-    "ic_notification.png"
+    "add_leave.png",
   ];
 
   List otherImages = [
@@ -240,10 +238,10 @@ class DashboardController extends GetxController {
     "ic_nav_transport.png",
     "ic_nav_hostel.png",
     "ic_dashboard_pandingtask.png",
-    "ic_library.png",
+    "ic_events.png",
     "ic_teacher.png",
     "ic_dashboard_pandingtask.png",
-    "ic_library.png",
+    "ic_events.png",
     "ic_teacher.png"
   ];
 
