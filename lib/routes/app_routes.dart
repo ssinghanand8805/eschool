@@ -1,34 +1,32 @@
-import 'package:lerno/presentation/ClassWork/classWork_view.dart';
-import 'package:lerno/presentation/calender_todo/bindings/calendar_todo.dart';
-import 'package:lerno/presentation/calender_todo/calendar_todo_view.dart';
-import 'package:lerno/presentation/cbse_examniations/cbse_examinations_view.dart';
-import 'package:lerno/presentation/class_time_table/ClassTimeTableScreen.dart';
-import 'package:lerno/presentation/class_time_table/binding/class_time_table_binding.dart';
-import 'package:lerno/presentation/complaint/addComplaint.dart';
-import 'package:lerno/presentation/download_center/DownloadCenterScreen.dart';
-import 'package:lerno/presentation/download_center/binding/syllabus_status_binding.dart';
-import 'package:lerno/presentation/event/binding/event_binding.dart';
-import 'package:lerno/presentation/exam_schedule/exam_schedule_view.dart';
-import 'package:lerno/presentation/examinations/exam%20result/bindings/exam_result_bindings.dart';
-import 'package:lerno/presentation/examinations/exam%20result/exam_result_view.dart';
-import 'package:lerno/presentation/fees/fees_view.dart';
-import 'package:lerno/presentation/homework/HomeworkScreen.dart';
-import 'package:lerno/presentation/hostel_rooms/bindings/hostelrooms.dart';
-import 'package:lerno/presentation/hostel_rooms/hostel_room_view.dart';
-import 'package:lerno/presentation/library/bindings/library.dart';
-import 'package:lerno/presentation/library/library_view.dart';
-import 'package:lerno/presentation/notifications/binding/NotificationBinding.dart';
-import 'package:lerno/presentation/school_url/bindings/school_url_binding.dart';
-import 'package:lerno/presentation/student_timeline/bindings/student_timeline.dart';
-import 'package:lerno/presentation/student_timeline/student_timeline_view.dart';
-import 'package:lerno/presentation/submit_homework/binding/profile.dart';
-import 'package:lerno/presentation/syllabus_lesson/SyllabusLessonScreen.dart';
-import 'package:lerno/presentation/syllabus_lesson/binding/syllabus_lesson_binding.dart';
-import 'package:lerno/presentation/teacher_rating/bindings/teacher_rating.dart';
-import 'package:lerno/presentation/teacher_rating/teacher_rating_view.dart';
-import 'package:lerno/presentation/transport_routes/bindings/transportrouts.dart';
-import 'package:lerno/presentation/transport_routes/transport_route_view.dart';
-
+import '../presentation/ClassWork/classWork_view.dart';
+import '../presentation/calender_todo/bindings/calendar_todo.dart';
+import '../presentation/calender_todo/calendar_todo_view.dart';
+import '../presentation/cbse_examniations/cbse_examinations_view.dart';
+import '../presentation/class_time_table/ClassTimeTableScreen.dart';
+import '../presentation/class_time_table/binding/class_time_table_binding.dart';
+import '../presentation/download_center/DownloadCenterScreen.dart';
+import '../presentation/download_center/binding/syllabus_status_binding.dart';
+import '../presentation/event/binding/event_binding.dart';
+import '../presentation/exam_schedule/exam_schedule_view.dart';
+import '../presentation/examinations/exam%20result/bindings/exam_result_bindings.dart';
+import '../presentation/examinations/exam%20result/exam_result_view.dart';
+import '../presentation/fees/fees_view.dart';
+import '../presentation/homework/HomeworkScreen.dart';
+import '../presentation/hostel_rooms/bindings/hostelrooms.dart';
+import '../presentation/hostel_rooms/hostel_room_view.dart';
+import '../presentation/library/bindings/library.dart';
+import '../presentation/library/library_view.dart';
+import '../presentation/notifications/binding/NotificationBinding.dart';
+import '../presentation/school_url/bindings/school_url_binding.dart';
+import '../presentation/student_timeline/bindings/student_timeline.dart';
+import '../presentation/student_timeline/student_timeline_view.dart';
+import '../presentation/submit_homework/binding/profile.dart';
+import '../presentation/syllabus_lesson/SyllabusLessonScreen.dart';
+import '../presentation/syllabus_lesson/binding/syllabus_lesson_binding.dart';
+import '../presentation/teacher_rating/bindings/teacher_rating.dart';
+import '../presentation/teacher_rating/teacher_rating_view.dart';
+import '../presentation/transport_routes/bindings/transportrouts.dart';
+import '../presentation/transport_routes/transport_route_view.dart';
 import '../core/app_export.dart';
 import '../presentation/ClassWork/bindings/classWork.dart';
 import '../presentation/about_school/about_school.dart';
@@ -42,7 +40,6 @@ import '../presentation/attendance/binding/attendance.dart';
 import '../presentation/cbse_examniations/binding/cbse_examinations_binding.dart';
 import '../presentation/choose_your_option_screen/binding/choose_your_option_binding.dart';
 import '../presentation/choose_your_option_screen/choose_your_option_screen.dart';
-
 import '../presentation/complaint/bindings/complaint.dart';
 import '../presentation/complaint/complaintScreen.dart';
 import '../presentation/daily_assignment/DailyAssignmentScreen.dart';
@@ -77,23 +74,20 @@ import '../presentation/syllabus_status/binding/syllabus_status_binding.dart';
 import '../presentation/teacher_login_screen/binding/teacher_login_binding.dart';
 import '../presentation/teacher_login_screen/teacher_login_screen.dart';
 import '../presentation/visitor/bindings/visitorbook.dart';
-import '../presentation/visitor/visitor_bookScreen.dart'; // ignore_for_file: must_be_immutable
+import '../presentation/visitor/visitor_bookScreen.dart';
+
+
 
 // ignore_for_file: must_be_immutable
+
 class AppRoutes {
   static const String sScreen = '/s_screen';
-
   static const String chooseYourOptionScreen = '/choose_your_option_screen';
-
   static const String loginScreen = '/login_screen';
   static const String lessonPlanScreen = '/lesson_plan';
-
   static const String teacherLoginScreen = '/teacher_login_screen';
-
   static const String formScreen = '/form_screen';
-
   static const String appNavigationScreen = '/app_navigation_screen';
-
   static const String initialRoute = '/initialRoute';
   static const String homeworkRoute = '/homework';
   static const String dailyAssignmentRoute = '/daily_assignment';
@@ -103,8 +97,6 @@ class AppRoutes {
   static const String syllabus_lessonRoute = '/syllabus_lesson';
   static const String download_centerRoute = '/download_center';
   static const String exam_result_view = '/exam_result_view';
-
-  //todo
   static const String online_examinationRoute = '/online_examination';
   static const String attendanceRoute = '/attendance';
   static const String profileRoute = '/profile';
@@ -125,15 +117,16 @@ class AppRoutes {
   static const String transportRoute = '/student_timeline';
   static const String feesRoute = '/fees';
   static const String notificationListRoute = '/notificationsList';
-
   static const String enterSchoolUrlRoute = '/enterSchoolUrl';
   static const String examScheduleRoute = '/examSchedule';
   static const String galleryRoute = '/gallery';
   static const String classworkRoute = '/classwork';
   static const String events = '/events';
   static const String complaint = '/complaint';
+  static const String schoolnews = '/schoolnews';
 
   static List<GetPage> pages = [
+
     GetPage(
       name: enterSchoolUrlRoute,
       page: () => SchoolUrl(),
@@ -324,7 +317,6 @@ class AppRoutes {
       page: () => EventCalendar(),
       bindings: [EventBinding()],
     ),
-
     GetPage(
       name: complaint,
       page: () => ComplaintsPage(),
