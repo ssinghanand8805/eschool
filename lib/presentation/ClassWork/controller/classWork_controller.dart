@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lerno/apiHelper/userData.dart';
 import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';
 import '../../daily_assignment/model/student_Subject.dart';
@@ -52,7 +53,9 @@ class ClassWorkController extends GetxController {
 
   Future<void> getSubjects()async{
     Map<String,dynamic> body = await {
-      "student_id" : userData.getUserStudentId };
+      "student_id" : userData.getUserStudentId
+    };
+    print(body);
 
     var data  = await apiRepository.postApiCallByJson(Constants.getstudentsubjectUrl, body);
     //
@@ -76,9 +79,11 @@ class ClassWorkController extends GetxController {
 
 
   Future<void> getData({DateTime? selectedDate}) async {
-    String formattedDate = selectedDate != null
-        ? "${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.year}"
-        : "";
+    String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(selectedDate != null ? selectedDate : DateTime.now());
+
+    // selectedDate != null
+    //     ? "${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.year}"
+    //     : "${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().day.toString().padLeft(2, '0')}/${DateTime.now().year}";
     Map<String, dynamic> body = {
       "student_id": 1,
       "subject_group_subject_id": currentSelectedSubejectId.value == "0"
@@ -86,6 +91,7 @@ class ClassWorkController extends GetxController {
           : currentSelectedSubejectId.value,
       "date": formattedDate
     };
+    print(body);
 
     var data = await apiRepository.postApiCallByJson(Constants.getClasswork, body);
     print("DATA @@@@ ${data.body}");

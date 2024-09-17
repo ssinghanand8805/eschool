@@ -35,6 +35,8 @@ class UserData extends GetxController {
   bool get getIsUserImage => userData.read('isUserImage') ?? false;
   String get getLastUserId => userData.read('lastUserId') ?? "";
   String get getLastUserPwd => userData.read('lastUserPwd') ?? "";
+  String get getDateFormat => userData.read('date_format') ?? "";
+  String get getTimeZone => userData.read('timezone') ?? "";
 
 
   addAccessToken(String val) {userData.write('accessToken', val);}
@@ -57,6 +59,8 @@ class UserData extends GetxController {
   addUserIsLoggedIn(bool val) {userData.write('isLoggegIn', val);}
   addUserHasMultipleChild(bool val) {userData.write('hasMultipleChild', val);}
   addIsUserImage(bool val) {userData.write('isUserImage', val);}
+  addDateFormat(String val) {userData.write('date_format', val);}
+  addTimeZone(String val) {userData.write('timezone', val);}
 
 
   saveData<T>(String storageKey,T dataModel){
@@ -88,6 +92,8 @@ class UserData extends GetxController {
     await prefs.setBool('isLoggegIn', getUserIsLoggedIn);
     await prefs.setBool('hasMultipleChild', getUserHasMultipleChild);
     await prefs.setBool('isUserImage', getIsUserImage);
+    await prefs.setString('date_format', getDateFormat);
+    await prefs.setString('timezone', getTimeZone);
   }
   Future<void> loadDataFromSharedPreferences() async {
     final prefs = await SharedPreferences.getInstance();
@@ -110,7 +116,8 @@ class UserData extends GetxController {
     addUserIsLoggedIn(prefs.getBool('isLoggegIn') ?? false);
     addUserHasMultipleChild(prefs.getBool('hasMultipleChild') ?? false);
     addIsUserImage(prefs.getBool('isUserImage') ?? false);
-
+    addDateFormat(prefs.getString('date_format') ?? '');
+    addTimeZone(prefs.getString('timezone') ?? '');
 
     // let chek for password change and new device token
 
@@ -158,6 +165,8 @@ class UserData extends GetxController {
       usersData.addIsUserImage(isUserImage);
       usersData.addUserImage(imgUrl);
       usersData.addUsername(jsonData["username"].toString());
+      usersData.addDateFormat(jsonData["date_format"].toString());
+      usersData.addTimeZone(jsonData["timezone"].toString());
       Map<dynamic, dynamic> recordData = jsonData;//json.decode(jsonData["record"]);
       if(jsonData1["role"].toString() == "parent")
       {
@@ -170,6 +179,7 @@ class UserData extends GetxController {
           usersData.addUserStudentId(firstChild["student_id"]);
           usersData.addUserClassSection(firstChild["class"] + " - " + firstChild["section"]);
           usersData.addUserStudentName(firstChild["name"]);
+          usersData.saveAllDataToSharedPreferences();
           ///navigate here to dashboard
          return true;
           // Navigator.push(
@@ -188,9 +198,9 @@ class UserData extends GetxController {
             childNameList.add(name);
             String id = childArray[i]["student_id"];
             childIdList.add(id);
-            String image = childArray[i]["image"];
+            String image = childArray[i]["image"] ?? "";
             childImageList.add(image);
-            String clss = childArray[i]["className"] + " - " + childArray[i]["section"];
+            String clss = childArray[i]["className"] ?? "" + " - " + childArray[i]["section"];
             childClassList.add(clss);
           }
           usersData.addUserHasMultipleChild(true);
@@ -199,6 +209,7 @@ class UserData extends GetxController {
           print('child name List:::::::::');
           /// show Child List here
           ///
+          usersData.saveAllDataToSharedPreferences();
           return true;
         }
 
