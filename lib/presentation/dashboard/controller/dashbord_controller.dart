@@ -169,7 +169,7 @@ class DashboardController extends GetxController {
   List<ModuleList> get getElearningList =>
       List<ModuleList>.from(eLearningData.map((e) => ModuleList.fromJson(e)));
   set updateELearningData(List val) {
-    gridViewWidgets.removeAt(0);
+    // gridViewWidgets.removeAt(0);
     eLearningData.value = val;
     update();
   }
@@ -178,7 +178,7 @@ class DashboardController extends GetxController {
   List<ModuleList> get getAcademicList =>
       List<ModuleList>.from(academicData.map((e) => ModuleList.fromJson(e)));
   set updateAcademicData(List val) {
-    gridViewWidgets.removeAt(0);
+    // gridViewWidgets.removeAt(0);
     academicData.value = val;
     update();
   }
@@ -187,7 +187,7 @@ class DashboardController extends GetxController {
   List<ModuleList> get getCommunicationList => List<ModuleList>.from(
       communicationData.map((e) => ModuleList.fromJson(e)));
   set updateCommunicationData(List val) {
-    gridViewWidgets.removeAt(0);
+    // gridViewWidgets.removeAt(0);
     communicationData.value = val;
     update();
   }
@@ -196,7 +196,7 @@ class DashboardController extends GetxController {
   List<ModuleList> get getOtherDataList =>
       List<ModuleList>.from(otherData.map((e) => ModuleList.fromJson(e)));
   set updateOtherData(List val) {
-    gridViewWidgets.removeAt(0);
+    // gridViewWidgets.removeAt(0);
     otherData.value = val;
     update();
   }
@@ -255,19 +255,19 @@ class DashboardController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-
+    gridViewWidgets.add(customContainer());
+    gridViewWidgets.add(customContainer());
+    gridViewWidgets.add(customContainer());
+    gridViewWidgets.add(customContainer());
     // TODO: implement initState
     scrollController = ScrollController()
       ..addListener(() {
         textColor = isSliverAppBarExpanded ? Colors.white : Colors.blue;
         update();
       });
-    gridViewWidgets.add(customContainer());
-    gridViewWidgets.add(customContainer());
-    gridViewWidgets.add(customContainer());
-    gridViewWidgets.add(customContainer());
+
     updateDeviceToken();
-    eLearningapi();
+    // eLearningapi();
     checkCacheAndFetchData();
     printSharedPreferencesData();
   }
@@ -427,17 +427,31 @@ class DashboardController extends GetxController {
 
   Future<void> checkCacheAndFetchData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Check if data is available in SharedPreferences
     if (prefs.containsKey('eLearningData')) {
+      // Load data from cache and display immediately
       eLearningData.value = jsonDecode(prefs.getString('eLearningData')!);
+
       academicData.value = jsonDecode(prefs.getString('academicData')!);
-      communicationData.value =
-          jsonDecode(prefs.getString('communicationData')!);
+      communicationData.value = jsonDecode(prefs.getString('communicationData')!);
       otherData.value = jsonDecode(prefs.getString('otherData')!);
+      buildGridViewData("E Learning", getElearningList, eLearningImagesPath,0);
+      buildGridViewData("Academics", getAcademicList, academicImages,1);
+      buildGridViewData("Communicate", getCommunicationList, communicationImages,2);
+      buildGridViewData("Other ", getOtherDataList, otherImages,3);
       isLoading.value = false;
+     await fetchFreshData(false);
+      print("Loaded from shared pref");
     } else {
+      // Show loading state while fetching fresh data
       isLoading.value = true;
-      await fetchFreshData();
+      print("Loaded from Live");
+      await fetchFreshData(true);
     }
+
+    // Fetch fresh data from API in the background, regardless of whether cached data is available
+
   }
 
   Future<void> saveDataToCache() async {
@@ -448,15 +462,41 @@ class DashboardController extends GetxController {
     await prefs.setString('otherData', jsonEncode(otherData));
   }
 
-  Future<void> fetchFreshData() async {
+  Future<bool> fetchDataFromAPI(bool isBackground) async {
     await eLearningapi();
     await academicStatusApi();
     await communicationStatusApi();
     await otherModuleApi();
     await saveDataToCache();
-    isLoading.value = false;
+    // isLoading.value = false;
+    return true;
   }
+  Future<void> fetchFreshData(bool isBackground) async {
+    // Call your API to fetch fresh data
+    // Example API call and data update logic
 
+    final freshData = await fetchDataFromAPI(isBackground);
+    if(freshData)
+      {
+        isLoading.value = false;
+      }
+
+    // Update SharedPreferences with the fresh data
+    // final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // prefs.setString('eLearningData', jsonEncode(freshData.eLearningData));
+    // prefs.setString('academicData', jsonEncode(freshData.academicData));
+    // prefs.setString('communicationData', jsonEncode(freshData.communicationData));
+    // prefs.setString('otherData', jsonEncode(freshData.otherData));
+    //
+    // // Update your state with the fresh data
+    // eLearningData.value = freshData.eLearningData;
+    // academicData.value = freshData.academicData;
+    // communicationData.value = freshData.communicationData;
+    // otherData.value = freshData.otherData;
+
+    // Stop the loading state if it was previously set
+
+  }
   getSchoolDetails() async {
     Map<String, dynamic> body = {};
     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
@@ -495,11 +535,42 @@ class DashboardController extends GetxController {
     var data1 = await data.body['module_list'];
     updateELearningData =
         data1.where((item) => item['status'].toString() == "1").toList();
-    gridViewWidgets.add(
-        buildGridItem("E Learning", getElearningList, eLearningImagesPath));
-    academicStatusApi();
-    update();
+    // gridViewWidgets.add(
+    //     buildGridItem("E Learning", getElearningList, eLearningImagesPath));
+    // // academicStatusApi();
+    // update();
     print("E LEARNING DATA ${getElearningList[0].name}");
+    buildGridViewData("E Learning", getElearningList, eLearningImagesPath,0);
+  }
+  buildGridViewData(String title, List<ModuleList> moduleList, List<dynamic> imagePath, int index) {
+    // Ensure gridViewWidgets has enough elements up to the requested index
+    if (gridViewWidgets.length <= index) {
+      // If the list isn't long enough, add placeholders up to the index
+      gridViewWidgets.addAll(List.generate(index - gridViewWidgets.length + 1, (i) => customContainer()));
+    }
+
+    // Assign the data to the specific index
+    gridViewWidgets[index] = buildGridItem(title, moduleList, imagePath);
+
+    // Update UI or state
+    update();
+  }
+  buildGridViewData2(String title,List<ModuleList> moduleList,List<dynamic> imagePath,int index)
+  {
+    gridViewWidgets[index] = buildGridItem(title, moduleList, imagePath);
+    update();
+    // if (gridViewWidgets.length <= index) {
+    //   // If the index does not exist, add placeholders up to the required index
+    //   gridViewWidgets.add(customContainer());
+    //  // gridViewWidgets.addAll(List.generate(index - gridViewWidgets.length + 1, (i) => customContainer()));
+    //   gridViewWidgets[index] = buildGridItem(title, moduleList, imagePath);
+    //   update();
+    // }
+
+    // gridViewWidgets.add(
+    //     buildGridItem(title, moduleList, imagePath));
+    // academicStatusApi();
+
   }
 
   academicStatusApi() async {
@@ -513,11 +584,12 @@ class DashboardController extends GetxController {
     print(data1);
     updateAcademicData =
         data1.where((item) => item['status'].toString() == "1").toList();
-    gridViewWidgets
-        .add(buildGridItem("Academics", getAcademicList, academicImages));
-    communicationStatusApi();
-    update();
+    // gridViewWidgets
+    //     .add(buildGridItem("Academics", getAcademicList, academicImages));
+    // // communicationStatusApi();
+    // update();
     print("ACADEMIC DATA ${getAcademicList[0].name}");
+    buildGridViewData("Academics", getAcademicList, academicImages,1);
   }
 
   communicationStatusApi() async {
@@ -530,11 +602,12 @@ class DashboardController extends GetxController {
     var data1 = await data.body['module_list'];
     updateCommunicationData =
         data1.where((item) => item['status'].toString() == "1").toList();
-    gridViewWidgets.add(buildGridItem(
-        "Communicate", getCommunicationList, communicationImages));
-    otherModuleApi();
-    update();
+    // gridViewWidgets.add(buildGridItem(
+    //     "Communicate", getCommunicationList, communicationImages));
+    // // otherModuleApi();
+    // update();
     print("COMMUNICATION STATUS DATA ${getCommunicationList[0].name}");
+    buildGridViewData("Communicate", getCommunicationList, communicationImages,2);
   }
 
   otherModuleApi() async {
@@ -547,10 +620,11 @@ class DashboardController extends GetxController {
     var data1 = await data.body['module_list'];
     updateOtherData =
         data1.where((item) => item['status'].toString() == "1").toList();
-    gridViewWidgets.add(buildGridItem("Other ", getOtherDataList, otherImages));
-
-    update();
+    // gridViewWidgets.add(buildGridItem("Other ", getOtherDataList, otherImages));
+    //
+    // update();
     print("OTHER MODULE DATA ${getOtherDataList[0].name}");
+    buildGridViewData("Other ", getOtherDataList, otherImages,3);
   }
 
   Future<void> logOutDialog(context) async {
