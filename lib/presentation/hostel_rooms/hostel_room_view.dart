@@ -107,7 +107,7 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
                     //'{homework.} (Code)',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                   ),
                   Spacer(),
@@ -124,7 +124,7 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
                         " Assigned ",
                         //'{homework.} (Code)',
                         style: theme.textTheme.titleSmall!
-                            .copyWith(fontSize: 13, color: Colors.white),
+                            .copyWith(fontSize: 12, color: Colors.white),
                       ),
                     ),
                   )
@@ -139,23 +139,23 @@ class _HostelRoomsPageState extends State<HostelRoomsPage> {
                 // crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'Room Type',
                       value: data.roomType!),
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'Room no.',
                       value: data.roomNo!),
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'No. of Bed',
                       value: data.noOfBed!),
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'Cost per Bed',
                       value: data.costPerBed!)
                 ],

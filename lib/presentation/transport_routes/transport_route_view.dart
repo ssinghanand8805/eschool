@@ -109,38 +109,38 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'Route Title:',
                       value: "${data.routeTitle}"),
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'Vehicle Number:',
                       value: "${data.vehicleNo}"),
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'Vehicle Model:',
                       value: "${data.vehicleModel}"),
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'Driver Name:',
                       value: "${data.driverName}"),
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'Driver Contact:',
                       value: "${data.driverContact}"),
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'Driver Licence:',
                       value: "${data.driverLicence}"),
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'Made: ', value: "${data.manufactureYear}"),
                 ],
               ),
@@ -198,7 +198,7 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
                       width: Get.width,
                       child: Text(
                         data[index].pickupPoint!,
-                        style:  theme.textTheme.titleMedium!.copyWith(fontSize: 18,fontWeight: FontWeight.w600)
+                        style:  theme.textTheme.titleMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.w600)
                       ),
                     ),
                     SizedBox(height: 12.0),

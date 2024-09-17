@@ -46,10 +46,10 @@ class MainBody extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+               style: theme.textTheme.titleLarge!.copyWith(     fontSize: 17.0,
+                 fontWeight: FontWeight.w600,)
+
+
                 ),
                 Image.asset(
                   imageUrl,

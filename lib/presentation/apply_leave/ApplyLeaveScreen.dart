@@ -25,12 +25,13 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
       AppbarTitle: 'Apply Leave',
       widget: _buildChildWidget(),
       floatingActionButton: Container(
+        height: 50,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
         ),
         child: FloatingActionButton(
-          focusColor: Colors.white54,
-          backgroundColor: Colors.grey,
+          focusColor: Colors.green.shade600,
+          backgroundColor:  Colors.green.shade600,
           onPressed: () {
             Navigator.push(
               context,
@@ -39,8 +40,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
           },
           child: const Icon(
             Icons.add,
-            color: Colors.black,
-            size: 50,
+            color: Colors.white,
+            size: 40,
           ),
           shape: CircleBorder(),
         ),
@@ -131,19 +132,13 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                   Text(
                     "Apply Date",
                     //'{homework.} (Code)',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
+                      style: theme.textTheme.titleLarge!.copyWith(fontSize: 14,fontWeight: FontWeight.w600)
                   ),
                   Spacer(),
                   Text(
                     Utils.formatDateString(data.applyDate!.toString()),
                     //'{homework.} (Code)',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
+                      style: theme.textTheme.titleLarge!.copyWith(fontSize: 14,fontWeight: FontWeight.w600)
                   ),
 
 
@@ -156,18 +151,18 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'From Date',
                       value:"${Utils.formatDateString(data.fromDate!.toString())}"),
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'To  Date',
                       value: "${Utils.formatDateString(data.toDate!.toString())}"),
                   InfoRow(
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                      style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'Reason',
                       value: '${data.reason}'),
                   Row(
@@ -175,7 +170,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                       Text(
                         "Leave Status",
                         style:
-                            theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                            theme.textTheme.titleSmall!.copyWith(fontSize: 13),
                       ),
                       Spacer(),
                       Container(
@@ -190,7 +185,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                             " ${_getStatusString(data.status!)} ",
                             //'{homework.} (Code)',
                             style: theme.textTheme.titleSmall!
-                                .copyWith(fontSize: 14, color: Colors.white),
+                                .copyWith(fontSize: 12, color: Colors.white),
                           ),
                         ),
                       ),

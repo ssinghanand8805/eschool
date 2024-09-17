@@ -50,7 +50,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:  Text('Attendance',style: theme.textTheme.titleMedium,),),
+      appBar: AppBar(
+          backgroundColor: Colors.green.shade100,
+          title:  Text('Attendance',style: theme.textTheme.titleLarge!.copyWith(fontSize: 17))),
       body: GetBuilder(
         init: controller,
         builder: (context) {
@@ -136,22 +138,39 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 shrinkWrap: true,
                 itemCount: attendanceData.length,
                 itemBuilder: (context, index) {
+
+
                   final item = attendanceData[index];
-                  return Container(
-                    height: 30,
-                    child: ListTile(
-                      title: Text(item['status'] ?? '',style: theme.textTheme.bodySmall!.copyWith(fontSize: 15),),
-                      // subtitle: Text(item['status'] ?? ''),
-                      trailing: Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: getAttendanceColor(item['status']),
-                        ),
-                      ),
-                    ),
-                  );
+
+                  int presentDays = attendanceData.where((entry) => entry["type"] == "Present")
+                      .length;
+
+                  print("jfnvjfnjvnfjvnfn${attendanceData}");
+                 return Padding(
+                   padding: const EdgeInsets.all(5.0),
+                   child: Row(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                     children: [
+
+                   Text(item['status'] ?? '',style: theme.textTheme.bodySmall!.copyWith(fontSize: 15)),
+                   Text(presentDays.toString(),style: theme.textTheme.bodySmall!.copyWith(fontSize: 15)),
+
+                    Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: getAttendanceColor(item['status']),
+                          ),),
+
+                   ],),
+                 );
+
+
+
+
+
                 },
               ),
 
@@ -161,6 +180,26 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       ),
     );
   }
+
+
+
+
+  //
+  //   Container(
+  //   height: 30,
+  //   child: ListTile(
+  //     title: Text(item['status'] ?? '',style: theme.textTheme.bodySmall!.copyWith(fontSize: 15),),
+  //     // subtitle: Text(item['status'] ?? ''),
+  //     trailing: Container(
+  //       width: 20,
+  //       height: 20,
+  //       decoration: BoxDecoration(
+  //         shape: BoxShape.circle,
+  //         color: getAttendanceColor(item['status']),
+  //       ),
+  //     ),
+  //   ),
+  // );
   Color getAttendanceColor(String? status) {
     switch (status) {
       case 'Present':

@@ -26,11 +26,12 @@ class _ImagesPageState extends State<ImagesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
         title: Text(
           "Images",
           style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),
         ),
-        backgroundColor: Colors.green.shade200,
+        backgroundColor: Colors.green.shade100,
       ),
       body: GetBuilder(
           init: GalleryController(),
@@ -95,6 +96,7 @@ class ImageGalleryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green.shade100,
         title: Text(item?.imgName ?? ""),
       ),
       body: PageView.builder(

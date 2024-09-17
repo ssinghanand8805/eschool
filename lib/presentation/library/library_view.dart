@@ -59,7 +59,7 @@ class _LibraryPageState extends State<LibraryPage> {
     return CommonCardExtended(
         style: TextStyle(
             fontWeight: FontWeight.w600,
-            fontSize: 14,
+            fontSize: 13,
             color: _getStatusColor(data.isReturned.toString())),
         title: data.bookTitle!,
         leadingWidget: SizedBox(),
@@ -72,28 +72,28 @@ class _LibraryPageState extends State<LibraryPage> {
     return Column(
       children: [
         InfoRow(
-            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+            style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
             title: "Author",
             value: data.author!),
         InfoRow(
-            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+            style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
             title: "Book No.",
             value: data.bookNo!),
         InfoRow(
-            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+            style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
             title: "Issue Date",
             value: data.issueDate!),
         InfoRow(
-            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14,),
-            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+            style: theme.textTheme.titleSmall!.copyWith(fontSize: 13,),
+            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
             title: "Author",
             value: data.returnDate == null ? "" : data.returnDate.toString()),
         InfoRow(
-            style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+            style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+            style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
             title: "Due Return Date",
             value: data.dueReturnDate == null
                 ? ""

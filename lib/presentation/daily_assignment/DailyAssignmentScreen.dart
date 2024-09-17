@@ -63,6 +63,7 @@ class _DailyAssignmentScreenState extends State<DailyAssignmentScreen>  with Sin
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green.shade100,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

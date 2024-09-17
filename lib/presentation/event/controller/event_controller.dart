@@ -59,14 +59,17 @@ class EventController extends GetxController {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5), // Set the radius here
+          ),
           title: Text(
-            event.title ?? 'No Title',
+            event.title!.capitalizeFirst ?? 'No Title',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           content: SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.25, // Adjust as needed
+                maxHeight: MediaQuery.of(context).size.height * 0.20, // Adjust as needed
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

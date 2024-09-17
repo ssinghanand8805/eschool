@@ -152,6 +152,7 @@ class AppRoutes {
       page: () => ApplyLeavePage(),
       bindings: [ApplyLeaveBinding()],
     ),
+
     GetPage(
       name: notificationListRoute,
       page: () => NotificationScreen(),

@@ -133,7 +133,7 @@ class Fees {
   String? type;
   String? studentFeesDepositeId;
   String? amountDetail;
-  int? totalAmountPaid;
+  String? totalAmountPaid;
   int? totalAmountDiscount;
   int? totalAmountFine;
   int? totalAmountDisplay;
@@ -239,7 +239,7 @@ class TransportFees {
   String? finePercentage;
   String? studentFeesDepositeId;
   String? amountDetail;
-  int? totalAmountPaid;
+  String? totalAmountPaid;
   int? totalAmountDiscount;
   int? totalAmountFine;
   int? totalAmountDisplay;

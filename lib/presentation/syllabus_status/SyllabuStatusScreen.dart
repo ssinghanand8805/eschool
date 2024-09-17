@@ -74,7 +74,7 @@ class _SyllabuStatusScreenState extends State<SyllabuStatusScreen> {
         style: theme.textTheme.titleMedium,
         newWidget: ListTile(
           leading: Icon(Icons.drag_handle_rounded,size: 18,),
-          title: Text("Lesson Plan",style: theme.textTheme.titleMedium!.copyWith(color:Colors.blue,fontWeight: FontWeight.w600 ),),
+          title: Text("Lesson Plan",style: theme.textTheme.titleMedium!.copyWith(color:Colors.blue,fontSize: 14),),
           onTap: () {
             onLessionPlanTap(data.subjectGroupSubjectId!, data.classSectionId!);
           },

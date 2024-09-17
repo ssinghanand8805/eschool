@@ -63,10 +63,11 @@ class _HomeworkScreenState extends State<HomeworkScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green.shade100,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Homework'),
+            Text('Homework',style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
             IconButton(
               icon: Icon(Icons.calendar_month),
               onPressed: () => controller.selectDate(context),
@@ -393,8 +394,8 @@ class HomeworkCard extends GetView<HomeWorkController> {
                child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                      Text("Document"),
-                      Text(homework.document.toString()),
+                      Text("Document   "),
+                      Flexible(child: Text(homework.document.toString(),style: TextStyle(overflow: TextOverflow.ellipsis),maxLines: 1,)),
                       Icon(Icons.remove_red_eye_sharp, color: Colors.blue,)
                     ],),
              ),

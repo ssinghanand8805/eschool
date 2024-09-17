@@ -194,20 +194,20 @@ class DashboardScreen extends GetView<DashboardController> {
                       Get.toNamed("/aboutSchool");
                     },
                   ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.settings,
-                      size: 18,
-                    ),
-                    title: Text(
-                      'Setting',
-                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 14)
-                    ),
-                    onTap: () {
-
-
-                    },
-                  ),
+                  // ListTile(
+                  //   leading: Icon(
+                  //     Icons.settings,
+                  //     size: 18,
+                  //   ),
+                  //   title: Text(
+                  //     'Setting',
+                  //       style: theme.textTheme.titleSmall!.copyWith(fontSize: 14)
+                  //   ),
+                  //   onTap: () {
+                  //
+                  //
+                  //   },
+                  // ),
                   ListTile(
                     leading: Icon(
                       Icons.login,

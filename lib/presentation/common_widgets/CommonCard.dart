@@ -39,7 +39,7 @@ Widget CommonCard({
             width: Get.width,
             child: Text(
               title,
-              style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600,fontSize:16),
+              style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600,fontSize:14),
             ),
           ),
           SizedBox(height: 8.0),

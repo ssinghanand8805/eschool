@@ -19,7 +19,7 @@ class _GalleryPageState extends State<GalleryPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Gallery",style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
-        backgroundColor: Colors.green.shade200,
+        backgroundColor: Colors.green.shade100,
       ),
       body: GetBuilder(
         init: GalleryController(),
@@ -52,51 +52,64 @@ class GridItemWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        color: Colors.green.shade400,
+        color: Colors.transparent,
         child: InkWell(
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ImagesPage(id: item.id!)),
+                builder: (context) => ImagesPage(id: item.id!),
+              ),
             );
           },
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Column(
-              children: <Widget>[
-                Text(
-                  item.title.toString(),
-                  style:
-                      TextStyle(color: Colors.white, fontWeight: FontWeight.w600,fontSize: 17),
-                ),
-                Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(5),
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                // Image part
+                Container(
+                  height: 200,
+                  color: Colors.green.shade400,
                   child: item.featureImage != null
                       ? Image.network(
-                        item.featureImage!,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, progress) {
-                          if (progress == null) {
-                            return child;
-                          } else {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          return Center(
-                            child: Icon(Icons.error, color: Colors.red),
-                          );
-                        },
-                      )
+                    item.featureImage!,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, progress) {
+                      if (progress == null) {
+                        return child;
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Center(
+                        child: Icon(Icons.error, color: Colors.red),
+                      );
+                    },
+                  )
                       : Center(
-                          child: Text(
-                            item.title ?? '',
-                            style: TextStyle(color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                    child: Icon(Icons.image, size: 50, color: Colors.white),
+                  ),
+                ),
+
+                // Title part
+                Container(
+                  width: double.infinity,
+                  color: Colors.grey.withOpacity(0.8),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    item.title ?? '',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             ),
@@ -104,5 +117,6 @@ class GridItemWidget extends StatelessWidget {
         ),
       ),
     );
+
   }
 }
