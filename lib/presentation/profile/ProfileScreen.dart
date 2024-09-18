@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lerno/presentation/homework/HomeworkScreen.dart';
 import 'package:lerno/presentation/profile/controller/ProfileController.dart';
+import 'package:lerno/presentation/profile/studentCard.dart';
 
 import '../../apiHelper/Constants.dart';
 import '../../apiHelper/GlobalData.dart';
@@ -27,10 +28,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
       backgroundColor: Colors.green.shade100,
       appBar: AppBar(
         backgroundColor: Colors.green.shade100,
-        title: Text('Profile',style: theme.textTheme.titleMedium!
-            .copyWith(
-            fontSize: 17,
-            fontWeight: FontWeight.w500)),
+        title: Text('Profile',
+            style: theme.textTheme.titleMedium!
+                .copyWith(fontSize: 17, fontWeight: FontWeight.w500)),
       ),
       body: GetBuilder(
           init: controller,
@@ -41,139 +41,173 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return CustomLoader(); // CustomLoader();
                   }
-
                   return Column(
                     children: [
-                      Container(
-                        // color: Colors.white,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(20),
-                              topLeft: Radius.circular(20),
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 30.0, bottom: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      controller.profileModelObj.value!
-                                              .studentResult!.firstname! +
-                                          " " +
-                                          controller.profileModelObj.value!
-                                              .studentResult!.middlename! +
-                                          " " +
-                                          controller.profileModelObj.value!
-                                              .studentResult!.lastname!,
-                                      style: theme.textTheme.titleMedium!
-                                          .copyWith(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      "${controller.profileModelObj.value!.studentResult!.className!}" +
-                                          ' ( ' +
-                                          controller.profileModelObj.value!
-                                              .studentResult!.section! +
-                                          ' )',
-                                      style: theme.textTheme.bodySmall!
-                                          .copyWith(fontSize: 12),
-                                    ),
-                                    Text(
-                                      'Adm. No: ${controller.profileModelObj.value!.studentResult!.admissionNo!}',
-                                      style: theme.textTheme.bodySmall!
-                                          .copyWith(fontSize: 12),
-                                    ),
-                                    Text(
-                                      'Roll Number: ${controller.profileModelObj.value!.studentResult!.rollNo!}',
-                                      style: theme.textTheme.bodySmall!
-                                          .copyWith(fontSize: 12),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'BarCode:',
-                                          style: theme.textTheme.bodySmall!
-                                              .copyWith(fontSize: 12),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: Image.network(
-                                              baseUrlFromPref +
-                                                      controller
-                                                          .profileModelObj
-                                                          .value!
-                                                          .studentResult!
-                                                          .barcode! ??
-                                                  "",
-                                              height: 20,width: 100,),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text('Qr Code:',
-                                            style: theme.textTheme.bodySmall!
-                                                .copyWith(fontSize: 12)),
-                                        controller.profileModelObj.value!
-                                                    .studentResult!.qrcode !=
-                                                null
-                                            ? Image.network(
-                                            baseUrlFromPref +
-                                                        controller
-                                                            .profileModelObj
-                                                            .value!
-                                                            .studentResult!
-                                                            .qrcode! ??
-                                                    '',
-                                                height: 40,
-                                                width: 100)
-                                            : SizedBox(),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    controller.profileModelObj.value!
-                                                .studentResult!.image !=
-                                            null
-                                        ? CircleAvatar(
-                                            radius: 45,
-                                            backgroundColor: Colors.orange,
-                                            backgroundImage: NetworkImage(
-                                                baseUrlFromPref +
-                                                    controller
-                                                        .profileModelObj
-                                                        .value!
-                                                        .studentResult!
-                                                        .image
-                                                        .toString()),
-                                          )
-                                        : CircleAvatar(
-                                            radius: 45,
-                                            backgroundColor: Colors.orange,
-                                            backgroundImage: AssetImage(
-                                                'assets/projectImages/placeholder_user.png'),
-                                          )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      StudentDetailsCard(
+                          fullName: controller.profileModelObj.value!
+                                  .studentResult!.firstname!.capitalize! +
+                              " " +
+                              controller.profileModelObj.value!.studentResult!
+                                  .middlename! +
+                              " " +
+                              controller.profileModelObj.value!.studentResult!
+                                  .lastname!.capitalize!,
+                          className:
+                              "${controller.profileModelObj.value!.studentResult!.className!}" +
+                                  ' ( ' +
+                                  controller.profileModelObj.value!
+                                      .studentResult!.section! +
+                                  ' )',
+                          admissionNo:
+                              '${controller.profileModelObj.value!.studentResult!.admissionNo!}',
+                          rollNo: '23',
+                          barcodeUrl: baseUrlFromPref +
+                                  controller.profileModelObj.value!
+                                      .studentResult!.barcode! ??
+                              "",
+                          qrCodeUrl: baseUrlFromPref +
+                                  controller.profileModelObj.value!
+                                      .studentResult!.qrcode! ??
+                              '',
+                          imageUrl: baseUrlFromPref +
+                              controller
+                                  .profileModelObj.value!.studentResult!.image
+                                  .toString()),
                       Expanded(child: MyHomePage()),
                     ],
                   );
+                  // return Column(
+                  //   children: [
+                  //     Container(
+                  //       // color: Colors.white,
+                  //       decoration: BoxDecoration(
+                  //           color: Colors.white,
+                  //           borderRadius: BorderRadius.only(
+                  //             topRight: Radius.circular(20),
+                  //             topLeft: Radius.circular(20),
+                  //           )),
+                  //       child: Padding(
+                  //         padding: const EdgeInsets.only(left: 30.0, bottom: 5),
+                  //         child: Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //           children: [
+                  //             Expanded(
+                  //               child: Column(
+                  //                 crossAxisAlignment: CrossAxisAlignment.start,
+                  //                 children: [
+                  //                   Text(
+                  //                     controller.profileModelObj.value!
+                  //                             .studentResult!.firstname! +
+                  //                         " " +
+                  //                         controller.profileModelObj.value!
+                  //                             .studentResult!.middlename! +
+                  //                         " " +
+                  //                         controller.profileModelObj.value!
+                  //                             .studentResult!.lastname!,
+                  //                     style: theme.textTheme.titleMedium!
+                  //                         .copyWith(
+                  //                             fontSize: 16,
+                  //                             fontWeight: FontWeight.w600),
+                  //                   ),
+                  //                   Text(
+                  //                     "${controller.profileModelObj.value!.studentResult!.className!}" +
+                  //                         ' ( ' +
+                  //                         controller.profileModelObj.value!
+                  //                             .studentResult!.section! +
+                  //                         ' )',
+                  //                     style: theme.textTheme.bodySmall!
+                  //                         .copyWith(fontSize: 12),
+                  //                   ),
+                  //                   Text(
+                  //                     'Adm. No: ${controller.profileModelObj.value!.studentResult!.admissionNo!}',
+                  //                     style: theme.textTheme.bodySmall!
+                  //                         .copyWith(fontSize: 12),
+                  //                   ),
+                  //                   Text(
+                  //                     'Roll Number: ${controller.profileModelObj.value!.studentResult!.rollNo!}',
+                  //                     style: theme.textTheme.bodySmall!
+                  //                         .copyWith(fontSize: 12),
+                  //                   ),
+                  //                   Row(
+                  //                     children: [
+                  //                       Text(
+                  //                         'BarCode:',
+                  //                         style: theme.textTheme.bodySmall!
+                  //                             .copyWith(fontSize: 12),
+                  //                       ),
+                  //                       Padding(
+                  //                         padding:
+                  //                             const EdgeInsets.only(top: 8.0),
+                  //                         child: Image.network(
+                  //                             baseUrlFromPref +
+                  //                                     controller
+                  //                                         .profileModelObj
+                  //                                         .value!
+                  //                                         .studentResult!
+                  //                                         .barcode! ??
+                  //                                 "",
+                  //                             height: 20,width: 100,),
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                   Row(
+                  //                     children: [
+                  //                       Text('Qr Code:',
+                  //                           style: theme.textTheme.bodySmall!
+                  //                               .copyWith(fontSize: 12)),
+                  //                       controller.profileModelObj.value!
+                  //                                   .studentResult!.qrcode !=
+                  //                               null
+                  //                           ? Image.network(
+                  //                           baseUrlFromPref +
+                  //                                       controller
+                  //                                           .profileModelObj
+                  //                                           .value!
+                  //                                           .studentResult!
+                  //                                           .qrcode! ??
+                  //                                   '',
+                  //                               height: 40,
+                  //                               width: 100)
+                  //                           : SizedBox(),
+                  //                     ],
+                  //                   ),
+                  //                 ],
+                  //               ),
+                  //             ),
+                  //             Expanded(
+                  //               child: Column(
+                  //                 children: [
+                  //                   controller.profileModelObj.value!
+                  //                               .studentResult!.image !=
+                  //                           null
+                  //                       ? CircleAvatar(
+                  //                           radius: 45,
+                  //                           backgroundColor: Colors.orange,
+                  //                           backgroundImage: NetworkImage(
+                  //                               baseUrlFromPref +
+                  //                                   controller
+                  //                                       .profileModelObj
+                  //                                       .value!
+                  //                                       .studentResult!
+                  //                                       .image
+                  //                                       .toString()),
+                  //                         )
+                  //                       : CircleAvatar(
+                  //                           radius: 45,
+                  //                           backgroundColor: Colors.orange,
+                  //                           backgroundImage: AssetImage(
+                  //                               'assets/projectImages/placeholder_user.png'),
+                  //                         )
+                  //                 ],
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     Expanded(child: MyHomePage()),
+                  //   ],
+                  // );
                 });
           }),
     );
@@ -200,7 +234,7 @@ class MyHomePage extends StatelessWidget {
                       color: Colors.green.shade50,
                       child: TabBar(
                         labelStyle:
-                            theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                            theme.textTheme.titleSmall!.copyWith(fontSize: 13),
                         unselectedLabelColor: Colors.grey.shade700,
                         // labelColor: const Color(0xFF3baee7),
                         // indicatorWeight: 3,
@@ -376,12 +410,13 @@ class MyHomePage extends StatelessWidget {
                                                   backgroundColor:
                                                       Colors.grey.shade200,
                                                   backgroundImage: NetworkImage(
-                                                      baseUrlFromPref +  controller
-                                                          .profileModelObj
-                                                          .value!
-                                                          .studentResult!
-                                                          .fatherPic
-                                                          .toString()),
+                                                      baseUrlFromPref +
+                                                          controller
+                                                              .profileModelObj
+                                                              .value!
+                                                              .studentResult!
+                                                              .fatherPic
+                                                              .toString()),
                                                 )
                                               : CircleAvatar(
                                                   radius: 35,
@@ -509,12 +544,13 @@ class MyHomePage extends StatelessWidget {
                                                   backgroundColor:
                                                       Colors.grey.shade200,
                                                   backgroundImage: NetworkImage(
-                                                      baseUrlFromPref+  controller
-                                                          .profileModelObj
-                                                          .value!
-                                                          .studentResult!
-                                                          .motherPic
-                                                          .toString()),
+                                                      baseUrlFromPref +
+                                                          controller
+                                                              .profileModelObj
+                                                              .value!
+                                                              .studentResult!
+                                                              .motherPic
+                                                              .toString()),
                                                 )
                                               : CircleAvatar(
                                                   radius: 35,
@@ -642,16 +678,18 @@ class MyHomePage extends StatelessWidget {
                                                   backgroundColor:
                                                       Colors.grey.shade200,
                                                   backgroundImage: NetworkImage(
-                                                      baseUrlFromPref+   controller
-                                                          .profileModelObj
-                                                          .value!
-                                                          .studentResult!
-                                                          .guardianPic
-                                                          .toString()),
+                                                      baseUrlFromPref +
+                                                          controller
+                                                              .profileModelObj
+                                                              .value!
+                                                              .studentResult!
+                                                              .guardianPic
+                                                              .toString()),
                                                 )
                                               : CircleAvatar(
                                                   radius: 35,
-                                                  backgroundColor: Colors.grey.shade200,
+                                                  backgroundColor:
+                                                      Colors.grey.shade200,
                                                   backgroundImage: AssetImage(
                                                       'assets/projectImages/placeholder_user.png'),
                                                 ),
