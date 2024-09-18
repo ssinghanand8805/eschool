@@ -9,7 +9,7 @@ import '../../core/utils/common_utilities.dart';
 import '../common_widgets/custom_loader.dart';
 import '../submit_homework/submit_homework.dart';
 import 'model/StudentSubjects.dart';
-
+import 'package:html/parser.dart'; // to parse HTML documents
 class HomeworkScreen extends StatefulWidget {
   @override
   _HomeworkScreenState createState() => _HomeworkScreenState();
@@ -415,7 +415,8 @@ class HomeworkCard extends GetView<HomeWorkController> {
                               .copyWith(fontWeight: FontWeight.w600)),
                 Expanded(
                   child: ReadMoreText(
-                    homework.description.toString(),
+                    parse( homework.description).body!.text,
+
                     trimMode: TrimMode.Line,
                     trimLines: 2,
                     colorClickableText: Colors.pink,

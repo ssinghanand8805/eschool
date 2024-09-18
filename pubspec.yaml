@@ -18,6 +18,7 @@ dependencies:
   firebase_messaging:
   intl: ^0.18.0
   flutter_html:
+  html: ^0.15.4
   table_calendar:
   image_picker: ^1.0.7
   flutter_file_downloader: ^1.2.1
