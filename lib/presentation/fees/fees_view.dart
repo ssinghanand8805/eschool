@@ -25,10 +25,13 @@ class _FeesPageState extends State<FeesPage> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return MainBody(
         label: 'Your Fees Details\n is Here!',
         imageUrl: 'assets/projectImages/feespage.jpeg',
         AppbarTitle: 'Fees',
+        actionWidget : [Text("Receipts")],
         widget: _buildChildWidget());
   }
 
@@ -233,6 +236,7 @@ class _FeesPageState extends State<FeesPage> {
   }
 
   Widget timeLine({List<Fees>? data}) {
+    data?.sort((a, b) => a.status!.compareTo(b.status!));
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -269,12 +273,12 @@ class _FeesPageState extends State<FeesPage> {
                       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                       height: 35,
                       decoration: BoxDecoration(
-                          color: Colors.green.shade100,
+                          color: data![index].status == "paid" ? Colors.green.shade100 : Colors.red.shade100,
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10))),
                       width: Get.width,
-                      child: Text(data![index].name! + " " + data![index].type!,
+                      child: Text( data![index].type!,
                           style: theme.textTheme.titleMedium!.copyWith(
                               fontSize: 17, fontWeight: FontWeight.w600)),
                     ),

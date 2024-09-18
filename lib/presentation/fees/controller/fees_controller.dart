@@ -41,7 +41,7 @@ class FeesController extends GetxController {
           dueDate: feesDataModal.value!.transportFees![i].dueDate,
           amount: feesDataModal.value!.transportFees![i].amountDetail,
           fineAmount: feesDataModal.value!.transportFees![i].fineAmount ?? "0",
-          totalAmountDiscount: feesDataModal.value!.transportFees![i].totalAmountDiscount,
+          totalAmountDiscount: feesDataModal.value!.transportFees![i].totalAmountDiscount.toString(),
           totalAmountPaid: feesDataModal.value!.transportFees![i].totalAmountPaid.toString(),
           totalAmountRemaining: feesDataModal.value!.transportFees![i].totalAmountRemaining
 
