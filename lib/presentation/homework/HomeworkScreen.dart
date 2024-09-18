@@ -714,6 +714,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
   }
 }
 
+// ignore: must_be_immutable
 class InfoRow extends StatelessWidget {
   final String title;
   final String value;
@@ -745,7 +746,10 @@ class InfoRow extends StatelessWidget {
           ),
           Expanded(
             flex: 4,
-            child: Text(
+            child: value.isEmpty?Text("------------",style: style1 == false
+                ? theme.textTheme.titleMedium!
+                .copyWith(color: Colors.grey.shade700)
+                : style1,):Text(
               value,
               style: style1 == false
                   ? theme.textTheme.titleMedium!

@@ -19,6 +19,7 @@ class _FeesPageState extends State<FeesPage> {
 
   @override
   void initState() {
+    super.initState();
     // TODO: implement initState
     controller.getData();
   }
@@ -31,7 +32,22 @@ class _FeesPageState extends State<FeesPage> {
         label: 'Your Fees Details\n is Here!',
         imageUrl: 'assets/projectImages/feespage.jpeg',
         AppbarTitle: 'Fees',
-        actionWidget : [Text("Receipts")],
+        actionWidget : [ElevatedButton(
+          onPressed: () {
+            // Define your action here
+          },
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 10.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+          ),
+          child: Text(
+            "Fees Receipt",
+            style: theme.textTheme.titleLarge!.copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        )
+        ],
         widget: _buildChildWidget());
   }
 
@@ -139,7 +155,7 @@ class _FeesPageState extends State<FeesPage> {
                   width: Get.width,
                   child: Text('Grand Total',
                       style: theme.textTheme.titleMedium!
-                          .copyWith(fontSize: 17, fontWeight: FontWeight.w600)),
+                          .copyWith(fontSize: 15, fontWeight: FontWeight.w600)),
                 ),
                 SizedBox(height: 12.0),
                 _buildGrandTotalTable(data: data)
@@ -163,7 +179,7 @@ class _FeesPageState extends State<FeesPage> {
                 child: Text(
                   'Amount',
                   style: theme.textTheme.titleSmall!.copyWith(
-                    fontSize: 14,
+                    fontSize: 13,
                   ),
                 ),
               ),
@@ -171,7 +187,7 @@ class _FeesPageState extends State<FeesPage> {
                 child: Text(
                   'Discount',
                   style: theme.textTheme.titleSmall!.copyWith(
-                    fontSize: 14,
+                    fontSize: 13,
                   ),
                 ),
               ),
@@ -179,7 +195,7 @@ class _FeesPageState extends State<FeesPage> {
                 child: Text(
                   'Fine',
                   style: theme.textTheme.titleSmall!.copyWith(
-                    fontSize: 14,
+                    fontSize: 13,
                   ),
                 ),
               ),
@@ -187,7 +203,7 @@ class _FeesPageState extends State<FeesPage> {
                 child: Text(
                   'Paid',
                   style: theme.textTheme.titleSmall!.copyWith(
-                    fontSize: 14,
+                    fontSize: 13,
                   ),
                 ),
               ),
@@ -195,7 +211,7 @@ class _FeesPageState extends State<FeesPage> {
                 child: Text(
                   'Balance',
                   style: theme.textTheme.titleSmall!.copyWith(
-                    fontSize: 14,
+                    fontSize: 13,
                   ),
                 ),
               ),
@@ -280,7 +296,7 @@ class _FeesPageState extends State<FeesPage> {
                       width: Get.width,
                       child: Text( data![index].type!,
                           style: theme.textTheme.titleMedium!.copyWith(
-                              fontSize: 17, fontWeight: FontWeight.w600)),
+                              fontSize: 14, fontWeight: FontWeight.w600)),
                     ),
                     SizedBox(height: 12.0),
                     Padding(
@@ -290,58 +306,58 @@ class _FeesPageState extends State<FeesPage> {
                         children: [
                           InfoRow(
                               style: theme.textTheme.titleSmall!.copyWith(
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                               style1: theme.textTheme.bodySmall!
-                                  .copyWith(fontSize: 14),
+                                  .copyWith(fontSize: 13),
                               title: 'Fees Code',
                               value: data![index].code!),
                           InfoRow(
                               style: theme.textTheme.titleSmall!.copyWith(
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                               style1: theme.textTheme.bodySmall!
-                                  .copyWith(fontSize: 14),
+                                  .copyWith(fontSize: 13),
                               title: 'Due Date',
                               value: data![index].dueDate!),
                           InfoRow(
                               style: theme.textTheme.titleSmall!.copyWith(
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                               style1: theme.textTheme.bodySmall!
-                                  .copyWith(fontSize: 14),
+                                  .copyWith(fontSize: 13),
                               title: 'Amount',
                               value: "Rs ${data![index].amount!}"),
                           InfoRow(
                               style: theme.textTheme.titleSmall!.copyWith(
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                               style1: theme.textTheme.bodySmall!
-                                  .copyWith(fontSize: 14),
+                                  .copyWith(fontSize: 13),
                               title: 'Fine',
                               value: "Rs  ${data![index].fineAmount!}"),
                           InfoRow(
                               style: theme.textTheme.titleSmall!.copyWith(
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                               style1: theme.textTheme.bodySmall!
-                                  .copyWith(fontSize: 14),
+                                  .copyWith(fontSize: 13),
                               title: 'Discount',
                               value: "Rs ${data![index].totalAmountDiscount!}"),
                           InfoRow(
                               style: theme.textTheme.titleSmall!.copyWith(
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                               style1: theme.textTheme.bodySmall!
-                                  .copyWith(fontSize: 14),
+                                  .copyWith(fontSize: 13),
                               title: 'Paid Amount',
                               value: "Rs ${data![index].totalAmountPaid!}"),
                           InfoRow(
                               style: theme.textTheme.titleSmall!.copyWith(
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                               style1: theme.textTheme.bodySmall!
-                                  .copyWith(fontSize: 14),
+                                  .copyWith(fontSize: 13),
                               title: 'Balance Amount ',
                               value:
                                   "Rs ${data![index].totalAmountRemaining!}"),
