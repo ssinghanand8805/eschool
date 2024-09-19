@@ -6,6 +6,7 @@ import 'package:pdf_render/pdf_render.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class DocumentViewerScreen extends StatefulWidget {
   final String documentUrl;
@@ -17,61 +18,28 @@ class DocumentViewerScreen extends StatefulWidget {
 }
 
 class _DocumentViewerScreenState extends State<DocumentViewerScreen> {
-  PdfDocument? _document;
-  List<PdfPageImage> _pdfPages = [];
-  Uint8List? _imageData;
-  bool _isLoading = false;
+  bool _isLoading = true;
   bool _isPdf = false;
 
-  Future<void> _loadDocument() async {
+  @override
+  void initState() {
+    super.initState();
+    _checkDocumentType();
+  }
+
+  Future<void> _checkDocumentType() async {
     final url = widget.documentUrl;
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        final data = response.bodyBytes;
-
-        if (url.toLowerCase().endsWith('.pdf')) {
-          await _handlePdf(data);
-        } else {
-          _handleImage(data);
-        }
-      } else {
-        throw Exception('Failed to load document');
-      }
-    } catch (e) {
-      print('Error loading document: $e');
-    } finally {
+    if (url.toLowerCase().endsWith('.pdf')) {
       setState(() {
-        _isLoading = false;
+        _isPdf = true;
+      });
+    } else {
+      setState(() {
+        _isPdf = false;
       });
     }
-  }
-
-  Future<void> _handlePdf(Uint8List data) async {
-    final document = await PdfDocument.openData(data);
-    final pdfPages = <PdfPageImage>[];
-
-    for (int i = 0; i < document.pageCount; i++) {
-      final page = await document.getPage(i + 1);
-      final pageImage = await page.render(width: page.width.toInt(), height: page.height.toInt());
-      pdfPages.add(pageImage);
-    }
-
     setState(() {
-      _document = document;
-      _pdfPages = pdfPages;
-      _isPdf = true;
-    });
-  }
-
-  void _handleImage(Uint8List data) {
-    setState(() {
-      _imageData = data;
-      _isPdf = false;
+      _isLoading = false;
     });
   }
 
@@ -103,17 +71,7 @@ class _DocumentViewerScreenState extends State<DocumentViewerScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _loadDocument();
-  }
-
-  @override
   void dispose() {
-    _document?.dispose();
-    for (var page in _pdfPages) {
-      page.dispose();
-    }
     super.dispose();
   }
 
@@ -128,12 +86,12 @@ class _DocumentViewerScreenState extends State<DocumentViewerScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          _isPdf ? 'PDF Viewer' : 'Image Viewer',
-          style: theme.textTheme.titleLarge,
+          _isPdf?'Pdf View': 'Image View',
+          style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.download,size: 24,),
+            icon: Icon(Icons.download, size: 22),
             onPressed: _downloadDocument,
           ),
         ],
@@ -141,20 +99,8 @@ class _DocumentViewerScreenState extends State<DocumentViewerScreen> {
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : _isPdf
-          ? _pdfPages.isEmpty
-          ? Center(child: Text('No PDF loaded'))
-          : ListView.builder(
-        itemCount: _pdfPages.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: Image(image: MemoryImage(_pdfPages[index].pixels)),
-          );
-        },
-      )
-          : _imageData == null
-          ? Center(child: Text('No image loaded',style: TextStyle(fontSize: 14),))
-          : Image.memory(_imageData!),
+          ? SfPdfViewer.network(widget.documentUrl)
+          : Image.network(widget.documentUrl),
     );
   }
 }

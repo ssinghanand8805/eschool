@@ -38,7 +38,7 @@ Widget CommonCard({
                     topRight: Radius.circular(10))),
             width: Get.width,
             child: Text(
-              title,
+              title.capitalizeFirst!,
               style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600,fontSize:14),
             ),
           ),

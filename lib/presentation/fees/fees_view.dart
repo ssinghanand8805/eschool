@@ -7,6 +7,7 @@ import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
 import '../homework/HomeworkScreen.dart';
 import 'controller/fees_controller.dart';
+import 'feesRe.dart';
 import 'model/fees_modal.dart';
 
 class FeesPage extends StatefulWidget {
@@ -32,19 +33,27 @@ class _FeesPageState extends State<FeesPage> {
         label: 'Your Fees Details\n is Here!',
         imageUrl: 'assets/projectImages/feespage.jpeg',
         AppbarTitle: 'Fees',
-        actionWidget : [ElevatedButton(
-          onPressed: () {
-            // Define your action here
-          },
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 10.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        actionWidget : [Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FeesReceiptScreen()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+               backgroundColor: Colors.yellow.shade200,
+              padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 10.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
             ),
-          ),
-          child: Text(
-            "Fees Receipt",
-            style: theme.textTheme.titleLarge!.copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+            child: Text(
+              "Fees Receipt",
+              style: theme.textTheme.titleLarge!.copyWith(fontSize: 14,),
+            ),
           ),
         )
         ],
