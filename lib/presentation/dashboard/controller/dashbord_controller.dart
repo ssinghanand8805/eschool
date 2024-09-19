@@ -228,21 +228,18 @@ class DashboardController extends GetxController {
     "ic_notice.png",
     "ic_lock_filled.png",
     "ic_notice.png",
-    "add_leave.png",
+    "ic_leave.png",
   ];
 
   List otherImages = [
     "ic_nav_fees.png",
-    "ic_leave.png",
     "ic_visitors.png",
     "ic_nav_transport.png",
     "ic_nav_hostel.png",
+    "ic_library.png",
     "ic_dashboard_pandingtask.png",
     "ic_events.png",
-    "ic_teacher.png",
-    "ic_dashboard_pandingtask.png",
-    "ic_events.png",
-    "ic_teacher.png"
+
   ];
 
   List gridViewWidgets = <Widget>[];

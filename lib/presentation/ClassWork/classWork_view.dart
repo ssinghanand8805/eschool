@@ -55,7 +55,7 @@ class _ClassWorkViewState extends State<ClassWorkView> {
                 }),
                 Container(
                   height: 35,
-                  width: 100,
+                  width: 150,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.orange),
@@ -67,52 +67,52 @@ class _ClassWorkViewState extends State<ClassWorkView> {
                         builder: (_, snanpshot) {
                           if (snanpshot.connectionState !=
                               ConnectionState.done) {
-                            return CircularProgressIndicator();
-                          } else {
-                            return DropdownButton<Subjectlist>(
-                              value: controller.currentSelectedSubject.value
-                                          .subjectId ==
-                                      null
-                                  ? controller.studentSubjectsModelObj.value
-                                      .subjectlist![0]
-                                  : controller.currentSelectedSubject.value,
-                              icon: Icon(Icons.keyboard_arrow_down_rounded),
-                              onChanged: (Subjectlist? newValue) {
-                                controller.currentSelectedSubject.value =
-                                    newValue!;
-                                // controller.update();
-                                controller.currentSelectedSubejectId.value =
-                                    controller.currentSelectedSubject.value!
-                                        .subjectId!;
-                                controller.update();
-                                controller.getData(
-                                    selectedDate:
-                                        controller.selectedDate.value);
-                              },
-                              items: <DropdownMenuItem<Subjectlist>>[
-                                if (controller.studentSubjectsModelObj !=
-                                        null &&
-                                    controller.studentSubjectsModelObj.value !=
-                                        null &&
-                                    controller.studentSubjectsModelObj.value
-                                            .subjectlist !=
-                                        null)
-                                  ...controller.studentSubjectsModelObj!.value!
-                                      .subjectlist!
-                                      .map<DropdownMenuItem<Subjectlist>>(
-                                          (Subjectlist value) {
-                                    return DropdownMenuItem<Subjectlist>(
-                                      value: value,
-                                      child: Text(value.name!,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors
-                                                  .red)), // Assuming 'name' is the display property
-                                    );
-                                  }),
-                              ],
+                            return SizedBox(
+                              width: 20.0, // Set your desired width
+                              height: 20.0, // Set your desired height
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.0, // You can also customize the stroke width if needed
+                              ),
                             );
-                          }
+                          } else {
+                            return Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              constraints: BoxConstraints(
+                                maxWidth: MediaQuery.of(context).size.width * 0.8,
+                              ),
+                              child: DropdownButton<Subjectlist>(
+                                value: controller.currentSelectedSubject.value.subjectId == null
+                                    ? controller.studentSubjectsModelObj.value.subjectlist![0]
+                                    : controller.currentSelectedSubject.value,
+                                icon: Icon(Icons.keyboard_arrow_down_rounded),
+                                isExpanded: true, // Makes the dropdown take the full width
+                                onChanged: (Subjectlist? newValue) {
+                                  if (newValue != null) {
+                                    controller.currentSelectedSubject.value = newValue;
+                                    controller.currentSelectedSubejectId.value = newValue.subjectId!;
+                                    controller.update();
+                                    controller.getData(selectedDate: controller.selectedDate.value);
+                                  }
+                                },
+                                items: (controller.studentSubjectsModelObj.value?.subjectlist ?? [])
+                                    .map<DropdownMenuItem<Subjectlist>>((Subjectlist value) {
+                                  return DropdownMenuItem<Subjectlist>(
+                                    value: value,
+                                    child: Text(
+                                      value.name ?? '', // Assuming 'name' is the display property
+                                      style: TextStyle(fontSize: 14, color: Colors.red),
+                                      overflow: TextOverflow.ellipsis, // Prevent text overflow
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            );
+                          ;
+
+                        }
                         }),
                   ),
                 ),

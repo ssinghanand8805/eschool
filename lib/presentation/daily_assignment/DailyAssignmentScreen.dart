@@ -150,7 +150,7 @@ class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                   Expanded(
                     child: Container(
-                      height: 35,
+                      height: 33,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.orange),
@@ -162,78 +162,59 @@ class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
                             builder: (_, snanpshot) {
                               if (snanpshot.connectionState !=
                                   ConnectionState.done) {
-                                return CircularProgressIndicator();
-                                // return DropdownButton<Subjectlist>(
-                                //   value: null,
-                                //   icon: Icon(Icons.keyboard_arrow_down_rounded),
-                                //   onChanged: (Subjectlist? newValue) {
-                                //     controller.currentSelectedSubject.value= newValue!;
-                                //     controller.currentSelectedSubejectId.value = newValue!.subjectId!;
-                                //
-                                //   },
-                                //   items: <DropdownMenuItem<Subjectlist>>[
-                                //     DropdownMenuItem(
-                                //       value: controller.currentSelectedSubject.value == null ? null : controller.currentSelectedSubject.value,
-                                //       child: Text('All'),
-                                //     ),
-                                //
-                                //   ],
-                                // );
-                              } else {
-                                return DropdownButton<Subjectlist>(
-                                  value: controller.currentSelectedSubject.value
-                                      .subjectId ==
-                                      null
-                                      ? controller.studentSubjectsModelObj.value
-                                      .subjectlist![0]
-                                      : controller.currentSelectedSubject.value,
-                                  icon: Icon(Icons.keyboard_arrow_down_rounded),
-                                  onChanged: (Subjectlist? newValue) {
-                                    controller.currentSelectedSubject.value =
-                                    newValue!;
-                                    // controller.update();
-                                    controller.currentSelectedSubejectId.value =
-                                    controller.currentSelectedSubject.value!
-                                        .subjectId!;
-                                    controller.update();
-                                    controller.getAssignment(
-                                        selectedDate:
-                                        controller.selectedDate.value);
-                                  },
-                                  items: <DropdownMenuItem<Subjectlist>>[
-                                    // DropdownMenuItem(
-                                    //   value: Subjectlist(
-                                    //     subjectGroupSubjectsId: "0",
-                                    //     subjectGroupClassSectionsId: "0",
-                                    //     name: "All",
-                                    //     code: "",
-                                    //     subjectId: "0",
-                                    //   ),
-                                    //   child: Text('All',style: TextStyle(color: Colors.red),),
-                                    // ),
-                                    if (controller.studentSubjectsModelObj !=
-                                        null &&
-                                        controller.studentSubjectsModelObj
-                                            .value !=
-                                            null &&
-                                        controller.studentSubjectsModelObj.value
-                                            .subjectlist !=
-                                            null)
-                                      ...controller.studentSubjectsModelObj!
-                                          .value!.subjectlist!
-                                          .map<DropdownMenuItem<Subjectlist>>(
-                                              (Subjectlist value) {
-                                            return DropdownMenuItem<Subjectlist>(
-                                              value: value,
-                                              child: Text(value.name!,
-                                                  style: TextStyle(
-                                                      color: Colors
-                                                          .red)), // Assuming 'name' is the display property
-                                            );
-                                          }),
-                                  ],
+                                return SizedBox(
+                                  width: 20.0, // Set your desired width
+                                  height: 20.0, // Set your desired height
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.0, // You can also customize the stroke width if needed
+                                  ),
                                 );
-                              }
+
+                              } else {
+                                return Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    maxWidth: MediaQuery.of(context).size.width * 0.8,
+                                  ),
+                                  child: DropdownButton<Subjectlist>(
+                                    value: controller.currentSelectedSubject.value.subjectId == null
+                                        ? controller.studentSubjectsModelObj.value.subjectlist!.isNotEmpty
+                                        ? controller.studentSubjectsModelObj.value.subjectlist![0]
+                                        : null // Handle the case where the list is empty
+                                        : controller.currentSelectedSubject.value,
+                                    icon: Icon(Icons.keyboard_arrow_down_rounded),
+                                    isExpanded: true, // Make the dropdown take the full width
+                                    onChanged: (Subjectlist? newValue) {
+                                      if (newValue != null) {
+                                        controller.currentSelectedSubject.value = newValue;
+                                        controller.currentSelectedSubejectId.value = newValue.subjectId!;
+                                        controller.update();
+                                        controller.getAssignment(selectedDate: controller.selectedDate.value);
+                                      }
+                                    },
+                                    items: (controller.studentSubjectsModelObj.value?.subjectlist ?? [])
+                                        .map<DropdownMenuItem<Subjectlist>>((Subjectlist value) {
+                                      return DropdownMenuItem<Subjectlist>(
+                                        value: value,
+                                        child: ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context).size.width * 0.75, // Limit width for long names
+                                          ),
+                                          child: Text(
+                                            value.name ?? '', // Ensure name is not null
+                                            style: TextStyle(color: Colors.red),
+                                            overflow: TextOverflow.ellipsis,// Show full text
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                );
+
+                            }
                             }),
                       ),
                     ),

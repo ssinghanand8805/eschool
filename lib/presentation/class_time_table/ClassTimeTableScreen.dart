@@ -39,19 +39,19 @@ class _ClassTimeTableScreenState extends State<ClassTimeTableScreen> {
           future: controller.fetchDataFuture, //controller.getData(context),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
-              return CustomLoader(); // CustomLoader();
+              return CustomLoader();
             } else {
               return Expanded(
                 child: WeekTabScreen(
                   tabTitles: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
                   tabContents: [
-                    _buildTimeTableCard(context: context,  day: controller.classTimeTableModelObj.value!.timetable!.monday!),
-                    _buildTimeTableCard(context: context, day: controller.classTimeTableModelObj.value!.timetable!.tuesday!),
-                    _buildTimeTableCard(context: context, day: controller.classTimeTableModelObj.value!.timetable!.wednesday!),
-                    _buildTimeTableCard(context: context, day: controller.classTimeTableModelObj.value!.timetable!.thursday!),
-                    _buildTimeTableCard(context: context, day: controller.classTimeTableModelObj.value!.timetable!.friday!),
-                    _buildTimeTableCard(context: context, day: controller.classTimeTableModelObj.value!.timetable!.saturday!),
-                    _buildTimeTableCard(context: context, day: controller.classTimeTableModelObj.value!.timetable!.sunday!),
+                    _buildTimeTableCard(context: context,  day: controller.classTimeTableModelObj.value.timetable!.monday!),
+                    _buildTimeTableCard(context: context, day: controller.classTimeTableModelObj.value.timetable!.tuesday!),
+                    _buildTimeTableCard(context: context, day: controller.classTimeTableModelObj.value.timetable!.wednesday!),
+                    _buildTimeTableCard(context: context, day: controller.classTimeTableModelObj.value.timetable!.thursday!),
+                    _buildTimeTableCard(context: context, day: controller.classTimeTableModelObj.value.timetable!.friday!),
+                    _buildTimeTableCard(context: context, day: controller.classTimeTableModelObj.value.timetable!.saturday!),
+                    _buildTimeTableCard(context: context, day: controller.classTimeTableModelObj.value.timetable!.sunday!),
                   ],
                 )
               );

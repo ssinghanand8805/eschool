@@ -44,35 +44,42 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   return Column(
                     children: [
                       StudentDetailsCard(
-                          fullName: controller.profileModelObj.value!
-                                  .studentResult!.firstname!.capitalize! +
-                              " " +
-                              controller.profileModelObj.value!.studentResult!
-                                  .middlename! +
-                              " " +
-                              controller.profileModelObj.value!.studentResult!
-                                  .lastname!.capitalize!,
-                          className:
-                              "${controller.profileModelObj.value!.studentResult!.className!}" +
-                                  ' ( ' +
-                                  controller.profileModelObj.value!
-                                      .studentResult!.section! +
-                                  ' )',
-                          admissionNo:
-                              '${controller.profileModelObj.value!.studentResult!.admissionNo!}',
-                          rollNo: '23',
-                          barcodeUrl: baseUrlFromPref +
-                                  controller.profileModelObj.value!
-                                      .studentResult!.barcode! ??
-                              "",
-                          qrCodeUrl: baseUrlFromPref +
-                                  controller.profileModelObj.value!
-                                      .studentResult!.qrcode! ??
-                              '',
-                          imageUrl: baseUrlFromPref +
-                              controller
-                                  .profileModelObj.value!.studentResult!.image
-                                  .toString()),
+                        fullName: (controller.profileModelObj.value!
+                                    .studentResult!.firstname?.capitalize ??
+                                '') +
+                            ' ' +
+                            (controller.profileModelObj.value!.studentResult!
+                                    .middlename ??
+                                '') +
+                            ' ' +
+                            (controller.profileModelObj.value!.studentResult!
+                                    .lastname?.capitalize ??
+                                ''),
+                        className:
+                            "${controller.profileModelObj.value!.studentResult!.className ?? ''} " +
+                                ' ( ' +
+                                (controller.profileModelObj.value!
+                                        .studentResult!.section ??
+                                    '') +
+                                ' )',
+                        admissionNo:
+                            '${controller.profileModelObj.value!.studentResult!.admissionNo ?? ''}',
+                        rollNo: controller
+                            .profileModelObj.value!.studentResult!.rollNo,
+                        barcodeUrl: baseUrlFromPref +
+                            (controller.profileModelObj.value!.studentResult!
+                                    .barcode ??
+                                ''),
+                        qrCodeUrl: baseUrlFromPref +
+                            (controller.profileModelObj.value!.studentResult!
+                                    .qrcode ??
+                                ''),
+                        imageUrl: baseUrlFromPref +
+                            (controller
+                                    .profileModelObj.value!.studentResult!.image
+                                    ?.toString() ??
+                                ''),
+                      ),
                       Expanded(child: MyHomePage()),
                     ],
                   );
@@ -290,7 +297,8 @@ class MyHomePage extends StatelessWidget {
                                         .copyWith(fontSize: 12),
                                     title: 'Gender',
                                     value: controller.profileModelObj.value!
-                                        .studentResult!.gender?? "",
+                                            .studentResult!.gender ??
+                                        "",
                                   ),
                                   InfoRow(
                                     style: theme.textTheme.titleSmall!

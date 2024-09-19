@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../../theme/theme_helper.dart';
 
 class StudentDetailsCard extends StatelessWidget {
-  final String fullName;
-  final String className;
+  final String? fullName;
+  final String? className;
 
-  final String admissionNo;
-  final String rollNo;
-  final String barcodeUrl;
-  final String qrCodeUrl;
-  final String imageUrl;
+  final String? admissionNo;
+  final String? rollNo;
+  final String? barcodeUrl;
+  final String? qrCodeUrl;
+  final String? imageUrl;
 
   const StudentDetailsCard({
     Key? key,
@@ -75,7 +75,7 @@ class StudentDetailsCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(fullName,
+        Text(fullName ?? "",
             style: theme.textTheme.titleLarge!
                 .copyWith(fontSize: 15, fontWeight: FontWeight.w600)),
         const SizedBox(height: 4),
@@ -91,8 +91,8 @@ class StudentDetailsCard extends StatelessWidget {
     return CircleAvatar(
       radius: 45,
       backgroundColor: Colors.orange.shade100,
-      backgroundImage: NetworkImage(imageUrl),
-      child: imageUrl.isEmpty
+      backgroundImage: NetworkImage(imageUrl ?? ""),
+      child: imageUrl!.isEmpty
           ? const Icon(Icons.person, size: 60, color: Colors.orange)
           : null,
     );
@@ -102,9 +102,9 @@ class StudentDetailsCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildDetailRow('Barcode', barcodeUrl),
+        _buildDetailRow('Barcode', barcodeUrl ?? ""),
         const SizedBox(height: 8),
-        _buildDetailRow('QR Code', qrCodeUrl),
+        _buildDetailRow('QR Code', qrCodeUrl??""),
       ],
     );
   }
