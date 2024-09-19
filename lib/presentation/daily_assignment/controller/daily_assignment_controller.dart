@@ -6,6 +6,7 @@ import 'package:lerno/presentation/login_screen/models/userDataModal.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';
 import '../../dashboard/dashboard_screen.dart';
@@ -82,9 +83,7 @@ class DailyAssignmentController extends GetxController {
 
   }
   Future<void> getAssignment({DateTime? selectedDate}) async {
-    String formattedDate = selectedDate != null
-        ? "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}"
-        : "";
+    String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(selectedDate != null ? selectedDate : DateTime.now());
 
     Map<String, dynamic> body = {
       "student_id": userData.getUserStudentId,
@@ -103,15 +102,15 @@ class DailyAssignmentController extends GetxController {
 
     homeworkModelObj.value = AssignmentModal.fromJson(data.body);
     print("homework data ${homeworkModelObj.value.toJson()}");
+    update();
 
-
-    if (homeworkModelObj.value.homeworklist != null && selectedDate != null) {
-      homeworkModelObj.value.homeworklist = homeworkModelObj.value.homeworklist!
-          .where((homework) =>
-      homework.homeworkDate == formattedDate) // Compare the string format
-          .toList();
-      update();
-    }
+    // if (homeworkModelObj.value.homeworklist != null && selectedDate != null) {
+    //   homeworkModelObj.value.homeworklist = homeworkModelObj.value.homeworklist!
+    //       .where((homework) =>
+    //   homework.homeworkDate == formattedDate) // Compare the string format
+    //       .toList();
+    //   update();
+    // }
 
     print("Filtered homework list: ${homeworkModelObj.value.homeworklist}");
     // update();

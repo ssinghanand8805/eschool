@@ -17,7 +17,7 @@ class ExaminationPage extends GetView<ExaminationController> {
   @override
   Widget build(BuildContext context) {
     return MainBody(
-      label: 'Your \nExaminations is\nhere!',
+      label: 'Your Examinations is\nhere!',
       imageUrl: 'assets/projectImages/examinationpage.jpg',
       AppbarTitle: 'Examinations',
       widget: GetBuilder(
@@ -98,14 +98,14 @@ class ExaminationPage extends GetView<ExaminationController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(data.exam.toString(),
+            Text(data.exam.toString().capitalize!,
             style: TextStyle(
-              fontSize: 17,
+              fontSize: 15,
               fontWeight: FontWeight.bold
             ),),
-            Text(data.exam.toString(),
+            Text(data.exam.toString().capitalize!,
               style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: FontWeight.w600
               ),),
             SizedBox(height: 10,),
@@ -124,18 +124,18 @@ class ExaminationPage extends GetView<ExaminationController> {
         Container(
           child: Text("Exam Schedule",
             style: TextStyle(
-                fontSize: 12,
+                fontSize: 13,
                 color: Colors.red,
                 fontWeight: FontWeight.w600
             ),),
           padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: Colors.red,width: 2),
-            borderRadius: BorderRadius.circular(20)
+            border: Border.all(color: Colors.red,width: 1),
+            borderRadius: BorderRadius.circular(12)
           ),
         ),
-        SizedBox(width: 10,),
+        SizedBox(width: 15,),
         InkWell(
           onTap: (){
             Get.toNamed(AppRoutes.exam_result_view);
@@ -143,15 +143,15 @@ class ExaminationPage extends GetView<ExaminationController> {
           child: Container(
             child: Text("Exam Result",
               style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 13,
                   color: Colors.white,
                   fontWeight: FontWeight.w600
               ),),
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
                 color: Colors.green,
-                border: Border.all(color: Colors.green,width: 2),
-                borderRadius: BorderRadius.circular(20)
+                border: Border.all(color: Colors.green,width: 1),
+                borderRadius: BorderRadius.circular(12)
             ),
           ),
         ),

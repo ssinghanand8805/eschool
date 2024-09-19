@@ -5,6 +5,7 @@ import 'package:lerno/presentation/login_screen/models/userDataModal.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';
 import '../../dashboard/dashboard_screen.dart';
@@ -82,9 +83,7 @@ class HomeWorkController extends GetxController {
 
   }
   Future<void> getData({DateTime? selectedDate}) async {
-    String formattedDate = selectedDate != null
-        ? "${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.year}"
-        : "";
+    String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(selectedDate != null ? selectedDate : DateTime.now());
 
     Map<String, dynamic> body = {
       "student_id": userData.getUserStudentId,
@@ -103,7 +102,7 @@ class HomeWorkController extends GetxController {
 
     homeworkModelObj.value = Homework.fromJson(data.body);
     print("homework data ${homeworkModelObj.value.toJson()}");
-
+    update();
     // Optional: If you need to filter homework based on the date
     /*
   if (homeworkModelObj.value.homeworklist != null && selectedDate != null) {

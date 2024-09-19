@@ -134,12 +134,12 @@ class Fees {
   String? studentFeesDepositeId;
   String? amountDetail;
   String? totalAmountPaid;
-  int? totalAmountDiscount;
-  int? totalAmountFine;
-  int? totalAmountDisplay;
+  String? totalAmountDiscount;
+  String? totalAmountFine;
+  String? totalAmountDisplay;
   String? totalAmountRemaining;
   String? status;
-  int? feesFineAmount;
+  String? feesFineAmount;
 
   Fees(
       {this.id,
@@ -185,13 +185,13 @@ class Fees {
     type = json['type'];
     studentFeesDepositeId = json['student_fees_deposite_id'];
     amountDetail = json['amount_detail'];
-    totalAmountPaid = json['total_amount_paid'];
-    totalAmountDiscount = json['total_amount_discount'];
-    totalAmountFine = json['total_amount_fine'];
-    totalAmountDisplay = json['total_amount_display'];
-    totalAmountRemaining = json['total_amount_remaining'];
+    totalAmountPaid = json['total_amount_paid'].toString();
+    totalAmountDiscount = json['total_amount_discount'].toString();
+    totalAmountFine = json['total_amount_fine'].toString();
+    totalAmountDisplay = json['total_amount_display'].toString();
+    totalAmountRemaining = json['total_amount_remaining'].toString();
     status = json['status'];
-    feesFineAmount = json['fees_fine_amount'];
+    feesFineAmount = json['fees_fine_amount'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -240,12 +240,12 @@ class TransportFees {
   String? studentFeesDepositeId;
   String? amountDetail;
   String? totalAmountPaid;
-  int? totalAmountDiscount;
-  int? totalAmountFine;
-  int? totalAmountDisplay;
+  String? totalAmountDiscount;
+  String? totalAmountFine;
+  String? totalAmountDisplay;
   String? totalAmountRemaining;
   String? status;
-  int? feesFineAmount;
+  String? feesFineAmount;
 
   TransportFees(
       {this.id,
@@ -285,13 +285,13 @@ class TransportFees {
     finePercentage = json['fine_percentage'];
     studentFeesDepositeId = json['student_fees_deposite_id'];
     amountDetail = json['amount_detail'];
-    totalAmountPaid = json['total_amount_paid'];
-    totalAmountDiscount = json['total_amount_discount'];
-    totalAmountFine = json['total_amount_fine'];
+    totalAmountPaid = json['total_amount_paid'].toString();
+    totalAmountDiscount = json['total_amount_discount'].toString();
+    totalAmountFine = json['total_amount_fine'].toString();
     totalAmountDisplay = json['total_amount_display'];
-    totalAmountRemaining = json['total_amount_remaining'];
+    totalAmountRemaining = json['total_amount_remaining'].toString();
     status = json['status'];
-    feesFineAmount = json['fees_fine_amount'];
+    feesFineAmount = json['fees_fine_amount'].toString();
   }
 
   Map<String, dynamic> toJson() {

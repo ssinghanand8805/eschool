@@ -25,8 +25,12 @@ class _AddComplaintPageState extends State<AddComplaintPage> {
     final pickedFile = await _picker.pickImage(source: source);
 
     if (pickedFile != null) {
-      controller.image.value = File(pickedFile.path);
+      controller.image.value = XFile(pickedFile.path);
     }
+    if (pickedFile != null) {
+      controller.updateImage(pickedFile);
+    }
+
   }
 
   getDate() async {
@@ -118,10 +122,18 @@ class _AddComplaintPageState extends State<AddComplaintPage> {
                         ),
                       ),
                       SizedBox(height: 16.0),
-                      Image.asset(
-                        'assets/projectImages/upload_file.jpg',
-                        height: 150,
-                      ), // Replace with your asset
+                      Obx(() {
+                        return controller.image.value == null
+                            ? Image.asset(
+                          'assets/projectImages/upload_file.jpg',
+                          height: 200,
+                          width: 200,
+                        )
+                            : Image.file(
+                          File(controller.image.value!.path),
+                          height: 150,
+                        );
+                      }),
                       SizedBox(height: 20),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -150,7 +162,7 @@ class _AddComplaintPageState extends State<AddComplaintPage> {
                           backgroundColor: Colors.green.shade400,
                         ),
                         onPressed: () {
-                          controller.saveData();
+                          controller.saveData(context);
                         },
                         child: Text("Submit"),
                       ),

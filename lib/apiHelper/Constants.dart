@@ -36,6 +36,8 @@ class Constants {
   static const String getGalleryDetailById = 'webservice/getGalleryDetailById';
   static const String addComplaintByStudent = 'webservice/addComplaintByStudent';
   static const String getComplainType = 'webservice/getComplainType';
+  static const String getComplaintByStudent = 'webservice/getComplaintByStudent';
+  static const String feesReceipt = 'webservice/feesReceipt';
 
 
 

@@ -64,10 +64,11 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
     return CommonCard(
         title: data.title!,
         newWidget: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(left: 8.0,bottom: 8),
           child: Column(
             children: [
               Html(
+
                 data: data.message!,
                 style: {
                   "body": Style(
@@ -78,7 +79,7 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
               ),
               Row(
                 children: [
-                  Image.asset("assets/projectImages/ic_nav_attendance.png",height: 20,),
+                  Image.asset("assets/projectImages/ic_nav_attendance.png",height: 18,),
                   SizedBox(
                     width: 10,
                   ),
@@ -100,7 +101,7 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
               ),
               Row(
                 children: [
-                  Image.asset("assets/projectImages/ic_calender.png",height: 20,),
+                  Image.asset("assets/projectImages/ic_calender.png",height: 18,),
                   SizedBox(
                     width: 10,
                   ),
@@ -122,7 +123,7 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
               ),
               Row(
                 children: [
-                  Image.asset("assets/projectImages/ic_nav_teachers.png",height: 20,),
+                  Image.asset("assets/projectImages/ic_nav_teachers.png",height: 18,),
                   SizedBox(
                     width: 10,
                   ),

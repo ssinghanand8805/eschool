@@ -290,7 +290,7 @@ class MyHomePage extends StatelessWidget {
                                         .copyWith(fontSize: 12),
                                     title: 'Gender',
                                     value: controller.profileModelObj.value!
-                                        .studentResult!.gender!,
+                                        .studentResult!.gender?? "",
                                   ),
                                   InfoRow(
                                     style: theme.textTheme.titleSmall!
