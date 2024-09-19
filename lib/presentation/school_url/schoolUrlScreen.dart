@@ -32,7 +32,7 @@ class _SchoolUrlState extends State<SchoolUrl> {
             SizedBox(
               width: double.infinity,
               height: size.height * 0.3,
-              child:  Image.asset('assets/projectImages/friendship.png') ,
+              child:  Image.asset('assets/images/LearnoLogo.png') ,
             ),
             Expanded(
               child: Container(

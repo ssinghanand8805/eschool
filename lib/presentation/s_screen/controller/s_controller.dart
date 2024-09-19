@@ -12,7 +12,7 @@ import '../models/s_model.dart';
 class SController extends GetxController {
   // Rx<SModel> sModelObj = SModel().obs;
   UserData userData = Get.put(UserData());
-  RxString splashScreenImage = "assets/projectImages/friendship.png".obs;
+  RxString splashScreenImage = "assets/images/LearnoLogo.png".obs;
   RxBool isSplashAsset = true.obs;
   RxString appName = "Lerno".obs;
   @override
