@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lerno/widgets/backgroundWidget.dart';
 
 
 import '../../widgets/cutomInputfeild.dart';
@@ -25,27 +26,29 @@ class _SchoolUrlState extends State<SchoolUrl> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xffEEF1F3),
-        body: Column(
-          children: [
-            SizedBox(
-              width: double.infinity,
-              height: size.height * 0.3,
-              child:  Image.asset('assets/images/LearnoLogo.png') ,
-            ),
-            Expanded(
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20),),
-                ),
-                child: SingleChildScrollView(
+      child: Backgroundwidget(
+        child: Scaffold(
+          backgroundColor: Colors.transparent, //
+          body: Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                height: size.height * 0.15,
+                child:  Image.asset('assets/images/LearnoLogo.png') ,
+              ),
+              Expanded(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    // color: Colors.white,
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(20),),
+                  ),
                   child: Form(
                     key: _forgetPasswordFormKey,
                     child: Column(
+                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const PageHeading(title: 'School Code',),
+                        const Spacer(),
+                       //const PageHeading(title: 'School Code',),
                         CustomInputField(
                           controller: controller.urlController.value,
                           labelText: "lbl_code".tr,
@@ -55,19 +58,21 @@ class _SchoolUrlState extends State<SchoolUrl> {
                               if(textValue == null || textValue.isEmpty) {
                                 return 'Code is required!';
                               }
-
+        
                               return null;
                             },
                         ),
-                        const SizedBox(height: 30,),
+        
+                        const Spacer(),
                         CustomFormButton(innerText: 'Submit', onPressed: _handleForgetPassword,),
+                        SizedBox(height: 30,)
                       ],
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

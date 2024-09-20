@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../theme/theme_helper.dart';
 
-class MainBody extends StatelessWidget {
+class MainBody extends StatelessWidget{
   final String label;
   final String imageUrl;
   final String AppbarTitle;
   final Widget widget;
   final List<Widget>? actionWidget;
   final Widget? floatingActionButton;
-
   const MainBody({
     Key? key,
     required this.label,
@@ -30,7 +29,6 @@ class MainBody extends StatelessWidget {
         title: Text(AppbarTitle,style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
       ),
       body: Container(
-
         decoration: BoxDecoration(
              color: Colors.white,
          borderRadius: BorderRadius.only(
@@ -48,8 +46,6 @@ class MainBody extends StatelessWidget {
                   label,
                style: theme.textTheme.titleLarge!.copyWith(     fontSize: 17.0,
                  fontWeight: FontWeight.w600,)
-
-
                 ),
                 Image.asset(
                   imageUrl,
@@ -58,13 +54,13 @@ class MainBody extends StatelessWidget {
                 ),
               ],
             ),
-
             Expanded(
               child: widget,
             ),
           ],
         ),
       ),
+
      floatingActionButton: floatingActionButton,
 
     );

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lerno/widgets/backgroundWidget.dart';
 
 import '../../widgets/cutomInputfeild.dart';
 import '../../widgets/cutomformbuttom.dart';
@@ -19,110 +20,111 @@ class LoginScreen extends GetWidget<LoginController> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xffEEF1F3),
-        body: Column(
-          children: [
-             PageHeader(),
-            Expanded(
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20),
-                  ),
-                ),
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        const PageHeading(
-                          title: 'Log-in',
-                        ),
-                        CustomInputField(
-                            controller: controller.idController,
-                            labelText: "lbl_username".tr,
-                            hintText: "lbl_username".tr,
-                            validator: (textValue) {
-                              if (textValue == null || textValue.isEmpty) {
-                                return 'Username is required!';
-                              }
-                              return null;
-                            }),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        CustomInputField(
-                          controller: controller.passwordController,
-                          hintText: "lbl_password".tr,
-                          labelText: "lbl_password".tr,
-                          obscureText: true,
-                          suffixIcon: true,
-                          validator: (textValue) {
-                            if (textValue == null || textValue.isEmpty) {
-                              return 'Password is required!';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CustomFormButton(
-                          innerText: 'Login',
-                          onPressed: (){
-                            _handleLoginUser(context);
-                          },
-                        ),
-                        const SizedBox(
-                          height: 18,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                    ElevatedButton(
-                  onPressed: () {
-                    print('Change School button pressed');
-                    controller.changeSchool();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:Color(0xff233743), // Blue color
-                    padding: EdgeInsets.symmetric(
-                        vertical: 25, horizontal: 25),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+      child: Backgroundwidget(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Column(
+            children: [
+               PageHeader(),
+              Expanded(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
                     ),
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.school,
-                        color: Colors.white,
-                        size: 20,
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          const PageHeading(
+                            title: 'Log-in',
+                          ),
+                          CustomInputField(
+                              controller: controller.idController,
+                              labelText: "lbl_username".tr,
+                              hintText: "lbl_username".tr,
+                              validator: (textValue) {
+                                if (textValue == null || textValue.isEmpty) {
+                                  return 'Username is required!';
+                                }
+                                return null;
+                              }),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          CustomInputField(
+                            controller: controller.passwordController,
+                            hintText: "lbl_password".tr,
+                            labelText: "lbl_password".tr,
+                            obscureText: true,
+                            suffixIcon: true,
+                            validator: (textValue) {
+                              if (textValue == null || textValue.isEmpty) {
+                                return 'Password is required!';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CustomFormButton(
+                            innerText: 'Login',
+                            onPressed: (){
+                              _handleLoginUser(context);
+                            },
+                          ),
+                          const SizedBox(
+                            height: 18,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                      ElevatedButton(
+                    onPressed: () {
+                      print('Change School button pressed');
+                      controller.changeSchool();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:Color(0xff233743), // Blue color
+                      padding: EdgeInsets.symmetric(
+                          vertical: 25, horizontal: 25),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      SizedBox(width: 8),
-                      Text(
-                        'Change School',
-                        style: TextStyle(
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.school,
                           color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          size: 20,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-
+                        SizedBox(width: 8),
+                        Text(
+                          'Change School',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
+                    ),
+                  ),
+
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-
-          ],
+        
+            ],
+          ),
         ),
       ),
     );
