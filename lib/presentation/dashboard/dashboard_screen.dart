@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import '../../apiHelper/userData.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
+import '../login_screen/chnagePassword.dart';
 import '../notifications/controller/NotificationController.dart';
 import 'controller/dashbord_controller.dart';
 // ignore_for_file: must_be_immutable
@@ -161,7 +162,7 @@ class DashboardScreen extends GetView<DashboardController> {
                     ),
                     title: Text(
                       'Home',
-                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 14)
+                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 13)
                     ),
                     onTap: () {},
                   ),
@@ -172,13 +173,29 @@ class DashboardScreen extends GetView<DashboardController> {
                     ),
                     title: Text(
                       'Profile',
-                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 14)
+                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 13)
                     ),
                     onTap: () {
                       /// Close Navigation drawer before
                       Navigator.pop(context);
                       Get.toNamed("/profile");
                       //Navigator.push(context, MaterialPageRoute(builder: (context) => FavouriteScreen()),);
+                    },
+                  ),
+
+                  ListTile(
+                    leading: Icon(
+                      Icons.password,
+                      size: 18,
+                    ),
+                    title: Text(
+                      'Change Password',
+                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 13)
+                    ),
+                    onTap: () {
+                      /// Close Navigation drawer before
+                      Navigator.pop(context);
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordScreen()),);
                     },
                   ),
                   ListTile(
@@ -188,7 +205,7 @@ class DashboardScreen extends GetView<DashboardController> {
                     ),
                     title: Text(
                       'About School',
-                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 14)
+                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 13)
                     ),
                     onTap: () {
                       Get.toNamed("/aboutSchool");
@@ -215,7 +232,7 @@ class DashboardScreen extends GetView<DashboardController> {
                     ),
                     title: Text(
                       'Logout',
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14)
+                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13)
                     ),
                     onTap: () {
                       controller.logOutDialog(context);

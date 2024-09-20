@@ -147,24 +147,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
                   print("jfnvjfnjvnfjvnfn${attendanceData}");
                  return Padding(
-                   padding: const EdgeInsets.all(5.0),
-                   child: Row(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     children: [
-
-                   Text(item['status'] ?? '',style: theme.textTheme.bodySmall!.copyWith(fontSize: 15)),
-                   Text(presentDays.toString(),style: theme.textTheme.bodySmall!.copyWith(fontSize: 15)),
-
-                    Container(
-                          width: 20,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: getAttendanceColor(item['status']),
-                          ),),
-
-                   ],),
+                   padding: const EdgeInsets.only(top: 15.0),
+                   child: StatusCard(
+                      color:getAttendanceColor(item['status']),
+                     count: presentDays.toString(),
+                     countBackgroundColor: getAttendanceColor(item['status']),
+                     label: item['status'] ?? '',
+                   )
                  );
 
 
@@ -184,22 +173,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
 
 
-  //
-  //   Container(
-  //   height: 30,
-  //   child: ListTile(
-  //     title: Text(item['status'] ?? '',style: theme.textTheme.bodySmall!.copyWith(fontSize: 15),),
-  //     // subtitle: Text(item['status'] ?? ''),
-  //     trailing: Container(
-  //       width: 20,
-  //       height: 20,
-  //       decoration: BoxDecoration(
-  //         shape: BoxShape.circle,
-  //         color: getAttendanceColor(item['status']),
-  //       ),
-  //     ),
-  //   ),
-  // );
+
   Color getAttendanceColor(String? status) {
     switch (status) {
       case 'Present':
@@ -215,6 +189,84 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       default:
         return Colors.transparent;
     }
+  }
+}
+
+
+class StatusCard extends StatelessWidget {
+  final String label;
+  final String count;
+  final Color color;
+  final Color countBackgroundColor;
+
+  StatusCard({
+    required this.label,
+    required this.count,
+    required this.color,
+    required this.countBackgroundColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0,right: 8),
+      child: Container(
+        height: 45,
+        decoration: BoxDecoration(
+          border: Border.all(color: color, width: 2),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Row(
+          children: [
+            // Left colored strip
+            Container(
+              height: 45, // Adjust height as per your requirement
+              width: 15,
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  bottomLeft: Radius.circular(12),
+                ),
+              ),
+            ),
+
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  label,
+                    style: theme.textTheme.titleLarge!.copyWith(fontSize: 13,fontWeight: FontWeight.w600)
+                ),
+              ),
+            ),
+
+            // Circular badge for count
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: countBackgroundColor,
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Text(
+                    count,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

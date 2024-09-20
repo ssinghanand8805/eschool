@@ -202,15 +202,12 @@ class DashboardController extends GetxController {
   }
 
   List eLearningImagesPath = [
-    "ic_onlinecourse.png",
+    "ic_briefcase.png",
     "ic_dashboard_homework.png",
     "ic_assignment.png",
     "ic_lessonplan.png",
     "ic_onlineexam.png",
     "ic_downloadcenter.png",
-    "ic_onlinecourse.png",
-    "ic_videocam.png",
-    "ic_videocam.png",
   ];
 
   List academicImages = [

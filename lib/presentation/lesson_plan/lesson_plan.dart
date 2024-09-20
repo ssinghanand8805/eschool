@@ -5,6 +5,7 @@ import 'package:lerno/presentation/common_widgets/CommonCard.dart';
 import 'package:lerno/presentation/common_widgets/MainBody.dart';
 
 import '../../theme/theme_helper.dart';
+import '../class_time_table/weekTab.dart';
 import '../common_widgets/CommonCardExtended.dart';
 import '../common_widgets/custom_loader.dart';
 import 'controller/lesson_plan_controller.dart';
@@ -30,41 +31,42 @@ class LessonPlanScreen extends GetWidget<LessonPlanController> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildTimeTableCard(
-                        title: 'Monday',
-                        day: controller
-                            .lessonPlanModelObj.value!.timetable!.monday!),
-                    _buildTimeTableCard(
-                        title: 'Tuesday',
-                        day: controller
-                            .lessonPlanModelObj.value!.timetable!.tuesday!),
-                    _buildTimeTableCard(
-                        title: 'Wednesday',
-                        day: controller.lessonPlanModelObj.value!.timetable!
-                            .wednesday!),
-                    _buildTimeTableCard(
-                        title: 'Thursday',
-                        day: controller.lessonPlanModelObj.value!.timetable!
-                            .thursday!),
-                    _buildTimeTableCard(
-                        title: 'Friday',
-                        day: controller
-                            .lessonPlanModelObj.value!.timetable!.friday!),
-                    _buildTimeTableCard(
-                        title: 'Saturday',
-                        day: controller.lessonPlanModelObj.value!.timetable!
-                            .saturday!),
-                    _buildTimeTableCard(
-                        title: 'Sunday',
-                        day: controller
-                            .lessonPlanModelObj.value!.timetable!.sunday!),
-                  ],
-                ),
-              );
+              return
+                Expanded(
+                  child: WeekTabScreen(
+                    tabTitles: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+                    tabContents: [
+                          _buildTimeTableCard(
+                              title: 'Monday',
+                              day: controller
+                                  .lessonPlanModelObj.value!.timetable!.monday!),
+                          _buildTimeTableCard(
+                              title: 'Tuesday',
+                              day: controller
+                                  .lessonPlanModelObj.value!.timetable!.tuesday!),
+                          _buildTimeTableCard(
+                              title: 'Wednesday',
+                              day: controller.lessonPlanModelObj.value!.timetable!
+                                  .wednesday!),
+                          _buildTimeTableCard(
+                              title: 'Thursday',
+                              day: controller.lessonPlanModelObj.value!.timetable!
+                                  .thursday!),
+                          _buildTimeTableCard(
+                              title: 'Friday',
+                              day: controller
+                                  .lessonPlanModelObj.value!.timetable!.friday!),
+                          _buildTimeTableCard(
+                              title: 'Saturday',
+                              day: controller.lessonPlanModelObj.value!.timetable!
+                                  .saturday!),
+                          _buildTimeTableCard(
+                              title: 'Sunday',
+                              day: controller
+                                  .lessonPlanModelObj.value!.timetable!.sunday!),
+                    ],
+                  ),
+                );
             }
           },
         );

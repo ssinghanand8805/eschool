@@ -243,11 +243,9 @@ class HomeworkTabContent extends GetWidget<HomeWorkController> {
       builder: (_) {
         return RefreshIndicator(
           onRefresh: () async {
-            // Implement your refresh logic here
-            print("Refresh Called");
             await controller
-                .fetchDataFutureForSubjects; // Example method to load data
-            await controller.fetchDataFuture; // Example method to load data
+                .fetchDataFutureForSubjects;
+            await controller.fetchDataFuture;
           },
           child: FutureBuilder(
             future: controller.fetchDataFuture,
