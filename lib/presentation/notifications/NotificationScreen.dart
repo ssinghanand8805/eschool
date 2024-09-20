@@ -32,6 +32,15 @@ class _NotificationScreenState extends State< NotificationScreen> {
       label: 'Notification\nLists',
       imageUrl: 'assets/projectImages/noticepage.png',
       AppbarTitle: 'Notification Lists',
+      actionWidget: [
+        Padding(
+          padding: const EdgeInsets.only(right: 18.0),
+          child: IconButton(onPressed: (){
+            _showConfirmationDialog( context);
+
+          }, icon: Icon(Icons.remove_red_eye_sharp,color: Colors.grey.shade600,size: 20,)),
+        )
+      ],
       widget: _buildChildWidget(),
     );
   }
@@ -92,6 +101,54 @@ class _NotificationScreenState extends State< NotificationScreen> {
               data:data.body!)),
     );
   }
-
+  void _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Text(
+            'Notice',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF1565C0),
+            ),
+          ),
+          content: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 400),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+            "This action will update your profile, but changes will only take effect if you modify your student information.",
+                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text(
+                'Close',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
 }
