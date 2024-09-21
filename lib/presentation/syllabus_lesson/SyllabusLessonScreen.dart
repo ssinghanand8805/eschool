@@ -62,13 +62,15 @@ class _SyllabusLessonScreenState extends State<SyllabusLessonScreen> {
   Widget _buildTimeTableCard({required SyllabusLesson data,required int sr}) {
     return CommonCardExtended(
         title: data.name!,
-        leadingWidget: Text(sr.toString(),style: TextStyle(fontSize: 15),),
+        leadingWidget: Text(sr.toString(),style:  theme.textTheme.titleMedium!.copyWith(fontSize: 13),),
         subtitle: data.totalComplete! + " Complete",
+        style:  theme.textTheme.titleMedium!.copyWith(fontSize: 13),
         newWidget: _buildTopicCard(topics : data.topics!,parentSr: sr.toString()));
   }
   Widget _buildTopicCard({required List<Topics> topics,required String parentSr }) {
    return  ListView.builder(
      shrinkWrap: true,
+     padding: EdgeInsets.all(5),
      physics: ClampingScrollPhysics(),
       itemCount: topics?.length ?? 0,
       itemBuilder: (context, index) {
@@ -76,12 +78,12 @@ class _SyllabusLessonScreenState extends State<SyllabusLessonScreen> {
           padding: const EdgeInsets.all(5.0),
           child: Row(
             children: [
-              Text(parentSr + "." + (index+1).toString(),style: theme.textTheme.titleMedium,),
+              Text(parentSr + "." + (index+1).toString(),style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),),
               Spacer(),
-              Text(topics[index].name!,style: theme.textTheme.titleMedium,),
+              Text(topics[index].name!,style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),),
               Spacer(),
               Text(
-                topics[index].completeDate == null ? "Incomplete" : topics[index].completeDate!,style: theme.textTheme.titleMedium,
+                topics[index].completeDate == null ? "Incomplete" : topics[index].completeDate!,style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),
 
               ),
             ],

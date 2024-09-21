@@ -20,7 +20,7 @@ class SchoolUrl extends StatefulWidget {
 
 class _SchoolUrlState extends State<SchoolUrl> {
 
-  final _forgetPasswordFormKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   SchoolUrlController controller = Get.put(SchoolUrlController());
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class _SchoolUrlState extends State<SchoolUrl> {
                     borderRadius: BorderRadius.vertical(top: Radius.circular(20),),
                   ),
                   child: Form(
-                    key: _forgetPasswordFormKey,
+                    key: formKey,
                     child: Column(
                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -64,7 +64,7 @@ class _SchoolUrlState extends State<SchoolUrl> {
                         ),
         
                         const Spacer(),
-                        CustomFormButton(innerText: 'Submit', onPressed: _handleForgetPassword,),
+                        CustomFormButton(innerText: 'Submit', onPressed: _handleSubmit,),
                         SizedBox(height: 30,)
                       ],
                     ),
@@ -78,9 +78,9 @@ class _SchoolUrlState extends State<SchoolUrl> {
     );
   }
 
-  void _handleForgetPassword() {
+  void _handleSubmit() {
 
-    if (_forgetPasswordFormKey.currentState!.validate()) {
+    if (formKey.currentState!.validate()) {
       controller.getData(context);
     }
   }

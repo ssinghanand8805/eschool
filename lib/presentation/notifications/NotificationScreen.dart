@@ -38,7 +38,7 @@ class _NotificationScreenState extends State< NotificationScreen> {
           child: IconButton(onPressed: (){
             _showConfirmationDialog( context);
 
-          }, icon: Icon(Icons.remove_red_eye_sharp,color: Colors.grey.shade600,size: 20,)),
+          }, icon: Icon(Icons.info,color: Colors.grey.shade600,size: 20,)),
         )
       ],
       widget: _buildChildWidget(),

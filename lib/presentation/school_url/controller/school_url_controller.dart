@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:lerno/apiHelper/userData.dart';
+import 'package:lerno/presentation/common_widgets/custom_loader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../apiHelper/Constants.dart';
@@ -88,6 +89,19 @@ class SchoolUrlController extends GetxController {
     print("PPPPP");
     var httpClient = HttpClient();
     try {
+
+      showDialog(
+        context: context,
+        barrierDismissible: false, // Prevent closing the dialog
+        builder: (BuildContext context) {
+          return Center(
+            child:  CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.green), // Changed to blueAccent for a more vibrant color
+            ),
+          );
+        },
+      );
+
       String baseUrl = await getSchoolUrl(urlController.value.text.toString());
      // String baseUrl = urlController.value.text.toString()!.endsWith("/") ? urlController.value.text.toString().toString() : urlController.value.text.toString().toString() + "/";
       // Define the Uri. Replace 'https://example.com/api' with your API endpoint.
@@ -143,12 +157,13 @@ class SchoolUrlController extends GetxController {
 
 
 
-
+            Navigator.of(context, rootNavigator: true).pop();
 
             Get.offNamed(
               AppRoutes.sScreen,
             );
           } else {
+            Navigator.of(context, rootNavigator: true).pop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: Colors.green.shade100,
@@ -164,6 +179,7 @@ class SchoolUrlController extends GetxController {
         }
       else
         {
+          Navigator.of(context, rootNavigator: true).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.green.shade100,
@@ -173,6 +189,8 @@ class SchoolUrlController extends GetxController {
         }
 
     } catch (e) {
+
+      Navigator.of(context, rootNavigator: true).pop();
       print("Error occurred: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

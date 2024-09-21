@@ -1,7 +1,7 @@
 class Profile {
   StudentResult? studentResult;
   StudentFields? studentFields;
-  List<dynamic>? customFields;
+  dynamic customFields;
 
   Profile({this.studentResult, this.studentFields, this.customFields});
 
@@ -9,8 +9,8 @@ class Profile {
     studentResult = json['student_result'] != null ? new StudentResult.fromJson(json['student_result']) : null;
     studentFields = json['student_fields'] != null ? new StudentFields.fromJson(json['student_fields']) : null;
     if (json['custom_fields'] != null) {
-      customFields = <dynamic>[];
-      json['custom_fields'].forEach((v) { customFields!.add( v); });
+      customFields = json['custom_fields'];
+      //json['custom_fields'].forEach((v) { customFields!.add( v); });
     }
   }
 

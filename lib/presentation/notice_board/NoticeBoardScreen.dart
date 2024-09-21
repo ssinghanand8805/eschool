@@ -45,11 +45,16 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
                           data:
                               controller.noticeBoardModelObj.value.data![index],
                         )
-                      : Center(
-                          child: Image.asset(
-                          "assets/projectImages/no_data.png",
-                          height: 100,
-                        ));
+                      :Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/projectImages/no_data.png",
+                          ),
+                          Text("No data found!")
+                        ],
+                      ));
                 },
               );
               ;

@@ -17,6 +17,8 @@ import '../presentation/hostel_rooms/hostel_room_view.dart';
 import '../presentation/library/bindings/library.dart';
 import '../presentation/library/library_view.dart';
 import '../presentation/notifications/binding/NotificationBinding.dart';
+import '../presentation/schoolNews/bindings/schoolNews.dart';
+import '../presentation/schoolNews/schoolNews_view.dart';
 import '../presentation/school_url/bindings/school_url_binding.dart';
 import '../presentation/student_timeline/bindings/student_timeline.dart';
 import '../presentation/student_timeline/student_timeline_view.dart';
@@ -322,6 +324,10 @@ class AppRoutes {
       name: complaint,
       page: () => ComplaintsPage(),
       bindings: [ComplaintBinding()],
+    ),  GetPage(
+      name: schoolnews,
+      page: () => SchoolNewsPage(),
+      bindings: [SchoolNewsPageBinding()],
     ),
   ];
 }

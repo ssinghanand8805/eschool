@@ -52,10 +52,15 @@ class _SyllabuStatusScreenState extends State<SyllabuStatusScreen> {
                               .syllabusStatusModelObj.value.subjects![index],
                         )
                       : Center(
-                          child: Image.asset(
-                          "assets/projectImages/no_data.png",
-                          height: 100,
-                        ));
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/projectImages/no_data.png",
+                          ),
+                          Text("No data found!")
+                        ],
+                      ));
                 },
               );
               ;

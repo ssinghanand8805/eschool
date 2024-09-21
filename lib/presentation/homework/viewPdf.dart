@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+import '../../apiHelper/GlobalData.dart';
+
 class DocumentViewerScreen extends StatefulWidget {
   final String documentUrl;
 
@@ -20,7 +22,7 @@ class DocumentViewerScreen extends StatefulWidget {
 class _DocumentViewerScreenState extends State<DocumentViewerScreen> {
   bool _isLoading = true;
   bool _isPdf = false;
-
+  String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
   @override
   void initState() {
     super.initState();
@@ -99,8 +101,8 @@ class _DocumentViewerScreenState extends State<DocumentViewerScreen> {
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : _isPdf
-          ? SfPdfViewer.network(widget.documentUrl)
-          : Image.network(widget.documentUrl),
+          ? SfPdfViewer.network("$baseUrlFromPref${widget.documentUrl}")
+          : Image.network("$baseUrlFromPref${widget.documentUrl}"),
     );
   }
 }

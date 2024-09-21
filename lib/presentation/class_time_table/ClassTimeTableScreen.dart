@@ -171,23 +171,19 @@ Widget _buildScheduleRow(Day schedule) {
 }
 
 Widget _buildNoDataWidget() {
-  return Card(
-    margin: const EdgeInsets.all(8.0),
-    child: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/projectImages/no_data.png",
-            height: 80,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'No data found!',
-            style: theme.textTheme.titleMedium,
-          )
-        ],
-      ),
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          "assets/projectImages/no_data.png",
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'No data found!',
+          style: theme.textTheme.titleMedium,
+        )
+      ],
     ),
   );
 }

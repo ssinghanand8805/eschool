@@ -102,11 +102,14 @@ class DashboardScreen extends GetView<DashboardController> {
                       child: Row(
                         children: [
                           userData.getIsUserImage
-                              ? CircleAvatar(
+                              ?
+
+                          CircleAvatar(
                                   radius: 30,
                                   backgroundColor: Colors.orange,
                                   backgroundImage: NetworkImage(
                                       userData.getUserImage.toString()),
+
                                 )
                               : CircleAvatar(
                                   radius: 30,
@@ -121,9 +124,14 @@ class DashboardScreen extends GetView<DashboardController> {
                             padding: const EdgeInsets.only(top: 18.0),
                             child: Column(
                               children: [
-                                Text(
-                                  userData.getUserStudentName,
-                                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                                InkWell(
+                                  onTap: (){
+                                    print( userData.getUserImage.toString());
+                                  },
+                                  child: Text(
+                                    userData.getUserStudentName,
+                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                                  ),
                                 ),
                                 Text(
                                   userData.getUserClassSection,

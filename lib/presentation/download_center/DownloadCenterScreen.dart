@@ -126,25 +126,29 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
               if (snapshot.connectionState != ConnectionState.done) {
                 return CustomLoader(); // CustomLoader();
               } else {
-                return ListView.builder(
-                  itemCount: controller.downloadModelObj.length ?? 0,
-                  itemBuilder: (context, index) {
-                    print(
-                        "##############${controller.downloadModelObj[index]}");
-                    return controller.downloadModelObj.length > 0
-                        ? _buildDownloadItem(
+                return controller.downloadModelObj.length > 0
+                    ? ListView.builder(
+                        itemCount: controller.downloadModelObj.length ?? 0,
+                        itemBuilder: (context, index) {
+                          print(
+                              "##############${controller.downloadModelObj[index]}");
+                          return _buildDownloadItem(
                             data: controller.downloadModelObj[index],
                             uploadContents: controller.downloadModelObj.subject
                                 .value![index].uploadContents!,
-                          )
-                        : Center(
-                            child: Image.asset(
+                          );
+                        },
+                      )
+                    : Center(
+                        child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
                             "assets/projectImages/no_data.png",
-                            height: 100,
-                          ));
-                  },
-                );
-                ;
+                          ),
+                          Text("No data found!")
+                        ],
+                      ));
               }
             },
           ),
@@ -178,15 +182,15 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                         },
                       )
                     : Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/projectImages/no_data.png",
-                        ),
-                        Text("No data found!")
-                      ],
-                    ));
+                        child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/projectImages/no_data.png",
+                          ),
+                          Text("No data found!")
+                        ],
+                      ));
               }
             },
           ),
@@ -234,8 +238,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.network(
-                    baseUrlFromPref + data.dirPath! + data.imgName!,
+                Image.network(baseUrlFromPref + data.dirPath! + data.imgName!,
                     fit: BoxFit.cover),
                 SizedBox(
                   height: 10,
@@ -297,12 +300,14 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                 style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                 style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                 title: "Share Date",
-                value:"${ Utils.formatDateString(data.shareDate!.toString())}"),
+                value: "${Utils.formatDateString(data.shareDate!.toString())}"),
             InfoRow(
                 style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                 style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                 title: "Valid Upto",
-                value: data.validUpto != null? Utils.formatDateString("${data.validUpto!}"):""),
+                value: data.validUpto != null
+                    ? Utils.formatDateString("${data.validUpto!}")
+                    : ""),
             InfoRow(
                 style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                 style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
@@ -312,10 +317,10 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                 style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                 style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                 title: "Upload Date",
-                value:Utils.formatDateString("${data.createdAt!}")+" ${formattedTime}"),
+                value: Utils.formatDateString("${data.createdAt!}") +
+                    " ${formattedTime}"),
             customDownloadButton(
               onPressed: () {
-
                 showDynamicBottomSheet(context, data: uploadContents!);
               },
               backgroundColor: Colors.blue,
@@ -388,9 +393,15 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                     ),
                   ))
                 : Center(
-                    child: Image.asset(
-                    "assets/projectImages/no_data.png",
-                  ));
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/projectImages/no_data.png",
+                    ),
+                    Text("No data found!")
+                  ],
+                ));
           },
         );
       },

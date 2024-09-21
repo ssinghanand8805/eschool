@@ -150,7 +150,6 @@ class LessonPlanScreen extends GetWidget<LessonPlanController> {
                 children: [
                   Image.asset(
                     "assets/projectImages/no_data.png",
-                    height: 80,
                   ),
                   Text(
                     'No data found!',

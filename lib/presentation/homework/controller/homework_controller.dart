@@ -18,27 +18,30 @@ import '../model/StudentSubjects.dart';
 /// current loginModelObj
 class HomeWorkController extends GetxController {
   UserData userData = Get.put(UserData());
-  ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
+  ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   RxString currentSelectedSubejectId = "0".obs;
   RxString status = "pending".obs;
   Rx<Homework> homeworkModelObj = Homework().obs;
   Rx<StudentSubjects> studentSubjectsModelObj = StudentSubjects().obs;
   Rx<Subjectlist> currentSelectedSubject = Subjectlist().obs;
   late Future<void> fetchDataFuture;
+  RxBool isLoading = false.obs;
   late Future<void> fetchDataFutureForSubjects;
   late TabController tabController;
   @override
   void onClose() {
     super.onClose();
-
   }
+
   @override
   void onInit() {
     super.onInit();
     fetchDataFuture = getData();
-    fetchDataFutureForSubjects = getSubjects(); // Initialize the future when the controller is created
-   // Initialize the future when the controller is created
+    fetchDataFutureForSubjects =
+        getSubjects(); // Initialize the future when the controller is created
+    // Initialize the future when the controller is created
   }
+
   // @override
   // void initState() {
   //   studentSubjectsModelObj.value
@@ -53,23 +56,18 @@ class HomeWorkController extends GetxController {
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != selectedDate)
-
-        selectedDate.value = picked;
+    if (picked != null && picked != selectedDate) selectedDate.value = picked;
     getData(selectedDate: selectedDate.value);
-  update();
+    update();
   }
 
-  Future<void> getSubjects()async{
-    Map<String,dynamic> body = await {
-      "student_id" : userData.getUserStudentId };
-
-      var data  = await apiRespository.postApiCallByJson(Constants.getstudentsubjectUrl, body);
-    //
-    //
+  Future<void> getSubjects() async {
+    Map<String, dynamic> body = await {"student_id": userData.getUserStudentId};
+    var data = await apiRespository.postApiCallByJson(
+        Constants.getstudentsubjectUrl, body);
     print("DATA @@@@ ${data.body}");
     studentSubjectsModelObj.value = StudentSubjects.fromJson(data.body);
-   var newSubjet = await  Subjectlist(
+    var newSubjet = await Subjectlist(
       subjectGroupSubjectsId: "0",
       subjectGroupClassSectionsId: "0",
       name: "All",
@@ -78,12 +76,11 @@ class HomeWorkController extends GetxController {
     );
     studentSubjectsModelObj.value.subjectlist!.insert(0, newSubjet);
     print("*****${studentSubjectsModelObj.value.toJson()}");
-    // Map<dynamic, dynamic> jsonData = data.body;//json.decode(data.body);
-
-
   }
+
   Future<void> getData({DateTime? selectedDate}) async {
-    String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(selectedDate != null ? selectedDate : DateTime.now());
+    String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(
+        selectedDate != null ? selectedDate : DateTime.now());
 
     Map<String, dynamic> body = {
       "student_id": userData.getUserStudentId,
@@ -96,30 +93,15 @@ class HomeWorkController extends GetxController {
 
     print("Body @@@@ $body");
 
-    var data = await apiRespository.postApiCallByJson(Constants.getHomeworkUrl, body);
+    var data =
+        await apiRespository.postApiCallByJson(Constants.getHomeworkUrl, body);
 
     print("DATA @@@@ ${data.body}");
 
     homeworkModelObj.value = Homework.fromJson(data.body);
     print("homework data ${homeworkModelObj.value.toJson()}");
     update();
-    // Optional: If you need to filter homework based on the date
-    /*
-  if (homeworkModelObj.value.homeworklist != null && selectedDate != null) {
-    homeworkModelObj.value.homeworklist = homeworkModelObj.value.homeworklist!
-        .where((homework) =>
-    homework.homeworkDate == formattedDate) // Compare the string format
-        .toList();
-    update();
   }
-  */
-
-    print("Filtered homework list: ${homeworkModelObj.value.homeworklist}");
-    // update();
-  }
-
-
-
 
   // Future<void> getData() async
   // {

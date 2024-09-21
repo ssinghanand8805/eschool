@@ -7,21 +7,22 @@ import '../common_widgets/CommonCardExtended.dart';
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
 import '../homework/HomeworkScreen.dart';
-import 'controller/library_controller.dart';
+import 'controller/schoolNews_controller.dart';
+import 'model/IssuedBook.dart';
 
-class LibraryPage extends StatefulWidget {
+class SchoolNewsPage extends StatefulWidget {
   @override
-  State<LibraryPage> createState() => _LibraryPageState();
+  State<SchoolNewsPage> createState() => _SchoolNewsPageState();
 }
 
-class _LibraryPageState extends State<LibraryPage> {
-  LibraryController controller = Get.put(LibraryController());
+class _SchoolNewsPageState extends State<SchoolNewsPage> {
+  schoolNewsController controller = Get.put(schoolNewsController());
   @override
   Widget build(BuildContext context) {
     return MainBody(
-      label: 'Your Issued\nBook is Here!',
-      imageUrl: 'assets/projectImages/librarypage.jpg',
-      AppbarTitle: 'Book Issued',
+      label: 'Your School\nNews is Here!',
+      imageUrl: 'assets/projectImages/noticepage.png',
+      AppbarTitle: 'School News',
       widget: _buildChildWidget(),
     );
   }
@@ -33,36 +34,47 @@ class _LibraryPageState extends State<LibraryPage> {
         return FutureBuilder(
           future: controller.fetchDataFuture, //controller.getData(context),
           builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return CustomLoader(); // CustomLoader();
-            } else {
-              return controller.issuedBookModelObj.value!.length > 0
-                  ? ListView.builder(
-                      itemCount:
-                          controller.issuedBookModelObj.value?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        return _buildTimeTableCard(
-                            data: controller.issuedBookModelObj.value![index]);
-                      },
-                    )
-                  : Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/projectImages/no_data.png",
-                      ),
-                      Text("No data found!")
-                    ],
-                  ));
-            }
+
+            return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/projectImages/no_data.png",
+                    ),
+                    Text("No data found!")
+                  ],
+                ));
+            // if (snapshot.connectionState != ConnectionState.done) {
+            //   return CustomLoader(); // CustomLoader();
+            // } else {
+            //   return controller.issuedBookModelObj.value!.length > 0
+            //       ? ListView.builder(
+            //           itemCount:
+            //               controller.issuedBookModelObj.value?.length ?? 0,
+            //           itemBuilder: (context, index) {
+            //             return _buildTimeTableCard(
+            //                 data: controller.issuedBookModelObj.value![index]);
+            //           },
+            //         )
+            //       : Center(
+            //       child: Column(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           Image.asset(
+            //             "assets/projectImages/no_data.png",
+            //           ),
+            //           Text("No data found!")
+            //         ],
+            //       ));
+            // }
           },
         );
       },
     );
   }
 
-  Widget _buildTimeTableCard({required IssuedBook data}) {
+  Widget _buildTimeTableCard({required SchoolNews data}) {
     print("object${data.isReturned.toString()}");
     return CommonCardExtended(
         style: TextStyle(
@@ -76,7 +88,7 @@ class _LibraryPageState extends State<LibraryPage> {
         newWidget: _buildLeaveCard(data: data));
   }
 
-  Widget _buildLeaveCard({required IssuedBook data}) {
+  Widget _buildLeaveCard({required SchoolNews data}) {
     return Column(
       children: [
         InfoRow(

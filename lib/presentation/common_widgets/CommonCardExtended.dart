@@ -54,7 +54,7 @@ Widget CommonCardExtended(
                   child: Text(
                     title,
                     style: theme.textTheme.titleMedium!
-                        .copyWith(fontWeight: FontWeight.w600, fontSize: 14),
+                        .copyWith(fontWeight: FontWeight.w600, fontSize: 13),
                   ),
                 ),
                 Spacer(),
@@ -62,7 +62,7 @@ Widget CommonCardExtended(
                   subtitle ?? '',
                   style: style == false
                       ? theme.textTheme.titleMedium!
-                          .copyWith(fontWeight: FontWeight.w600, fontSize: 14)
+                          .copyWith(fontWeight: FontWeight.w600, fontSize: 13)
                       : style,
                 ),
               ],

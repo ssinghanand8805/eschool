@@ -60,9 +60,14 @@ class _ClassTimeTableScreenState extends State<FeesReceiptScreen> {
                     controller.feesReceiptModalObj.value.receipt![index],
                   )
                       : Center(
-                      child: Image.asset(
-                        "assets/projectImages/no_data.png",
-                        height: 100,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/projectImages/no_data.png",
+                          ),
+                          Text("No data found!")
+                        ],
                       ));
                 },
               );
