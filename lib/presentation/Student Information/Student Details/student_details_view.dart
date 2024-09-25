@@ -69,7 +69,7 @@ class StudentDetailsView extends GetView<StudentDetailsController>{
                           {
 
 
-                            controller.commonApiController.selectedSectionId.value = val['id'].toString();
+                            controller.commonApiController.selectedSectionId.value = val['section_id'].toString();
                             controller.commonApiController.selectedSectionName.value = val['section'].toString();
 
                             controller.commonApiController.update();
