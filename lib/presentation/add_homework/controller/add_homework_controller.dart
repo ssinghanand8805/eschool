@@ -5,6 +5,7 @@ import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:intl/intl.dart';
 import '../../../../apiHelper/Constants.dart';
 import '../../../../apiHelper/popular_product_repo.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/userData.dart';
 import '../../attendance_bydate/model/AttendanceByDate.dart';
 import '../DataModal/close_homework_modal.dart';
@@ -175,14 +176,13 @@ class AddHomeWorkController extends GetxController {
     )..addAll(_kEventSource.value);
     DateTime now = DateTime.now();
 
-    getDataFromApi( now);// Initialize the future when the controller is created
+  //  getDataFromApi( now);// Initialize the future when the controller is created
   }
 
   getDataFromApi(DateTime now)
   {
-    String year = DateFormat('yyyy').format(now);  // Extracts the year as "2024"
-    String month = DateFormat('MM').format(now);
-    fetchDataFuture = getData(year,month);
+
+    fetchDataFuture = getData(now);
   }
   setMonthAndYear()
   {
@@ -190,8 +190,11 @@ class AddHomeWorkController extends GetxController {
     month.value = "";
     update();
   }
-  Future<void> getData(String year,String month) async
+  Future<void> getData(DateTime dateTime) async
   {
+    String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(
+        dateTime != null ? dateTime : DateTime.now());
+
     Map<String,dynamic> body = {
       "student_id" : userData.getUserStudentId,
       "year":year,

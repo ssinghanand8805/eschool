@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/widgets/customTextField.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/myCustomsd.dart';
+import '../../apiHelper/GlobalData.dart';
 import '../../widgets/button.dart';
 import '../../widgets/custom_button.dart';
 import '../common_widgets/controller/CommonApiController.dart';
@@ -116,7 +117,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                                 if (commonApiController.sectionListModelMap
                                     .value.length > 0) {
                                   commonApiController.selectedSectionId.value =
-                                      val['id'].toString();
+                                      val['section_id'].toString();
                                   commonApiController.selectedSectionName
                                       .value = val['section'].toString();
                                   commonApiController.update();
@@ -396,7 +397,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                                     if (commonApiController.sectionListModelMap
                                         .value.length > 0) {
                                       commonApiController.selectedSectionId
-                                          .value = val['id'].toString();
+                                          .value = val['section_id'].toString();
                                       commonApiController.selectedSectionName
                                           .value = val['section'].toString();
                                       commonApiController.update();
@@ -494,9 +495,8 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                                       final date = await controller.getDate(
                                           context);
                                       if (date != null) {
-                                        controller.homeWorkDate.value.text =
-                                            DateFormat('dd/MM/yyyy').format(
-                                                date);
+                                        String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                                        controller.homeWorkDate.value.text =formattedDate;
                                         print("@@@@@@@@ " +
                                             controller.homeWorkDate.value.text);
                                       }
@@ -541,9 +541,8 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                                         final date = await controller.getDate(
                                             context);
                                         if (date != null) {
-                                          controller.submissionDate.value.text =
-                                              DateFormat('dd/MM/yyyy').format(
-                                                  date);
+                                          String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                                          controller.submissionDate.value.text = formattedDate;
                                         }
                                       },
                                     ),
@@ -555,41 +554,6 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                         ),
 
 
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding:
-                              EdgeInsets.only(left: 4.0, bottom: 4, top: 3),
-                              child: Text('Max Mark',
-                                  style: theme.textTheme.bodySmall!
-                                      .copyWith(fontSize: 14)),
-                            ),
-                            Container(
-                              height: 40,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.green.shade50,
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              child: TextField(
-                                controller: controller.maxMark.value,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 10.0, vertical: 12),
-                                  hintText: 'reason',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  border: OutlineInputBorder(),
-                                ),
-                                onTap: () {
-                                  // Show date picker for apply date
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
                         SizedBox(
                           height: 150,
                           child: HtmlEditor(

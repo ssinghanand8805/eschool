@@ -1,6 +1,7 @@
 
 
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:learnladderfaculity/apiHelper/popular_product_repo.dart';
 import 'package:learnladderfaculity/presentation/login_screen/models/userDataModal.dart';
@@ -131,142 +132,201 @@ class UserData extends GetxController {
 
 
     // let chek for password change and new device token
-    if(getLastUserId != "" && getLastUserPwd != "")
-      {
-        loginApi();
-      }
-    else
-      {
-
-      }
-
+    // if(getLastUserId != "" && getLastUserPwd != "")
+    //   {
+    //     loginApi();
+    //   }
+    // else
+    //   {
+    //
+    //   }
+    loginApi();
 
   }
 
-  loginApi()async{
+
+
+  loginApi() async {
     ApiRespository apiRespository = await ApiRespository(apiClient:Get.find());
     final prefs = await SharedPreferences.getInstance();
-
-    // Write all data to SharedPreferences
     var deviceTokenFromPref = await prefs.getString('currentDeviceToken');
-    Map<String,dynamic> body = {
-      "username" : getLastUserId,
-      "password" : getLastUserPwd,
-      "deviceToken" : deviceTokenFromPref
+    Map<String, dynamic> body = {
+      "username": getLastUserId,
+      "password": getLastUserPwd,
+      "deviceToken": deviceTokenFromPref
     };
-    print("********************${body}");
-    var data  = await apiRespository.postApiCallByJson(Constants.authUrl, body);
 
+    var data = await apiRespository.postApiCallByJson(Constants.authUrl, body);
 
-    print("DATA @@@##################ss@ ${data.body}");
-    //UsersData usersData = UsersData.fromJson(data.body);
-    Map<dynamic, dynamic> jsonData1 = data.body;//json.decode(data.body);
-    if(jsonData1["status"].toString() == "1")
-    {
-      UserData usersData = UserData();
-      usersData.addLastUserId(getLastUserId);
-      usersData.addLastUserPwd(getLastUserPwd);
-      usersData.addRole(jsonData1["role"].toString());
-      usersData.addUserId(jsonData1["id"].toString());
-      usersData.addAccessToken(jsonData1["token"].toString());
+    print("DATA @@@@ ${data.body}");
+    if(data.body is bool) {
 
-      Map<dynamic, dynamic> jsonData = data.body['record'];
-      String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
-      usersData.addSchoolName(jsonData["sch_name"].toString());
-      usersData.addCurrency_symbol(jsonData["currency_symbol"].toString());
-      usersData.addCurrency_short_name(jsonData["currency_short_name"].toString());
-      usersData.addStart_week(jsonData["startWeek"].toString());
-      usersData.addStudent_session_id(jsonData["student_session_id"].toString());
-      String imgUrl = baseUrlFromPref + jsonData["image"].toString();
-      bool isUserImage = (jsonData["image"].toString() == "null" || jsonData["image"].toString() == "" || jsonData["image"] == null) ? false : true;
-      print("**********${jsonData["image"].toString()}");
-      usersData.addIsUserImage(isUserImage);
-      usersData.addUserImage(imgUrl);
-      usersData.addUsername(jsonData["username"].toString());
-      Map<dynamic, dynamic> recordData = jsonData;//json.decode(jsonData["record"]);
-      if(jsonData1["role"].toString() == "parent")
+      final prefs = await SharedPreferences.getInstance();
+      prefs.clear();
+      Get.toNamed('/s_screen');
+
+      print('login failed:::::::::');
+      return;
+    }
+    else
       {
-        List<dynamic> childArray = recordData['parent_childs'];
-        if(childArray.length == 1)
+        Faculity fac = Faculity.fromJson(data.body);
+        // UserData usersData = UserData();
+        saveFaculity(fac);
+        if(fac.roles!.roleId.toString() == '7')
         {
-          usersData.addUserIsLoggedIn(true);
-          usersData.addUserHasMultipleChild(false);
-          var firstChild = childArray[0];//json.decode(childArray[0]);
-          usersData.addUserStudentId(firstChild["student_id"]);
-          usersData.addUserClassSection(firstChild["class"] + " - " + firstChild["section"]);
-          usersData.addUserStudentName(firstChild["name"]);
-          ///navigate here to dashboard
-         return true;
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => DashboardScreen()),
-          // );
+          //superadmin found no restriction
+          //navigate to dashboard
+          Get.toNamed(AppRoutes.formScreen);
         }
         else
         {
-          List<String> childNameList = [];
-          List<String> childIdList = [];
-          List<String> childImageList = [];
-          List<String> childClassList = [];
-          for (int i = 0; i<childArray.length; i++) {
-            String name = childArray[i]["name"];
-            childNameList.add(name);
-            String id = childArray[i]["student_id"];
-            childIdList.add(id);
-            String image = childArray[i]["image"];
-            childImageList.add(image);
-            String clss = childArray[i]["className"] + " - " + childArray[i]["section"];
-            childClassList.add(clss);
-          }
-          usersData.addUserHasMultipleChild(true);
-          print('child name List:::::::::');
-          print(childNameList);
-          print('child name List:::::::::');
-          /// show Child List here
-          ///
-          return true;
+          Get.toNamed(AppRoutes.formScreen);
+          //check permission wise and navigate to dashboard
         }
-
-      }
-      else if(jsonData1["role"] == "student")
-      {
-        usersData.addUserIsLoggedIn(true);
-        usersData.addUserStudentId(recordData["student_id"]);
-        usersData.addUserClassSection(recordData["className"] + " - " + recordData["section"]);
-        usersData.addUserAdmissionNo(recordData["admission_no"]);
-        ///checking for profile lock
-        Map<String,dynamic> body2 = { "student_id" : usersData.getUserStudentId };
-        var data  = await apiRespository.postApiCallByJson("webservice/lock_student_panel", body2);
-        print('start profile lock data:::::::::');
-        print(data);
-        print('end profile lock data:::::::::');
-        usersData.saveAllDataToSharedPreferences();
       }
 
-      update();
-     return true;
-
-    }
-    else
-    {
-
-        final prefs = await SharedPreferences.getInstance();
-        prefs.clear();
-        Get.toNamed('/s_screen');
-
-      print('login failed:::::::::');
-    }
-
-    //print("DATA USING DATA MODEL ${usersData.role}");
-    // userData.saveData("userData", usersData);
-    //  print("GET USER DATA ${userData.getData("userData",)}");
 
 
-
-    // Get.to( AppRoutes.teacherLoginScreen);
 
 
   }
+
+
+  // loginApi()async{
+  //   ApiRespository apiRespository = await ApiRespository(apiClient:Get.find());
+  //   final prefs = await SharedPreferences.getInstance();
+  //
+  //   // Write all data to SharedPreferences
+  //   var deviceTokenFromPref = await prefs.getString('currentDeviceToken');
+  //   Map<String,dynamic> body = {
+  //     "username" : getLastUserId,
+  //     "password" : getLastUserPwd,
+  //     "deviceToken" : deviceTokenFromPref
+  //   };
+  //   print("********************${body}");
+  //   var data  = await apiRespository.postApiCallByJson(Constants.authUrl, body);
+  //
+  //
+  //   print("DATA @@@##################ss@ ${data.body}");
+  //   //UsersData usersData = UsersData.fromJson(data.body);
+  //   if(data.body is bool)
+  //     {
+  //       final prefs = await SharedPreferences.getInstance();
+  //       prefs.clear();
+  //       Get.toNamed('/s_screen');
+  //
+  //       print('login failed:::::::::');
+  //       return;
+  //     }
+  //   Map<dynamic, dynamic> jsonData1 = data.body;//json.decode(data.body);
+  //   print(jsonData1);
+  //   if(jsonData1["id"] != null)
+  //   {
+  //     UserData usersData = UserData();
+  //     usersData.addLastUserId(getLastUserId);
+  //     usersData.addLastUserPwd(getLastUserPwd);
+  //     usersData.addRole(jsonData1["role"].toString());
+  //     usersData.addUserId(jsonData1["id"].toString());
+  //     usersData.addAccessToken(jsonData1["token"].toString());
+  //
+  //     Map<dynamic, dynamic> jsonData = data.body['record'];
+  //     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
+  //     usersData.addSchoolName(jsonData["sch_name"].toString());
+  //     usersData.addCurrency_symbol(jsonData["currency_symbol"].toString());
+  //     usersData.addCurrency_short_name(jsonData["currency_short_name"].toString());
+  //     usersData.addStart_week(jsonData["startWeek"].toString());
+  //     usersData.addStudent_session_id(jsonData["student_session_id"].toString());
+  //     String imgUrl = baseUrlFromPref + jsonData["image"].toString();
+  //     bool isUserImage = (jsonData["image"].toString() == "null" || jsonData["image"].toString() == "" || jsonData["image"] == null) ? false : true;
+  //     print("**********${jsonData["image"].toString()}");
+  //     usersData.addIsUserImage(isUserImage);
+  //     usersData.addUserImage(imgUrl);
+  //     usersData.addUsername(jsonData["username"].toString());
+  //     Map<dynamic, dynamic> recordData = jsonData;//json.decode(jsonData["record"]);
+  //     if(jsonData1["role"].toString() == "parent")
+  //     {
+  //       List<dynamic> childArray = recordData['parent_childs'];
+  //       if(childArray.length == 1)
+  //       {
+  //         usersData.addUserIsLoggedIn(true);
+  //         usersData.addUserHasMultipleChild(false);
+  //         var firstChild = childArray[0];//json.decode(childArray[0]);
+  //         usersData.addUserStudentId(firstChild["student_id"]);
+  //         usersData.addUserClassSection(firstChild["class"] + " - " + firstChild["section"]);
+  //         usersData.addUserStudentName(firstChild["name"]);
+  //         ///navigate here to dashboard
+  //        return true;
+  //         // Navigator.push(
+  //         //   context,
+  //         //   MaterialPageRoute(builder: (context) => DashboardScreen()),
+  //         // );
+  //       }
+  //       else
+  //       {
+  //         List<String> childNameList = [];
+  //         List<String> childIdList = [];
+  //         List<String> childImageList = [];
+  //         List<String> childClassList = [];
+  //         for (int i = 0; i<childArray.length; i++) {
+  //           String name = childArray[i]["name"];
+  //           childNameList.add(name);
+  //           String id = childArray[i]["student_id"];
+  //           childIdList.add(id);
+  //           String image = childArray[i]["image"];
+  //           childImageList.add(image);
+  //           String clss = childArray[i]["className"] + " - " + childArray[i]["section"];
+  //           childClassList.add(clss);
+  //         }
+  //         usersData.addUserHasMultipleChild(true);
+  //         print('child name List:::::::::');
+  //         print(childNameList);
+  //         print('child name List:::::::::');
+  //         /// show Child List here
+  //         ///
+  //         return true;
+  //       }
+  //
+  //     }
+  //     else if(jsonData1["role"] == "student")
+  //     {
+  //       usersData.addUserIsLoggedIn(true);
+  //       usersData.addUserStudentId(recordData["student_id"]);
+  //       usersData.addUserClassSection(recordData["className"] + " - " + recordData["section"]);
+  //       usersData.addUserAdmissionNo(recordData["admission_no"]);
+  //       ///checking for profile lock
+  //       Map<String,dynamic> body2 = { "student_id" : usersData.getUserStudentId };
+  //       var data  = await apiRespository.postApiCallByJson("webservice/lock_student_panel", body2);
+  //       print('start profile lock data:::::::::');
+  //       print(data);
+  //       print('end profile lock data:::::::::');
+  //       usersData.saveAllDataToSharedPreferences();
+  //     }
+  //
+  //     update();
+  //    return true;
+  //
+  //   }
+  //   else
+  //   {
+  //
+  //       final prefs = await SharedPreferences.getInstance();
+  //       prefs.clear();
+  //       Get.toNamed('/s_screen');
+  //
+  //     print('login failed:::::::::');
+  //   }
+  //
+  //   //print("DATA USING DATA MODEL ${usersData.role}");
+  //   // userData.saveData("userData", usersData);
+  //   //  print("GET USER DATA ${userData.getData("userData",)}");
+  //
+  //
+  //
+  //   // Get.to( AppRoutes.teacherLoginScreen);
+  //
+  //
+  // }
 
 }
 

@@ -26,8 +26,16 @@ class ApiClient extends GetConnect implements GetxService {
   void onInit() {
     // add your local storage here to load for every request
     token=  userData.getAccessToken;
+    UserData usersData = UserData();
+    Faculity? f =  usersData.getFaculity();
+    // _mainHeader['userID'] = f == null ? "2" : f.id.toString();
     _mainHeader= {
-      'token': userData.getAccessToken
+      'token': userData.getAccessToken,
+      'Client-Service': "smartschool",
+      'Auth-Key': "schoolAdmin@",
+      'Staff-Id': f!.id! ?? "0",
+      'Role': f!.roles!.roleId! ?? "0",
+      'userID': f!.id! ?? "0",
     };
 
     super.onInit();
@@ -44,13 +52,9 @@ loadHeader() async
   Future<Response> getData(
     String uri,
   ) async {
-    _mainHeader={
-      'Client-Service': "smartschool",
-      'Auth-Key': "schoolAdmin@",
-      //UserData().getUserToken
-    };
+
     print("Api Url  $baseUrl$uri");
-    // print("Request body $body");
+    print("Request header $_mainHeader");
     try {
      Response response= await get(uri,headers: _mainHeader);
      return response;
@@ -60,11 +64,7 @@ loadHeader() async
   }
 
   Future<Response> postDataFormData(uri,body)async{
-    _mainHeader={
-      'Client-Service': "smartschool",
-      'Auth-Key': "schoolAdmin@",
-      //UserData().getUserToken
-    };
+
 
     try{
       print("Api Url  $baseUrl$uri");
@@ -83,18 +83,13 @@ loadHeader() async
 
   Future<Response> postDatabyJson(uri,body)async{
     log("Api Url  "+(baseUrl!+uri).toString());
-    _mainHeader={
-      'Client-Service': "smartschool",
-      'Auth-Key': "schoolAdmin@",
-      'Staff-Id': '1',
-      'Role': '1',
-      'userID': '2',
-      //UserData().getUserToken
-    };
+    log("header  ${_mainHeader}");
+    log("body  ${body}");
+
 
     try{
       Response response=await post(uri, body,headers: _mainHeader ,contentType: 'application/json');
-
+      print("eEEEEEEEEEEEEEEEEEEEEE${response.body}");
       return response;
     }on SocketException{
       return const Response(statusCode: -1,statusText:"No Internet found");

@@ -432,6 +432,8 @@ class DashboardController extends GetxController {
     await prefs.setString("schoolEmail", data.body["email"] ?? "");
     await prefs.setString("schoolSchoolCode", data.body["dise_code"] ?? "");
     await prefs.setString("schoolCurrentSession", data.body["session"] ?? "");
+    await prefs.setString("date_format", data.body["date_format"] ?? "");
+    await prefs.setString("timezone", data.body["timezone"] ?? "");
     await prefs.setString(
         "schoolStartMonth", data.body["start_month_name"] ?? "");
     await prefs.setString(

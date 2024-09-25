@@ -46,7 +46,7 @@ class AddHomeWorkModal{
       "class_id":commonApiController.selectedClassId.value,
       "section_id":commonApiController.selectedSectionId.value,
     };
-
+print("EEEEEEEE${body}");
     var data = await apiRespository.postApiCallByJson(Constants.subjectGroup, body);
     print("DATA @@@@ ${data.body}");
     controller.updateSubjectGroup = data.body;
@@ -99,9 +99,9 @@ class AddHomeWorkModal{
       "class_id":commonApiController.selectedClassId.value,
       "section_id":commonApiController.selectedSectionId.value,
       "subject_group_id":controller.getSubjectGroupId.value,
-      "subject_id": controller.getSubjectId
+      "subject_id": controller.getSubjectId.value
     };
-
+    print("RRRRRRR${body}");
     var data = await apiRespository.postApiCallByJson(Constants.closeHomework, body);
     print("CloseHomeworkData ${data.body}");
     if(data.body['status']==200){

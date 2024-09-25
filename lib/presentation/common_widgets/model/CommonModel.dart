@@ -3,7 +3,7 @@ class Classes {
   String? className;
   String? isActive;
   String? createdAt;
-  Null? updatedAt;
+  String? updatedAt;
 
   Classes(
       {this.id, this.className, this.isActive, this.createdAt, this.updatedAt});

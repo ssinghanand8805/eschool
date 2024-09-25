@@ -21,7 +21,7 @@ dependencies:
   connectivity_plus: ^5.0.2
   firebase_core:
   firebase_messaging:
-  intl: ^0.19.0
+  intl:
   flutter_html:
   table_calendar:
   image_picker: ^1.0.7
@@ -35,7 +35,7 @@ dependencies:
   custom_searchable_dropdown: ^2.1.1
   html_editor_enhanced: ^2.5.1
   advanced_datatable: ^0.0.9
-  fluttertoast: ^8.2.8
+  fluttertoast:
 
 
 dev_dependencies: 
