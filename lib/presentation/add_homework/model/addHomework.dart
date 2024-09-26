@@ -19,25 +19,34 @@ class AddHomeWorkModal{
 
     var ff = await controller.HtmlController.value.getText().toString();
 
-    Map<String, dynamic> body = {
+    Map<String, String> body = {
       "modal_class_id":commonApiController.selectedClassId.value,
       "modal_section_id":commonApiController.selectedSectionId.value,
       "homework_date":controller.homeWorkDate.value.text,
       "submit_date":controller.submissionDate.value.text,
-      "modal_subject_id":"1",
-      "description": ff
+      "modal_subject_id":controller.getAddSubjectId.value,
+      "description": ff.isEmpty?"":ff,
+      "record_id":"0",
+
     };
-    print("AddHomeWorkBody ${body}");
 
+    FormData bodyForm = FormData({});
+    bodyForm.fields.addAll(body.entries);
+    if(controller.pickedFile.value != null && await controller.pickedFile.value!.exists())
+    {
+      bodyForm.files.add( MapEntry('userfile', MultipartFile(controller.pickedFile.value, filename: controller.pickedFile.value?.path.split('/').last ?? "")));
+    }
+    print("AddHomeWorkBody ${bodyForm.files}");
+    var data = await apiRespository.postApiCallByFormData(Constants.addHomeWork, bodyForm);
 
-    var data = await apiRespository.postApiCallByJson(Constants.addHomeWork, body);
+    print("dddd "+data.body['status']);
 
-    print("AddHomeWork ${data.body}");
-    if(data.body['status']=='success'){
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Homework added successfully"),
-      ));
-      Get.back();
+    if(data.body != null && data.body['status']=='success'){
+      print("Cherck");
+      Get.showSnackbar(Ui.SuccessSnackBar(message: "Homework added successfully"));
+      Navigator.pop(context);
+    }else{
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "Something went wrong"));
     }
 
   }
@@ -118,7 +127,7 @@ print("EEEEEEEE${body}");
       "class_id":commonApiController.selectedClassId.value,
       "section_id":commonApiController.selectedSectionId.value,
       "subject_group_id":controller.getSubjectGroupId.value,
-      "subject_id": controller.getSubjectId
+      "subject_id": controller.getSubjectId.value
     };
 
     var data = await apiRespository.postApiCallByJson(Constants.homework, body);

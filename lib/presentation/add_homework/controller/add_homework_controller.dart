@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
@@ -17,6 +18,8 @@ class AddHomeWorkController extends GetxController {
   ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
 
   Rx<TextEditingController> searchC = TextEditingController().obs;
+
+  Rx<File?> pickedFile = Rx<File?>(null);
 
   RxString isUpcomingHomeworkList = "Upcoming homework".obs;
 
@@ -106,6 +109,14 @@ class AddHomeWorkController extends GetxController {
   }
 
 
+
+
+  RxString addSubjectId = ''.obs;
+  RxString get getAddSubjectId => addSubjectId;
+  set updateAddSubjectId(String val) {
+    addSubjectId.value = val;
+    update();
+  }
 
 
 

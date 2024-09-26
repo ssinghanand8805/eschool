@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../apiHelper/toastMessage.dart';
 import '../../widgets/cutomInputfeild.dart';
 import '../../widgets/cutomformbuttom.dart';
 import '../../widgets/pageHeder.dart';
@@ -34,7 +35,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 child: SingleChildScrollView(
                   child: Form(
-                     key: controller.loginFormKey,
+                     // key: controller.loginFormKey,
                     child: Column(
                       children: [
                         const PageHeading(
@@ -127,8 +128,15 @@ class LoginScreen extends StatelessWidget {
   }
 
   void _handleLoginUser(context) {
-    if (controller.loginFormKey.currentState!.validate()) {
+    if(controller.idController.value.text.isEmpty || controller.passwordController.value.text.isEmpty){
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "Enter Username or password"));
+    }else{
       controller.loginApi(context);
+
     }
+
+    // if (controller.loginFormKey.currentState!.validate()) {
+    //   controller.loginApi(context);
+    // }
   }
 }

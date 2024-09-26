@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../widgets/alert_dialogue.dart';
 import 'enquiry_data_modal.dart';
@@ -25,20 +26,25 @@ class AdmissionEnquiryController extends GetxController {
   Rx<TextEditingController> dateC = TextEditingController().obs;
   Rx<TextEditingController> nextFollowUpDateC = TextEditingController().obs;
   Rx<TextEditingController> numberOfChildC = TextEditingController().obs;
+  Rx<TextEditingController> dobC = TextEditingController().obs;
+  Rx<TextEditingController> lastSchoolC = TextEditingController().obs;
+  Rx<TextEditingController> mother_fatherC = TextEditingController().obs;
+  Rx<TextEditingController> lastClassC = TextEditingController().obs;
+  Rx<TextEditingController> occupationC = TextEditingController().obs;
+  Rx<TextEditingController> discriptionC = TextEditingController().obs;
 
   @override
   void onInit() async {
     super.onInit();
-    fromDateC.value.text =
-        DateFormat('dd/MM/yyyy').format(DateTime.now());
-    toDateC.value.text =
-        DateFormat('dd/MM/yyyy').format(DateTime.now());
+    fromDateC.value.text = await GlobalData().ConvertToSchoolDateTimeFormat(DateTime.now());
+
+    toDateC.value.text = await GlobalData().ConvertToSchoolDateTimeFormat(DateTime.now());
     enquiry();
   }
 
   enquiry() async {
     Map<String, dynamic> body = {
-      "class_id":1,
+      "class_id":"1",
       "from_date" : fromDateC.value.text,
       "to_date" :   toDateC.value.text
     };

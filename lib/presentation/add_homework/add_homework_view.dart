@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/widgets/customTextField.dart';
 import '../../../theme/theme_helper.dart';
@@ -74,7 +77,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: MyCustomSD(
+                        child: Obx(()=>MyCustomSD(
                           hideSearch: true,
                           borderColor: Colors.grey,
                           listToSearch: commonApiController.classListModelMap
@@ -96,7 +99,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                               commonApiController.getSectionList();
                             }
                           },
-                        ),
+                        )),
                       ),
                       SizedBox(
                         width: 5,
@@ -434,7 +437,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                             SizedBox(
                               width: 5,
                             ),
-                            Expanded(child: MyCustomSD(
+                            Expanded(child: Obx(()=>MyCustomSD(
                               labelText: 'Subject',
                               hideSearch: true,
                               borderColor: Colors.grey,
@@ -442,7 +445,12 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                               valFrom: "name",
                               label: 'Subject',
                               onChanged: (val) {
-                                print(val);
+                                if(val!=null){
+                                  print("dddd" +val.toString());
+                                  controller.updateAddSubjectId = val['id'];
+                                }
+
+
                                 // if(val!=null){
                                 //   controller.updateDutyFor = val['id'];
                                 //
@@ -451,7 +459,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                                 //   controller.updateDutyFor=0;
                                 // }
                               },
-                            ),),
+                            )),),
 
 
                           ],
@@ -553,6 +561,28 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 10,),
+                        InkWell(
+                          onTap: (){
+                            _showImagePicker(context);
+                          },
+                          child: Container(
+                            height: 40,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all()
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.upload_file),
+                                Text("Drag and drop a file here or click"),
+                              ],
+                            ),
+
+                          ),
+                        ),
+                        SizedBox(height: 10,),
 
 
                         SizedBox(
@@ -609,6 +639,83 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
       },
     );
   }
+
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> getImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      controller.pickedFile.value = File(pickedFile.path);
+      controller.update();
+    }
+  }
+
+  void _showImagePicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(16.0),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.5,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Select Image Source',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  ListTile(
+                    leading: Icon(
+                      Icons.photo_library,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    title: Text('Pick from Gallery'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      getImage(ImageSource.gallery);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.camera_alt,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    title: Text('Take a Picture'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      getImage(ImageSource.camera);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+
 }
 
 

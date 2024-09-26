@@ -16,7 +16,7 @@ class LoginController extends GetxController {
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   TextEditingController passwordController = TextEditingController();
   TextEditingController idController = TextEditingController();
-  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  // GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   Rx<bool> isShowPassword = true.obs;
   RxString schoolImageUrl = "".obs;
   @override
@@ -46,7 +46,8 @@ class LoginController extends GetxController {
       {
         final prefs = await SharedPreferences.getInstance();
         prefs.clear();
-        Get.toNamed('/s_screen');
+       Get.toNamed('/s_screen');
+       //  Get.showSnackbar(Ui.ErrorSnackBar(message: "Enter correct username and password!"));
 
         print('login failed:::::::::');
         return;

@@ -33,9 +33,9 @@ class ApiClient extends GetConnect implements GetxService {
       'token': userData.getAccessToken,
       'Client-Service': "smartschool",
       'Auth-Key': "schoolAdmin@",
-      'Staff-Id': f!.id! ?? "0",
-      'Role': f!.roles!.roleId! ?? "0",
-      'userID': f!.id! ?? "0",
+      'Staff-Id': f != null ? f.id! : "0",
+      'Role': f != null ? f.roles!.roleId! : "0",
+      'userID': f != null ? f.id! : "0",
     };
 
     super.onInit();

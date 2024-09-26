@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/customTextField.dart';
 import '../../../widgets/custom_button.dart';
@@ -105,9 +106,9 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                           child: DatePickerTextField(
                             controller: controller.fromDateC.value,
                             title: 'Follow Up Date',
-                            onDateSelected: (date) {
+                            onDateSelected: (date) async {
                               controller.fromDateC.value.text =
-                                  DateFormat('dd/MM/yyyy').format(date);
+                                  await GlobalData().ConvertToSchoolDateTimeFormat(date);
                             },),
                         ),
 
@@ -116,9 +117,10 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                           child: DatePickerTextField(
                               controller: controller.toDateC.value,
                               title: 'Next Follow Up Date',
-                              onDateSelected: (date) {
+                              onDateSelected: (date) async {
                                 controller.toDateC.value.text =
-                                    DateFormat('dd/MM/yyyy').format(date);
+                                    await GlobalData().ConvertToSchoolDateTimeFormat(date);
+
                               }),
                         ),
                       ],
@@ -415,6 +417,94 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                     ),
                   ),
                   SizedBox(width: 10,),
+
+                  Expanded(
+                    child: CustomTextField(
+                        controller: controller.nameC.value,
+                        hint: "Class",
+                        title: "Class:",
+                        validator: (textValue) {
+                          if (textValue == null || textValue.isEmpty) {
+                            return 'Name is required!';
+                          }
+                          return null;
+                        }
+                    ),
+                  ),
+
+
+
+                ],
+              ),
+
+
+              Row(
+                children: [
+                  Expanded(
+                    child: DatePickerTextField(
+                      controller: controller.dobC.value,
+                      title: 'DOB',
+                      onDateSelected: (date) async {
+                        controller.dobC.value.text =
+                        await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                      },),
+                  ),
+                  SizedBox(width: 10,),
+
+                  Expanded(
+                    child: CustomTextField(
+                        controller: controller.lastSchoolC.value,
+                        hint: "Enter Last School",
+                        title: "Last School:",
+                        validator: (textValue) {
+                          if (textValue == null || textValue.isEmpty) {
+                            return 'Name is required!';
+                          }
+                          return null;
+                        }
+                    ),
+                  ),
+
+                ],
+              ),
+
+              Row(
+                children: [
+
+                  Expanded(
+                    child: CustomTextField(
+                        controller: controller.lastClassC.value,
+                        hint: "Enter Last Class",
+                        title: "Last Class:",
+                        validator: (textValue) {
+                          if (textValue == null || textValue.isEmpty) {
+                            return 'Name is required!';
+                          }
+                          return null;
+                        }
+                    ),
+                  ),
+
+                  SizedBox(width: 10,),
+                  Expanded(
+                    child: CustomTextField(
+                        controller: controller.mother_fatherC.value,
+                        hint: "Enter Father/Mother Name",
+                        title: "Father/Mother Name:",
+                        validator: (textValue) {
+                          if (textValue == null || textValue.isEmpty) {
+                            return 'Name is required!';
+                          }
+                          return null;
+                        }
+                    ),
+                  )
+
+                ],
+              ),
+
+              Row(
+                children: [
                   Expanded(
                     child: CustomTextField(
                       controller: controller.phoneC.value,
@@ -439,12 +529,172 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                       },
                     ),
                   ),
+                  SizedBox(width: 10,),
+
+                  Expanded(
+                    child: CustomTextField(
+                        controller: controller.occupationC.value,
+                        hint: "Occupation",
+                        title: "Occupation:",
+                        validator: (textValue) {
+                          if (textValue == null || textValue.isEmpty) {
+                            return 'Address is required!';
+                          }
+                          return null;
+                        }
+                    ),
+                  ),
+                ],
+              ),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomTextField(
+                      controller: controller.addressC.value,
+                      hint: "Address",
+                      title: "Address:",
+                        validator: (textValue) {
+                          if (textValue == null || textValue.isEmpty) {
+                            return 'Address is required!';
+                          }
+                          return null;
+                        }
+                    ),
+                  ),
+                  SizedBox(width: 10,),
+
+                  Expanded(
+                    child: CustomTextField(
+                        controller: controller.discriptionC.value,
+                        hint: "Description",
+                        title: "Description:",
+                        validator: (textValue) {
+                          if (textValue == null || textValue.isEmpty) {
+                            return 'Address is required!';
+                          }
+                          return null;
+                        }
+                    ),
+                  ),
+                ],
+              ),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomTextField(
+                      controller: controller.noteC.value,
+                      hint: "Note",
+                      title: "Note:",
+                    ),
+                  ),
+                  SizedBox(width: 10,),
+
+                  Expanded(
+                    child: DatePickerTextField(
+                      controller: controller.dateC.value,
+                      title: 'Date',
+                      onDateSelected: (date) async {
+                        controller.dateC.value.text =
+                        await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                      },),
+                  ),
+                ],
+              ),
+
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+              Expanded(
+              child: DatePickerTextField(
+              controller: controller.nextFollowUpDateC.value,
+                  title: 'Next Follow up date',
+                  onDateSelected: (date) async {
+                    controller.nextFollowUpDateC.value.text =
+                    await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                  }),
+                  ),
+                  SizedBox(width: 10,),
+
+                  Expanded(child:
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: MyCustomSD(
+                      hideSearch: true,
+                      labelText: 'Assigned',
+                      borderColor: Colors.grey,
+                      listToSearch: controller.getAdmissionEnquiryList.stffList!.map((item) {
+                        return item.toJson();
+                      }).toList(),
+                      valFrom: "name",
+                      label: 'Assigned',
+                      onChanged: (val) {
+                        print(val);
+                        if(val!=null){
+                          controller.assignedId.value = val['id'];
+                        }
+
+                      },
+                    ),
+                  ),),
+                ],
+              ),
+
+              SizedBox(height: 5,),
+
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: MyCustomSD(
+                    labelText: '',
+                    hideSearch: true,
+                    borderColor: Colors.grey,
+                    listToSearch: controller.getAdmissionEnquiryList.reference!.map((item) {
+                      return item.toJson();
+                    }).toList(),
+                    valFrom: "reference",
+                    label: 'Reference',
+                    onChanged: (val) {
+                      if (val != null) {
+                        controller.referenceId.value = val['id'];
+                      }
+                    },
+                  ),),
+
+                  SizedBox(width: 10,),
+
+                  Expanded(child:
+                  MyCustomSD(
+                    hideSearch: true,
+                    labelText: '',
+                    borderColor: Colors.grey,
+                    listToSearch: controller.getAdmissionEnquiryList.sourcelist!.map((item) {
+                      return item.toJson();
+                    }).toList(),
+                    valFrom: "source",
+                    label: 'Source',
+                    onChanged: (val) {
+                      print(val);
+                      controller.sourceId.value = val['id'];
+                    },
+                  ),),
                 ],
               ),
 
 
               Row(
                 children: [
+                  Expanded(
+                    child: CustomTextField(
+                      controller: controller.numberOfChildC.value,
+                      hint: "No of child",
+                      title: "No of child:",
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                  SizedBox(width: 10,),
+
                   Expanded(
                     child: CustomTextField(
                       controller: controller.emailC.value,
@@ -464,164 +714,47 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                       },
                     ),
                   ),
-                  SizedBox(width: 10,),
-                  Expanded(
-                    child: CustomTextField(
-                      controller: controller.addressC.value,
-                      hint: "Address",
-                      title: "Address:",
-                        validator: (textValue) {
-                          if (textValue == null || textValue.isEmpty) {
-                            return 'Address is required!';
-                          }
-                          return null;
-                        }
-                    ),
-                  ),
+
+
+
                 ],
               ),
 
 
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextField(
-                      controller: controller.numberOfChildC.value,
-                      hint: "No of child",
-                      title: "No of child:",
-                      keyboardType: TextInputType.number,
-                    ),
-                  ),
-                  SizedBox(width: 10,),
-                  Expanded(
-                    child: CustomTextField(
-                      controller: controller.noteC.value,
-                      hint: "Note",
-                      title: "Note:",
-                    ),
-                  ),
-                ],
-              ),
 
 
-              Row(
-                children: [
-                  Expanded(
-                    child: DatePickerTextField(
-                      controller: controller.dateC.value,
-                      title: '',
-                        onDateSelected: (date) {
-                          controller.dateC.value.text =
-                              DateFormat('dd/MM/yyyy').format(date);
-                        },),
-                  ),
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //
+              //     SizedBox(
+              //       width: 5,
+              //     ),
+              //     Expanded(
+              //       child: MyCustomSD(
+              //       labelText: '',
+              //       hideSearch: true,
+              //       borderColor: Colors.grey,
+              //       listToSearch: controller.getAdmissionEnquiryList.classList!.map((item) {
+              //         return item.toJson();
+              //       }).toList(),
+              //       valFrom: "class",
+              //       label: 'Class',
+              //       onChanged: (val) {
+              //         if (val != null) {
+              //           controller.classId.value = val['id'];
+              //         }
+              //       },
+              //     ),)
+              //   ],
+              // ),
 
-                  SizedBox(width: 10,),
-                  Expanded(
-                    child: DatePickerTextField(
-                      controller: controller.nextFollowUpDateC.value,
-                      title: '',
-                        onDateSelected: (date) {
-                          controller.nextFollowUpDateC.value.text =
-                              DateFormat('dd/MM/yyyy').format(date);
-                        }),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10,),
-
-
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(child:
-                  MyCustomSD(
-                    hideSearch: true,
-                    labelText: '',
-                    borderColor: Colors.grey,
-                    listToSearch: controller.getAdmissionEnquiryList.stffList!.map((item) {
-                      return item.toJson();
-                    }).toList(),
-                    valFrom: "name",
-                     label: 'Assigned',
-                    onChanged: (val) {
-                      print(val);
-                      if(val!=null){
-                        controller.assignedId.value = val['id'];
-                      }
-
-                    },
-                  ),),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(child: MyCustomSD(
-                    labelText: '',
-                    hideSearch: true,
-                    borderColor: Colors.grey,
-                    listToSearch: controller.getAdmissionEnquiryList.reference!.map((item) {
-                      return item.toJson();
-                    }).toList(),
-                    valFrom: "reference",
-                     label: 'Reference',
-                    onChanged: (val) {
-                      if (val != null) {
-                        controller.referenceId.value = val['id'];
-                      }
-                    },
-                  ),)
-                ],
-              ),
-
-              SizedBox(height: 10,),
-
-
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(child:
-                  MyCustomSD(
-                    hideSearch: true,
-                    labelText: '',
-                    borderColor: Colors.grey,
-                    listToSearch: controller.getAdmissionEnquiryList.sourcelist!.map((item) {
-                      return item.toJson();
-                    }).toList(),
-                    valFrom: "source",
-                     label: 'Source',
-                    onChanged: (val) {
-                      print(val);
-                      controller.sourceId.value = val['id'];
-                    },
-                  ),),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(
-                    child: MyCustomSD(
-                    labelText: '',
-                    hideSearch: true,
-                    borderColor: Colors.grey,
-                    listToSearch: controller.getAdmissionEnquiryList.classList!.map((item) {
-                      return item.toJson();
-                    }).toList(),
-                    valFrom: "class",
-                    label: 'Class',
-                    onChanged: (val) {
-                      if (val != null) {
-                        controller.classId.value = val['id'];
-                      }
-                    },
-                  ),)
-                ],
-              ),
-
-              CustomTextField(
-                controller: controller.descriptionC.value,
-                hint: "Description",
-                title: "",
-                maxLine: 3,
-              ),
+              // CustomTextField(
+              //   controller: controller.descriptionC.value,
+              //   hint: "Description",
+              //   title: "",
+              //   maxLine: 3,
+              // ),
 
               SizedBox(height: 10,),
               Align(
