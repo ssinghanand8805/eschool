@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:learnladderfaculity/apiHelper/toastMessage.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../common_widgets/controller/CommonApiController.dart';
@@ -104,13 +105,10 @@ print("EEEEEEEE${body}");
     print("RRRRRRR${body}");
     var data = await apiRespository.postApiCallByJson(Constants.closeHomework, body);
     print("CloseHomeworkData ${data.body}");
-    if(data.body['status']==200){
+    if( data.body != null && data.body['status']==200){
       controller.updateCloseHomeworkList = data.body['data'];
     }else{
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(data.body.reasonPhrase),
-      ));
-      print(data.body.reasonPhrase);
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "No data found"));
     }
   }
 
@@ -128,9 +126,6 @@ print("EEEEEEEE${body}");
     if(data.body['status']==200){
       controller.updateHomeworkList = data.body['data'];
     }else{
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(data.body.reasonPhrase),
-      ));
       print(data.body.reasonPhrase);
     }
   }

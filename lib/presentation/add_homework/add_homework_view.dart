@@ -187,6 +187,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                             commonApiController.selectedClassId.value.isEmpty) {
                           print("Select DropDown");
                         } else {
+                          modal.homework(context);
                           modal.closeHomework(context);
                         }
                       },
