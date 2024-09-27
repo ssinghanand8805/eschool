@@ -123,7 +123,12 @@ print("ssss "+body.toString());
       "email": emailC.value.text.toString(),
       "assigned": assignedId.value,
       "class_id": classId.value,
-      "no_of_child": numberOfChildC.value.text.toString()
+      "no_of_child": numberOfChildC.value.text.toString(),
+      'dob':dobC.value.text.toString(),
+      'lastschool': lastSchoolC.value.text.toString(),
+      'lastclass': lastClassC.value.text.toString(),
+      'fathername':  mother_fatherC.value.text.toString(),
+      'occupation':occupationC.value.text.toString(),
     };
     print(body);
     var data = await apiRespository.postApiCallByJson(Constants.addEntry, body);

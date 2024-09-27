@@ -402,6 +402,7 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                 style: theme.textTheme.bodyMedium,
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: CustomTextField(
@@ -419,18 +420,21 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController>{
                   SizedBox(width: 10,),
 
                   Expanded(
-                    child: CustomTextField(
-                        controller: controller.nameC.value,
-                        hint: "Class",
-                        title: "Class:",
-                        validator: (textValue) {
-                          if (textValue == null || textValue.isEmpty) {
-                            return 'Name is required!';
-                          }
-                          return null;
+                    child: MyCustomSD(
+                      labelText: 'Class',
+                      hideSearch: true,
+                      borderColor: Colors.grey,
+                      listToSearch: controller.getAdmissionEnquiryList.classList!.map((item) {
+                        return item.toJson();
+                      }).toList(),
+                      valFrom: "class",
+                      label: 'Class',
+                      onChanged: (val) {
+                        if (val != null) {
+                          controller.classId.value = val['id'];
                         }
-                    ),
-                  ),
+                      },
+                    ),)
 
 
 
