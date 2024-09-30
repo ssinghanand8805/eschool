@@ -25,7 +25,7 @@ class StudentTimeLineController extends GetxController {
   Future<void> getData() async
   {
     Map<String,dynamic> body = {
-      "student_id" : userData.getUserStudentId
+      "studentId" : userData.getUserStudentId
     };
     print("Body @@@@ ${body}");
     var data  = await apiRespository.postApiCallByJson(Constants.getTimelineUrl, body);

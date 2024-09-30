@@ -52,7 +52,7 @@ Widget CommonCardExtended(
                 ),
                 Flexible(
                   child: Text(
-                    title,
+                    title.capitalize!,
                     style: theme.textTheme.titleMedium!
                         .copyWith(fontWeight: FontWeight.w600, fontSize: 13),
                   ),

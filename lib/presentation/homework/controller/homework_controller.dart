@@ -78,7 +78,14 @@ class HomeWorkController extends GetxController {
     print("*****${studentSubjectsModelObj.value.toJson()}");
   }
 
+  resetHomeWork()
+  {
+    homeworkModelObj.value = Homework();
+    update();
+  }
+
   Future<void> getData({DateTime? selectedDate}) async {
+
     String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(
         selectedDate != null ? selectedDate : DateTime.now());
 
@@ -100,6 +107,7 @@ class HomeWorkController extends GetxController {
 
     homeworkModelObj.value = Homework.fromJson(data.body);
     print("homework data ${homeworkModelObj.value.toJson()}");
+    isLoading.value = false;
     update();
   }
 

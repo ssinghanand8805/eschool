@@ -45,7 +45,7 @@ class _HomeworkScreenState extends State<HomeworkScreen>
       // Your code here
       print('Tab changed to: ${controller.tabController.index}');
 
-
+      controller.isLoading.value = true;
       controller.status.value = controller.tabController.index == 0
           ? 'pending'
           : controller.tabController.index == 1
@@ -254,6 +254,7 @@ class HomeworkTabContent extends GetWidget<HomeWorkController> {
 
   @override
   Widget build(BuildContext context) {
+    // controller.resetHomeWork();
     return GetBuilder(
       init: controller,
       builder: (_) {
@@ -265,12 +266,12 @@ class HomeworkTabContent extends GetWidget<HomeWorkController> {
           child: FutureBuilder(
             future: controller.fetchDataFuture,
             builder: (context, snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
+              if (snapshot.connectionState != ConnectionState.done || controller.isLoading.isTrue) {
                 return CustomLoader();
               } else if (controller.homeworkModelObj.value.homeworklist !=
                       null &&
                   controller.homeworkModelObj.value.homeworklist?.length == 0) {
-                return Column(
+                return controller.isLoading.isTrue ? CustomLoader() : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   // crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -281,8 +282,9 @@ class HomeworkTabContent extends GetWidget<HomeWorkController> {
                     Text("No data found"),
                   ],
                 );
-              } else {
-                return ListView.builder(
+              }
+              else {
+                return controller.isLoading.isTrue ? CustomLoader() : ListView.builder(
                   itemCount:
                       controller.homeworkModelObj.value.homeworklist?.length ??
                           0,

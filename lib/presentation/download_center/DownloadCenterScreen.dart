@@ -288,7 +288,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
     DateTime dateTime = DateTime.parse(data.createdAt.toString());
     String formattedTime = DateFormat.jm().format(dateTime);
     return CommonCardExtended(
-      title: data.title.toString(),
+      title: data.title.toString().capitalize!,
       leadingWidget: SizedBox(),
       subtitle: '',
       newWidget: Padding(
