@@ -29,7 +29,7 @@ class _SchoolNewsPageState extends State<SchoolNewsPage> {
 
   Widget _buildChildWidget() {
     return GetBuilder(
-      init: controller,
+      init: schoolNewsController(),
       builder: (_) {
         return FutureBuilder(
           future: controller.fetchDataFuture, //controller.getData(context),

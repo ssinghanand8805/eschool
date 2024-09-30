@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "258682634663",
-    "project_id": "lerno-8d9c1",
-    "storage_bucket": "lerno-8d9c1.appspot.com"
+    "project_number": "364939053707",
+    "project_id": "lernoapps",
+    "storage_bucket": "lernoapps.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:258682634663:android:866be4c4f59f055804b682",
+        "mobilesdk_app_id": "1:364939053707:android:1bc2019bf23ddaa729228e",
         "android_client_info": {
-          "package_name": "lerno.info.app"
+          "package_name": "lerno.info.apps"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDgMiU92tuRbFjKFCFHfxkjiMdC-sKYUBQ"
+          "current_key": "AIzaSyCUtqEhqTd4zuCp76_RvlffE14U1jPzQi8"
         }
       ],
       "services": {

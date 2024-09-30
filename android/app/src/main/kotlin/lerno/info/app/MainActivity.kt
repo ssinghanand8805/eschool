@@ -1,4 +1,4 @@
-package lerno.info.app
+package lerno.info.apps
 
 import io.flutter.embedding.android.FlutterActivity
 

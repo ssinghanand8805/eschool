@@ -27,7 +27,7 @@ class _StudentTimeLinePageState extends State<StudentTimeLinePage> {
 
   Widget _buildChildWidget() {
     return GetBuilder(
-      init: controller,
+      init: StudentTimeLineController(),
       builder: (_) {
         return RefreshIndicator(
           onRefresh: () async {
@@ -44,14 +44,14 @@ class _StudentTimeLinePageState extends State<StudentTimeLinePage> {
                     ? timeLine(controller.timeLineModelObj.value!)
                     : Center(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
                             "assets/projectImages/no_data.png",
-                                                  ),
-                            Text("No data found!")
-                          ],
-                        ));
+                          ),
+                          Text("No data found!")
+                        ],
+                      ));
                 ;
               }
             },
