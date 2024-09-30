@@ -170,7 +170,6 @@ class _ClassWorkViewState extends State<ClassWorkView> {
   }
 
   Widget _buildLeaveCard({required ClassWorkList data}) {
-    final String htmlContent = data.description!;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(

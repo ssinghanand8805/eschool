@@ -1,37 +1,58 @@
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:intl/intl.dart';
 
 import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/userData.dart';
 import '../modal/lesson_modal.dart';
 
 class LessonPlanController extends GetxController {
   UserData userData = Get.put(UserData());
-  ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
+  ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   Rx<LessonPlan> lessonPlanModelObj = LessonPlan().obs;
-  RxString dateFrom = "2024-04-08".obs;
-  RxString dateTo = "2024-04-14".obs;
+  RxString dateFrom = "".obs;
+  RxString dateTo = "".obs;
   late Future<void> fetchDataFuture;
   @override
   void onClose() {
     super.onClose();
-
   }
+
   @override
   void onInit() {
     super.onInit();
-    fetchDataFuture = getData(); // Initialize the future when the controller is created
+    fetchDataFuture = getData();
   }
-  Future<void> getData() async
-  {
-    Map<String,dynamic> body = {
-      "student_id" : userData.getUserStudentId,
-      "date_from" : dateFrom.value,
-      "date_to" : dateTo.value,
+
+
+
+  Map<String, DateTime> getMondayAndSaturday() {
+    DateTime now = DateTime.now();
+    int daysUntilMonday = (1 - now.weekday) % 7;
+    int daysUntilSaturday = (7 - now.weekday) % 7;
+    DateTime monday = now.add(Duration(days: daysUntilMonday));
+    DateTime sunday = now.add(Duration(days: daysUntilSaturday));
+    return {
+      'monday': DateTime(monday.year, monday.month, monday.day),
+      'sunday': DateTime(sunday.year, sunday.month, sunday.day),
+    };
+  }
+
+  String formatDate(DateTime date) {
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
+
+  Future<void> getData() async {
+    Map<String, dynamic> body = {
+      "student_id": userData.getUserStudentId,
+      "date_from": formatDate(getMondayAndSaturday()['monday']!),
+      "date_to": formatDate(getMondayAndSaturday()['sunday']!),
     };
     print("Body @@@@ ${body}");
-    var data  = await apiRespository.postApiCallByJson(Constants.lessonPlanUrl, body);
+    var data =
+        await apiRespository.postApiCallByJson(Constants.lessonPlanUrl, body);
     print("DATA @@@@ ${data.body}");
     lessonPlanModelObj.value = LessonPlan.fromJson(data.body);
     print("111111111111111111111 ${lessonPlanModelObj.value.toJson()}");

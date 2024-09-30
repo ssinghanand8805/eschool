@@ -31,42 +31,41 @@ class LessonPlanScreen extends GetWidget<LessonPlanController> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return
-                Expanded(
-                  child: WeekTabScreen(
-                    tabTitles: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
-                    tabContents: [
-                          _buildTimeTableCard(
-                              title: 'Monday',
-                              day: controller
-                                  .lessonPlanModelObj.value!.timetable!.monday!),
-                          _buildTimeTableCard(
-                              title: 'Tuesday',
-                              day: controller
-                                  .lessonPlanModelObj.value!.timetable!.tuesday!),
-                          _buildTimeTableCard(
-                              title: 'Wednesday',
-                              day: controller.lessonPlanModelObj.value!.timetable!
-                                  .wednesday!),
-                          _buildTimeTableCard(
-                              title: 'Thursday',
-                              day: controller.lessonPlanModelObj.value!.timetable!
-                                  .thursday!),
-                          _buildTimeTableCard(
-                              title: 'Friday',
-                              day: controller
-                                  .lessonPlanModelObj.value!.timetable!.friday!),
-                          _buildTimeTableCard(
-                              title: 'Saturday',
-                              day: controller.lessonPlanModelObj.value!.timetable!
-                                  .saturday!),
-                          _buildTimeTableCard(
-                              title: 'Sunday',
-                              day: controller
-                                  .lessonPlanModelObj.value!.timetable!.sunday!),
-                    ],
-                  ),
-                );
+              return Expanded(
+                child: WeekTabScreen(
+                  tabTitles: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+                  tabContents: [
+                    _buildTimeTableCard(
+                        title: 'Monday',
+                        day: controller
+                            .lessonPlanModelObj.value.timetable!.monday!),
+                    _buildTimeTableCard(
+                        title: 'Tuesday',
+                        day: controller
+                            .lessonPlanModelObj.value!.timetable!.tuesday!),
+                    _buildTimeTableCard(
+                        title: 'Wednesday',
+                        day: controller
+                            .lessonPlanModelObj.value!.timetable!.wednesday!),
+                    _buildTimeTableCard(
+                        title: 'Thursday',
+                        day: controller
+                            .lessonPlanModelObj.value!.timetable!.thursday!),
+                    _buildTimeTableCard(
+                        title: 'Friday',
+                        day: controller
+                            .lessonPlanModelObj.value!.timetable!.friday!),
+                    _buildTimeTableCard(
+                        title: 'Saturday',
+                        day: controller
+                            .lessonPlanModelObj.value!.timetable!.saturday!),
+                    _buildTimeTableCard(
+                        title: 'Sunday',
+                        day: controller
+                            .lessonPlanModelObj.value!.timetable!.sunday!),
+                  ],
+                ),
+              );
             }
           },
         );
@@ -74,91 +73,123 @@ class LessonPlanScreen extends GetWidget<LessonPlanController> {
     );
   }
 
-  Widget _buildTimeTableCard({required String title, required List<Day> day}) {
+  Widget _buildTimeTableCard({required String title, List<Day>? day}) {
+    // Group the list by lessonName
+    Map<String, List<Day>> lessonsGroupedByDay = {};
 
-    return CommonCard(
-        title: title,
-        newWidget: day.length > 0
-            ?DataTable(
-          dividerThickness: 0.1,
-          columnSpacing: 25.0, // Adjust the spacing between columns as needed
-          columns:  <DataColumn>[
-            DataColumn(
-              label: Text(
-                'Time',
-                style: theme.textTheme.titleMedium!.copyWith(color: Colors.lightBlue,fontSize: 16),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Subject',
-                style: theme.textTheme.titleMedium!.copyWith(color: Colors.lightBlue,fontSize: 16),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Syllabus',
-                style:  theme.textTheme.titleMedium!.copyWith(color: Colors.lightBlue,fontSize: 16),
-              ),
-            ),
-          ],
-          rows: day
-              .map<DataRow>((Day singleDay) => DataRow(
+    if (day != null) {
+      for (var singleDay in day) {
+        if (singleDay.lessonName != null) {
+          lessonsGroupedByDay
+              .putIfAbsent(singleDay.lessonName!, () => [])
+              .add(singleDay);
+        }
+      }
+    }
 
-            cells: <DataCell>[
+    return Column(
+      children: lessonsGroupedByDay.entries.map((entry) {
+        List<Day> lessonDays = entry.value;
 
-              DataCell(
-                Row(
-                  children: [
-                    Text(
-                      singleDay.timeFrom!+'-',
-                      style: theme.textTheme.titleMedium!.copyWith(fontSize: 12),
-                    ), Text(
-                      singleDay.timeTo!,
-                      style: theme.textTheme.titleMedium!.copyWith(fontSize: 12),
-                    ),
-                  ],
+        return Container(
+          margin: const EdgeInsets.symmetric(vertical: 8.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              color: Colors.grey.shade300,
+            ),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: DataTable(
+            dividerThickness: 0.1,
+            columnSpacing: 28.0,
+            columns: <DataColumn>[
+              DataColumn(
+                label: Text(
+                  'Time',
+                  style: theme.textTheme.titleMedium!
+                      .copyWith(color: Colors.lightBlue, fontSize: 13),
                 ),
               ),
-              DataCell(
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    '${singleDay.name!} (${singleDay.section!})',
-                    style: theme.textTheme.titleMedium!.copyWith(fontSize: 12),
-                  ),
+              DataColumn(
+                label: Text(
+                  'Subject',
+                  style: theme.textTheme.titleMedium!
+                      .copyWith(color: Colors.lightBlue, fontSize: 13),
                 ),
               ),
-              DataCell(
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    "dd",
-                    style: theme.textTheme.titleMedium!.copyWith(fontSize: 12),
-                  ),
+              DataColumn(
+                label: Text(
+                  'Lesson',
+                  style: theme.textTheme.titleMedium!
+                      .copyWith(color: Colors.lightBlue, fontSize: 13),
+                ),
+              ),
+              DataColumn(
+                label: Text(
+                  'Topic',
+                  style: theme.textTheme.titleMedium!
+                      .copyWith(color: Colors.lightBlue, fontSize: 13),
                 ),
               ),
             ],
-          ))
-              .toList(),
-        )
-
-            : Center(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Column(
-                children: [
-                  Image.asset(
-                    "assets/projectImages/no_data.png",
+            rows: lessonDays
+                .map<DataRow>(
+                  (Day singleDay) => DataRow(
+                    cells: <DataCell>[
+                      DataCell(
+                        Row(
+                          children: [
+                            Text(
+                              singleDay.timeFrom! + '-',
+                              style: theme.textTheme.titleMedium!
+                                  .copyWith(fontSize: 12),
+                            ),
+                            Text(
+                              singleDay.timeTo!,
+                              style: theme.textTheme.titleMedium!
+                                  .copyWith(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                      DataCell(
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            '${singleDay.name!.capitalize}  (${singleDay.section!})',
+                            style: theme.textTheme.titleMedium!
+                                .copyWith(fontSize: 12),
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            singleDay.lessonName!,
+                            style: theme.textTheme.titleMedium!
+                                .copyWith(fontSize: 12),
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            singleDay.topicName!,
+                            style: theme.textTheme.titleMedium!
+                                .copyWith(fontSize: 12),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'No data found!',
-                    style: theme.textTheme.titleMedium,
-                  )
-                ],
-              ),
-            )));
+                )
+                .toList(),
+          ),
+        );
+      }).toList(),
+    );
   }
 }
-
-
