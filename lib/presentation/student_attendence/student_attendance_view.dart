@@ -128,46 +128,7 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
                           controller.attendanceDate.value.text =
                           await GlobalData().ConvertToSchoolDateTimeFormat(date);
                         }),
-                    // Column(
-                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                    //   children: [
-                    //     Padding(
-                    //       padding: const EdgeInsets.only(left: 3.0),
-                    //       child: Text("Attendance Date",
-                    //           style: theme.textTheme.bodySmall!
-                    //               .copyWith(fontSize: 14)),
-                    //     ),
-                    //     SizedBox(
-                    //       height: 3,
-                    //     ),
-                    //     Container(
-                    //       height: 43,
-                    //       child: TextField(
-                    //         style: theme.textTheme.bodySmall,
-                    //         decoration: InputDecoration(
-                    //           hintText: DateFormat('dd/MM/yyyy')
-                    //               .format(DateTime.now()),
-                    //           border: OutlineInputBorder(
-                    //               borderSide: BorderSide(color: Colors.grey),
-                    //               borderRadius:
-                    //                   BorderRadius.all(Radius.circular(5))),
-                    //         ),
-                    //         readOnly: true,
-                    //         controller: controller.attendanceDate.value,
-                    //         onTap: () async {
-                    //           final date = await getDate();
-                    //           if (date != null) {
-                    //             controller.attendanceDate.value.text =
-                    //                 DateFormat('dd/MM/yyyy').format(date);
-                    //           }
-                    //         },
-                    //       ),
-                    //     ),
-                    //     SizedBox(
-                    //       height: 17,
-                    //     ),
-                    //   ],
-                    // ),
+
                   ],
                 ),
                 widgetformData: Column(
