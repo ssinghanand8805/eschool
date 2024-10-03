@@ -46,47 +46,37 @@ class StudentDetailsController extends GetxController{
 
 
   List studentDetailsList = [];
+  List searchStudentInfoList = [];
+
   List<StudentDetailsDataModal> get getStudentDetailsList =>
-      List<StudentDetailsDataModal>.from(((searchC.value.text == ''
+      List<StudentDetailsDataModal>.from((searchC.value.text == ''
           ? studentDetailsList
           : studentDetailsList.where((element) => (element['firstname']
           .toString()
           .toLowerCase()
           .trim())
-          .trim()
-          .contains(
-          searchC.value.text.toLowerCase().trim())))
-          .map((element) => StudentDetailsDataModal.fromJson(element))));
-  set updateStudentDetailsList(List val){
+          .contains(searchC.value.text.toLowerCase().trim()))
+      ).map((element) => StudentDetailsDataModal.fromJson(element))
+      );
+
+  set updateStudentDetailsList(List val) {
     studentDetailsList = val;
     update();
   }
 
-  searchStuInfo(searchKey) async {
+  Future<void> searchStuInfo(String searchKey) async {
     Map<String, dynamic> body = {
-      "searchTerm":searchKey.toLowerCase().trim(),
+      "searchTerm": searchKey.toLowerCase().trim(),
     };
-    var data = await apiRespository.postApiCallByJson(Constants.searchStudentInfo, body);
 
-    print("SEARCHDATA @@@@ ${data.body}");
+    var data = await apiRespository.postApiCallByJson(Constants.searchStudentInfo, body);
+    print("SEARCH DATA @@@@ ${data.body}");
 
     updateSearchStudentInfo = data.body;
   }
-
-  List searchStudentInfoList = [];
-  List<StudentDetailsDataModal> get getSearchStudentInfoList =>
-      List<StudentDetailsDataModal>.from(((searchC.value.text == ''
-          ? searchStudentInfoList
-          : searchStudentInfoList.where((element) => (element['firstname']
-          .toString()
-          .toLowerCase()
-          .trim())
-          .trim()
-          .contains(
-          searchC.value.text.toLowerCase().trim())))
-          .map((element) => StudentDetailsDataModal.fromJson(element))));
-  set updateSearchStudentInfo(List val){
-    studentDetailsList = val;
+  set updateSearchStudentInfo(List val) {
+    searchStudentInfoList = val;
+    studentDetailsList = searchStudentInfoList;
     update();
   }
 

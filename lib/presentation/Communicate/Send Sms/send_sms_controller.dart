@@ -73,7 +73,6 @@ class SendSmsController extends GetxController{
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
-      barrierColor: Colors.white,
 
     );
     if (picked != null && picked != selectedTime) {

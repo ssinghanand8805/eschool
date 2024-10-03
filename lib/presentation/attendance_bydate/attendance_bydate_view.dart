@@ -12,6 +12,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/myCustomsd.dart';
+import '../../widgets/customTextField.dart';
 import '../common_widgets/CommonForm.dart';
 import '../common_widgets/controller/CommonApiController.dart';
 import '../common_widgets/controller/CommonController.dart';
@@ -195,35 +196,34 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
     // final source =  ResultSource(controller.filteredStudentListModel);
     return Column(
       children: [
-        TextField(
-          controller: controller.searchController.value,
-          decoration: InputDecoration(
-            labelText: 'Search Students',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.search),
-          ),
+        CustomTextField(
+          controller: controller.searchController.value, hint: 'Search Student', title: 'Search Student',
+
         ),
         controller.filteredStudentListModel.value.length == 0 ?
         Text("No Data") :
         SingleChildScrollView(
-          child: AdvancedPaginatedDataTable(
-            addEmptyRows: false,
-            source: _source,
-            showFirstLastButtons: true,
-            rowsPerPage: _rowsPerPage,
-            availableRowsPerPage: [1, 5, 10, 50],
-            onRowsPerPageChanged: (newRowsPerPage) {
-              if (newRowsPerPage != null) {
-                setState(() {
-                  _rowsPerPage = newRowsPerPage;
-                });
-              }
-            },
-            columns: [
-              DataColumn(label: Text('Student')),
-              DataColumn(label: Text('Status')),
-              DataColumn(label: Text('Remark'))
-            ],
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: AdvancedPaginatedDataTable(
+              addEmptyRows: false,
+              source: _source,
+              showFirstLastButtons: true,
+              rowsPerPage: _rowsPerPage,
+              availableRowsPerPage: [1, 5, 10, 50],
+              onRowsPerPageChanged: (newRowsPerPage) {
+                if (newRowsPerPage != null) {
+                  setState(() {
+                    _rowsPerPage = newRowsPerPage;
+                  });
+                }
+              },
+              columns: [
+                DataColumn(label: Text('Student')),
+                DataColumn(label: Text('Status')),
+                DataColumn(label: Text('Remark'))
+              ],
+            ),
           ),
         ),
       ],

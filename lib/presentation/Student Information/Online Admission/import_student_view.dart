@@ -16,7 +16,7 @@ class ImportStudentView extends GetView<ImportStudentController>{
         backgroundColor: Colors.green.shade100,
         title: Text(
           'Student List',
-          style: theme.textTheme.titleLarge,
+          style: theme.textTheme.bodyMedium,
         ),
       ),
       body: Padding(

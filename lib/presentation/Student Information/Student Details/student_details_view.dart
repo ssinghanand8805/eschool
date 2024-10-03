@@ -99,18 +99,14 @@ class StudentDetailsView extends GetView<StudentDetailsController>{
 
                 Obx(() => CustomTextField(
                   controller: controller.searchC.value,
-                  hint: "Search by student name, roll number,enrolment number,national Id,local Id etc...",
+                  hint: "Search by student name, roll number, enrolment number, national Id, local Id etc...",
                   title: "",
-                  onChanged: (val){
-                    if(val.length > 2){
-                      controller.searchStuInfo(val);
-                      controller.update();
-                    }
-                    else if(val.length==0){
-                      controller.updateStudentDetailsList = [];
-                    }
+                  onChanged: (val) {
+                    controller.searchStuInfo(val);
+                    controller.update();
                   },
-                ),),
+                )),
+
                 SizedBox(height: 10,),
 
 
@@ -127,17 +123,17 @@ class StudentDetailsView extends GetView<StudentDetailsController>{
                         height: 150,width: Get.width,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey.shade500)
+                            border: Border.all(color: Colors.grey.shade200)
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
                             decoration: BoxDecoration(
-                                boxShadow: const [
+                                boxShadow:  [
                                   BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 5,
-                                    offset: Offset(1, 4), // Shadow position
+                                    color: Colors.grey.shade400,
+                                    blurRadius: 2,
+                                    offset: Offset(0, 1), // Shadow position
                                   ),
                                 ],
                                 color: Colors.white,

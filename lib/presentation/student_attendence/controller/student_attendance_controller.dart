@@ -61,7 +61,7 @@ class StudentAttendanceController extends GetxController {
 
   Future<void> getData() async {
     CommonApiController controller3 = Get.put(CommonApiController());
-    controller3.getClassList();
+  //  controller3.getClassList();
     update();
   }
 
