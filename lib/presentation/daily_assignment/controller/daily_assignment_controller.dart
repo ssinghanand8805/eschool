@@ -39,6 +39,9 @@ class DailyAssignmentController extends GetxController {
     fetchDataFutureForSubjects = getSubjects(); // Initialize the future when the controller is created
     // Initialize the future when the controller is created
   }
+
+
+
   // @override
   // void initState() {
   //   studentSubjectsModelObj.value

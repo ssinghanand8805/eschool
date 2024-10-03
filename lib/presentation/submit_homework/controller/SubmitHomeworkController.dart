@@ -30,18 +30,12 @@ class SubmitHomeworkController extends GetxController {
     // fetchDataFuture = getData(); // Initialize the future when the controller is created
   }
 
-  File? selectedImage;
+  Rx<XFile?> image = Rx<XFile?>(null);
 
-  final ImagePicker _picker = ImagePicker();
 
-  Future<void> getImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
 
-    if (pickedFile != null) {
-      selectedImage = File(pickedFile.path);
-      update();
-    }
-    update();
+  void updateImage(XFile? newImage) {
+    image.value = newImage;
   }
 
   Future<void> submitHomework(String id, BuildContext context) async {
@@ -57,8 +51,8 @@ class SubmitHomeworkController extends GetxController {
         'message': homeWorkMessageC.value.text,
       };
 
-      if (selectedImage != null) {
-        body['file'] = selectedImage!.path;
+      if (image != null) {
+        body['file'] = image!.value;
       } else {
         print('No image selected, submitting without image...');
       }
@@ -97,8 +91,8 @@ class SubmitHomeworkController extends GetxController {
         'title': assignmentTitleC.value.text,
       };
 
-      if (selectedImage != null) {
-        body['file'] = selectedImage!.path;
+      if (image != null) {
+        body['file'] = image!.value;
       } else {
         print('No image selected, submitting without image...');
       }

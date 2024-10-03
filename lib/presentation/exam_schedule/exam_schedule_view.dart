@@ -89,7 +89,7 @@ class _ExamScheduleScreenState extends State<ExamScheduleScreen> {
                   style: theme.textTheme.titleSmall)),
             DataColumn(label: Text('Date',
                 style: theme.textTheme.titleSmall)),
-            DataColumn(label: Text('Start Time',
+            DataColumn(label: Text('Start \nTime',
                 style: theme.textTheme.titleSmall)),
             DataColumn(label: Text('Duration \n(Minutes)',
                 style: theme.textTheme.titleSmall)),

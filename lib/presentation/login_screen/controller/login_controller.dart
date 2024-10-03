@@ -70,18 +70,20 @@ class LoginController extends GetxController {
       usersData.addAccessToken(jsonData["token"].toString());
       usersData.addSchoolName(jsonData["sch_name"].toString());
       usersData.addCurrency_symbol(jsonData["currency_symbol"].toString());
+      print("+++++++++${jsonData["student_session_id"].toString()}");
       usersData
           .addCurrency_short_name(jsonData["currency_short_name"].toString());
       usersData.addStart_week(jsonData["startWeek"].toString());
-      usersData
-          .addStudent_session_id(jsonData["student_session_id"].toString());
+
       String imgUrl = baseUrlFromPref + jsonData["image"].toString();
       bool isUserImage = jsonData["image"].toString() == "null" ? false : true;
       usersData.addIsUserImage(isUserImage);
       usersData.addUserImage(imgUrl);
       usersData.addUsername(jsonData["username"].toString());
+
       Map<String, dynamic> recordData =
           jsonData["record"]; //json.decode(jsonData["record"]);
+      usersData.addDateFormat(recordData["date_format"].toString());
       if (jsonData["role"].toString() == "parent") {
         List<dynamic> childArray = recordData['parent_childs'];
         if (childArray.length == 1) {
@@ -92,7 +94,8 @@ class LoginController extends GetxController {
           usersData.addUserClassSection(
               firstChild["class"] + " - " + firstChild["section"]);
           usersData.addUserStudentName(firstChild["name"]);
-
+          usersData
+              .addStudent_session_id(firstChild["student_session_id"].toString());
           ///navigate here to dashboard
           print('one child found:::::::::');
           usersData.saveAllDataToSharedPreferences();
@@ -101,19 +104,22 @@ class LoginController extends GetxController {
           //   context,
           //   MaterialPageRoute(builder: (context) => DashboardScreen()),
           // );
-        } else {
+        }
+        else {
           List<String> childNameList = [];
           List<String> childIdList = [];
           List<String> childImageList = [];
           List<String> childClassList = [];
           List<bool> childImagefoundList = [];
+          List<String> childSessionIDList = [];
           for (int i = 0; i < childArray.length; i++) {
             print("*****************${childArray[i]}");
             String name = childArray[i]["name"];
             childNameList.add(name);
             String id = childArray[i]["student_id"];
             childIdList.add(id);
-
+            String seid = childArray[i]["student_session_id"] ?? "";
+            childSessionIDList.add(seid);
             bool isUserImage =
                 childArray[i]["image"].toString() == "null" ? false : true;
             usersData.addIsUserImage(isUserImage);
@@ -143,7 +149,7 @@ class LoginController extends GetxController {
           /// show Child List here
           ///
           showChildList(context, childNameList, childIdList, childImageList,
-              childClassList,childImagefoundList);
+              childClassList,childImagefoundList,childSessionIDList);
         }
       } else if (jsonData["role"] == "student") {
         usersData.addUserIsLoggedIn(true);
@@ -151,7 +157,8 @@ class LoginController extends GetxController {
         usersData.addUserClassSection(
             recordData["className"] + " - " + recordData["section"]);
         usersData.addUserAdmissionNo(recordData["admission_no"]);
-
+        usersData
+            .addStudent_session_id(recordData["student_session_id"].toString());
         ///checking for profile lock
         Map<String, dynamic> body2 = {"student_id": usersData.getUserStudentId};
         var data = await apiRespository.postApiCallByJson(
@@ -160,6 +167,7 @@ class LoginController extends GetxController {
         print(data);
         print('end profile lock data:::::::::');
         usersData.saveAllDataToSharedPreferences();
+        Get.toNamed(AppRoutes.formScreen);
       }
     } else {
       print('login failed:::::::::');
@@ -184,14 +192,15 @@ class LoginController extends GetxController {
     return prefs.setString(name, encodedData); // Save encoded string
   }
 
-  onSelectChildStudent(student_id, classNameSection, name) {
+  onSelectChildStudent(student_id, classNameSection, name,sessionId) {
     UserData usersData = UserData();
     usersData.addUserIsLoggedIn(true);
     usersData.addUserHasMultipleChild(true);
     usersData.addUserStudentId(student_id);
     usersData.addUserClassSection(classNameSection);
     usersData.addUserStudentName(name);
-
+    usersData
+        .addStudent_session_id(sessionId.toString());
     ///navigate here to dashboard
     print('one child found:::::::::');
     usersData.saveAllDataToSharedPreferences();
@@ -205,6 +214,7 @@ class LoginController extends GetxController {
       List<String> childImageList,
       List<String> childClassList,
       List<bool> childImagefoundList,
+      List<String> childSessionIDList,
 
       ) {
     showModalBottomSheet(
@@ -226,7 +236,7 @@ class LoginController extends GetxController {
                       InkWell(
                         onTap: () {
                           onSelectChildStudent(childIdList[index],
-                              childClassList[index], childNameList[index]);
+                              childClassList[index], childNameList[index],childSessionIDList[index]);
                         },
                         child: ListTile(
                           leading: childImagefoundList[index] != false

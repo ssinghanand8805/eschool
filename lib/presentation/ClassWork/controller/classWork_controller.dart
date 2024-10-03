@@ -29,8 +29,9 @@ class ClassWorkController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchDataFuture = getData();
     fetchDataFutureForSubjects = getSubjects();
+    fetchDataFuture = getData();
+
   }
 
   selectDate(BuildContext context) async {
@@ -85,7 +86,7 @@ class ClassWorkController extends GetxController {
     //     ? "${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.year}"
     //     : "${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().day.toString().padLeft(2, '0')}/${DateTime.now().year}";
     Map<String, dynamic> body = {
-      "student_id": 1,
+      "student_id": userData.getUserStudentId,
       "subject_group_subject_id": currentSelectedSubejectId.value == "0"
           ? ""
           : currentSelectedSubejectId.value,

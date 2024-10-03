@@ -1,13 +1,12 @@
-import 'package:lerno/apiHelper/Constants.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lerno/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:lerno/presentation/class_time_table/controller/class_time_table_controller.dart';
 import 'package:lerno/presentation/mydocuments/model/MyDocuments.dart';
-import 'package:lerno/presentation/notice_board/model/NoticeBoard.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../apiHelper/GlobalData.dart';
 import '../../apiHelper/userData.dart';
-import '../common_widgets/CommonCard.dart';
 import '../common_widgets/CommonCardExtended.dart';
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
@@ -138,7 +137,7 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
     );
   }
 
-  void onPressDownload(String fileUrl, String name) {
+  Future<void> onPressDownload(String fileUrl, String name) async {
     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
     UserData userData = Get.put(UserData());
     String fullUrl = baseUrlFromPref +
@@ -146,8 +145,30 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
         userData.getUserStudentId +
         "/" +
         fileUrl;
-    print(fullUrl);
-    FileDownloader.downloadFile(
+
+    print("@@@@@@@@@@@@@@@$fullUrl");
+
+    bool permissionStatus;
+    final deviceInfo = await DeviceInfoPlugin().androidInfo;
+
+    if (deviceInfo.version.sdkInt > 32) {
+      permissionStatus = await Permission.photos.request().isGranted;
+    } else {
+      permissionStatus = await Permission.storage.request().isGranted;
+    }
+
+    if (permissionStatus) {
+      print("STATUS GRANTED ");
+
+      // Show toast when download starts
+      Fluttertoast.showToast(
+        msg: "Download started...",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+
+      // Proceed with file download
+      FileDownloader.downloadFile(
         url: fullUrl,
         name: name, //(optional)
         onProgress: (String? fileName, double? progress) {
@@ -155,9 +176,52 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
         },
         onDownloadCompleted: (String path) {
           print('FILE DOWNLOADED TO PATH: $path');
+          Fluttertoast.showToast(
+            msg: "Download complete!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+          );
+
+
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Download Complete'),
+                content: Text('Do you want to open the file?'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      OpenFilex.open(path); // Open the downloaded file
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('Open'),
+                  ),
+                ],
+              );
+            },
+          );
         },
         onDownloadError: (String error) {
           print('DOWNLOAD ERROR: $error');
-        });
+
+          // Show toast if there's an error
+          Fluttertoast.showToast(
+            msg: "Download failed: $error",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+          );
+        },
+      );
+    } else {
+      openAppSettings(); // Open app settings if permission is denied
+      print("STATUS DENIED ");
+    }
   }
 }

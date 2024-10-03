@@ -22,8 +22,12 @@ class _LeaveApplicationPageState extends State<LeaveApplicationPage> {
     final pickedFile = await _picker.pickImage(source: source);
 
     if (pickedFile != null) {
-      controller.image.value = File(pickedFile.path);
+      controller.image.value = XFile(pickedFile.path);
     }
+    if (pickedFile != null) {
+      controller.updateImage(pickedFile);
+    }
+
   }
 
   getDate() async {
@@ -131,10 +135,18 @@ class _LeaveApplicationPageState extends State<LeaveApplicationPage> {
                       ),
                       SizedBox(height: 16.0),
                       SizedBox(height: 10),
-                      Image.asset(
-                        'assets/projectImages/upload_file.jpg',
-                        height: 150,
-                      ), // Replace with your asset
+                      Obx(() {
+                        return controller.image.value == null
+                            ? Image.asset(
+                          'assets/projectImages/upload_file.jpg',
+                          height: 200,
+                          width: 200,
+                        )
+                            : Image.file(
+                          File(controller.image.value!.path),
+                          height: 150,
+                        );
+                      }), // Replace with your asset
                       SizedBox(height: 20),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(

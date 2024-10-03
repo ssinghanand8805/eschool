@@ -17,6 +17,14 @@ class ApplyLeavePage extends StatefulWidget {
 
 class _ApplyLeavePageState extends State<ApplyLeavePage> {
   ApplyLeaveController controller = Get.put(ApplyLeaveController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.image.value = null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MainBody(
@@ -31,7 +39,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
         ),
         child: FloatingActionButton(
           focusColor: Colors.green.shade600,
-          backgroundColor:  Colors.green.shade600,
+          backgroundColor: Colors.green.shade600,
           onPressed: () {
             Navigator.push(
               context,
@@ -129,19 +137,15 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
               width: Get.width,
               child: Row(
                 children: [
-                  Text(
-                    "Apply Date",
-                    //'{homework.} (Code)',
-                      style: theme.textTheme.titleLarge!.copyWith(fontSize: 14,fontWeight: FontWeight.w600)
-                  ),
+                  Text("Apply Date",
+                      //'{homework.} (Code)',
+                      style: theme.textTheme.titleLarge!
+                          .copyWith(fontSize: 14, fontWeight: FontWeight.w600)),
                   Spacer(),
-                  Text(
-                    Utils.formatDateString(data.applyDate!.toString()),
-                    //'{homework.} (Code)',
-                      style: theme.textTheme.titleLarge!.copyWith(fontSize: 14,fontWeight: FontWeight.w600)
-                  ),
-
-
+                  Text(Utils.formatDateString(data.applyDate!.toString()),
+                      //'{homework.} (Code)',
+                      style: theme.textTheme.titleLarge!
+                          .copyWith(fontSize: 14, fontWeight: FontWeight.w600)),
                 ],
               ),
             ),
@@ -154,12 +158,14 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                       style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
                       style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'From Date',
-                      value:"${Utils.formatDateString(data.fromDate!.toString())}"),
+                      value:
+                          "${Utils.formatDateString(data.fromDate!.toString())}"),
                   InfoRow(
                       style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
                       style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
                       title: 'To  Date',
-                      value: "${Utils.formatDateString(data.toDate!.toString())}"),
+                      value:
+                          "${Utils.formatDateString(data.toDate!.toString())}"),
                   InfoRow(
                       style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
                       style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),

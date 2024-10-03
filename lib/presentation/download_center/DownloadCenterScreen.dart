@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter_file_downloader/flutter_file_downloader.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:lerno/core/app_export.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +11,13 @@ import 'package:lerno/presentation/download_center/model/videoModal.dart';
 import 'package:lerno/presentation/homework/HomeworkScreen.dart';
 import 'package:lerno/presentation/notice_board/model/NoticeBoard.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../apiHelper/Constants.dart';
 import '../../apiHelper/GlobalData.dart';
+import '../../apiHelper/userData.dart';
 import '../../core/utils/common_utilities.dart';
 import '../common_widgets/CommonCard.dart';
 import '../common_widgets/CommonCardExtended.dart';
@@ -209,73 +214,90 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
   }
 
   Widget _buildVideoTutorialTab({required Result data}) {
-    String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: () {
-          _launchInBrowser(Uri.parse(data.videoLink.toString()));
-        },
-        child: Container(
-          decoration: BoxDecoration(boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade400,
-              offset: const Offset(
-                0.3,
-                3.0,
+      child: Container(
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade400,
+            offset: const Offset(
+              0.3,
+              3.0,
+            ),
+            blurRadius: 4.0,
+          ), //BoxShadow
+          BoxShadow(
+            color: Colors.white,
+            offset: const Offset(0.0, 0.0),
+            blurRadius: 0.0,
+            spreadRadius: 0.0,
+          ), //BoxShadow
+        ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Text(
+                  data.title!,
+                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 16),
+                ),
               ),
-              blurRadius: 4.0,
-            ), //BoxShadow
-            BoxShadow(
-              color: Colors.white,
-              offset: const Offset(0.0, 0.0),
-              blurRadius: 0.0,
-              spreadRadius: 0.0,
-            ), //BoxShadow
-          ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.network(baseUrlFromPref + data.dirPath! + data.imgName!,
-                    fit: BoxFit.cover),
-                SizedBox(
-                  height: 10,
-                ),
-                Center(
-                  child: Text(
-                    data.title.toString(),
-                    style: theme.textTheme.titleMedium!
-                        .copyWith(fontWeight: FontWeight.w600, fontSize: 17),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Description: ",
+                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Description: ",
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                  Flexible(
+                    child: Text(
+                      data.description.toString(),
+                      style: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
                     ),
-                    Flexible(
-                      child: Text(
-                        data.description.toString(),
-                        style:
-                            theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30.0),
+                    child: InkWell(
+                      onTap: () {
+                        _launchInBrowser(Uri.parse(data.videoLink.toString()));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              BorderRadius.circular(7), // Rounded corners
+                          border: Border.all(
+                            color: Colors.blue, // Border color
+                            width: 1, // Border width
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5.0,
+                              horizontal:
+                                  12.0), // Padding for a button-like look
+                          child: Text(
+                            "View video",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.blue,
+                              // Bold text
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ],
-                ),
-                InfoRow(
-                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
-                    style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                    title: "createdBy",
-                    value: "${data.name} ${data!.surname}(${data.employeeId})"),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              InfoRow(
+                  style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                  style1: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                  title: "createdBy",
+                  value: "${data.name} ${data!.surname}(${data.employeeId})"),
+            ],
           ),
         ),
       ),
@@ -337,88 +359,216 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
       {required List<UploadContents> data}) {
     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
     showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20), // Rounded top corners for the bottom sheet
+        ),
+      ),
       context: context,
       builder: (BuildContext context) {
-        return ListView.builder(
-          itemCount: data.length ?? 0,
-          itemBuilder: (context, index) {
-            return data.length > 0
-                ? Center(
-                    child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.zero,
-                    ),
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+        return Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: data.isNotEmpty
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.0),
+                          border: Border.all(
+                            color: Colors.grey.shade300,
+                            width: 1.5,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset:
+                                  Offset(0, 3), // changes the shadow position
+                            ),
+                          ],
+                        ),
+                        child: Row(
                           children: [
                             Icon(
-                              Icons.drive_file_move_sharp,
+                              Icons.attach_file,
                               color: Colors.grey,
+                              size: 20.0,
                             ),
-                            SizedBox(
-                              width: 10,
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                data[index].realName.toString(),
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                            Text(
-                              'Attachment',
-                              style: TextStyle(
-                                fontSize: 15.0,
+                            IconButton(
+                              onPressed: () {
+                                onPressDownload2(
+                                  "${baseUrlFromPref + data[index].dirPath! + data[index].imgName!}",
+                                );
+                              },
+                              icon: Icon(
+                                Icons.download,
+                                size: 20,
+                                color: Colors.blue,
                               ),
                             ),
                           ],
                         ),
+                      ),
+                    );
+                  },
+                )
+              : Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 32.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/projectImages/no_data.png",
+                          height: 150, // Adjust size based on the asset
+                        ),
                         SizedBox(height: 16.0),
-                        Container(
-                          child: ListTile(
-                            title: Text(data[index].realName.toString()),
-                            trailing: IconButton(
-                              onPressed: () {
-                                downloadFileFromAPI(
-                                    "${baseUrlFromPref + data[index].dirPath! + data[index].imgName!}",
-                                    "fileName"!);
-                              },
-                              icon: Icon(
-                                Icons.download,
-                                size: 15,
-                                color: Colors.blue,
-                              ),
-                            ),
+                        Text(
+                          "No data found!",
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.grey[700],
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
-                  ))
-                : Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/projectImages/no_data.png",
-                    ),
-                    Text("No data found!")
-                  ],
-                ));
-          },
+                  ),
+                ),
         );
       },
     );
   }
 
-  Future<void> downloadFileFromAPI(String fileUrl, String fileName) async {
-    try {
-      final directory = await getTemporaryDirectory();
-      final filePath = '${directory.path}/$fileName';
-      final response = await http.get(Uri.parse(fileUrl));
-      final file = File(filePath);
-      await file.writeAsBytes(response.bodyBytes);
-      print('File downloaded: $filePath');
-      await OpenFile.open(filePath);
-    } catch (e) {
-      print('Error downloading file: $e');
+
+
+  Future<void> onPressDownload2(String fileUrl) async {
+    print("@@@@@@@@@@@@@@@");
+    bool permissionStatus;
+    final deviceInfo = await DeviceInfoPlugin().androidInfo;
+
+    if (deviceInfo.version.sdkInt > 33) {
+      permissionStatus = await Permission.photos.request().isGranted;
+    } else {
+      permissionStatus = await Permission.storage.request().isGranted;
+    }
+    // PermissionStatus status = await Permission.storage.request();
+    if (permissionStatus) {
+      print("STATUS GRANTED ");
+      // proceed with download
+    } else {
+      openAppSettings();
+      print("STATUS DENIED ");
+      // handle denied permission
+    }
+    print(fileUrl);
+    FileDownloader.downloadFile(
+
+        url: fileUrl,
+        onProgress: (String? fileName, double? progress) {
+          print('FILE }HAS PROGRESS $progress');
+        },
+        onDownloadCompleted: (String path) {
+          print('FILE DOWNLOADED TO PATH: $path');
+        },
+        onDownloadError: (String error) {
+          print('DOWNLOAD ERROR: $error');
+        });
+  }
+  Future<void> onPressDownload(String fileUrl) async {
+    print("@@@@@@@@@@@@@@@$fileUrl");
+
+    bool permissionStatus;
+    final deviceInfo = await DeviceInfoPlugin().androidInfo;
+
+    if (deviceInfo.version.sdkInt > 32) {
+      permissionStatus = await Permission.photos.request().isGranted;
+    } else {
+      permissionStatus = await Permission.storage.request().isGranted;
+    }
+
+    if (permissionStatus) {
+      print("STATUS GRANTED ");
+
+      Fluttertoast.showToast(
+        msg: "Download started...",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+
+      // Proceed with file download
+      FileDownloader.downloadFile(
+        url: fileUrl,
+        onProgress: (String? fileName, double? progress) {
+          print('FILE HAS PROGRESS $progress');
+        },
+        onDownloadCompleted: (String path) {
+          print('FILE DOWNLOADED TO PATH: $path');
+          Fluttertoast.showToast(
+            msg: "Download complete!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+          );
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Download Complete'),
+                content: Text('Do you want to open the file?'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      OpenFilex.open(path); // Open the downloaded file
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('Open'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        onDownloadError: (String error) {
+          print('DOWNLOAD ERROR: $error');
+
+          // Show toast if there's an error
+          Fluttertoast.showToast(
+            msg: "Download failed: $error",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+          );
+        },
+      );
+    } else {
+      openAppSettings(); // Open app settings if permission is denied
+      print("STATUS DENIED ");
     }
   }
 

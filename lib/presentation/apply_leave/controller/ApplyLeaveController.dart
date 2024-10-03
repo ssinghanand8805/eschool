@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lerno/apiHelper/userData.dart';
 import 'package:lerno/presentation/common_widgets/custom_loader.dart';
 import '../../../apiHelper/Constants.dart';
@@ -22,7 +23,14 @@ class ApplyLeaveController extends GetxController {
   Rx<TextEditingController> fromDateController = TextEditingController().obs;
   Rx<TextEditingController> toDateController = TextEditingController().obs;
 
-  Rx<File?> image = Rx<File?>(null);
+  Rx<XFile?> image = Rx<XFile?>(null);
+
+
+
+  void updateImage(XFile? newImage) {
+    image.value = newImage;
+  }
+
 
   @override
   void onClose() {
@@ -41,7 +49,8 @@ class ApplyLeaveController extends GetxController {
   void onInit() {
     super.onInit();
     fetchDataFuture =
-        getData(); // Initialize the future when the controller is created
+        getData();
+
   }
 
   saveData() async {

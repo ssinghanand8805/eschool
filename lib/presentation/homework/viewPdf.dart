@@ -91,18 +91,13 @@ class _DocumentViewerScreenState extends State<DocumentViewerScreen> {
           _isPdf?'Pdf View': 'Image View',
           style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.download, size: 22),
-            onPressed: _downloadDocument,
-          ),
-        ],
+
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : _isPdf
-          ? SfPdfViewer.network("$baseUrlFromPref${widget.documentUrl}")
-          : Image.network("$baseUrlFromPref${widget.documentUrl}"),
+          ? SfPdfViewer.network(widget.documentUrl)
+          : Image.network(widget.documentUrl),
     );
   }
 }

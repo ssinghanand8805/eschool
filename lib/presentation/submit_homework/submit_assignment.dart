@@ -23,14 +23,30 @@ class UploadAssignment extends StatefulWidget {
 class _UploadAssignmentState extends State<UploadAssignment> {
   SubmitHomeworkController controller = Get.put(SubmitHomeworkController());
 
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> getImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      controller.image.value = XFile(pickedFile.path);
+    }
+    if (pickedFile != null) {
+      controller.updateImage(pickedFile);
+    }
+
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     controller.assignmentMessageC.clear();
     controller.assignmentTitleC.clear();
-    controller.selectedImage = null;
+    controller.image.value = null;
 
   }
+
 
 
   @override
@@ -69,15 +85,18 @@ class _UploadAssignmentState extends State<UploadAssignment> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 10),
-                controller.selectedImage == null
-                    ? Image.asset(
-                        'assets/projectImages/upload_file.jpg',
-                        height: 150,
-                      )
-                    : Image.file(
-                        controller.selectedImage!,
-                        height: 150,
-                      ),
+                Obx(() {
+                  return controller.image.value == null
+                      ? Image.asset(
+                    'assets/projectImages/upload_file.jpg',
+                    height: 200,
+                    width: 200,
+                  )
+                      : Image.file(
+                    File(controller.image.value!.path),
+                    height: 150,
+                  );
+                }),
                 SizedBox(height: 50),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -155,7 +174,7 @@ class _UploadAssignmentState extends State<UploadAssignment> {
                     title: Text('Pick from Gallery'),
                     onTap: () {
                       Navigator.pop(context);
-                      controller.getImage(ImageSource.gallery);
+                     getImage(ImageSource.gallery);
                     },
                   ),
                   ListTile(
@@ -166,7 +185,7 @@ class _UploadAssignmentState extends State<UploadAssignment> {
                     title: Text('Take a Picture'),
                     onTap: () {
                       Navigator.pop(context);
-                      controller.getImage(ImageSource.camera);
+                      getImage(ImageSource.camera);
                     },
                   ),
                 ],

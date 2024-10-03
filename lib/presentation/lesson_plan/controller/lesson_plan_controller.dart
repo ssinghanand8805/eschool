@@ -30,10 +30,11 @@ class LessonPlanController extends GetxController {
 
   Map<String, DateTime> getMondayAndSaturday() {
     DateTime now = DateTime.now();
-    int daysUntilMonday = (1 - now.weekday) % 7;
-    int daysUntilSaturday = (7 - now.weekday) % 7;
-    DateTime monday = now.add(Duration(days: daysUntilMonday));
-    DateTime sunday = now.add(Duration(days: daysUntilSaturday));
+    // Calculate the current week's Monday
+    DateTime monday = now.subtract(Duration(days: now.weekday - 1));
+    // Calculate the current week's Saturday
+    DateTime sunday = monday.add(Duration(days: 6));
+
     return {
       'monday': DateTime(monday.year, monday.month, monday.day),
       'sunday': DateTime(sunday.year, sunday.month, sunday.day),

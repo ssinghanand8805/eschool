@@ -35,11 +35,15 @@ class ExamScheduleController extends GetxController {
     Map<String,dynamic> body = {
       "student_session_id" : userData.getStudent_session_id };
 
+    print("nkjnjnjnjnjn${userData.getStudent_session_id}");
+
       var data  = await apiRespository.postApiCallByJson(Constants.getCbseexamtimetableUrl, body);
+
+      print("vsvsgsgvvsgv${body}");
 
     examScheduleModelObj.value = ExamSchedule.fromJson(data.body);
 
-    print("getdailyassignmentUrl ${data.body}");
+    print("getCbseexamtimetableUrl ${data.body}");
 
 
   }

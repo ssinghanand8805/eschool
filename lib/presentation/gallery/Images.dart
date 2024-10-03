@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../apiHelper/GlobalData.dart';
 import '../../theme/theme_helper.dart';
 import 'controller/gallery_controller.dart';
 import 'model/gallery.dart';
@@ -70,8 +71,10 @@ class GridItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
+
     final String imageUrl =
-        "http://172.16.19.96/school3/uploads/gallery/media/${item.imgName}";
+        "${baseUrlFromPref}${item.dirPath}/${item.imgName}";
 
     final List<String> imageUrls = [imageUrl];
     return InkWell(
@@ -81,7 +84,7 @@ class GridItemWidget extends StatelessWidget {
       child: Card(
           child: ImagePage(
               imageUrl:
-                  "http://172.16.19.96/school3/uploads/gallery/media/${item.imgName!}")),
+              "${baseUrlFromPref}${item.dirPath}/${item.imgName}")),
     );
   }
 }
