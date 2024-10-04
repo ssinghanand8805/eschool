@@ -68,9 +68,22 @@ class _DailyAssignmentScreenState extends State<DailyAssignmentScreen>  with Sin
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Daily Assignment',style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
-            IconButton(
-              icon: Icon(Icons.calendar_month),
-              onPressed: () => controller.selectDate(context),
+            Row(
+              children: [
+                Obx(() {
+                  return Text(
+                    controller.formattedDate,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(fontSize: 14),
+                  );
+                }),
+                IconButton(
+                  icon: Icon(Icons.calendar_month),
+                  onPressed: () => controller.selectDate(context),
+                ),
+              ],
             ),
           ],
         ),

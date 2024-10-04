@@ -89,13 +89,13 @@ class _HomeworkScreenState extends State<HomeworkScreen>
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(width: 115,),
+                        SizedBox(width: 117,),
                         // Spacing between date and icon
                         Container(
                           padding: EdgeInsets.all(3),
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(5)
+                            borderRadius: BorderRadius.circular(10)
                           ),
                           child: Icon(
                             Icons.calendar_month,
@@ -111,13 +111,17 @@ class _HomeworkScreenState extends State<HomeworkScreen>
                         padding: EdgeInsets.all(3),
                         decoration: BoxDecoration(
                           color: Colors.green.shade100,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),   // Apply circular radius to top left corner
+                            bottomLeft: Radius.circular(10),// Apply circular radius to bottom left corner
+                          ),
                              border: Border(
                         left: BorderSide(color: Colors.black),  // Left border
                         top: BorderSide(color: Colors.black),   // Top border
                         bottom: BorderSide(color: Colors.black),// Bottom border
                         right: BorderSide.none,                 // No right border
                       ),
-                            borderRadius: BorderRadius.circular(5)
+
                         ),
                         child: Text(
                           controller.formattedDate,

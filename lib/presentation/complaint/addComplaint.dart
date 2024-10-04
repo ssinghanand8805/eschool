@@ -72,7 +72,7 @@ class _AddComplaintPageState extends State<AddComplaintPage> {
                         }
 
                         if (!controller.complaintModelObj.contains(controller.selectedComplaint.value)) {
-                          controller.selectedComplaint.value = null; // Reset the selected value
+                          controller.selectedComplaint.value = null;
                         }
                         return InputDecorator(
                           decoration: InputDecoration(

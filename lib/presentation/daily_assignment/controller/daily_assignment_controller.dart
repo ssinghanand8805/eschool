@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:lerno/apiHelper/userData.dart';
 import 'package:lerno/presentation/daily_assignment/model/student_Subject.dart';
 import 'package:lerno/presentation/login_screen/models/userDataModal.dart';
@@ -41,7 +42,9 @@ class DailyAssignmentController extends GetxController {
   }
 
 
-
+  String get formattedDate {
+    return DateFormat('dd-MM-yyyy').format(selectedDate.value);
+  }
   // @override
   // void initState() {
   //   studentSubjectsModelObj.value
