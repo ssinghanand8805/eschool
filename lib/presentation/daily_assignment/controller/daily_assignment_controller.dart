@@ -100,7 +100,7 @@ class DailyAssignmentController extends GetxController {
       "subject_group_subject_id": currentSelectedSubejectId.value == "0"
           ? ""
           : currentSelectedSubejectId.value,
-      "date": formattedDate // Pass the formatted date if provided
+      "date": formattedDate
     };
 
     print("Body @@@@ $body");

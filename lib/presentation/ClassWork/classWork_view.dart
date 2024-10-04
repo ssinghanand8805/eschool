@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:lerno/core/app_export.dart';
 import 'package:lerno/presentation/library/model/IssuedBook.dart';
 
+import '../../core/utils/common_utilities.dart';
 import '../common_widgets/CommonCardExtended.dart';
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
@@ -180,10 +181,10 @@ class _ClassWorkViewState extends State<ClassWorkView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Classwork Date", style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),),
-              Text(data.classworkDate ??""),
+              Text( Utils.formatDateString(data.classworkDate!) ??"",style: theme.textTheme.bodySmall!.copyWith(fontSize: 14),),
             ],),
-          SizedBox(height: 20,),
-          InkWell(
+          data.document.toString() == 'null' || data.document.toString() == '' ? SizedBox():SizedBox(height: 20,),
+          data.document.toString() == 'null' || data.document.toString() == '' ? SizedBox() :  InkWell(
             onTap: (){
 
               Navigator.push(
@@ -207,7 +208,7 @@ class _ClassWorkViewState extends State<ClassWorkView> {
               Text("Description",style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),),
               Flexible(
                 //padding: const EdgeInsets.all(8.0),
-                child: Html( data: "${data.description}"),),
+                child: Html( data: "${data.description}")),
               //  Html( data: "${data.description}"),
             ],
           ),

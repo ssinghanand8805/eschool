@@ -461,14 +461,14 @@ class HomeworkCard extends GetView<HomeWorkController> {
                             style1: theme.textTheme.bodySmall!
                                 .copyWith(fontSize: 13),
                             title: 'Homework Date',
-                            value: homework.homeworkDate.toString()),
+                            value: Utils.formatDateString( homework.homeworkDate.toString())),
                         InfoRow(
                             style: theme.textTheme.titleSmall!
                                 .copyWith(fontSize: 13),
                             style1: theme.textTheme.bodySmall!
                                 .copyWith(fontSize: 13),
                             title: 'Submission Date',
-                            value: homework.submitDate.toString()),
+                            value:  Utils.formatDateString(homework.submitDate.toString())),
                         homework.document!.isEmpty
                             ? SizedBox()
                             : InkWell(
@@ -601,14 +601,14 @@ class HomeworkCard extends GetView<HomeWorkController> {
                                 style1: theme.textTheme.bodySmall!
                                     .copyWith(fontSize: 13),
                                 title: 'Homework Date',
-                                value: homework.homeworkDate.toString()),
+                                value:  Utils.formatDateString(homework.homeworkDate.toString())),
                             InfoRow(
                                 style: theme.textTheme.titleSmall!
                                     .copyWith(fontSize: 13),
                                 style1: theme.textTheme.bodySmall!
                                     .copyWith(fontSize: 13),
                                 title: 'Submission Date',
-                                value: homework.submitDate.toString()),
+                                value:  Utils.formatDateString(homework.submitDate.toString())),
                             InfoRow(
                                 style: theme.textTheme.titleSmall!
                                     .copyWith(fontSize: 13),
@@ -726,14 +726,14 @@ class HomeworkCard extends GetView<HomeWorkController> {
                                 style1: theme.textTheme.bodySmall!
                                     .copyWith(fontSize: 13),
                                 title: 'Homework Date',
-                                value: homework.homeworkDate.toString()),
+                                value:  Utils.formatDateString(homework.homeworkDate.toString())),
                             InfoRow(
                                 style: theme.textTheme.titleSmall!
                                     .copyWith(fontSize: 13),
                                 style1: theme.textTheme.bodySmall!
                                     .copyWith(fontSize: 13),
                                 title: 'Submission Date',
-                                value: homework.submitDate.toString()),
+                                value:  Utils.formatDateString(homework.submitDate.toString())),
                             InkWell(
                               onTap: () {
                                 Navigator.push(
