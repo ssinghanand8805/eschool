@@ -126,11 +126,6 @@ class _LeaveApplicationPageState extends State<LeaveApplicationPage> {
                             hintText: 'Reason',
                             border: OutlineInputBorder(),
                           ),
-
-                          // onChanged: (value) {
-                          //   controller.reason.value = value;
-                          //
-                          // },
                         ),
                       ),
                       SizedBox(height: 16.0),

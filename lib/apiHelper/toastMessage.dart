@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../theme/theme_helper.dart';
+
 class Ui {
   static GetSnackBar SuccessSnackBar({String title = 'Success', required String message}) {
     Get.log("[$title] $message");
@@ -16,7 +18,7 @@ class Ui {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       borderRadius: 8,
       dismissDirection: DismissDirection.horizontal,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 3),
     );
   }
 
@@ -32,7 +34,7 @@ class Ui {
       icon: const Icon(Icons.error, size: 32,color:   Colors.white),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       borderRadius: 8,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 3),
     );
   }
 
@@ -48,7 +50,7 @@ class Ui {
       icon: const Icon(Icons.warning_amber_rounded, size: 32, color: Colors.white),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       borderRadius: 8,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 3),
     );
   }
 
@@ -67,7 +69,25 @@ class Ui {
       icon: const Icon(Icons.notifications_none, size: 32, color:Colors.white),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       borderRadius: 8,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 3),
+    );
+  }
+
+  static NoDataWidget() {
+    return Center(
+      child: Column(
+       mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            "assets/projectImages/no_data.png",
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'No data found!',
+            style: theme.textTheme.titleMedium,
+          )
+        ],
+      ),
     );
   }
 

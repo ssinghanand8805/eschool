@@ -8,6 +8,7 @@ import 'package:lerno/presentation/common_widgets/MainBody.dart';
 
 import '../../core/app_export.dart';
 import '../../widgets/customSD.dart';
+import '../common_widgets/custom_loader.dart';
 import 'controller/complaintController.dart';
 import 'model/teacherComplaint.dart';
 
@@ -69,6 +70,10 @@ class _AddComplaintPageState extends State<AddComplaintPage> {
                         if (controller.complaintModelObj.isEmpty) {
                           return Text("No complaints available");
                         }
+
+                        if (!controller.complaintModelObj.contains(controller.selectedComplaint.value)) {
+                          controller.selectedComplaint.value = null; // Reset the selected value
+                        }
                         return InputDecorator(
                           decoration: InputDecoration(
                             contentPadding:
@@ -91,7 +96,7 @@ class _AddComplaintPageState extends State<AddComplaintPage> {
                             hintText: "Select a Complaint Type",
                           ),
                           child: DropdownButtonHideUnderline(
-                            child: DropdownButton<ComplaintType>(
+                            child: controller.complaintModelObj.value.length > 0 ? DropdownButton<ComplaintType>(
                               value: controller.selectedComplaint.value,
                               items:
                                   controller.complaintModelObj.map((complaint) {
@@ -105,7 +110,7 @@ class _AddComplaintPageState extends State<AddComplaintPage> {
                                 controller.selectedComplaint.value = newValue;
                               },
                               hint: Text("Select a Complaint Type"),
-                            ),
+                            ) : CustomLoader(),
                           ),
                         );
                       }),

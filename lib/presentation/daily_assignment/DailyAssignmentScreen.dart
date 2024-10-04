@@ -67,7 +67,7 @@ class _DailyAssignmentScreenState extends State<DailyAssignmentScreen>  with Sin
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Daily Assignment',style: theme.textTheme.titleLarge,),
+            Text('Daily Assignment',style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
             IconButton(
               icon: Icon(Icons.calendar_month),
               onPressed: () => controller.selectDate(context),
@@ -190,7 +190,7 @@ class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
                                     onChanged: (Subjectlist? newValue) {
                                       if (newValue != null) {
                                         controller.currentSelectedSubject.value = newValue;
-                                        controller.currentSelectedSubejectId.value = newValue.subjectId!;
+                                        controller.currentSelectedSubejectId.value = newValue.subjectGroupSubjectsId!;
                                         controller.update();
                                         controller.getAssignment(selectedDate: controller.selectedDate.value);
                                       }

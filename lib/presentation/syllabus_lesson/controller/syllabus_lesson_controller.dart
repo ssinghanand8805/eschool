@@ -37,6 +37,7 @@ class SyllabusLessonController extends GetxController {
     List<SyllabusLesson> d = [];
     for(var i =0;i<data.body.length; i++)
       {
+        print("DATA @@@@ ${data.body[i]}");
         d.add(SyllabusLesson.fromJson(data.body[i]));
       }
     syllabusLessonModelObj.value = d;

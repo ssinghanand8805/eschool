@@ -22,9 +22,9 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
-
     super.onInit();
-
+    idController.clear();
+    passwordController.clear();
 
   }
   @override
@@ -94,8 +94,10 @@ class LoginController extends GetxController {
           usersData.addUserClassSection(
               firstChild["class"] + " - " + firstChild["section"]);
           usersData.addUserStudentName(firstChild["name"]);
-          usersData
-              .addStudent_session_id(firstChild["student_session_id"].toString());
+          usersData.addUserStudentClassId(firstChild["class_id"]); //class_id
+          usersData.addUserStudentSectionId(firstChild["section_id"]); //section_id
+          usersData.addUserStudentParentId(recordData["id"]); //user_parent_id
+          usersData.addStudent_session_id(firstChild["student_session_id"].toString());
           ///navigate here to dashboard
           print('one child found:::::::::');
           usersData.saveAllDataToSharedPreferences();
@@ -112,6 +114,10 @@ class LoginController extends GetxController {
           List<String> childClassList = [];
           List<bool> childImagefoundList = [];
           List<String> childSessionIDList = [];
+
+          List<String> childClassIdList = [];
+          List<String> childSectionIdList = [];
+          usersData.addUserStudentParentId(recordData["id"]); //user_parent_id
           for (int i = 0; i < childArray.length; i++) {
             print("*****************${childArray[i]}");
             String name = childArray[i]["name"];
@@ -120,6 +126,11 @@ class LoginController extends GetxController {
             childIdList.add(id);
             String seid = childArray[i]["student_session_id"] ?? "";
             childSessionIDList.add(seid);
+
+            String classId = childArray[i]["class_id"] ?? "";
+            String sectionId = childArray[i]["section_id"] ?? "";
+                childClassIdList.add(classId);
+                childSectionIdList.add(sectionId);
             bool isUserImage =
                 childArray[i]["image"].toString() == "null" ? false : true;
             usersData.addIsUserImage(isUserImage);
@@ -144,19 +155,28 @@ class LoginController extends GetxController {
           saveArray("childImageList",childImageList);
           saveArray("childClassList",childClassList);
           saveArray("childImagefoundList",childImagefoundList);
+          saveArray("childSessionIDList",childSessionIDList);
+          saveArray("childClassIdList",childClassIdList);
+          saveArray("childSectionIdList",childSectionIdList);
           print('child name List:::::::::');
 
           /// show Child List here
           ///
           showChildList(context, childNameList, childIdList, childImageList,
-              childClassList,childImagefoundList,childSessionIDList);
+              childClassList,childImagefoundList,childSessionIDList,childClassIdList,childSectionIdList);
         }
-      } else if (jsonData["role"] == "student") {
+      }
+      else if (jsonData["role"] == "student") {
         usersData.addUserIsLoggedIn(true);
         usersData.addUserStudentId(recordData["student_id"]);
         usersData.addUserClassSection(
             recordData["className"] + " - " + recordData["section"]);
         usersData.addUserAdmissionNo(recordData["admission_no"]);
+        usersData.addUserStudentClassId(recordData["class_id"]); //class_id
+        usersData.addUserStudentSectionId(recordData["section_id"]); //section_id
+        usersData.addUserStudentParentId(""); //user_parent_id
+
+
         usersData
             .addStudent_session_id(recordData["student_session_id"].toString());
         ///checking for profile lock
@@ -192,13 +212,15 @@ class LoginController extends GetxController {
     return prefs.setString(name, encodedData); // Save encoded string
   }
 
-  onSelectChildStudent(student_id, classNameSection, name,sessionId) {
+  onSelectChildStudent(student_id, classNameSection, name,sessionId,classId,sectionId) {
     UserData usersData = UserData();
     usersData.addUserIsLoggedIn(true);
     usersData.addUserHasMultipleChild(true);
     usersData.addUserStudentId(student_id);
     usersData.addUserClassSection(classNameSection);
     usersData.addUserStudentName(name);
+    usersData.addUserStudentClassId(classId);
+    usersData.addUserStudentSectionId(sectionId);
     usersData
         .addStudent_session_id(sessionId.toString());
     ///navigate here to dashboard
@@ -214,7 +236,8 @@ class LoginController extends GetxController {
       List<String> childImageList,
       List<String> childClassList,
       List<bool> childImagefoundList,
-      List<String> childSessionIDList,
+      List<String> childSessionIDList
+  ,List<String>childClassIdList,List<String> childSectionIdList
 
       ) {
     showModalBottomSheet(
@@ -236,7 +259,8 @@ class LoginController extends GetxController {
                       InkWell(
                         onTap: () {
                           onSelectChildStudent(childIdList[index],
-                              childClassList[index], childNameList[index],childSessionIDList[index]);
+                              childClassList[index], childNameList[index],childSessionIDList[index],
+                              childClassIdList[index],childSectionIdList[index]);//childClassIdList,childSectionIdList
                         },
                         child: ListTile(
                           leading: childImagefoundList[index] != false

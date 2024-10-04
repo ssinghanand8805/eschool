@@ -78,10 +78,10 @@ class _SyllabuStatusScreenState extends State<SyllabuStatusScreen> {
         subtitle: data.totalComplete! + " Complete",
         style: theme.textTheme.titleMedium,
         newWidget: ListTile(
-          leading: Icon(Icons.drag_handle_rounded,size: 18,),
-          title: Text("Lesson Plan",style: theme.textTheme.titleMedium!.copyWith(color:Colors.blue,fontSize: 14),),
+          leading: Icon(Icons.remove_red_eye,size: 18,),
+          title: Text("View ${data.subjectName} Completion Status",style: theme.textTheme.titleMedium!.copyWith(color:Colors.blue,fontSize: 14),),
           onTap: () {
-            onLessionPlanTap(data.subjectGroupSubjectId!, data.classSectionId!);
+            onLessionPlanTap(data.subjectGroupSubjectId!, data.id!);
           },
         )); //IconButton(onPressed: onPressed, icon: Icon(Icons.drag_handle_rounded)))  ;
   }

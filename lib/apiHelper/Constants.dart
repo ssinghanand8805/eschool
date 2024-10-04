@@ -38,6 +38,8 @@ class Constants {
   static const String getComplainType = 'webservice/getComplainType';
   static const String getComplaintByStudent = 'webservice/getComplaintByStudent';
   static const String feesReceipt = 'webservice/feesReceipt';
+  static const String  logout = 'webservice/logout';
+  static const String  changePassword = 'auth/change_password';
 
 
 

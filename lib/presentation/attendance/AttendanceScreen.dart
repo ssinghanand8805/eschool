@@ -1,8 +1,8 @@
 import 'dart:collection';
 
-
 import 'package:flutter/material.dart';
 import 'package:lerno/presentation/attendance/controller/attendanceController.dart';
+import 'package:lerno/presentation/common_widgets/custom_loader.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/app_export.dart';
@@ -31,7 +31,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   void initState() {
     super.initState();
-
     _focusedDay = DateTime.now();
     _firstDay = DateTime.now().subtract(const Duration(days: 1000));
     _lastDay = DateTime.now().add(const Duration(days: 1000));
@@ -39,89 +38,82 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     _calendarFormat = CalendarFormat.month;
   }
 
-  final List<Map<String, String>> attendanceData = [
-    {'name': 'Alice', 'status': 'Present'},
-    {'name': 'Bob', 'status': 'Absent'},
-    {'name': 'Charlie', 'status': 'Late'},
-    {'name': 'David', 'status': 'Half Day'},
-    {'name': 'Eve', 'status': 'Holiday'},
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.green.shade100,
-          title:  Text('Attendance',style: theme.textTheme.titleLarge!.copyWith(fontSize: 17))),
+          title: Text('Attendance',
+              style: theme.textTheme.titleLarge!.copyWith(fontSize: 17))),
       body: GetBuilder(
-        init: controller,
-        builder: (context) {
-          return ListView(
-            children: [
-              TableCalendar<Event>(
-                headerStyle: HeaderStyle(
-                  formatButtonVisible : false,
-                ),
-                daysOfWeekHeight: 30,
-                daysOfWeekStyle: DaysOfWeekStyle(
-                    decoration: BoxDecoration(
-                        color: Colors.green.shade100,
-                        borderRadius: BorderRadius.all(Radius.circular(50))
-                    )
-                ),
-                eventLoader: (DateTime date) => controller.getEvents(date) ?? [],
-                calendarFormat: _calendarFormat,
-                onFormatChanged: (format) {
-                  // setState(() {
-                  //   _calendarFormat = format;
-                  // });
-                },
-                focusedDay: _focusedDay,
-                firstDay: _firstDay,
-                lastDay: _lastDay,
-                onPageChanged: (focusedDay) {
-                  print("********${focusedDay}");
-                  setState(() {
-                    _focusedDay = focusedDay;
-                  });
-                  controller.getDataFromApi(focusedDay);
-                },
-                selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
-                onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                  });
-                },
-                calendarStyle: const CalendarStyle(
-                  // weekendTextStyle: TextStyle(
-                  //   color: Colors.red,
-                  // ),
-                  selectedDecoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.red,
+          init: controller,
+          builder: (context) {
+            return ListView(
+              children: [
+                TableCalendar<Event>(
+                  headerStyle: HeaderStyle(
+                    formatButtonVisible: false,
                   ),
-                ),
-                calendarBuilders: CalendarBuilders(
-                  headerTitleBuilder: (context, day) {
+                  daysOfWeekHeight: 30,
+                  daysOfWeekStyle: DaysOfWeekStyle(
+                      decoration: BoxDecoration(
+                          color: Colors.green.shade100,
+                          borderRadius: BorderRadius.all(Radius.circular(50)))),
+                  eventLoader: (DateTime date) =>
+                      controller.getEvents(date) ?? [],
+                  calendarFormat: _calendarFormat,
+                  onFormatChanged: (format) {
+                    // setState(() {
+                    //   _calendarFormat = format;
+                    // });
+                  },
+                  focusedDay: _focusedDay,
+                  firstDay: _firstDay,
+                  lastDay: _lastDay,
+                  onPageChanged: (focusedDay) {
+                    print("********${focusedDay}");
+
+                    setState(() {
+                      _focusedDay = focusedDay;
+                    });
+                    controller.getDataFromApi(focusedDay);
+                  },
+                  selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
+                  onDaySelected: (selectedDay, focusedDay) {
+                    setState(() {
+                      _selectedDay = selectedDay;
+                      _focusedDay = focusedDay;
+                    });
+                  },
+                  calendarStyle: const CalendarStyle(
+                    // weekendTextStyle: TextStyle(
+                    //   color: Colors.red,
+                    // ),
+                    selectedDecoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.red,
+                    ),
+                  ),
+                  calendarBuilders:
+                      CalendarBuilders(headerTitleBuilder: (context, day) {
+
                     String dateString = day.toString();
 
-                    String cleanedDateString = dateString.substring(0, 10); // Extracts "2024-04-01"
+                    String cleanedDateString =
+                        dateString.substring(0, 10); // Extracts "2024-04-01"
                     print(cleanedDateString);
-                    print("dgfgfdg"+day.toString());
+                    print("dgfgfdg" + day.toString());
                     return Container(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(cleanedDateString.toString()),
                     );
-
-                  },
-                    markerBuilder: (context, day, events) {
-                      return events.isNotEmpty
-                          ? PositionedDirectional(
-                        bottom: 0,
-                        end: 0,
-                        child: Center(
-                            child: Container(
+                  }, markerBuilder: (context, day, events) {
+                    return events.isNotEmpty
+                        ? PositionedDirectional(
+                            bottom: 0,
+                            end: 0,
+                            child: Center(
+                                child: Container(
                               width: 15,
                               height: 15,
                               decoration: BoxDecoration(
@@ -129,69 +121,84 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                 color: getAttendanceColor(events[0].title),
                               ),
                             )),
-                      )
-                          : null;
-                    }
+                          )
+                        : null;
+                  }),
                 ),
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: attendanceData.length,
-                itemBuilder: (context, index) {
+                SizedBox(
+                  height: 10,
+                ),
 
+                Obx(() {
+               return Center(
+                  child: Text(
+                      controller.currentMont.value + " Month Attendance",
+                      style: theme.textTheme.titleLarge!
+                          .copyWith(fontSize: 16, fontStyle: FontStyle.italic)),
+                );     }),
+                Obx(() {
+                  if (controller.isLoading.value) {
+                    return Center(
+                        child: Padding(
+                      padding: const EdgeInsets.only(top: 18.0),
+                      child: CustomLoader(),
+                    ));
+                  }
 
-                  final item = attendanceData[index];
+                  if (controller.kEvents.value.isNotEmpty) {
+                    Map<String, dynamic> countsMap =
+                        controller.attendanceModelObj.value.counts == null
+                            ? {}
+                            : controller.attendanceModelObj.value.counts!
+                                .toJson();
+                    List<String> keys = countsMap.keys.toList();
+                    List<dynamic> values = countsMap.values.toList();
 
-                  int presentDays = attendanceData.where((entry) => entry["type"] == "Present")
-                      .length;
-
-                  print("jfnvjfnjvnfjvnfn${attendanceData}");
-                 return Padding(
-                   padding: const EdgeInsets.only(top: 15.0),
-                   child: StatusCard(
-                      color:getAttendanceColor(item['status']),
-                     count: presentDays.toString(),
-                     countBackgroundColor: getAttendanceColor(item['status']),
-                     label: item['status'] ?? '',
-                   )
-                 );
-
-
-
-
-
-                },
-              ),
-
-            ],
-          );
-        }
-      ),
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: keys.length,
+                      itemBuilder: (context, index) {
+                        final item = values[index];
+                        int presentDays = values[index];
+                        return Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: StatusCard(
+                              color: getAttendanceColor(keys[index]),
+                              count: presentDays.toString() ?? "",
+                              countBackgroundColor:
+                                  getAttendanceColor(keys[index]),
+                              label: keys[index] ?? '',
+                            ));
+                      },
+                    );
+                  } else {
+                    return Center(
+                        child: Text('No attendance records available.'));
+                  }
+                }),
+              ],
+            );
+          }),
     );
   }
 
-
-
-
-
   Color getAttendanceColor(String? status) {
-    switch (status) {
-      case 'Present':
+    switch (status?.toLowerCase()) {
+      case 'present':
         return Colors.green;
-      case 'Absent':
+      case 'absent':
         return Colors.red;
-      case 'Late':
+      case 'late':
         return Colors.yellow;
-      case 'Half Day':
+      case 'half day':
         return Colors.orange;
-      case 'Holiday':
+      case 'holiday':
         return Colors.grey;
       default:
         return Colors.transparent;
     }
   }
 }
-
 
 class StatusCard extends StatelessWidget {
   final String label;
@@ -209,7 +216,7 @@ class StatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0,right: 8),
+      padding: const EdgeInsets.only(left: 8.0, right: 8),
       child: Container(
         height: 45,
         decoration: BoxDecoration(
@@ -234,10 +241,9 @@ class StatusCard extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  label,
-                    style: theme.textTheme.titleLarge!.copyWith(fontSize: 13,fontWeight: FontWeight.w600)
-                ),
+                child: Text(label,
+                    style: theme.textTheme.titleLarge!
+                        .copyWith(fontSize: 13, fontWeight: FontWeight.w600)),
               ),
             ),
 
@@ -269,5 +275,3 @@ class StatusCard extends StatelessWidget {
     );
   }
 }
-
-

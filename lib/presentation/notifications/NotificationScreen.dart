@@ -12,19 +12,15 @@ import 'controller/NotificationController.dart';
 import 'model/FCMNotifications.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-
 // import 'controller/notice_board_controller.dart';
 
-
-class  NotificationScreen extends StatefulWidget {
+class NotificationScreen extends StatefulWidget {
   @override
-  State< NotificationScreen> createState() => _NotificationScreenState();
+  State<NotificationScreen> createState() => _NotificationScreenState();
 }
 
-class _NotificationScreenState extends State< NotificationScreen> {
+class _NotificationScreenState extends State<NotificationScreen> {
   NotificationController controller = Get.put(NotificationController());
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +31,15 @@ class _NotificationScreenState extends State< NotificationScreen> {
       actionWidget: [
         Padding(
           padding: const EdgeInsets.only(right: 18.0),
-          child: IconButton(onPressed: (){
-            _showConfirmationDialog( context);
-
-          }, icon: Icon(Icons.info,color: Colors.grey.shade600,size: 20,)),
+          child: IconButton(
+              onPressed: () {
+                _showConfirmationDialog(context);
+              },
+              icon: Icon(
+                Icons.info,
+                color: Colors.grey.shade600,
+                size: 20,
+              )),
         )
       ],
       widget: _buildChildWidget(),
@@ -50,27 +51,31 @@ class _NotificationScreenState extends State< NotificationScreen> {
       init: controller,
       builder: (_) {
         return FutureBuilder(
-          future:  controller.fetchDataFuture,//controller.getData(context),
+          future: controller.fetchDataFuture, //controller.getData(context),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
-            }
-            else {
-              return controller.notificationModelObj.value!.length > 0 ?  ListView.builder(
-                itemCount: controller.notificationModelObj.value!.length ?? 0,
-                itemBuilder: (context, index) {
-                  return  _buildTimeTableCard(
-                    data:controller.notificationModelObj.value![index],index:  index
-                  );
-                },
-              ) : Center(child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset("assets/projectImages/no_data.png",),
-                  Text("No data found!")
-                ],
-              ));
-
+            } else {
+              return controller.notificationModelObj.value!.length > 0
+                  ? ListView.builder(
+                      itemCount:
+                          controller.notificationModelObj.value!.length ?? 0,
+                      itemBuilder: (context, index) {
+                        return _buildTimeTableCard(
+                            data: controller.notificationModelObj.value![index],
+                            index: index);
+                      },
+                    )
+                  : Center(
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/projectImages/no_data.png",
+                        ),
+                        Text("No data found!")
+                      ],
+                    ));
             }
           },
         );
@@ -78,11 +83,13 @@ class _NotificationScreenState extends State< NotificationScreen> {
     );
   }
 
-  Widget _buildTimeTableCard({required FCMNotifications data, required int index}) {
+  Widget _buildTimeTableCard(
+      {required FCMNotifications data, required int index}) {
     return VisibilityDetector(
       key: Key('notification-$index'),
       onVisibilityChanged: (visibilityInfo) {
-        if (visibilityInfo.visibleFraction > 0.5) { // Check if more than 50% of the item is visible
+        if (visibilityInfo.visibleFraction > 0.5) {
+          // Check if more than 50% of the item is visible
           controller.markNotificationAsRead(index);
         }
       },
@@ -90,17 +97,15 @@ class _NotificationScreenState extends State< NotificationScreen> {
           title: data.title!,
           leadingWidget: SizedBox(),
           subtitle: Utils.formatDateString(data.timestamp!.toString()),
-          newWidget:  Html(
-              style: {
-                "body": Style(
-                  fontSize: FontSize(15.0),
-                  color: Colors.black,
-                ),
-              },
-              shrinkWrap: true,
-              data:data.body!)),
+          newWidget: Html(style: {
+            "body": Style(
+              fontSize: FontSize(15.0),
+              color: Colors.black,
+            ),
+          }, shrinkWrap: true, data: data.body!)),
     );
   }
+
   void _showConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -124,7 +129,7 @@ class _NotificationScreenState extends State< NotificationScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-            "This action will update your profile, but changes will only take effect if you modify your student information.",
+                  "Notification data will be saved in device and it will be cleared when logged out.",
                   style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                 ),
               ],
@@ -150,5 +155,4 @@ class _NotificationScreenState extends State< NotificationScreen> {
       },
     );
   }
-
 }

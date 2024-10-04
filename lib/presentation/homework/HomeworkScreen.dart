@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:lerno/core/app_export.dart';
 import 'package:lerno/presentation/homework/controller/homework_controller.dart';
 import 'package:lerno/presentation/homework/model/Homework.dart';
@@ -53,7 +54,6 @@ class _HomeworkScreenState extends State<HomeworkScreen>
               : 'evaluated';
       controller.getData(selectedDate: controller.selectedDate.value);
       print('#############: ${controller.homeworkModelObj.value.homeworklist}');
-
     } else {
       controller.homeworkModelObj.value.homeworklist = [];
     }
@@ -71,10 +71,68 @@ class _HomeworkScreenState extends State<HomeworkScreen>
               'Homework',
               style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),
             ),
-            IconButton(
-              icon: Icon(Icons.calendar_month),
-              onPressed: () => controller.selectDate(context),
-            ),
+            GestureDetector(
+              onTap: () => controller.selectDate(context),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                decoration: BoxDecoration(
+                  // color: Colors.blue, // Background color
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  border: Border.all(
+                    color: Colors.grey.shade300, // Border color
+                    width: 1,
+                  ),
+                ),
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(width: 115,),
+                        // Spacing between date and icon
+                        Container(
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(5)
+                          ),
+                          child: Icon(
+                            Icons.calendar_month,
+                            size: 30, // Icon size
+                            color: Colors.grey.shade700, // Icon color
+                          ),
+                        ),
+                      ],
+                    ),
+                    Obx(() {
+                      // Access the formatted date from the controller
+                      return Container(
+                        padding: EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade100,
+                             border: Border(
+                        left: BorderSide(color: Colors.black),  // Left border
+                        top: BorderSide(color: Colors.black),   // Top border
+                        bottom: BorderSide(color: Colors.black),// Bottom border
+                        right: BorderSide.none,                 // No right border
+                      ),
+                            borderRadius: BorderRadius.circular(5)
+                        ),
+                        child: Text(
+                          controller.formattedDate,
+                          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            fontSize: 14, // Adjust date text size
+                            color: Colors.black87, // Text color
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ),
+            )
+
           ],
         ),
         bottom: MyTabBar(
@@ -199,7 +257,8 @@ class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
                                         controller.currentSelectedSubject
                                             .value = newValue;
                                         controller.currentSelectedSubejectId
-                                            .value = newValue.subjectId!;
+                                                .value =
+                                            newValue.subjectGroupSubjectsId!;
                                         controller.update();
                                         controller.getData(
                                             selectedDate:
@@ -266,36 +325,40 @@ class HomeworkTabContent extends GetWidget<HomeWorkController> {
           child: FutureBuilder(
             future: controller.fetchDataFuture,
             builder: (context, snapshot) {
-              if (snapshot.connectionState != ConnectionState.done || controller.isLoading.isTrue) {
+              if (snapshot.connectionState != ConnectionState.done ||
+                  controller.isLoading.isTrue) {
                 return CustomLoader();
               } else if (controller.homeworkModelObj.value.homeworklist !=
                       null &&
                   controller.homeworkModelObj.value.homeworklist?.length == 0) {
-                return controller.isLoading.isTrue ? CustomLoader() : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Center(
-                        child: Image.asset(
-                      "assets/projectImages/no_data.png",
-                    )),
-                    Text("No data found"),
-                  ],
-                );
-              }
-              else {
-                return controller.isLoading.isTrue ? CustomLoader() : ListView.builder(
-                  itemCount:
-                      controller.homeworkModelObj.value.homeworklist?.length ??
-                          0,
-                  itemBuilder: (context, index) {
-                    return HomeworkCard(
-                      status: status,
-                      homework: controller
-                          .homeworkModelObj.value.homeworklist![index],
-                    );
-                  },
-                );
+                return controller.isLoading.isTrue
+                    ? CustomLoader()
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Center(
+                              child: Image.asset(
+                            "assets/projectImages/no_data.png",
+                          )),
+                          Text("No data found"),
+                        ],
+                      );
+              } else {
+                return controller.isLoading.isTrue
+                    ? CustomLoader()
+                    : ListView.builder(
+                        itemCount: controller
+                                .homeworkModelObj.value.homeworklist?.length ??
+                            0,
+                        itemBuilder: (context, index) {
+                          return HomeworkCard(
+                            status: status,
+                            homework: controller
+                                .homeworkModelObj.value.homeworklist![index],
+                          );
+                        },
+                      );
               }
             },
           ),
@@ -314,6 +377,9 @@ class HomeworkCard extends GetView<HomeWorkController> {
 
   @override
   Widget build(BuildContext context) {
+    String description = homework.description
+        .toString()
+        .replaceAll(RegExp(r'<\/?p>', caseSensitive: false), '');
     return Padding(
       padding: EdgeInsets.all(16.0),
       child: controller.tabController.index == 0
@@ -350,7 +416,6 @@ class HomeworkCard extends GetView<HomeWorkController> {
                       children: [
                         Text(
                             "${homework.subjectName.toString()} (${homework.subjectCode.toString()})",
-                            //'{homework.} (Code)',
                             style: theme.textTheme.titleMedium!
                                 .copyWith(fontWeight: FontWeight.w600)),
                         Spacer(),
@@ -375,17 +440,14 @@ class HomeworkCard extends GetView<HomeWorkController> {
                             style1: theme.textTheme.bodySmall!
                                 .copyWith(fontSize: 13),
                             title: 'Homework Date',
-                            value: Utils.formatDateString(
-                                homework.homeworkDate.toString())),
+                            value: homework.homeworkDate.toString()),
                         InfoRow(
                             style: theme.textTheme.titleSmall!
                                 .copyWith(fontSize: 13),
                             style1: theme.textTheme.bodySmall!
                                 .copyWith(fontSize: 13),
                             title: 'Submission Date',
-                            value: Utils.formatDateString(
-                                homework.submitDate.toString())),
-
+                            value: homework.submitDate.toString()),
                         homework.document!.isEmpty
                             ? SizedBox()
                             : InkWell(
@@ -424,13 +486,6 @@ class HomeworkCard extends GetView<HomeWorkController> {
                                   ],
                                 ),
                               ),
-                        // InfoRow(
-                        //     title: 'Evaluated By',
-                        //     value: '${homework.evaluatedBy.toString()}'),
-                        // InfoRow(
-                        //     title: 'Evaluation Date',
-                        //     value:
-                        //         '${Utils.formatDateString(homework.evaluationDate.toString())}'),
                         SizedBox(
                           height: 5,
                         ),
@@ -442,7 +497,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
                                     fontWeight: FontWeight.w600, fontSize: 13)),
                             Expanded(
                               child: ReadMoreText(
-                                parse(homework.description).body!.text,
+                                description,
                                 trimMode: TrimMode.Line,
                                 style: theme.textTheme.bodySmall!
                                     .copyWith(fontSize: 13),
@@ -525,48 +580,38 @@ class HomeworkCard extends GetView<HomeWorkController> {
                                 style1: theme.textTheme.bodySmall!
                                     .copyWith(fontSize: 13),
                                 title: 'Homework Date',
-                                value: Utils.formatDateString(
-                                    homework.homeworkDate.toString())),
+                                value: homework.homeworkDate.toString()),
                             InfoRow(
                                 style: theme.textTheme.titleSmall!
                                     .copyWith(fontSize: 13),
                                 style1: theme.textTheme.bodySmall!
                                     .copyWith(fontSize: 13),
                                 title: 'Submission Date',
-                                value: Utils.formatDateString(
-                                    homework.submitDate.toString())),
+                                value: homework.submitDate.toString()),
                             InfoRow(
                                 style: theme.textTheme.titleSmall!
                                     .copyWith(fontSize: 13),
                                 style1: theme.textTheme.bodySmall!
                                     .copyWith(fontSize: 13),
                                 title: 'Student Message',
-                                value: Utils.formatDateString(
-                                    homework.studentSubmitMessage.toString())),
+                                value:
+                                    homework.studentSubmitMessage.toString()),
                             InfoRow(
                                 style: theme.textTheme.titleSmall!
                                     .copyWith(fontSize: 13),
                                 style1: theme.textTheme.bodySmall!
                                     .copyWith(fontSize: 13),
                                 title: 'Student Submit file',
-                                value: Utils.formatDateString(
-                                    homework.studentSubmitFileName.toString())),
+                                value:
+                                    homework.studentSubmitFileName.toString()),
                             InfoRow(
                                 style: theme.textTheme.titleSmall!
                                     .copyWith(fontSize: 13),
                                 style1: theme.textTheme.bodySmall!
                                     .copyWith(fontSize: 13),
                                 title: 'Student Submit File',
-                                value: Utils.formatDateString(
-                                    homework.studentSubmitFileName.toString())),
-
-                            // InfoRow(
-                            //     title: 'Evaluated By',
-                            //     value: '${homework.evaluatedBy.toString()}'),
-                            // InfoRow(
-                            //     title: 'Evaluation Date',
-                            //     value:
-                            //         '${Utils.formatDateString(homework.evaluationDate.toString())}'),
+                                value:
+                                    homework.studentSubmitFileName.toString()),
                             SizedBox(
                               height: 5,
                             ),
@@ -578,8 +623,8 @@ class HomeworkCard extends GetView<HomeWorkController> {
                                         .copyWith(fontWeight: FontWeight.w600)),
                                 Expanded(
                                   child: ReadMoreText(
-                                    homework.description.toString(),
-                                    style:  theme.textTheme.bodySmall!
+                                    description,
+                                    style: theme.textTheme.bodySmall!
                                         .copyWith(fontSize: 13),
                                     trimMode: TrimMode.Line,
                                     trimLines: 2,
@@ -591,11 +636,6 @@ class HomeworkCard extends GetView<HomeWorkController> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                // Flexible(
-                                //     child: Text(
-                                //  homework.description.toString(),
-                                //   style: theme.textTheme.titleMedium!,
-                                // )),
                               ],
                             ),
                           ],
@@ -665,17 +705,14 @@ class HomeworkCard extends GetView<HomeWorkController> {
                                 style1: theme.textTheme.bodySmall!
                                     .copyWith(fontSize: 13),
                                 title: 'Homework Date',
-                                value: Utils.formatDateString(
-                                    homework.homeworkDate.toString())),
+                                value: homework.homeworkDate.toString()),
                             InfoRow(
                                 style: theme.textTheme.titleSmall!
                                     .copyWith(fontSize: 13),
                                 style1: theme.textTheme.bodySmall!
                                     .copyWith(fontSize: 13),
                                 title: 'Submission Date',
-                                value: Utils.formatDateString(
-                                    homework.submitDate.toString())),
-
+                                value: homework.submitDate.toString()),
                             InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -700,13 +737,6 @@ class HomeworkCard extends GetView<HomeWorkController> {
                                 ],
                               ),
                             ),
-                            // InfoRow(
-                            //     title: 'Evaluated By',
-                            //     value: '${homework.evaluatedBy.toString()}'),
-                            // InfoRow(
-                            //     title: 'Evaluation Date',
-                            //     value:
-                            //         '${Utils.formatDateString(homework.evaluationDate.toString())}'),
                             SizedBox(
                               height: 5,
                             ),
@@ -718,7 +748,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
                                         .copyWith(fontWeight: FontWeight.w600)),
                                 Expanded(
                                   child: ReadMoreText(
-                                    homework.description.toString(),
+                                    description,
                                     trimMode: TrimMode.Line,
                                     trimLines: 2,
                                     colorClickableText: Colors.pink,
@@ -729,10 +759,6 @@ class HomeworkCard extends GetView<HomeWorkController> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                // Flexible(
-                                //     child: Text(
-                                //  homework.description.toString(),
-                                //   style: theme.textTheme.titleMedium!,
                                 // )),
                               ],
                             ),
@@ -767,7 +793,8 @@ class HomeworkCard extends GetView<HomeWorkController> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
           textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
       onPressed: () {},
-      child: Text(status, style: theme.textTheme.titleMedium!.copyWith(fontSize: 13)),
+      child: Text(status,
+          style: theme.textTheme.titleMedium!.copyWith(fontSize: 13)),
     );
   }
 
@@ -825,7 +852,7 @@ class InfoRow extends StatelessWidget {
           ),
           Expanded(
             flex: 4,
-            child: value.isEmpty
+            child: value.isEmpty || value == null
                 ? Text(
                     "------------",
                     style: style1 == false
@@ -834,7 +861,7 @@ class InfoRow extends StatelessWidget {
                         : style1,
                   )
                 : Text(
-                    value,
+                    value.capitalize!,
                     style: style1 == false
                         ? theme.textTheme.titleMedium!
                             .copyWith(color: Colors.grey.shade700)

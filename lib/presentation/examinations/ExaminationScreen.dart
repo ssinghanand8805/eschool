@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lerno/core/app_export.dart';
-import 'package:lerno/presentation/apply_leave/uploadLeave.dart';
 import 'package:lerno/presentation/examinations/model/Examination.dart';
 
 import '../apply_leave/model/ApplyLeave.dart';

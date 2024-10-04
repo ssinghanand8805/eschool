@@ -32,12 +32,18 @@ class DownloadCenterController extends GetxController {
     update(); // This triggers a UI update if using GetX for state management
   }
   Future<void> getDownloadImageData() async {
+
+
     Map<String, dynamic> body = {
       "student_id": userData.getUserStudentId,
       "role": userData.getRole,
-      "classId": 1,
-      "sectionId": 1,
+      "classId": userData.getStudentClassID,
+      "sectionId": userData.getStudentSectionID
     };
+    if(userData.getRole == 'parent')
+    {
+      body['user_parent_id'] = userData.getStudentParentID;
+    }
     print("Body @@@@ ${body}");
     var data = await apiRespository.postApiCallByJson(
         Constants.getdownloadcontent, body);

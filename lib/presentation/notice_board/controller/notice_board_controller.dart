@@ -30,7 +30,7 @@ class NoticeBoardController extends GetxController {
     print("DATA @@@@ ${data.body}");
     print("userData getRole ${userData.getRole}");
     noticeBoardModelObj.value = NotiiceBoard.fromJson(data.body);
-    print("111111111111111111111 ${noticeBoardModelObj.value.toJson()}");
+    print("111111111111111111111 ${noticeBoardModelObj.value.data}");
     update();
   }
 }

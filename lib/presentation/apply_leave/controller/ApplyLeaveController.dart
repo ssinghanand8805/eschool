@@ -6,6 +6,7 @@ import 'package:lerno/apiHelper/userData.dart';
 import 'package:lerno/presentation/common_widgets/custom_loader.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
+import '../../../apiHelper/toastMessage.dart';
 import '../../../core/app_export.dart';
 import '../model/ApplyLeave.dart';
 
@@ -43,6 +44,7 @@ class ApplyLeaveController extends GetxController {
     applyDateController.value.clear();
     fromDateController.value.clear();
     toDateController.value.clear();
+    image.value = null;
   }
 
   @override
@@ -50,10 +52,36 @@ class ApplyLeaveController extends GetxController {
     super.onInit();
     fetchDataFuture =
         getData();
+    clearController();
 
   }
 
   saveData() async {
+    if (applyDateController.value.value.text.isEmpty) {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "Please select an apply date."));
+      return;
+    }
+
+    if (fromDateController.value.value.text.isEmpty) {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "Please select a from date."));
+      return;
+    }
+
+    if (toDateController.value.value.text.isEmpty) {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "Please select a to date."));
+      return;
+    }
+
+    if (reasonController.value.value.text.isEmpty) {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "Please provide a reason."));
+      return;
+    }
+
+    if (image.value == null || image.value!.path.isEmpty) {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "Please select an image."));
+      return;
+    }
+
     Map<String, dynamic> body = {
       "student_id": userData.getUserStudentId,
       "apply_date": applyDateController.value.value.text,
@@ -62,17 +90,25 @@ class ApplyLeaveController extends GetxController {
       "reason": reasonController.value.value.text,
       "file": image.value!.path
     };
-    print("############${body}");
-    var data =
-        await apiRespository.postApiCallByFormData(Constants.addleaveUrl, body);
+
+    print("############$body");
+
+    // Make API call
+    var data = await apiRespository.postApiCallByFormData(Constants.addleaveUrl, body);
     print("############${data.body}");
 
+    // If the API call is successful, fetch the data and clear the controllers
     if (data.statusCode == 200) {
-      getData();
+
+
       Get.back();
       clearController();
+      getData();
+      Get.showSnackbar(Ui.SuccessSnackBar(message: "Leave Applied successfully"));
     }
+    update();
   }
+
 
   Future<void> getData() async {
     Map<String, dynamic> body = {"student_id": userData.getUserStudentId};

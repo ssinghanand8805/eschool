@@ -49,7 +49,7 @@ class ClassWorkController extends GetxController {
   }
 
   String get formattedDate {
-    return DateFormat('yyyy-MM-dd').format(selectedDate.value);
+    return DateFormat('dd-MM-yyyy').format(selectedDate.value);
   }
 
   Future<void> getSubjects()async{

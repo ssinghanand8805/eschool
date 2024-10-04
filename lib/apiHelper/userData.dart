@@ -1,5 +1,7 @@
 
 
+import 'dart:convert';
+
 import 'package:lerno/apiHelper/popular_product_repo.dart';
 import 'package:lerno/presentation/login_screen/models/userDataModal.dart';
 import 'package:get/get.dart';
@@ -38,6 +40,10 @@ class UserData extends GetxController {
   String get getDateFormat => userData.read('date_format') ?? "";
   String get getTimeZone => userData.read('timezone') ?? "";
 
+  String get getStudentClassID => userData.read('student_class_id') ?? "";
+  String get getStudentSectionID => userData.read('student_section_id') ?? "";
+  String get getStudentParentID => userData.read('student_parent_id') ?? "";
+
 
   addAccessToken(String val) {userData.write('accessToken', val);}
   addUserFCMDeviceToken(String val) {userData.write('fcm_tocken', val);}
@@ -54,6 +60,11 @@ class UserData extends GetxController {
   addStudent_session_id(String val) {userData.write('student_session_id', val);}
   addUserStudentId(String val) {userData.write('student_id', val);}
   addUserStudentName(String val) {userData.write('student_name', val);}
+
+  addUserStudentClassId(String val) {userData.write('student_class_id', val);}
+  addUserStudentSectionId(String val) {userData.write('student_section_id', val);}
+  addUserStudentParentId(String val) {userData.write('student_parent_id', val);}
+
   addUserClassSection(String val) {userData.write('class_section', val);}
   addUserAdmissionNo(String val) {userData.write('admission_no', val);}
   addUserIsLoggedIn(bool val) {userData.write('isLoggegIn', val);}
@@ -94,6 +105,11 @@ class UserData extends GetxController {
     await prefs.setBool('isUserImage', getIsUserImage);
     await prefs.setString('date_format', getDateFormat);
     await prefs.setString('timezone', getTimeZone);
+
+
+    await prefs.setString('student_class_id', getStudentClassID);
+    await prefs.setString('student_section_id', getStudentSectionID);
+    await prefs.setString('student_parent_id', getStudentParentID);
   }
   Future<void> loadDataFromSharedPreferences() async {
     final prefs = await SharedPreferences.getInstance();
@@ -118,6 +134,10 @@ class UserData extends GetxController {
     addIsUserImage(prefs.getBool('isUserImage') ?? false);
     addDateFormat(prefs.getString('date_format') ?? '');
     addTimeZone(prefs.getString('timezone') ?? '');
+
+    addUserStudentClassId(prefs.getString('student_class_id') ?? '');
+    addUserStudentSectionId(prefs.getString('student_section_id') ?? '');
+    addUserStudentParentId(prefs.getString('student_parent_id') ?? '');
 
     // let chek for password change and new device token
 
@@ -177,8 +197,13 @@ class UserData extends GetxController {
           usersData.addUserHasMultipleChild(false);
           var firstChild = childArray[0];//json.decode(childArray[0]);
           usersData.addUserStudentId(firstChild["student_id"]);
+          usersData.addUserStudentClassId(firstChild["class_id"]); //class_id
+          usersData.addUserStudentSectionId(firstChild["section_id"]); //section_id
+          usersData.addUserStudentParentId(recordData["id"]); //user_parent_id
+          usersData.addStudent_session_id(firstChild["student_session_id"].toString());
           usersData.addUserClassSection(firstChild["class"] + " - " + firstChild["section"]);
           usersData.addUserStudentName(firstChild["name"]);
+
           usersData.saveAllDataToSharedPreferences();
           ///navigate here to dashboard
          return true;
@@ -189,16 +214,36 @@ class UserData extends GetxController {
         }
         else
         {
+          usersData.addUserStudentParentId(recordData["id"]);
           List<String> childNameList = [];
           List<String> childIdList = [];
           List<String> childImageList = [];
           List<String> childClassList = [];
+          List<bool> childImagefoundList = [];
+          List<String> childSessionIDList = [];
+
+          List<String> childClassIdList = [];
+          List<String> childSectionIdList = [];
           for (int i = 0; i<childArray.length; i++) {
             String name = childArray[i]["name"];
             childNameList.add(name);
             String id = childArray[i]["student_id"];
             childIdList.add(id);
-            String image = childArray[i]["image"] ?? "";
+            String seid = childArray[i]["student_session_id"] ?? "";
+            childSessionIDList.add(seid);
+
+            String classId = childArray[i]["class_id"] ?? "";
+            String sectionId = childArray[i]["section_id"] ?? "";
+            childClassIdList.add(classId);
+            childSectionIdList.add(sectionId);
+            bool isUserImage =
+            childArray[i]["image"].toString() == "null" ? false : true;
+            usersData.addIsUserImage(isUserImage);
+            String imgUrl = isUserImage
+                ? baseUrlFromPref + childArray[i]["image"].toString()
+                : "";
+            String image = imgUrl;
+            childImagefoundList.add(isUserImage);
             childImageList.add(image);
             String clss = childArray[i]["className"] ?? "" + " - " + childArray[i]["section"];
             childClassList.add(clss);
@@ -209,6 +254,15 @@ class UserData extends GetxController {
           print('child name List:::::::::');
           /// show Child List here
           ///
+          saveArray("childIdList",childIdList);
+          saveArray("childNameList",childNameList);
+          saveArray("childImageList",childImageList);
+          saveArray("childClassList",childClassList);
+          saveArray("childImagefoundList",childImagefoundList);
+          saveArray("childSessionIDList",childSessionIDList);
+          saveArray("childClassIdList",childClassIdList);
+          saveArray("childSectionIdList",childSectionIdList);
+
           usersData.saveAllDataToSharedPreferences();
           return true;
         }
@@ -220,6 +274,10 @@ class UserData extends GetxController {
         usersData.addUserStudentId(recordData["student_id"]);
         usersData.addUserClassSection(recordData["className"] + " - " + recordData["section"]);
         usersData.addUserAdmissionNo(recordData["admission_no"]);
+        usersData.addUserStudentClassId(recordData["class_id"]); //class_id
+        usersData.addUserStudentSectionId(recordData["section_id"]); //section_id
+        usersData.addUserStudentParentId(""); //user_parent_id
+        usersData.addStudent_session_id(recordData["student_session_id"].toString());
         ///checking for profile lock
         Map<String,dynamic> body2 = { "student_id" : usersData.getUserStudentId };
         var data  = await apiRespository.postApiCallByJson("webservice/lock_student_panel", body2);
@@ -253,7 +311,11 @@ class UserData extends GetxController {
 
 
   }
-
+  Future<bool> saveArray(String name,List<dynamic> array) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String encodedData = json.encode(array); // Encode your array to a JSON string
+    return prefs.setString(name, encodedData); // Save encoded string
+  }
 }
 
 

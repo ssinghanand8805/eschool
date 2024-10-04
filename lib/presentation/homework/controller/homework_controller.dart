@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:lerno/apiHelper/userData.dart';
 import 'package:lerno/presentation/login_screen/models/userDataModal.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,9 @@ class HomeWorkController extends GetxController {
         getSubjects(); // Initialize the future when the controller is created
     // Initialize the future when the controller is created
   }
-
+  String get formattedDate {
+    return DateFormat('dd-MM-yyyy').format(selectedDate.value);
+  }
   // @override
   // void initState() {
   //   studentSubjectsModelObj.value

@@ -417,9 +417,10 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                             ),
                             IconButton(
                               onPressed: () {
-                                onPressDownload2(
+                                onPressDownload(
                                   "${baseUrlFromPref + data[index].dirPath! + data[index].imgName!}",
                                 );
+                                Navigator.pop(context);
                               },
                               icon: Icon(
                                 Icons.download,
@@ -463,39 +464,6 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
 
 
 
-  Future<void> onPressDownload2(String fileUrl) async {
-    print("@@@@@@@@@@@@@@@");
-    bool permissionStatus;
-    final deviceInfo = await DeviceInfoPlugin().androidInfo;
-
-    if (deviceInfo.version.sdkInt > 33) {
-      permissionStatus = await Permission.photos.request().isGranted;
-    } else {
-      permissionStatus = await Permission.storage.request().isGranted;
-    }
-    // PermissionStatus status = await Permission.storage.request();
-    if (permissionStatus) {
-      print("STATUS GRANTED ");
-      // proceed with download
-    } else {
-      openAppSettings();
-      print("STATUS DENIED ");
-      // handle denied permission
-    }
-    print(fileUrl);
-    FileDownloader.downloadFile(
-
-        url: fileUrl,
-        onProgress: (String? fileName, double? progress) {
-          print('FILE }HAS PROGRESS $progress');
-        },
-        onDownloadCompleted: (String path) {
-          print('FILE DOWNLOADED TO PATH: $path');
-        },
-        onDownloadError: (String error) {
-          print('DOWNLOAD ERROR: $error');
-        });
-  }
   Future<void> onPressDownload(String fileUrl) async {
     print("@@@@@@@@@@@@@@@$fileUrl");
 
@@ -534,21 +502,72 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text('Download Complete'),
-                content: Text('Do you want to open the file?'),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20), // Rounded corners
+                ),
+                title: Row(
+                  children: [
+                    Icon(Icons.download_done, color: Colors.green), // Icon
+                    SizedBox(width: 10),
+                    Text(
+                      'Download Complete',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+                content: Text(
+                  'Your file has been downloaded. Do you want to open it?',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[800], // Custom content color
+                  ),
+                ),
                 actions: [
                   TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.red[500], // Custom button color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                     onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
+                      Navigator.of(context).pop();
                     },
-                    child: Text('Cancel'),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
                   TextButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green.shade500,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                     onPressed: () {
-                      OpenFilex.open(path); // Open the downloaded file
-                      Navigator.of(context).pop(); // Close the dialog
+                      OpenFilex.open(path);
+                      Navigator.of(context).pop();
                     },
-                    child: Text('Open'),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        'Open',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               );

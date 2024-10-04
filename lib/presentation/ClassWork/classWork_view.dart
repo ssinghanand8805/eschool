@@ -28,7 +28,7 @@ class _ClassWorkViewState extends State<ClassWorkView> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Class Work'),
+            Text('Class Work',style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
             IconButton(
               icon: Icon(Icons.calendar_month),
               onPressed: () => controller.selectDate(context),
@@ -92,7 +92,7 @@ class _ClassWorkViewState extends State<ClassWorkView> {
                                 onChanged: (Subjectlist? newValue) {
                                   if (newValue != null) {
                                     controller.currentSelectedSubject.value = newValue;
-                                    controller.currentSelectedSubejectId.value = newValue.subjectId!;
+                                    controller.currentSelectedSubejectId.value = newValue.subjectGroupSubjectsId!;
                                     controller.update();
                                     controller.getData(selectedDate: controller.selectedDate.value);
                                   }

@@ -36,27 +36,25 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return ListView.builder(
+              return controller.noticeBoardModelObj.value.data!.length > 0  ? ListView.builder(
                 itemCount:
-                    controller.noticeBoardModelObj.value.data?.length ?? 0,
+                    controller.noticeBoardModelObj.value.data?.length,
                 itemBuilder: (context, index) {
-                  return controller.noticeBoardModelObj.value.data!.length > 0
-                      ? _buildTimeTableCard(
+                  return _buildTimeTableCard(
                           data:
                               controller.noticeBoardModelObj.value.data![index],
-                        )
-                      :Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/projectImages/no_data.png",
-                          ),
-                          Text("No data found!")
-                        ],
-                      ));
+                        );
                 },
-              );
+              ):Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/projectImages/no_data.png",
+                      ),
+                      Text("No data found!")
+                    ],
+                  ))
               ;
             }
           },

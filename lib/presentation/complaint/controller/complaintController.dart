@@ -25,11 +25,6 @@ class ComplaintController extends GetxController {
 
   Rx<XFile?> image = Rx<XFile?>(null);
 
-  @override
-  void onClose() {
-    super.onClose();
-    Get.delete<ComplaintController>();
-  }
 
   clearController() {
     reasonController.value.clear();
@@ -39,7 +34,6 @@ class ComplaintController extends GetxController {
   void onInit() {
     super.onInit();
     fetchDataFuture = getComplaintData();
-    getData();
   }
 
   void updateImage(XFile? newImage) {
@@ -102,10 +96,10 @@ class ComplaintController extends GetxController {
     for (var i = 0; i < data.body['listResult'].length; i++) {
       print("nmjvkjjgkjnnj");
       d.add(ComplaintType.fromJson(data.body['listResult'][i]));
-      print("nhbhbhhhbbhhb");
+      print("nhbhbhhhbbhhb   $d");
     }
     complaintModelObj.value = d;
-    print("111111111111111111111 ${complaintModelObj.value}");
+    print("111111111111111111111 ${complaintModelObj.length}");
 
     update();
   }
@@ -127,7 +121,7 @@ class ComplaintController extends GetxController {
       print("No complaints found or invalid response.");
     }
 
-    update(); // Notify the UI of changes
+    update();
   }
 }
 

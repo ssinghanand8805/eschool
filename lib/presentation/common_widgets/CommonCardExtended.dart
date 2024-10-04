@@ -43,7 +43,7 @@ Widget CommonCardExtended(
                     topRight: Radius.circular(10))),
             width: Get.width,
             child: Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // ListTile(leading: Icon(Icons.bookmark_added_outlined,size: 5,),title: Text(title),),
                 leadingWidget,

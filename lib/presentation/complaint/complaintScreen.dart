@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lerno/core/app_export.dart';
-import 'package:lerno/presentation/apply_leave/uploadLeave.dart';
 
 import '../../core/utils/common_utilities.dart';
 import '../common_widgets/CommonCard.dart';
@@ -72,27 +71,25 @@ class _ComplaintsPageState extends State<ComplaintsPage> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return ListView.builder(
+              return controller.complaintDataList.length > 0 ? ListView.builder(
                 itemCount:
-                controller.complaintDataList.length ?? 0,
+                controller.complaintDataList.length,
                 itemBuilder: (context, index) {
-                  return controller.complaintDataList.length > 0
-                      ? _buildTimeTableCard(
+                  return _buildTimeTableCard(
                     data:
                     controller.complaintDataList[index],
-                  )
-                      : Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/projectImages/no_data.png",
-                          ),
-                          Text("No data found!")
-                        ],
-                      ));
+                  );
                 },
-              );
+              ): Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/projectImages/no_data.png",
+                      ),
+                      Text("No data found!")
+                    ],
+                  ));
               ;
             }
           },
@@ -131,7 +128,7 @@ class _ComplaintsPageState extends State<ComplaintsPage> {
                 fontSize: 13,
               ),
                   style1: theme.textTheme.bodySmall!
-                      .copyWith(fontSize: 13),title: "Action Taken", value: data.actionTaken!),
+                      .copyWith(fontSize: 14,fontWeight: FontWeight.w600),title: "Action Taken", value: data.actionTaken!),
 
             ],
           ),

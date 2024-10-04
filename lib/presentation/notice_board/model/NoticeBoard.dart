@@ -1,11 +1,15 @@
 class NotiiceBoard {
   int? success;
+  int? status;
+  String? message;
   List<Data>? data;
 
-  NotiiceBoard({this.success, this.data});
+  NotiiceBoard({this.success,this.status,this.message, this.data});
 
   NotiiceBoard.fromJson(Map<String, dynamic> json) {
     success = json['success'];
+    status = json['status'];
+    message = json['message'];
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
@@ -17,6 +21,8 @@ class NotiiceBoard {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
+    data['status'] = this.status;
+    data['message'] = this.message;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }

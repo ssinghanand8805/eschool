@@ -1,19 +1,11 @@
-class Event {
-  final String title;
-
-  const Event(this.title);
-
-  @override
-  String toString() => title;
-}
-
-class Attendance {
+class AttendanceDataModal {
   String? attendenceType;
   List<Data>? data;
+  Counts? counts;
 
-  Attendance({this.attendenceType, this.data});
+  AttendanceDataModal({this.attendenceType, this.data, this.counts});
 
-  Attendance.fromJson(Map<String, dynamic> json) {
+  AttendanceDataModal.fromJson(Map<String, dynamic> json) {
     attendenceType = json['attendence_type'];
     if (json['data'] != null) {
       data = <Data>[];
@@ -21,6 +13,8 @@ class Attendance {
         data!.add(new Data.fromJson(v));
       });
     }
+    counts =
+    json['counts'] != null ? new Counts.fromJson(json['counts']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +22,9 @@ class Attendance {
     data['attendence_type'] = this.attendenceType;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    if (this.counts != null) {
+      data['counts'] = this.counts!.toJson();
     }
     return data;
   }
@@ -50,4 +47,40 @@ class Data {
     data['type'] = this.type;
     return data;
   }
+}
+
+class Counts {
+  int? present;
+  int? absent;
+  int? late;
+  int? halfDay;
+  int? holiday;
+
+  Counts({this.present, this.absent, this.late, this.halfDay, this.holiday});
+
+  Counts.fromJson(Map<String, dynamic> json) {
+    present = json['Present'];
+    absent = json['Absent'];
+    late = json['Late'];
+    halfDay = json['Half Day'];
+    holiday = json['Holiday'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Present'] = this.present;
+    data['Absent'] = this.absent;
+    data['Late'] = this.late;
+    data['Half Day'] = this.halfDay;
+    data['Holiday'] = this.holiday;
+    return data;
+  }
+}
+class Event {
+  final String title;
+
+  const Event(this.title);
+
+  @override
+  String toString() => title;
 }

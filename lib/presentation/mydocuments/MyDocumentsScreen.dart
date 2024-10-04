@@ -92,17 +92,8 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
               icon: Icons.download,
               iconColor: Colors.blue,
               text: "Download"),
-          // IconButton(
-          //   icon: Icon(
-          //     Icons.download,
-          //     color: Colors.lightBlue,
-          //     size: 16,
-          //   ),
-          //   onPressed: () {
-          //     onPressDownload(data.doc!, data.doc!.split("!")[1].toString());
-          //   },
-          // )
-        )); //onTap: () { onLessionPlanTap(data.subjectGroupSubjectId!,data.classSectionId!) ;}
+        ));
+
   }
 
   Widget textWithIcon({
@@ -159,18 +150,16 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
 
     if (permissionStatus) {
       print("STATUS GRANTED ");
-
-      // Show toast when download starts
       Fluttertoast.showToast(
         msg: "Download started...",
         toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.green,
         gravity: ToastGravity.BOTTOM,
       );
 
-      // Proceed with file download
       FileDownloader.downloadFile(
         url: fullUrl,
-        name: name, //(optional)
+        name: name,
         onProgress: (String? fileName, double? progress) {
           print('FILE ${name} HAS PROGRESS $progress');
         },
@@ -179,29 +168,81 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
           Fluttertoast.showToast(
             msg: "Download complete!",
             toastLength: Toast.LENGTH_SHORT,
+            backgroundColor: Colors.green,
             gravity: ToastGravity.BOTTOM,
           );
-
-
           showDialog(
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text('Download Complete'),
-                content: Text('Do you want to open the file?'),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20), // Rounded corners
+                ),
+                title: Row(
+                  children: [
+                    Icon(Icons.download_done, color: Colors.green), // Icon
+                    SizedBox(width: 10),
+                    Text(
+                      'Download Complete',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+                content: Text(
+                  'Your file has been downloaded. Do you want to open it?',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[800],
+                  ),
+                ),
                 actions: [
                   TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.red[500],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                     onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
+                      Navigator.of(context).pop();
                     },
-                    child: Text('Cancel'),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
                   TextButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green.shade500,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                     onPressed: () {
-                      OpenFilex.open(path); // Open the downloaded file
-                      Navigator.of(context).pop(); // Close the dialog
+
+                      OpenFilex.open(path);
+                      print("bbhbbhbbbhbhhb${path}");
+                      Navigator.of(context).pop();
                     },
-                    child: Text('Open'),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        'Open',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               );
@@ -210,17 +251,16 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
         },
         onDownloadError: (String error) {
           print('DOWNLOAD ERROR: $error');
-
-          // Show toast if there's an error
           Fluttertoast.showToast(
             msg: "Download failed: $error",
             toastLength: Toast.LENGTH_SHORT,
+            backgroundColor: Colors.red,
             gravity: ToastGravity.BOTTOM,
           );
         },
       );
     } else {
-      openAppSettings(); // Open app settings if permission is denied
+      openAppSettings();
       print("STATUS DENIED ");
     }
   }

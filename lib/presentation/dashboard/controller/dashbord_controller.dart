@@ -25,6 +25,9 @@ class DashboardController extends GetxController {
     List<dynamic> childImageList = [];
     List<dynamic> childClassList = [];
     List<dynamic> childImagefoundList = [];
+    List<dynamic> childSessionIDList = [];
+    List<dynamic> childClassIdList = [];
+    List<dynamic> childSectionIdList = [];
     loadArray("childIdList");
     var n = await loadArray("childNameList");
     childNameList = n!;
@@ -36,20 +39,32 @@ class DashboardController extends GetxController {
     childClassList = cls!;
     var imgNot = await loadArray("childImagefoundList");
     childImagefoundList = imgNot!;
+
+    var sess = await loadArray("childSessionIDList");
+    childSessionIDList = sess!;
+
+    var clid = await loadArray("childClassIdList");
+    childClassIdList = clid!;
+
+    var secid = await loadArray("childSectionIdList");
+    childSectionIdList = secid!;
     print(childNameList);
 
     showChildList(context, childNameList, childIdList, childImageList,
-        childClassList, childImagefoundList);
+        childClassList, childImagefoundList,childSessionIDList,childClassIdList,childSectionIdList);
   }
 
-  onSelectChildStudent(student_id, classNameSection, name) {
+  onSelectChildStudent(student_id, classNameSection, name,sessionId,classId,sectionId) {
     UserData usersData = UserData();
     usersData.addUserIsLoggedIn(true);
     usersData.addUserHasMultipleChild(true);
     usersData.addUserStudentId(student_id);
     usersData.addUserClassSection(classNameSection);
     usersData.addUserStudentName(name);
-
+    usersData.addUserStudentClassId(classId);
+    usersData.addUserStudentSectionId(sectionId);
+    usersData
+        .addStudent_session_id(sessionId.toString());
     ///navigate here to dashboard
     print('one child found:::::::::');
     usersData.saveAllDataToSharedPreferences();
@@ -63,6 +78,9 @@ class DashboardController extends GetxController {
     List<dynamic> childImageList,
     List<dynamic> childClassList,
     List<dynamic> childImagefoundList,
+    List<dynamic> childSessionIDList,
+    List<dynamic> childClassIdList,
+    List<dynamic> childSectionIdList,
   ) {
     showModalBottomSheet(
       context: context,
@@ -83,7 +101,7 @@ class DashboardController extends GetxController {
                       InkWell(
                         onTap: () {
                           onSelectChildStudent(childIdList[index],
-                              childClassList[index], childNameList[index]);
+                              childClassList[index], childNameList[index],childSessionIDList[index],childClassIdList[index],childSectionIdList[index]);
                         },
                         child: ListTile(
                           leading: childImagefoundList[index] != false
@@ -236,7 +254,6 @@ class DashboardController extends GetxController {
     "ic_library.png",
     "ic_dashboard_pandingtask.png",
     "ic_events.png",
-
   ];
 
   List gridViewWidgets = <Widget>[];
@@ -327,7 +344,6 @@ class DashboardController extends GetxController {
             padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            // Creates a grid with 2 rows, adjust `crossAxisCount` for more columns
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 4, // Number of items per row
                 crossAxisSpacing: 8.0, // Horizontal space between cells
@@ -344,9 +360,7 @@ class DashboardController extends GetxController {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    // Change this to your preferred color
-                    borderRadius:
-                        BorderRadius.circular(8), // Optional rounded corners
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
                     children: [
@@ -378,10 +392,14 @@ class DashboardController extends GetxController {
     );
   }
 
-  logout() async {
+  logout(context) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
+    await logoutAPI();
+    Navigator.of(context).pop(); // Close the dialog
     Get.toNamed('/s_screen');
+
+
   }
 
   Future<void> printSharedPreferencesData() async {
@@ -422,30 +440,26 @@ class DashboardController extends GetxController {
   Future<void> checkCacheAndFetchData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // Check if data is available in SharedPreferences
     if (prefs.containsKey('eLearningData')) {
-      // Load data from cache and display immediately
       eLearningData.value = jsonDecode(prefs.getString('eLearningData')!);
 
       academicData.value = jsonDecode(prefs.getString('academicData')!);
-      communicationData.value = jsonDecode(prefs.getString('communicationData')!);
+      communicationData.value =
+          jsonDecode(prefs.getString('communicationData')!);
       otherData.value = jsonDecode(prefs.getString('otherData')!);
-      buildGridViewData("E Learning", getElearningList, eLearningImagesPath,0);
-      buildGridViewData("Academics", getAcademicList, academicImages,1);
-      buildGridViewData("Communicate", getCommunicationList, communicationImages,2);
-      buildGridViewData("Other ", getOtherDataList, otherImages,3);
+      buildGridViewData("E Learning", getElearningList, eLearningImagesPath, 0);
+      buildGridViewData("Academics", getAcademicList, academicImages, 1);
+      buildGridViewData(
+          "Communicate", getCommunicationList, communicationImages, 2);
+      buildGridViewData("Other ", getOtherDataList, otherImages, 3);
       isLoading.value = false;
-     await fetchFreshData(false);
+      await fetchFreshData(false);
       print("Loaded from shared pref");
     } else {
-      // Show loading state while fetching fresh data
       isLoading.value = true;
       print("Loaded from Live");
       await fetchFreshData(true);
     }
-
-    // Fetch fresh data from API in the background, regardless of whether cached data is available
-
   }
 
   Future<void> saveDataToCache() async {
@@ -462,35 +476,16 @@ class DashboardController extends GetxController {
     await communicationStatusApi();
     await otherModuleApi();
     await saveDataToCache();
-    // isLoading.value = false;
     return true;
   }
+
   Future<void> fetchFreshData(bool isBackground) async {
-    // Call your API to fetch fresh data
-    // Example API call and data update logic
-
     final freshData = await fetchDataFromAPI(isBackground);
-    if(freshData)
-      {
-        isLoading.value = false;
-      }
-
-    // Update SharedPreferences with the fresh data
-    // final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // prefs.setString('eLearningData', jsonEncode(freshData.eLearningData));
-    // prefs.setString('academicData', jsonEncode(freshData.academicData));
-    // prefs.setString('communicationData', jsonEncode(freshData.communicationData));
-    // prefs.setString('otherData', jsonEncode(freshData.otherData));
-    //
-    // // Update your state with the fresh data
-    // eLearningData.value = freshData.eLearningData;
-    // academicData.value = freshData.academicData;
-    // communicationData.value = freshData.communicationData;
-    // otherData.value = freshData.otherData;
-
-    // Stop the loading state if it was previously set
-
+    if (freshData) {
+      isLoading.value = false;
+    }
   }
+
   getSchoolDetails() async {
     Map<String, dynamic> body = {};
     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
@@ -534,13 +529,16 @@ class DashboardController extends GetxController {
     // // academicStatusApi();
     // update();
     print("E LEARNING DATA ${getElearningList[0].name}");
-    buildGridViewData("E Learning", getElearningList, eLearningImagesPath,0);
+    buildGridViewData("E Learning", getElearningList, eLearningImagesPath, 0);
   }
-  buildGridViewData(String title, List<ModuleList> moduleList, List<dynamic> imagePath, int index) {
+
+  buildGridViewData(String title, List<ModuleList> moduleList,
+      List<dynamic> imagePath, int index) {
     // Ensure gridViewWidgets has enough elements up to the requested index
     if (gridViewWidgets.length <= index) {
       // If the list isn't long enough, add placeholders up to the index
-      gridViewWidgets.addAll(List.generate(index - gridViewWidgets.length + 1, (i) => customContainer()));
+      gridViewWidgets.addAll(List.generate(
+          index - gridViewWidgets.length + 1, (i) => customContainer()));
     }
 
     // Assign the data to the specific index
@@ -549,8 +547,9 @@ class DashboardController extends GetxController {
     // Update UI or state
     update();
   }
-  buildGridViewData2(String title,List<ModuleList> moduleList,List<dynamic> imagePath,int index)
-  {
+
+  buildGridViewData2(String title, List<ModuleList> moduleList,
+      List<dynamic> imagePath, int index) {
     gridViewWidgets[index] = buildGridItem(title, moduleList, imagePath);
     update();
     // if (gridViewWidgets.length <= index) {
@@ -564,7 +563,6 @@ class DashboardController extends GetxController {
     // gridViewWidgets.add(
     //     buildGridItem(title, moduleList, imagePath));
     // academicStatusApi();
-
   }
 
   academicStatusApi() async {
@@ -583,7 +581,7 @@ class DashboardController extends GetxController {
     // // communicationStatusApi();
     // update();
     print("ACADEMIC DATA ${getAcademicList[0].name}");
-    buildGridViewData("Academics", getAcademicList, academicImages,1);
+    buildGridViewData("Academics", getAcademicList, academicImages, 1);
   }
 
   communicationStatusApi() async {
@@ -601,7 +599,8 @@ class DashboardController extends GetxController {
     // // otherModuleApi();
     // update();
     print("COMMUNICATION STATUS DATA ${getCommunicationList[0].name}");
-    buildGridViewData("Communicate", getCommunicationList, communicationImages,2);
+    buildGridViewData(
+        "Communicate", getCommunicationList, communicationImages, 2);
   }
 
   otherModuleApi() async {
@@ -618,71 +617,95 @@ class DashboardController extends GetxController {
     //
     // update();
     print("OTHER MODULE DATA ${getOtherDataList[0].name}");
-    buildGridViewData("Other ", getOtherDataList, otherImages,3);
+    buildGridViewData("Other ", getOtherDataList, otherImages, 3);
   }
 
-  Future<void> logOutDialog(context) async {
+  Future<bool> logoutAPI() async {
+    String? deToken = await _notificationService.getToken();
+    String deviceToken = deToken!;
+    Map<String, dynamic> body = {"deviceToken": deviceToken};
+
+    print("Logout Request Body: $body");
+
+    var response =
+        await apiRespository.postApiCallByJson(Constants.logout, body);
+
+    print("Logout Response: ${response.body}");
+
+    if (response.statusCode == 200) {
+      return  true;
+    } else {
+      print("Logout failed: ${response.body}");
+      return  false;
+    }
+  }
+
+  Future<void> logOutDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: false, // Prevent dismissing on tapping outside
       builder: (BuildContext context) {
-        var screenWidth = MediaQuery.of(context).size.width;
         return AlertDialog(
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(12.0), // Rounded corners
           ),
           title: Text(
             'Logout',
-            style: theme.textTheme.bodyMedium!
-                .copyWith(fontWeight: FontWeight.w600, fontSize: 19),
+            style: theme.textTheme.headline6?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.black, // Use a consistent color
+            ),
           ),
           content: Text(
             "Are you sure you want to logout?",
-            style: theme.textTheme.bodyMedium,
+            style: theme.textTheme.bodyText2?.copyWith(
+              color: Colors.grey[800], // Darker grey for better contrast
+            ),
           ),
           actions: <Widget>[
+            // Cancel Button
             TextButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                  Colors.green.shade300,
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.green.shade300,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6.0),
                 ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(2.0),
-                  ),
-                ),
+                padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
               ),
               child: Text(
                 'Cancel',
-                style: theme.textTheme.bodyMedium,
+                style: theme.textTheme.button?.copyWith(
+                  color: Colors.white, // White text for contrast
+                ),
               ),
               onPressed: () {
+
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: TextButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                    Colors.red.shade200,
-                  ),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.0),
-                    ),
-                  ),
+            SizedBox(width: 8), // Space between buttons
+            // Logout Button
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.red.shade200,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6.0),
                 ),
-                child: Text(
-                  'Logout',
-                  style: theme.textTheme.bodyMedium,
-                ),
-                onPressed: () async {
-                  logout();
-                  Navigator.of(context).pop(); // Close the dialog
-                },
+                padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
               ),
+              child: Text(
+                'Logout',
+                style: theme.textTheme.button?.copyWith(
+                  color: Colors.white, // White text for contrast
+                ),
+              ),
+              onPressed: () async {
+
+                await logout(context); // Await logout action if it's a Future
+
+              },
             ),
           ],
         );

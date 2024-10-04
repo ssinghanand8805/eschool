@@ -60,7 +60,7 @@ class Topics {
   String? lessonId;
   String? name;
   String? status;
-  Null? completeDate;
+  String? completeDate;
   String? createdAt;
 
   Topics(
