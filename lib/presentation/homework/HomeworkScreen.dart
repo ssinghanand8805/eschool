@@ -76,6 +76,7 @@ class _HomeworkScreenState extends State<HomeworkScreen>
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                 decoration: BoxDecoration(
+
                   // color: Colors.blue, // Background color
                   borderRadius: BorderRadius.circular(12), // Rounded corners
                   border: Border.all(
@@ -94,13 +95,21 @@ class _HomeworkScreenState extends State<HomeworkScreen>
                         Container(
                           padding: EdgeInsets.all(3),
                           decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.blue.shade300,
+                                  Colors.orange.shade600,
+                                ], // Start and end colors for the gradient
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
                             border: Border.all(color: Colors.black),
                             borderRadius: BorderRadius.circular(10)
                           ),
                           child: Icon(
                             Icons.calendar_month,
                             size: 30, // Icon size
-                            color: Colors.grey.shade700, // Icon color
+                            color: Colors.white, // Icon color
                           ),
                         ),
                       ],
@@ -110,6 +119,14 @@ class _HomeworkScreenState extends State<HomeworkScreen>
                       return Container(
                         padding: EdgeInsets.all(3),
                         decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.blue.shade300,
+                              Colors.orange.shade600,
+                            ], // Start and end colors for the gradient
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
                           color: Colors.green.shade100,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),   // Apply circular radius to top left corner
@@ -127,7 +144,7 @@ class _HomeworkScreenState extends State<HomeworkScreen>
                           controller.formattedDate,
                           style: Theme.of(context).textTheme.titleMedium!.copyWith(
                             fontSize: 14, // Adjust date text size
-                            color: Colors.black87, // Text color
+                            color: Colors.white, // Text color
                           ),
                         ),
                       );

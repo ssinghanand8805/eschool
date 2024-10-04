@@ -68,23 +68,88 @@ class _DailyAssignmentScreenState extends State<DailyAssignmentScreen>  with Sin
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Daily Assignment',style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
-            Row(
-              children: [
-                Obx(() {
-                  return Text(
-                    controller.formattedDate,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(fontSize: 14),
-                  );
-                }),
-                IconButton(
-                  icon: Icon(Icons.calendar_month),
-                  onPressed: () => controller.selectDate(context),
+            GestureDetector(
+              onTap: () => controller.selectDate(context),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                decoration: BoxDecoration(
+
+                  // color: Colors.blue, // Background color
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  border: Border.all(
+                    color: Colors.grey.shade300, // Border color
+                    width: 1,
+                  ),
                 ),
-              ],
-            ),
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(width: 117,),
+                        // Spacing between date and icon
+                        Container(
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.blue.shade300,
+                                  Colors.orange.shade600,
+                                ], // Start and end colors for the gradient
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Icon(
+                            Icons.calendar_month,
+                            size: 30, // Icon size
+                            color: Colors.white, // Icon color
+                          ),
+                        ),
+                      ],
+                    ),
+                    Obx(() {
+                      // Access the formatted date from the controller
+                      return Container(
+                        padding: EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.blue.shade300,
+                              Colors.orange.shade600,
+                            ], // Start and end colors for the gradient
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          color: Colors.green.shade100,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),   // Apply circular radius to top left corner
+                            bottomLeft: Radius.circular(10),// Apply circular radius to bottom left corner
+                          ),
+                          border: Border(
+                            left: BorderSide(color: Colors.black),  // Left border
+                            top: BorderSide(color: Colors.black),   // Top border
+                            bottom: BorderSide(color: Colors.black),// Bottom border
+                            right: BorderSide.none,                 // No right border
+                          ),
+
+                        ),
+                        child: Text(
+                          controller.formattedDate,
+                          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            fontSize: 14, // Adjust date text size
+                            color: Colors.white, // Text color
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
         bottom: MyTabBar(

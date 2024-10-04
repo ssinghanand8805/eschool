@@ -19,7 +19,7 @@ import '../model/DailyAssignment.dart';
 /// current loginModelObj
 class DailyAssignmentController extends GetxController {
   UserData userData = Get.put(UserData());
-  ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
+  ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   RxString currentSelectedSubejectId = "0".obs;
   RxString status = "pending".obs;
   Rx<AssignmentModal> homeworkModelObj = AssignmentModal().obs;
@@ -27,24 +27,25 @@ class DailyAssignmentController extends GetxController {
   Rx<Subjectlist> currentSelectedSubject = Subjectlist().obs;
   late Future<void> fetchDataFuture;
   late Future<void> fetchDataFutureForSubjects;
- late  TabController tabController;
+  late TabController tabController;
   @override
   void onClose() {
     super.onClose();
-
   }
+
   @override
   void onInit() {
     super.onInit();
     fetchDataFuture = getAssignment();
-    fetchDataFutureForSubjects = getSubjects(); // Initialize the future when the controller is created
+    fetchDataFutureForSubjects =
+        getSubjects(); // Initialize the future when the controller is created
     // Initialize the future when the controller is created
   }
-
 
   String get formattedDate {
     return DateFormat('dd-MM-yyyy').format(selectedDate.value);
   }
+
   // @override
   // void initState() {
   //   studentSubjectsModelObj.value
@@ -59,23 +60,21 @@ class DailyAssignmentController extends GetxController {
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != selectedDate)
-
-      selectedDate.value = picked;
+    if (picked != null && picked != selectedDate) selectedDate.value = picked;
     getAssignment(selectedDate: selectedDate.value);
     update();
   }
 
-  Future<void> getSubjects()async{
-    Map<String,dynamic> body = {
-      "student_id" : userData.getUserStudentId };
+  Future<void> getSubjects() async {
+    Map<String, dynamic> body = {"student_id": userData.getUserStudentId};
 
-    var data  = await apiRespository.postApiCallByJson(Constants.getstudentsubjectUrl, body);
+    var data = await apiRespository.postApiCallByJson(
+        Constants.getstudentsubjectUrl, body);
     //
     //
     print("DATA @@@@ ${data.body}");
     studentSubjectsModelObj.value = StudentSubjects.fromJson(data.body);
-    var newSubjet =  Subjectlist(
+    var newSubjet = Subjectlist(
       subjectGroupSubjectsId: "0",
       subjectGroupClassSectionsId: "0",
       name: "All",
@@ -85,11 +84,15 @@ class DailyAssignmentController extends GetxController {
     studentSubjectsModelObj.value.subjectlist!.insert(0, newSubjet);
     print("*****${studentSubjectsModelObj.value.toJson()}");
     // Map<dynamic, dynamic> jsonData = data.body;//json.decode(data.body);
-
-
   }
+
   Future<void> getAssignment({DateTime? selectedDate}) async {
-    String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(selectedDate != null ? selectedDate : DateTime.now());
+
+    print("ihjfdffjdjf${selectedDate}");
+    String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(
+        selectedDate != null ? selectedDate : DateTime.now());
+    print("ooooooooo${formattedDate}");
+
 
     Map<String, dynamic> body = {
       "student_id": userData.getUserStudentId,
@@ -102,7 +105,8 @@ class DailyAssignmentController extends GetxController {
 
     print("Body @@@@ $body");
 
-    var data = await apiRespository.postApiCallByJson(Constants.getAssignment, body);
+    var data =
+        await apiRespository.postApiCallByJson(Constants.getAssignment, body);
 
     print("DATA @@@@ ${data.body}");
 
@@ -121,6 +125,4 @@ class DailyAssignmentController extends GetxController {
     print("Filtered homework list: ${homeworkModelObj.value.homeworklist}");
     // update();
   }
-
-
 }
