@@ -45,6 +45,7 @@ class ClassWorkController extends GetxController {
 
       selectedDate.value = picked;
     getData(selectedDate: selectedDate.value);
+
     update();
   }
 
