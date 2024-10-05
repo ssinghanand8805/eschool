@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:lerno/apiHelper/toastMessage.dart';
 import 'package:lerno/apiHelper/userData.dart';
 import 'package:get/get.dart';
 
@@ -83,12 +84,15 @@ class ApiClient extends GetConnect implements GetxService {
       Response response=await post(uri, body,headers: _mainHeader ,contentType: 'application/json');
       return response;
     }on SocketException{
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "No Internet found"));
       return const Response(statusCode: 0,statusText:"No Internet found");
     }
     on TimeoutException{
+        Get.showSnackbar(Ui.ErrorSnackBar(message: "Something went wrong ! please try again "));
       return const Response(statusCode: 0,statusText:"Something went wrong ! please try again ");
     }
     catch(e){
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
       return Response(statusCode: 0,statusText: e.toString());
     }
 

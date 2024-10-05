@@ -395,7 +395,7 @@ class DashboardController extends GetxController {
   logout(context) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
-    await logoutAPI();
+     logoutAPI();
     Navigator.of(context).pop(); // Close the dialog
     Get.toNamed('/s_screen');
 

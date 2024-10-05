@@ -162,11 +162,12 @@ class SchoolUrlController extends GetxController {
             Get.offNamed(
               AppRoutes.sScreen,
             );
-          } else {
+          }
+          else {
             Navigator.of(context, rootNavigator: true).pop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                backgroundColor: Colors.green.shade100,
+                backgroundColor: Colors.red.shade300,
                 content: Text("Not Found",style: theme.textTheme.titleMedium),
               ),
             );
@@ -182,8 +183,8 @@ class SchoolUrlController extends GetxController {
           Navigator.of(context, rootNavigator: true).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              backgroundColor: Colors.green.shade100,
-              content: Text("Not Found",style: theme.textTheme.titleMedium),
+              backgroundColor: Colors.red.shade300,
+              content: Text("School code not valid ",style: theme.textTheme.titleMedium),
             ),
           );
         }
@@ -194,8 +195,8 @@ class SchoolUrlController extends GetxController {
       print("Error occurred: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: Colors.green.shade100,
-          content: Text("Not Found",style: theme.textTheme.titleMedium),
+          backgroundColor: Colors.red.shade300,
+          content: Text("Error occurred: $e",style: theme.textTheme.titleMedium),
         ),
       );
 
