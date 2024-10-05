@@ -373,7 +373,7 @@ class DashboardController extends GetxController {
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
     userData.userData.erase();
-    await logoutAPI();
+     logoutAPI();
 
     Navigator.of(context).pop(); // Close the dialog
 
