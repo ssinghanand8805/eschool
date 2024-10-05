@@ -26,6 +26,7 @@ class SController extends GetxController {
       {
         isSplashAsset.value = false;
         splashScreenImage.value = (await prefs.getString("app_splash_screen_file"))!;
+        print("image on splash${splashScreenImage.value}");
         update();
       }
     if(isAppNameFound && prefs.getString("app_name") != null && prefs.getString("app_name")!.isNotEmpty)

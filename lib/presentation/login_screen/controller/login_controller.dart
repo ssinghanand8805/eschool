@@ -9,6 +9,7 @@ import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
 import '../../../core/app_export.dart';
+import '../../../main.dart';
 
 
 class LoginController extends GetxController {
@@ -19,13 +20,14 @@ class LoginController extends GetxController {
 
   Rx<bool> isShowPassword = true.obs;
   RxString schoolImageUrl = "".obs;
+  RxString schoolName = "".obs;
 
   @override
   void onInit() {
     super.onInit();
     idController.clear();
     passwordController.clear();
-
+    getSchoolDetails();
   }
   @override
   void onClose() {
@@ -36,14 +38,21 @@ class LoginController extends GetxController {
     // If you have other disposables, dispose them here as well
     super.onClose(); // Always call super.onClose() at the end
   }
+  getSchoolDetails() async
+  {
 
+    final prefs = await SharedPreferences.getInstance();
+    schoolName.value = (prefs.getString("schoolName") == null || prefs.getString("schoolName") == "") ? "Lerno Powered by Apexion" : prefs.getString("schoolName")!;
+    update();
+  }
   changeSchool() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
+    userData.userData.erase();
     idController.clear();
     passwordController.clear();
-    Get.toNamed('/s_screen');
-
+    // Get.toNamed('/MyApp');
+    Get.offAllNamed(AppRoutes.initialRoute);
   }
 
   loginApi(context) async {

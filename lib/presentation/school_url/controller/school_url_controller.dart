@@ -62,19 +62,15 @@ class SchoolUrlController extends GetxController {
     return newUrl;
   }
   Future<File> downloadAndSaveImage(String url, String fileName) async {
-    // Get the temporary directory for the app.
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
 
-    // Create an instance of File to save the image.
-    File file = File('$tempPath/$fileName');
 
-    // Check if file already exists to avoid re-downloading.
+    File file = File('$tempPath/$fileName');
     if (await file.exists()) {
-      return file;
+      await file.delete();
     }
 
-    // Download the image using HTTP GET request.
     http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       // Write the bytes of the downloaded image.
@@ -138,7 +134,8 @@ class SchoolUrlController extends GetxController {
 
 
                var spUrl = data["app_splash_screen_file"];
-                File spfile =  await downloadAndSaveImage(spUrl,"splashScreen.png");
+               String fileName = DateTime.now().millisecondsSinceEpoch.toString() + "splashScreen.png" ;
+                File spfile =  await downloadAndSaveImage(spUrl,fileName);
                 spImage = spfile.path;
               }
 

@@ -31,7 +31,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     padding: const EdgeInsets.only(top: 18.0),
                     child: Text(
                       'Change Your Password',
-                      style: Theme.of(context).textTheme.headline5?.copyWith(
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.black87,
                           ),

@@ -68,7 +68,7 @@ class LoginScreen extends GetWidget<LoginController> {
                             },
                           ),
                           const SizedBox(
-                            height: 20,
+                            height: 30,
                           ),
                           CustomFormButton(
                             innerText: 'Login',
@@ -112,11 +112,31 @@ class LoginScreen extends GetWidget<LoginController> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+
                       ],
                     ),
                   ),
+                    SizedBox(height: 100,),
+                      Obx(() => Text(
+                        controller.schoolName.value,
+                        style: TextStyle(
+                         color:Color(0xff233743),
+                          //color:Colors.cyanAccent,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.5,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 5.0,
+                              color: Colors.black54,
+                              offset: Offset(2.0, 2.0),
+                            ),
+                          ],
+                        ),
+                      )),
 
-                        ],
+
+                      ],
                       ),
                     ),
                   ),

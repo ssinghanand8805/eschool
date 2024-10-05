@@ -125,7 +125,8 @@ class ChangePasswordController extends GetxController {
        String spImage = "assets/projectImages/friendship.png";
        if (data.containsKey("app_splash_screen_file")) {
          var spUrl = data["app_splash_screen_file"];
-         File spfile = await downloadAndSaveImage(spUrl, "splashScreen.png");
+         String fileName = DateTime.now().millisecondsSinceEpoch.toString() + "splashScreen.png" ;
+         File spfile = await downloadAndSaveImage(spUrl, fileName);
          spImage = spfile.path;
        }
 

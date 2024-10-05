@@ -50,11 +50,11 @@ class DashboardController extends GetxController {
     childSectionIdList = secid!;
     print(childNameList);
 
-    showChildList(context, childNameList, childIdList, childImageList,
-        childClassList, childImagefoundList,childSessionIDList,childClassIdList,childSectionIdList);
+    showChildList(context, childNameList, childIdList, childImageList, childClassList, childImagefoundList, childSessionIDList, childClassIdList,
+        childSectionIdList);
   }
 
-  onSelectChildStudent(student_id, classNameSection, name,sessionId,classId,sectionId) {
+  onSelectChildStudent(student_id, classNameSection, name, sessionId, classId, sectionId) {
     UserData usersData = UserData();
     usersData.addUserIsLoggedIn(true);
     usersData.addUserHasMultipleChild(true);
@@ -63,8 +63,8 @@ class DashboardController extends GetxController {
     usersData.addUserStudentName(name);
     usersData.addUserStudentClassId(classId);
     usersData.addUserStudentSectionId(sectionId);
-    usersData
-        .addStudent_session_id(sessionId.toString());
+    usersData.addStudent_session_id(sessionId.toString());
+
     ///navigate here to dashboard
     print('one child found:::::::::');
     usersData.saveAllDataToSharedPreferences();
@@ -88,9 +88,8 @@ class DashboardController extends GetxController {
         return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             final double itemHeight = 100.0; // Set a fixed height for each item
-            final double bottomSheetHeight = (childNameList.length *
-                    itemHeight) +
-                kBottomNavigationBarHeight; // Calculate the total height of the bottom sheet
+            final double bottomSheetHeight =
+                (childNameList.length * itemHeight) + kBottomNavigationBarHeight; // Calculate the total height of the bottom sheet
             return SizedBox(
               height: bottomSheetHeight,
               child: ListView.builder(
@@ -100,15 +99,12 @@ class DashboardController extends GetxController {
                     children: <Widget>[
                       InkWell(
                         onTap: () {
-                          onSelectChildStudent(childIdList[index],
-                              childClassList[index], childNameList[index],childSessionIDList[index],childClassIdList[index],childSectionIdList[index]);
+                          onSelectChildStudent(childIdList[index], childClassList[index], childNameList[index], childSessionIDList[index],
+                              childClassIdList[index], childSectionIdList[index]);
                         },
                         child: ListTile(
                           leading: childImagefoundList[index] != false
-                              ? CircleAvatar(
-                                  radius: itemHeight / 4,
-                                  backgroundImage:
-                                      NetworkImage(childImageList[index]))
+                              ? CircleAvatar(radius: itemHeight / 4, backgroundImage: NetworkImage(childImageList[index]))
                               : CircleAvatar(
                                   radius: itemHeight / 4,
                                   backgroundImage: AssetImage(
@@ -134,10 +130,7 @@ class DashboardController extends GetxController {
   Future<List<dynamic>?> loadArray(String name) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? encodedData = prefs.getString(name);
-    return encodedData == null
-        ? null
-        : List<dynamic>.from(
-            json.decode(encodedData)); // Decode JSON string to a List
+    return encodedData == null ? null : List<dynamic>.from(json.decode(encodedData)); // Decode JSON string to a List
   }
 
   Widget customContainer() {
@@ -172,10 +165,7 @@ class DashboardController extends GetxController {
             ),
             Text(
               'Loading',
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                  color: Colors.grey.shade600),
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: Colors.grey.shade600),
             )
           ],
         ),
@@ -184,8 +174,7 @@ class DashboardController extends GetxController {
   }
 
   RxList eLearningData = [].obs;
-  List<ModuleList> get getElearningList =>
-      List<ModuleList>.from(eLearningData.map((e) => ModuleList.fromJson(e)));
+  List<ModuleList> get getElearningList => List<ModuleList>.from(eLearningData.map((e) => ModuleList.fromJson(e)));
   set updateELearningData(List val) {
     // gridViewWidgets.removeAt(0);
     eLearningData.value = val;
@@ -193,8 +182,7 @@ class DashboardController extends GetxController {
   }
 
   RxList academicData = [].obs;
-  List<ModuleList> get getAcademicList =>
-      List<ModuleList>.from(academicData.map((e) => ModuleList.fromJson(e)));
+  List<ModuleList> get getAcademicList => List<ModuleList>.from(academicData.map((e) => ModuleList.fromJson(e)));
   set updateAcademicData(List val) {
     // gridViewWidgets.removeAt(0);
     academicData.value = val;
@@ -202,8 +190,7 @@ class DashboardController extends GetxController {
   }
 
   RxList communicationData = [].obs;
-  List<ModuleList> get getCommunicationList => List<ModuleList>.from(
-      communicationData.map((e) => ModuleList.fromJson(e)));
+  List<ModuleList> get getCommunicationList => List<ModuleList>.from(communicationData.map((e) => ModuleList.fromJson(e)));
   set updateCommunicationData(List val) {
     // gridViewWidgets.removeAt(0);
     communicationData.value = val;
@@ -211,8 +198,7 @@ class DashboardController extends GetxController {
   }
 
   RxList otherData = [].obs;
-  List<ModuleList> get getOtherDataList =>
-      List<ModuleList>.from(otherData.map((e) => ModuleList.fromJson(e)));
+  List<ModuleList> get getOtherDataList => List<ModuleList>.from(otherData.map((e) => ModuleList.fromJson(e)));
   set updateOtherData(List val) {
     // gridViewWidgets.removeAt(0);
     otherData.value = val;
@@ -283,8 +269,7 @@ class DashboardController extends GetxController {
     printSharedPreferencesData();
   }
 
-  final PushNotificationService _notificationService =
-      PushNotificationService();
+  final PushNotificationService _notificationService = PushNotificationService();
   updateDeviceToken() async {
     print("PPPPP");
     String? deToken = await _notificationService.initialize();
@@ -295,13 +280,11 @@ class DashboardController extends GetxController {
       "role": userData.getRole,
     };
     print(body);
-    var data =
-        apiRespository.postApiCallByJson("webservice/updateDeviceToken", body);
+    var data = apiRespository.postApiCallByJson("webservice/updateDeviceToken", body);
   }
 
   bool get isSliverAppBarExpanded {
-    return scrollController!.hasClients &&
-        scrollController!.offset > (200 - kToolbarHeight);
+    return scrollController!.hasClients && scrollController!.offset > (200 - kToolbarHeight);
   }
 
   /// Section Widget
@@ -309,36 +292,30 @@ class DashboardController extends GetxController {
     return Container(
       padding: EdgeInsets.all(8.0),
       margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade400,
-              offset: const Offset(
-                3.0,
-                5.0,
-              ),
-              blurRadius: 8.0,
-              spreadRadius: 2.0,
-            ), //BoxShadow
-            BoxShadow(
-              color: Colors.white,
-              offset: const Offset(0.0, 0.0),
-              blurRadius: 0.0,
-              spreadRadius: 0.0,
-            ), //BoxShadow
-          ],
-          borderRadius:
-              BorderRadius.circular(10)), // Add padding around the grid
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+          color: Colors.grey.shade400,
+          offset: const Offset(
+            3.0,
+            5.0,
+          ),
+          blurRadius: 8.0,
+          spreadRadius: 2.0,
+        ), //BoxShadow
+        BoxShadow(
+          color: Colors.white,
+          offset: const Offset(0.0, 0.0),
+          blurRadius: 0.0,
+          spreadRadius: 0.0,
+        ), //BoxShadow
+      ], borderRadius: BorderRadius.circular(10)), // Add padding around the grid
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             "${heading}",
             textAlign: TextAlign.start,
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-                color: Colors.grey.shade800),
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: Colors.grey.shade800),
           ),
           GridView.builder(
             padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
@@ -395,11 +372,12 @@ class DashboardController extends GetxController {
   logout(context) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
+    userData.userData.erase();
     await logoutAPI();
+
     Navigator.of(context).pop(); // Close the dialog
-    Get.toNamed('/s_screen');
 
-
+    Get.offAllNamed(AppRoutes.initialRoute);
   }
 
   Future<void> printSharedPreferencesData() async {
@@ -444,13 +422,11 @@ class DashboardController extends GetxController {
       eLearningData.value = jsonDecode(prefs.getString('eLearningData')!);
 
       academicData.value = jsonDecode(prefs.getString('academicData')!);
-      communicationData.value =
-          jsonDecode(prefs.getString('communicationData')!);
+      communicationData.value = jsonDecode(prefs.getString('communicationData')!);
       otherData.value = jsonDecode(prefs.getString('otherData')!);
       buildGridViewData("E Learning", getElearningList, eLearningImagesPath, 0);
       buildGridViewData("Academics", getAcademicList, academicImages, 1);
-      buildGridViewData(
-          "Communicate", getCommunicationList, communicationImages, 2);
+      buildGridViewData("Communicate", getCommunicationList, communicationImages, 2);
       buildGridViewData("Other ", getOtherDataList, otherImages, 3);
       isLoading.value = false;
       await fetchFreshData(false);
@@ -489,8 +465,7 @@ class DashboardController extends GetxController {
   getSchoolDetails() async {
     Map<String, dynamic> body = {};
     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
-    var data = await apiRespository.postApiCallByJson(
-        "webservice/getSchoolDetails", body);
+    var data = await apiRespository.postApiCallByJson("webservice/getSchoolDetails", body);
     final prefs = await SharedPreferences.getInstance();
     print("###################${data.body}");
     await prefs.setString("schoolName", data.body["name"] ?? "");
@@ -499,17 +474,12 @@ class DashboardController extends GetxController {
     await prefs.setString("schoolEmail", data.body["email"] ?? "");
     await prefs.setString("schoolSchoolCode", data.body["dise_code"] ?? "");
     await prefs.setString("schoolCurrentSession", data.body["session"] ?? "");
-    await prefs.setString(
-        "schoolStartMonth", data.body["start_month_name"] ?? "");
-    await prefs.setString(
-        "schoolStartMonthNumber", data.body["start_month"] ?? "");
+    await prefs.setString("schoolStartMonth", data.body["start_month_name"] ?? "");
+    await prefs.setString("schoolStartMonthNumber", data.body["start_month"] ?? "");
     await prefs.setString("schoolImage", data.body["image"] ?? "");
-    schoolImageUrl.value =
-        (data.body["image"] == null || data.body["image"] == null)
-            ? ""
-            : baseUrlFromPref +
-                "uploads/school_content/logo/app_logo/" +
-                data.body["image"];
+    schoolImageUrl.value = (data.body["image"] == null || data.body["image"] == null)
+        ? ""
+        : baseUrlFromPref + "uploads/school_content/logo/app_logo/" + data.body["image"];
     update();
     print("+++++++++++++++++++++${schoolImageUrl.value}");
   }
@@ -519,11 +489,9 @@ class DashboardController extends GetxController {
     Map<String, dynamic> body = {
       "user": "student",
     };
-    var data = await apiRespository.postApiCallByJson(
-        "webservice/getELearningModuleStatus", body);
+    var data = await apiRespository.postApiCallByJson("webservice/getELearningModuleStatus", body);
     var data1 = await data.body['module_list'];
-    updateELearningData =
-        data1.where((item) => item['status'].toString() == "1").toList();
+    updateELearningData = data1.where((item) => item['status'].toString() == "1").toList();
     // gridViewWidgets.add(
     //     buildGridItem("E Learning", getElearningList, eLearningImagesPath));
     // // academicStatusApi();
@@ -532,13 +500,11 @@ class DashboardController extends GetxController {
     buildGridViewData("E Learning", getElearningList, eLearningImagesPath, 0);
   }
 
-  buildGridViewData(String title, List<ModuleList> moduleList,
-      List<dynamic> imagePath, int index) {
+  buildGridViewData(String title, List<ModuleList> moduleList, List<dynamic> imagePath, int index) {
     // Ensure gridViewWidgets has enough elements up to the requested index
     if (gridViewWidgets.length <= index) {
       // If the list isn't long enough, add placeholders up to the index
-      gridViewWidgets.addAll(List.generate(
-          index - gridViewWidgets.length + 1, (i) => customContainer()));
+      gridViewWidgets.addAll(List.generate(index - gridViewWidgets.length + 1, (i) => customContainer()));
     }
 
     // Assign the data to the specific index
@@ -548,8 +514,7 @@ class DashboardController extends GetxController {
     update();
   }
 
-  buildGridViewData2(String title, List<ModuleList> moduleList,
-      List<dynamic> imagePath, int index) {
+  buildGridViewData2(String title, List<ModuleList> moduleList, List<dynamic> imagePath, int index) {
     gridViewWidgets[index] = buildGridItem(title, moduleList, imagePath);
     update();
     // if (gridViewWidgets.length <= index) {
@@ -569,13 +534,11 @@ class DashboardController extends GetxController {
     Map<String, dynamic> body = {
       "user": "student",
     };
-    var data = await apiRespository.postApiCallByJson(
-        "webservice/getAcademicsModuleStatus", body);
+    var data = await apiRespository.postApiCallByJson("webservice/getAcademicsModuleStatus", body);
     // updateAcademicData = data.body['module_list'].where((item) => item['status'] == 1).toList();
     var data1 = await data.body['module_list'];
     print(data1);
-    updateAcademicData =
-        data1.where((item) => item['status'].toString() == "1").toList();
+    updateAcademicData = data1.where((item) => item['status'].toString() == "1").toList();
     // gridViewWidgets
     //     .add(buildGridItem("Academics", getAcademicList, academicImages));
     // // communicationStatusApi();
@@ -588,31 +551,26 @@ class DashboardController extends GetxController {
     Map<String, dynamic> body = {
       "user": "student",
     };
-    var data = await apiRespository.postApiCallByJson(
-        "webservice/getCommunicateModuleStatus", body);
+    var data = await apiRespository.postApiCallByJson("webservice/getCommunicateModuleStatus", body);
     // updateCommunicationData = data.body['module_list'].where((item) => item['status'] == 1).toList();
     var data1 = await data.body['module_list'];
-    updateCommunicationData =
-        data1.where((item) => item['status'].toString() == "1").toList();
+    updateCommunicationData = data1.where((item) => item['status'].toString() == "1").toList();
     // gridViewWidgets.add(buildGridItem(
     //     "Communicate", getCommunicationList, communicationImages));
     // // otherModuleApi();
     // update();
     print("COMMUNICATION STATUS DATA ${getCommunicationList[0].name}");
-    buildGridViewData(
-        "Communicate", getCommunicationList, communicationImages, 2);
+    buildGridViewData("Communicate", getCommunicationList, communicationImages, 2);
   }
 
   otherModuleApi() async {
     Map<String, dynamic> body = {
       "user": "student",
     };
-    var data = await apiRespository.postApiCallByJson(
-        "webservice/getOthersModuleStatus", body);
+    var data = await apiRespository.postApiCallByJson("webservice/getOthersModuleStatus", body);
     // updateOtherData = data.body['module_list'].where((item) => item['status'] == 1).toList();
     var data1 = await data.body['module_list'];
-    updateOtherData =
-        data1.where((item) => item['status'].toString() == "1").toList();
+    updateOtherData = data1.where((item) => item['status'].toString() == "1").toList();
     // gridViewWidgets.add(buildGridItem("Other ", getOtherDataList, otherImages));
     //
     // update();
@@ -627,16 +585,15 @@ class DashboardController extends GetxController {
 
     print("Logout Request Body: $body");
 
-    var response =
-        await apiRespository.postApiCallByJson(Constants.logout, body);
+    var response = await apiRespository.postApiCallByJson(Constants.logout, body);
 
     print("Logout Response: ${response.body}");
 
     if (response.statusCode == 200) {
-      return  true;
+      return true;
     } else {
       print("Logout failed: ${response.body}");
-      return  false;
+      return false;
     }
   }
 
@@ -652,7 +609,7 @@ class DashboardController extends GetxController {
           ),
           title: Text(
             'Logout',
-            style: theme.textTheme.headline6?.copyWith(
+            style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 20,
               color: Colors.black, // Use a consistent color
@@ -660,7 +617,7 @@ class DashboardController extends GetxController {
           ),
           content: Text(
             "Are you sure you want to logout?",
-            style: theme.textTheme.bodyText2?.copyWith(
+            style: theme.textTheme.bodyMedium?.copyWith(
               color: Colors.grey[800], // Darker grey for better contrast
             ),
           ),
@@ -668,7 +625,7 @@ class DashboardController extends GetxController {
             // Cancel Button
             TextButton(
               style: TextButton.styleFrom(
-                backgroundColor: Colors.green.shade300,
+                backgroundColor: Colors.green.shade400,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6.0),
                 ),
@@ -676,12 +633,11 @@ class DashboardController extends GetxController {
               ),
               child: Text(
                 'Cancel',
-                style: theme.textTheme.button?.copyWith(
+                style: theme.textTheme.labelLarge?.copyWith(
                   color: Colors.white, // White text for contrast
                 ),
               ),
               onPressed: () {
-
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
@@ -689,7 +645,7 @@ class DashboardController extends GetxController {
             // Logout Button
             TextButton(
               style: TextButton.styleFrom(
-                backgroundColor: Colors.red.shade200,
+                backgroundColor: Colors.red.shade400,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6.0),
                 ),
@@ -697,14 +653,12 @@ class DashboardController extends GetxController {
               ),
               child: Text(
                 'Logout',
-                style: theme.textTheme.button?.copyWith(
+                style: theme.textTheme.labelLarge?.copyWith(
                   color: Colors.white, // White text for contrast
                 ),
               ),
               onPressed: () async {
-
                 await logout(context); // Await logout action if it's a Future
-
               },
             ),
           ],
