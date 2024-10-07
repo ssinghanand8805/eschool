@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:lerno/apiHelper/userData.dart';
 import 'package:lerno/presentation/common_widgets/custom_loader.dart';
@@ -13,6 +14,8 @@ import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
 import '../../../core/app_export.dart';
 import 'package:http/http.dart' as http;
+
+import '../../../widgets/network_connectivity.dart';
 
 
 class SchoolUrlController extends GetxController {
@@ -36,6 +39,7 @@ class SchoolUrlController extends GetxController {
   getSchoolUrl(code) async
   {
     //check internet here
+    Get.put(ConnectionServicess(Connectivity()));
     String newUrl = "";
     var t= jsonEncode(<String, String>{
       'schoolCode': code,
@@ -105,6 +109,8 @@ class SchoolUrlController extends GetxController {
       if(baseUrl != "")
         {
           //check internet here
+
+          Get.put(ConnectionServicess(Connectivity()));
           Uri uri = Uri.parse('${baseUrl}api/webservice/getSchoolDetails');
           print("############${uri}");
           // Prepare the request

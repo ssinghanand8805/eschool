@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:lerno/apiHelper/toastMessage.dart';
 import 'package:lerno/apiHelper/userData.dart';
 import 'package:get/get.dart';
 
 import '../presentation/login_screen/models/userDataModal.dart';
+import '../widgets/network_connectivity.dart';
 
 
 
@@ -25,6 +27,7 @@ class ApiClient extends GetConnect implements GetxService {
   @override
   void onInit() {
     //check internet here
+    Get.put(ConnectionServicess(Connectivity()));
     // add your local storage here to load for every request
     token=  userData.getAccessToken;
     _mainHeader= {

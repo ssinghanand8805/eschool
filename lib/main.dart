@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lerno/widgets/network_connectivity.dart';
 import 'NotificationServices/NotificationController.dart';
 import 'NotificationServices/PushNotificationService.dart';
 import 'apiHelper/dependencies.dart';
@@ -37,7 +38,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     NotificationHelperController.startListeningNotificationEvents();
     // TODO: implement initState
-    checkConnectivity();
+    Get.put(ConnectionServicess(Connectivity()));
     super.initState();
 
   }
