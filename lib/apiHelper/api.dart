@@ -24,6 +24,7 @@ class ApiClient extends GetConnect implements GetxService {
 
   @override
   void onInit() {
+    //check internet here
     // add your local storage here to load for every request
     token=  userData.getAccessToken;
     _mainHeader= {

@@ -35,6 +35,7 @@ class SchoolUrlController extends GetxController {
 
   getSchoolUrl(code) async
   {
+    //check internet here
     String newUrl = "";
     var t= jsonEncode(<String, String>{
       'schoolCode': code,
@@ -103,6 +104,7 @@ class SchoolUrlController extends GetxController {
       // Define the Uri. Replace 'https://example.com/api' with your API endpoint.
       if(baseUrl != "")
         {
+          //check internet here
           Uri uri = Uri.parse('${baseUrl}api/webservice/getSchoolDetails');
           print("############${uri}");
           // Prepare the request

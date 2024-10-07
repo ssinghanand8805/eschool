@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lerno/presentation/mydocuments/model/MyDocuments.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import '../../apiHelper/GlobalData.dart';
 import '../../apiHelper/userData.dart';
 import '../common_widgets/CommonCardExtended.dart';
@@ -42,24 +43,26 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return controller.documentsModelObj.value!.length > 0?ListView.builder(
-                itemCount: controller.documentsModelObj.value?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return  _buildTimeTableCard(
+              return controller.documentsModelObj.value!.length > 0
+                  ? ListView.builder(
+                      itemCount:
+                          controller.documentsModelObj.value?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        return _buildTimeTableCard(
                           data: controller.documentsModelObj.value![index],
                         );
-
-                },
-              ):Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/projectImages/no_data.png",
-                      ),
-                      Text("No data found!")
-                    ],
-                  ));
+                      },
+                    )
+                  : Center(
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/projectImages/no_data.png",
+                        ),
+                        Text("No data found!")
+                      ],
+                    ));
               ;
             }
           },
@@ -68,6 +71,8 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
     );
   }
 
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
   Widget _buildTimeTableCard({required Documents data}) {
     return CommonCardExtended(
         title: data.title!,
@@ -76,54 +81,84 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
           height: 22,
         ),
         subtitle: "",
-        newWidget: ListTile(
-          leading: Image.asset(
-            "assets/projectImages/ic_file.png",
-            height: 20,
-          ),
-          title: Text(
-            data.doc!.split("!")[1].toString(),
-            style: theme.textTheme.titleMedium!.copyWith(fontSize: 12.5),
-          ),
-          trailing: textWithIcon(
-              onTap: () {
+        newWidget: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Image.asset(
+              "assets/projectImages/ic_file.png",
+              height: 20,
+            ),
+            SizedBox(width: 20,),
+            Text(
+              data.doc!.split("!")[1].toString(),
+              style: theme.textTheme.titleMedium!.copyWith(fontSize: 12.5),
+            ),
+            Spacer(),
+            textWithIcon(
+              onTap: () async {
                 onPressDownload(data.doc!, data.doc!.split("!")[1].toString());
               },
-              icon: Icons.download,
-              iconColor: Colors.blue,
-              text: "Download"),
-        ));
+            ),
+          ],
+        )
 
+        // ListTile(
+        //   leading: Image.asset(
+        //     "assets/projectImages/ic_file.png",
+        //     height: 20,
+        //   ),
+        //   title: Text(
+        //     data.doc!.split("!")[1].toString(),
+        //     style: theme.textTheme.titleMedium!.copyWith(fontSize: 12.5),
+        //   ),
+        //   trailing:
+        //   textWithIcon(
+        //       onTap: () async {
+        //         onPressDownload(data.doc!, data.doc!.split("!")[1].toString());
+        //       },
+        //       icon: Icons.download,
+        //       iconColor: Colors.blue,
+        //       text: "Download"),
+        // )
+
+        );
   }
 
   Widget textWithIcon({
-    required IconData icon,
-    required VoidCallback onTap,
-    required String text,
-    double iconSize = 14.0,
-    Color iconColor = Colors.blue,
-    TextStyle? textStyle,
+    required Future<void> Function() onTap,
   }) {
-    return InkWell(
-      onTap: onTap,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            size: iconSize,
-            color: iconColor,
-          ),
-          SizedBox(width: 8.0),
-          Text(
-            text,
-            style: textStyle ??
-                TextStyle(
-                  fontSize: 12.5,
-                  color: iconColor,
-                ),
-          ),
-        ],
+    final RoundedLoadingButtonController _btnController =
+        RoundedLoadingButtonController();
+
+    return SizedBox(
+      height: 50,
+      width: 50,
+      child: RoundedLoadingButton(
+        controller: _btnController,
+        onPressed: () async {
+          try {
+            await onTap();
+
+            _btnController.success();
+          } catch (error) {
+            _btnController.error();
+
+            Future.delayed(Duration(seconds: 2), () {
+              _btnController.reset();
+            });
+          }
+        },
+        color: Colors.blue, // Background color of the button
+        successColor: Colors.green, // Color when success state is achieved
+        errorColor: Colors.red,
+        height: 50,
+        width: 50,
+        borderRadius: 30,
+        child: Icon(
+          Icons.download,
+          size: 15,
+          color: Colors.white,
+        ), // Color when an error occurs
       ),
     );
   }
@@ -228,7 +263,6 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
                       ),
                     ),
                     onPressed: () {
-
                       OpenFilex.open(path);
                       print("bbhbbhbbbhbhhb${path}");
                       Navigator.of(context).pop();

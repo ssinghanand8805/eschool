@@ -14,6 +14,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../apiHelper/Constants.dart';
 import '../../apiHelper/GlobalData.dart';
@@ -357,6 +358,8 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
 
   void showDynamicBottomSheet(BuildContext context,
       {required List<UploadContents> data}) {
+
+    final RoundedLoadingButtonController _btnController = RoundedLoadingButtonController();
     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
@@ -415,19 +418,29 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            IconButton(
-                              onPressed: () {
-                                onPressDownload(
-                                  "${baseUrlFromPref + data[index].dirPath! + data[index].imgName!}",
-                                );
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(
-                                Icons.download,
-                                size: 20,
-                                color: Colors.blue,
-                              ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: RoundedLoadingButton(
+                            controller: _btnController,
+                            onPressed: () async {
+                              await onPressDownload(
+                                "${baseUrlFromPref + data[index].dirPath! + data[index].imgName!}",
+                              );
+                              _btnController.success();
+                            },
+                            color: Colors.blue,
+                            successColor: Colors.green,
+                            width: 60,
+                            height: 60,
+                            borderRadius: 30,
+                            child: Icon(
+                              Icons.download,
+                              size: 15,
+                              color: Colors.white,
                             ),
+                          ),
+                        ),
+
                           ],
                         ),
                       ),
@@ -462,8 +475,6 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
     );
   }
 
-
-
   Future<void> onPressDownload(String fileUrl) async {
     print("@@@@@@@@@@@@@@@$fileUrl");
 
@@ -481,6 +492,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
 
       Fluttertoast.showToast(
         msg: "Download started...",
+        backgroundColor: Colors.green,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
@@ -489,13 +501,13 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
       FileDownloader.downloadFile(
         url: fileUrl,
         onProgress: (String? fileName, double? progress) {
-          print('FILE HAS PROGRESS $progress');
         },
         onDownloadCompleted: (String path) {
           print('FILE DOWNLOADED TO PATH: $path');
           Fluttertoast.showToast(
             msg: "Download complete!",
             toastLength: Toast.LENGTH_SHORT,
+            backgroundColor: Colors.green,
             gravity: ToastGravity.BOTTOM,
           );
           showDialog(
