@@ -38,6 +38,9 @@ dependencies:
   device_info_plus:
   open_filex:
   rounded_loading_button_plus:
+  version: ^2.0.0
+  in_app_update: ^4.2.3
+  new_version_plus:
 
 
 

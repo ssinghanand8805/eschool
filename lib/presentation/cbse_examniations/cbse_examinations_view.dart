@@ -1,5 +1,6 @@
 import 'package:lerno/core/app_export.dart';
 import 'package:flutter/material.dart';
+import 'package:lerno/widgets/CheckForUpdate.dart';
 
 import '../common_widgets/CommonCardExtended.dart';
 import '../common_widgets/MainBody.dart';
@@ -44,7 +45,66 @@ class _DailyAssignmentScreenState extends State<CbseExaminationsScreen> {
           ),
         )
       ],
-      widget: _buildChildWidget(),
+      widget: CustomTabView(),
+    );
+  }
+}
+
+class CustomTabView extends StatefulWidget {
+
+  @override
+  State<CustomTabView> createState() => _CustomTabViewState();
+}
+
+class _CustomTabViewState extends State<CustomTabView> {
+  CbseExaminationsController controller = Get.put(CbseExaminationsController());
+
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+           // padding: EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: Colors.green.shade100,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: TabBar(
+              dividerHeight: 0.0,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.black,
+              indicator: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              tabs: [
+                Tab(
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text("Assignment"),
+                  ),
+                ),
+                Tab(
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text("Other Tab"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              children: [
+                _buildChildWidget(),
+                Center(child: Text("This is another tab")),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -53,32 +113,31 @@ class _DailyAssignmentScreenState extends State<CbseExaminationsScreen> {
       init: controller,
       builder: (_) {
         return FutureBuilder(
-          future: controller.fetchDataFuture, //controller.getData(context),
+          future: controller.fetchDataFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
-              return CustomLoader(); // CustomLoader();
+              return CustomLoader();
             } else {
-              return controller.cbseResultModelObj.value!.length > 0
+              return controller.cbseResultModelObj.length > 0
                   ? ListView.builder(
                       itemCount:
-                          controller.cbseResultModelObj.value!.length ?? 0,
+                          controller.cbseResultModelObj.length ?? 0,
                       itemBuilder: (context, index) {
                         return _buildAssignmentCard(
-                            data: controller.cbseResultModelObj.value![index],
-                            index: index);
+                          data: controller.cbseResultModelObj[index],
+                          index: index,
+                        );
                       },
                     )
                   : Center(
                       child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/projectImages/no_data.png",
-                        ),
-                        Text("No data found!")
-                      ],
-                    ));
-              ;
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset("assets/projectImages/no_data.png"),
+                          Text("No data found!"),
+                        ],
+                      ),
+                    );
             }
           },
         );
@@ -86,7 +145,7 @@ class _DailyAssignmentScreenState extends State<CbseExaminationsScreen> {
     );
   }
 
-  List<DataColumn> getCoumns(Exam data) {
+  List<DataColumn> _getColumns(Exam data) {
     List<DataColumn> columns = [
       DataColumn(
         label: Text('Subject', style: theme.textTheme.titleSmall),
@@ -127,9 +186,8 @@ class _DailyAssignmentScreenState extends State<CbseExaminationsScreen> {
     return columns;
   }
 
-  gteRowsForDataTable(Exam data) {
+  _gteRowsForDataTable(Exam data) {
     List<DataRow> rows = [];
-
 
     for (var i = 0; i < data.examData!.subjects!.length; i++) {
       double totalMarks = 0.0;
@@ -139,10 +197,12 @@ class _DailyAssignmentScreenState extends State<CbseExaminationsScreen> {
       ];
       if (data.examData!.subjects![i].examAssessments!.examAssessment1 !=
           null) {
-        if(data.examData!.subjects![i].examAssessments!.examAssessment1!
-            .marks.toString() != "xx"){
-          totalMarks = totalMarks+double.parse(data.examData!.subjects![i].examAssessments!.examAssessment1!
-              .marks!);
+        if (data.examData!.subjects![i].examAssessments!.examAssessment1!.marks
+                .toString() !=
+            "xx") {
+          totalMarks = totalMarks +
+              double.parse(data.examData!.subjects![i].examAssessments!
+                  .examAssessment1!.marks!);
         }
 
         cells.add(
@@ -154,10 +214,12 @@ class _DailyAssignmentScreenState extends State<CbseExaminationsScreen> {
       }
       if (data.examData!.subjects![i].examAssessments!.examAssessment2 !=
           null) {
-        if(data.examData!.subjects![i].examAssessments!.examAssessment2!
-            .marks.toString() != "xx"){
-          totalMarks = totalMarks+double.parse(data.examData!.subjects![i].examAssessments!.examAssessment2!
-              .marks!);
+        if (data.examData!.subjects![i].examAssessments!.examAssessment2!.marks
+                .toString() !=
+            "xx") {
+          totalMarks = totalMarks +
+              double.parse(data.examData!.subjects![i].examAssessments!
+                  .examAssessment2!.marks!);
         }
         cells.add(
           DataCell(Text(
@@ -168,10 +230,12 @@ class _DailyAssignmentScreenState extends State<CbseExaminationsScreen> {
       }
       if (data.examData!.subjects![i].examAssessments!.examAssessment3 !=
           null) {
-        if(data.examData!.subjects![i].examAssessments!.examAssessment3!
-            .marks.toString() != "xx"){
-          totalMarks = totalMarks+double.parse(data.examData!.subjects![i].examAssessments!.examAssessment3!
-              .marks!);
+        if (data.examData!.subjects![i].examAssessments!.examAssessment3!.marks
+                .toString() !=
+            "xx") {
+          totalMarks = totalMarks +
+              double.parse(data.examData!.subjects![i].examAssessments!
+                  .examAssessment3!.marks!);
         }
         cells.add(
           DataCell(Text(
@@ -181,7 +245,8 @@ class _DailyAssignmentScreenState extends State<CbseExaminationsScreen> {
         );
       }
       cells.add(
-        DataCell(Text(totalMarks.toString(), style: theme.textTheme.titleSmall)),
+        DataCell(
+            Text(totalMarks.toString(), style: theme.textTheme.titleSmall)),
       );
       rows.add(DataRow(cells: cells));
       print("TOTAL MARKS $totalMarks");
@@ -205,9 +270,9 @@ class _DailyAssignmentScreenState extends State<CbseExaminationsScreen> {
               onSelectAll: (b) {
                 print(b);
               },
-              columns: getCoumns(data),
-              rows: gteRowsForDataTable(data),
-              columnSpacing: getCoumns(data).length<5?100:10,
+              columns: _getColumns(data),
+              rows: _gteRowsForDataTable(data),
+              columnSpacing: _getColumns(data).length < 5 ? 100 : 10,
               horizontalMargin: 0,
               showCheckboxColumn: false,
               dividerThickness: 0.1,
