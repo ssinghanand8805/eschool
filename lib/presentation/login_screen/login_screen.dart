@@ -116,7 +116,7 @@ class LoginScreen extends GetWidget<LoginController> {
                       ],
                     ),
                   ),
-                    SizedBox(height: 100,),
+                    SizedBox(height: 50,),
                       Obx(() => Text(
                         controller.schoolName.value,
                         style: TextStyle(

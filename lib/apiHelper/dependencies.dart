@@ -16,7 +16,7 @@ import 'api.dart';
 
 Future<void> init()async {
   //apiClient
-  checkConnectivity();
+
   final prefs = await SharedPreferences.getInstance();
 
   bool isBaseUrlFound = prefs.containsKey("schoolBaseUrl");
@@ -41,35 +41,4 @@ Future<void> init()async {
 
 
 }
-late StreamSubscription<ConnectivityResult> subscription;
-bool hasShownToast = false;
-
-void checkConnectivity() {
-  subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-    print("bfddbhfbdhfhbdfdb");
-    if (result == ConnectivityResult.none ) {
-      showToast("No internet connection", Colors.red, 5);
-      hasShownToast = true;
-    } else if (result != ConnectivityResult.none) {
-      if (hasShownToast) {
-        showToast("Internet connected", Colors.green, 5);
-        hasShownToast = false;
-      }
-    }
-  });
-}
-
-  void showToast(String message, Color backgroundColor, int seconds) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: backgroundColor,
-      textColor: Colors.white,
-      fontSize: 12.0,
-    );
-    Timer(Duration(seconds: seconds), () {
-      Fluttertoast.cancel();
-    });
-  }
 

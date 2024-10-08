@@ -11,7 +11,6 @@ import '../../../apiHelper/toastMessage.dart';
 import '../../../core/app_export.dart';
 import '../../../main.dart';
 
-
 class LoginController extends GetxController {
   UserData userData = Get.put(UserData());
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
@@ -29,6 +28,7 @@ class LoginController extends GetxController {
     passwordController.clear();
     getSchoolDetails();
   }
+
   @override
   void onClose() {
     // Dispose all controllers here
@@ -38,13 +38,16 @@ class LoginController extends GetxController {
     // If you have other disposables, dispose them here as well
     super.onClose(); // Always call super.onClose() at the end
   }
-  getSchoolDetails() async
-  {
 
+  getSchoolDetails() async {
     final prefs = await SharedPreferences.getInstance();
-    schoolName.value = (prefs.getString("schoolName") == null || prefs.getString("schoolName") == "") ? "Lerno Powered by Apexion" : prefs.getString("schoolName")!;
+    schoolName.value = (prefs.getString("schoolName") == null ||
+            prefs.getString("schoolName") == "")
+        ? "Lerno Powered by Apexion"
+        : prefs.getString("schoolName")!;
     update();
   }
+
   changeSchool() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
@@ -56,6 +59,14 @@ class LoginController extends GetxController {
   }
 
   loginApi(context) async {
+    Get.dialog(
+      Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+        ),
+      ),
+      barrierDismissible: false,
+    );
 
     Map<String, dynamic> body = {
       "username": idController.text,
@@ -64,11 +75,21 @@ class LoginController extends GetxController {
     };
 
     var data = await apiRespository.postApiCallByJson(Constants.authUrl, body);
-
+    Get.back();
     print("DATA @@@@ ${body}");
     print("DATA @@@@ ${data.body}");
     //UsersData usersData = UsersData.fromJson(data.body);
     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
+    if(data.body == null)
+      {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red.shade100,
+            content:
+            Text("Error occured, Try Again..", style: theme.textTheme.titleMedium),
+          ),
+        );
+      }
     Map<dynamic, dynamic> jsonData = data.body; //json.decode(data.body);
     if (jsonData["status"].toString() == "1") {
       UserData usersData = UserData();
@@ -104,19 +125,31 @@ class LoginController extends GetxController {
               firstChild["class"] + " - " + firstChild["section"]);
           usersData.addUserStudentName(firstChild["name"]);
           usersData.addUserStudentClassId(firstChild["class_id"]); //class_id
-          usersData.addUserStudentSectionId(firstChild["section_id"]); //section_id
+          usersData
+              .addUserStudentSectionId(firstChild["section_id"]); //section_id
           usersData.addUserStudentParentId(recordData["id"]); //user_parent_id
-          usersData.addStudent_session_id(firstChild["student_session_id"].toString());
+          usersData.addStudent_session_id(
+              firstChild["student_session_id"].toString());
+
           ///navigate here to dashboard
           print('one child found:::::::::');
           usersData.saveAllDataToSharedPreferences();
+
           Get.toNamed(AppRoutes.formScreen);
+
+          Get.snackbar(
+            "Login Successful",
+            "Welcome back, ${usersData.getUsername}",
+            snackPosition: SnackPosition.BOTTOM,
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
           // Navigator.push(
           //   context,
           //   MaterialPageRoute(builder: (context) => DashboardScreen()),
           // );
-        }
-        else {
+        } else {
           List<String> childNameList = [];
           List<String> childIdList = [];
           List<String> childImageList = [];
@@ -138,8 +171,8 @@ class LoginController extends GetxController {
 
             String classId = childArray[i]["class_id"] ?? "";
             String sectionId = childArray[i]["section_id"] ?? "";
-                childClassIdList.add(classId);
-                childSectionIdList.add(sectionId);
+            childClassIdList.add(classId);
+            childSectionIdList.add(sectionId);
             bool isUserImage =
                 childArray[i]["image"].toString() == "null" ? false : true;
             usersData.addIsUserImage(isUserImage);
@@ -159,35 +192,43 @@ class LoginController extends GetxController {
           print(childImageList);
           print(childClassList);
           print(childImagefoundList);
-          saveArray("childIdList",childIdList);
-          saveArray("childNameList",childNameList);
-          saveArray("childImageList",childImageList);
-          saveArray("childClassList",childClassList);
-          saveArray("childImagefoundList",childImagefoundList);
-          saveArray("childSessionIDList",childSessionIDList);
-          saveArray("childClassIdList",childClassIdList);
-          saveArray("childSectionIdList",childSectionIdList);
+          saveArray("childIdList", childIdList);
+          saveArray("childNameList", childNameList);
+          saveArray("childImageList", childImageList);
+          saveArray("childClassList", childClassList);
+          saveArray("childImagefoundList", childImagefoundList);
+          saveArray("childSessionIDList", childSessionIDList);
+          saveArray("childClassIdList", childClassIdList);
+          saveArray("childSectionIdList", childSectionIdList);
           print('child name List:::::::::');
 
           /// show Child List here
           ///
-          showChildList(context, childNameList, childIdList, childImageList,
-              childClassList,childImagefoundList,childSessionIDList,childClassIdList,childSectionIdList);
+          showChildList(
+              context,
+              childNameList,
+              childIdList,
+              childImageList,
+              childClassList,
+              childImagefoundList,
+              childSessionIDList,
+              childClassIdList,
+              childSectionIdList);
         }
-      }
-      else if (jsonData["role"] == "student") {
+      } else if (jsonData["role"] == "student") {
         usersData.addUserIsLoggedIn(true);
         usersData.addUserStudentId(recordData["student_id"]);
         usersData.addUserClassSection(
             recordData["className"] + " - " + recordData["section"]);
         usersData.addUserAdmissionNo(recordData["admission_no"]);
         usersData.addUserStudentClassId(recordData["class_id"]); //class_id
-        usersData.addUserStudentSectionId(recordData["section_id"]); //section_id
+        usersData
+            .addUserStudentSectionId(recordData["section_id"]); //section_id
         usersData.addUserStudentParentId(""); //user_parent_id
-
 
         usersData
             .addStudent_session_id(recordData["student_session_id"].toString());
+
         ///checking for profile lock
         Map<String, dynamic> body2 = {"student_id": usersData.getUserStudentId};
         var data = await apiRespository.postApiCallByJson(
@@ -203,10 +244,10 @@ class LoginController extends GetxController {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.green.shade100,
-          content: Text(data.body["message"],style: theme.textTheme.titleMedium),
+          content:
+              Text(data.body["message"], style: theme.textTheme.titleMedium),
         ),
       );
-
     }
 
     //print("DATA USING DATA MODEL ${usersData.role}");
@@ -215,13 +256,16 @@ class LoginController extends GetxController {
 
     // Get.to( AppRoutes.teacherLoginScreen);
   }
-  Future<bool> saveArray(String name,List<dynamic> array) async {
+
+  Future<bool> saveArray(String name, List<dynamic> array) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String encodedData = json.encode(array); // Encode your array to a JSON string
+    String encodedData =
+        json.encode(array); // Encode your array to a JSON string
     return prefs.setString(name, encodedData); // Save encoded string
   }
 
-  onSelectChildStudent(student_id, classNameSection, name,sessionId,classId,sectionId) {
+  onSelectChildStudent(
+      student_id, classNameSection, name, sessionId, classId, sectionId) {
     UserData usersData = UserData();
     usersData.addUserIsLoggedIn(true);
     usersData.addUserHasMultipleChild(true);
@@ -230,8 +274,8 @@ class LoginController extends GetxController {
     usersData.addUserStudentName(name);
     usersData.addUserStudentClassId(classId);
     usersData.addUserStudentSectionId(sectionId);
-    usersData
-        .addStudent_session_id(sessionId.toString());
+    usersData.addStudent_session_id(sessionId.toString());
+
     ///navigate here to dashboard
     print('one child found:::::::::');
     usersData.saveAllDataToSharedPreferences();
@@ -245,10 +289,9 @@ class LoginController extends GetxController {
       List<String> childImageList,
       List<String> childClassList,
       List<bool> childImagefoundList,
-      List<String> childSessionIDList
-  ,List<String>childClassIdList,List<String> childSectionIdList
-
-      ) {
+      List<String> childSessionIDList,
+      List<String> childClassIdList,
+      List<String> childSectionIdList) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -267,22 +310,26 @@ class LoginController extends GetxController {
                     children: <Widget>[
                       InkWell(
                         onTap: () {
-                          onSelectChildStudent(childIdList[index],
-                              childClassList[index], childNameList[index],childSessionIDList[index],
-                              childClassIdList[index],childSectionIdList[index]);//childClassIdList,childSectionIdList
+                          onSelectChildStudent(
+                              childIdList[index],
+                              childClassList[index],
+                              childNameList[index],
+                              childSessionIDList[index],
+                              childClassIdList[index],
+                              childSectionIdList[
+                                  index]); //childClassIdList,childSectionIdList
                         },
                         child: ListTile(
                           leading: childImagefoundList[index] != false
                               ? CircleAvatar(
                                   radius: itemHeight / 4,
                                   backgroundImage:
-                                      NetworkImage(childImageList[index])
-
-                                  )
+                                      NetworkImage(childImageList[index]))
                               : CircleAvatar(
                                   radius: itemHeight / 4,
                                   backgroundImage: AssetImage(
-                                      'assets/projectImages/placeholder_user.png',),
+                                    'assets/projectImages/placeholder_user.png',
+                                  ),
                                 ),
                           title: Text(childNameList[index]),
                           subtitle: Text(childClassList[index]),

@@ -1,13 +1,10 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lerno/widgets/network_connectivity.dart';
 import 'NotificationServices/NotificationController.dart';
-import 'NotificationServices/PushNotificationService.dart';
 import 'apiHelper/dependencies.dart';
 import 'core/app_export.dart';
 
@@ -47,7 +44,6 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    subscription.cancel();
   }
 
 
