@@ -15,7 +15,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.green.shade100,
           title: Text('Change Password',
               style: theme.textTheme.titleLarge!.copyWith(fontSize: 17))),
       body: SafeArea(
@@ -95,7 +94,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green.shade400,
+                        backgroundColor: theme.primaryColorDark,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),

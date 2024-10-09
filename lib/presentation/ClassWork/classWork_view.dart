@@ -25,7 +25,6 @@ class _ClassWorkViewState extends State<ClassWorkView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green.shade200,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -59,7 +58,7 @@ class _ClassWorkViewState extends State<ClassWorkView> {
                   width: 150,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.orange),
+                      border: Border.all(color: theme.primaryColorDark),
                       borderRadius: BorderRadius.circular(50)),
                   child: GetBuilder(
                     init: controller,
@@ -104,7 +103,7 @@ class _ClassWorkViewState extends State<ClassWorkView> {
                                     value: value,
                                     child: Text(
                                       value.name ?? '', // Assuming 'name' is the display property
-                                      style: TextStyle(fontSize: 14, color: Colors.red),
+                                      style: TextStyle(fontSize: 14, color: theme.primaryColorDark),
                                       overflow: TextOverflow.ellipsis, // Prevent text overflow
                                     ),
                                   );

@@ -167,12 +167,12 @@ class _LeaveApplicationPageState extends State<LeaveApplicationPage> {
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
-                          backgroundColor: Colors.green.shade400,
+                          backgroundColor: theme.primaryColorDark,
                         ),
                         onPressed: () {
                           controller.saveData();
                         },
-                        child: Text("Submit"),
+                        child: Text("Submit",style: TextStyle(color: Colors.white),),
                       ),
                     ],
                   ),

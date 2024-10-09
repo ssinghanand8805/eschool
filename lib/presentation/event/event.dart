@@ -50,7 +50,6 @@ class _EventCalendarState extends State<EventCalendar> {
     return Scaffold(
 
         appBar: AppBar(
-          backgroundColor: Colors.green.shade200,
           title:  Text('Event Calendar',style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
         ),
         body: GetBuilder(

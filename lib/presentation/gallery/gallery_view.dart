@@ -23,7 +23,7 @@ class _GalleryPageState extends State<GalleryPage> {
           "Gallery",
           style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),
         ),
-        backgroundColor: Colors.green.shade100,
+        backgroundColor: theme.primaryColor,
       ),
       body: GetBuilder(
           init: GalleryController(),

@@ -57,7 +57,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               ),
             )
           ],
-          backgroundColor: Colors.green.shade100,
           title: Text('Attendance',
               style: theme.textTheme.titleLarge!.copyWith(fontSize: 17))),
       body: GetBuilder(
@@ -72,7 +71,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   daysOfWeekHeight: 30,
                   daysOfWeekStyle: DaysOfWeekStyle(
                       decoration: BoxDecoration(
-                          color: Colors.green.shade100,
+                          color: theme.primaryColor,
                           borderRadius: BorderRadius.all(Radius.circular(50)))),
                   eventLoader: (DateTime date) =>
                       controller.getEvents(date) ?? [],
@@ -209,6 +208,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         return Colors.orange;
       case 'holiday':
         return Colors.grey;
+        case 'leave':
+        return Colors.yellow;
       default:
         return Colors.transparent;
     }

@@ -101,7 +101,7 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
                     spreadRadius: 0.0,
                   ), //BoxShadow
                 ],
-                color: Colors.green.shade100,
+                color: theme.primaryColor,
                 borderRadius: BorderRadius.circular(10)),
             child: Padding(
               padding: EdgeInsets.all(16.0),
@@ -191,7 +191,7 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
                       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                       height: 35,
                       decoration: BoxDecoration(
-                          color: Colors.green.shade100,
+                          color: theme.primaryColor,
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10))),
@@ -232,7 +232,7 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
               child: new Container(
                 height: double.infinity,
                 width: 5.0,
-                color: Colors.green.shade100,
+                color: theme.primaryColor,
               ),
             ),
             new Positioned(
@@ -243,7 +243,7 @@ class _TransportRoutesPageState extends State<TransportRoutesPage> {
                 width: 40.0,
                 decoration: new BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.green.shade200,
+                  color: theme.primaryColor,
                 ),
                 child: new Container(
                   child: Icon(Icons.location_on, size: 15),

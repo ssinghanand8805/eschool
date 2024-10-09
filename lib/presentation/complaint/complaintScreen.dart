@@ -43,8 +43,8 @@ class _ComplaintsPageState extends State<ComplaintsPage> {
           shape: BoxShape.circle,
         ),
         child: FloatingActionButton(
-          focusColor: Colors.green.shade500,
-          backgroundColor: Colors.green.shade500,
+          focusColor: theme.primaryColorDark,
+          backgroundColor: theme.primaryColorDark,
           onPressed: () {
             Navigator.push(
               context,

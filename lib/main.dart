@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lerno/theme/theme_controller.dart';
 import 'package:lerno/widgets/network_connectivity.dart';
 import 'NotificationServices/NotificationController.dart';
 import 'apiHelper/dependencies.dart';
@@ -12,6 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
+  Get.put(ThemeController());
   init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) {
@@ -34,6 +36,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     NotificationHelperController.startListeningNotificationEvents();
+    Get.put(ThemeController());
     // TODO: implement initState
     Get.put(ConnectionServicess(Connectivity()));
     super.initState();
@@ -51,17 +54,22 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-    return Sizer(builder: (context, orientation, deviceType) {
-      return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: theme,
-        translations: AppLocalization(),
-        locale: Get.deviceLocale,
-        fallbackLocale: Locale('en', 'US'),
-        title: 'Lerno',
-        initialRoute: AppRoutes.initialRoute,
-        getPages: AppRoutes.pages,
-      );
-    });
+    return GetBuilder(
+      init: ThemeController(),
+      builder: (context) {
+        return Sizer(builder: (context, orientation, deviceType) {
+          return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeController().currentTheme,
+            translations: AppLocalization(),
+            locale: Get.deviceLocale,
+            fallbackLocale: Locale('en', 'US'),
+            title: 'Lerno',
+            initialRoute: AppRoutes.initialRoute,
+            getPages: AppRoutes.pages,
+          );
+        });
+      }
+    );
   }
 }

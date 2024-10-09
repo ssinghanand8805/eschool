@@ -109,10 +109,13 @@ class LoginController extends GetxController {
       bool isUserImage = jsonData["image"].toString() == "null" ? false : true;
       usersData.addIsUserImage(isUserImage);
       usersData.addUserImage(imgUrl);
-      usersData.addUsername(jsonData["username"].toString());
+
+
 
       Map<String, dynamic> recordData =
           jsonData["record"]; //json.decode(jsonData["record"]);
+      usersData.addUsername(recordData["username"].toString());
+      print("_______${usersData.getUsername}");
       usersData.addDateFormat(recordData["date_format"].toString());
       if (jsonData["role"].toString() == "parent") {
         List<dynamic> childArray = recordData['parent_childs'];
@@ -215,7 +218,8 @@ class LoginController extends GetxController {
               childClassIdList,
               childSectionIdList);
         }
-      } else if (jsonData["role"] == "student") {
+      }
+      else if (jsonData["role"] == "student") {
         usersData.addUserIsLoggedIn(true);
         usersData.addUserStudentId(recordData["student_id"]);
         usersData.addUserClassSection(

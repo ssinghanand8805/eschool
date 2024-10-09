@@ -93,7 +93,7 @@ class _VisitorBookPageState extends State<VisitorBookPage> {
               ),
               height: 45,
               decoration: BoxDecoration(
-                  color: Colors.green.shade100,
+                  color: theme.primaryColor,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10))),

@@ -67,7 +67,7 @@ class _CustomTabViewState extends State<CustomTabView> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
-             color: Colors.green.shade100,
+             color: theme.primaryColor,
               borderRadius: BorderRadius.circular(50),
             ),
             child: TabBar(
@@ -79,7 +79,7 @@ class _CustomTabViewState extends State<CustomTabView> {
               labelColor: Colors.white,
               unselectedLabelColor: Colors.black,
               indicator: BoxDecoration(
-                color: Colors.green,
+                color: theme.primaryColorDark,
                 borderRadius: BorderRadius.circular(50),
               ),
               tabs: [

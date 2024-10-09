@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../NotificationServices/PushNotificationService.dart';
 import '../../../apiHelper/Constants.dart';
@@ -9,6 +11,7 @@ import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/userData.dart';
 import '../../../core/app_export.dart';
 import '../models/dashboard_model.dart';
+
 
 /// A controller class for the FormScreen.
 ///
@@ -248,10 +251,12 @@ class DashboardController extends GetxController {
   Color textColor = Colors.white;
   RxBool isLoading = true.obs;
 
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    updateSchoolInfo();
     eLearningapi();
     gridViewWidgets.add(customContainer());
     gridViewWidgets.add(customContainer());
@@ -269,6 +274,30 @@ class DashboardController extends GetxController {
     checkCacheAndFetchData();
     printSharedPreferencesData();
   }
+
+updateSchoolInfo()async {
+
+  print("PPPPP");
+  Map<String, dynamic> body = {
+    "student_id": userData.getUserStudentId.toString(),
+  };
+  var data = await apiRespository.postApiCallByJson(
+      "webservice/getDashboardBannerDetails", body);
+  print("UPDATE STUDENT INFO DATA ${data.body}");
+  ThemeHelper().setAndChangeThemeThroughSharedPref(data);
+  String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
+
+  schoolImageUrl.value = (data.body['school_details']["image"] == null || data.body['school_details']["image"] == null)
+      ? ""
+      : baseUrlFromPref + "uploads/school_content/logo/app_logo/" + data.body['school_details']["image"];
+  print("WWWWWWWWW${schoolImageUrl.value}");
+  update();
+}
+
+
+
+
+
 
   final PushNotificationService _notificationService = PushNotificationService();
   updateDeviceToken() async {
@@ -345,7 +374,7 @@ class DashboardController extends GetxController {
                       Image.asset(
                         "assets/projectImages/" + images[index].toString(),
                         height: 25,
-                        color: Colors.indigo,
+                         color: theme.primaryColorDark,
                       ),
                       SizedBox(
                         height: 10,
@@ -486,7 +515,7 @@ class DashboardController extends GetxController {
   }
 
   eLearningapi() async {
-    getSchoolDetails();
+    // getSchoolDetails();
     Map<String, dynamic> body = {
       "user": "student",
     };

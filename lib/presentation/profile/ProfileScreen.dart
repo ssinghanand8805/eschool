@@ -25,9 +25,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green.shade100,
       appBar: AppBar(
-        backgroundColor: Colors.green.shade100,
+        backgroundColor: theme.primaryColor,
         title: Text('Profile',
             style: theme.textTheme.titleMedium!
                 .copyWith(fontSize: 17, fontWeight: FontWeight.w500)),
@@ -107,14 +106,14 @@ class MyHomePage extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      color: Colors.green.shade50,
+                      color: theme.primaryColorLight,
                       child: TabBar(
                         labelStyle:
                             theme.textTheme.titleSmall!.copyWith(fontSize: 13),
                         unselectedLabelColor: Colors.grey.shade700,
                         // labelColor: const Color(0xFF3baee7),
                         // indicatorWeight: 3,
-                        indicatorColor: Colors.blue,
+                        indicatorColor: theme.primaryColorDark,
                         tabs: [
                           Tab(text: 'Personal'),
                           Tab(text: 'Parents'),

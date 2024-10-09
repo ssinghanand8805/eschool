@@ -18,7 +18,7 @@ class _AboutSchoolScreenState extends State<AboutSchoolScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green.shade100,
+        backgroundColor: theme.primaryColor,
         title: Text('About School',
             style: theme.textTheme.titleMedium!
                 .copyWith(fontSize: 17, fontWeight: FontWeight.w500)),
@@ -37,7 +37,7 @@ class _AboutSchoolScreenState extends State<AboutSchoolScreen> {
                   Container(
                     padding: EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
-                      color: Colors.green.shade50,
+                      color: theme.primaryColorLight,
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: Column(

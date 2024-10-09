@@ -257,7 +257,7 @@ class _SyllabuStatusScreenState extends State<MyDocumentsScreen> {
                   ),
                   TextButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade500,
+                      backgroundColor: theme.primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

@@ -157,7 +157,7 @@ class _FeesPageState extends State<FeesPage> {
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                   height: 35,
                   decoration: BoxDecoration(
-                      color: Colors.green.shade100,
+                      color: theme.primaryColor,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10))),
@@ -298,7 +298,7 @@ class _FeesPageState extends State<FeesPage> {
                       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                       height: 35,
                       decoration: BoxDecoration(
-                          color: data![index].status == "paid" ? Colors.green.shade100 : Colors.red.shade100,
+                          color: data![index].status == "paid" ? theme.primaryColor : Colors.red.shade100,
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10))),
@@ -449,7 +449,7 @@ class _FeesPageState extends State<FeesPage> {
                       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                       height: 35,
                       decoration: BoxDecoration(
-                          color: Colors.green.shade100,
+                          color: theme.primaryColor,
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10))),

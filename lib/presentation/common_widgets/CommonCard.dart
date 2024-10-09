@@ -32,7 +32,7 @@ Widget CommonCard({
             padding: EdgeInsets.symmetric(horizontal: 10,vertical: 4),
             height: 31,
             decoration: BoxDecoration(
-                color: Colors.green.shade100,
+                color: theme.primaryColor,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10))),

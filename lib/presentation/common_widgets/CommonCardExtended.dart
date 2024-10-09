@@ -37,7 +37,7 @@ Widget CommonCardExtended(
             height: 45,
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
-                color: Colors.green.shade100,
+                color: theme.primaryColor,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10))),
@@ -76,7 +76,7 @@ Widget CommonCardExtended(
           bottomTitle == true?Container(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-                color: Colors.green.shade50,
+                color: theme.primaryColorLight,
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10))),

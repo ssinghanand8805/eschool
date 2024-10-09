@@ -97,7 +97,7 @@ class _StudentTimeLinePageState extends State<StudentTimeLinePage> {
                       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                       height: 60,
                       decoration: BoxDecoration(
-                          color: Colors.green.shade100,
+                          color: theme.primaryColor,
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10))),
@@ -135,7 +135,7 @@ class _StudentTimeLinePageState extends State<StudentTimeLinePage> {
               child: new Container(
                 height: double.infinity,
                 width: 5.0,
-                color: Colors.green.shade100,
+                color: theme.primaryColor,
               ),
             ),
             new Positioned(
@@ -146,7 +146,7 @@ class _StudentTimeLinePageState extends State<StudentTimeLinePage> {
                 width: 40.0,
                 decoration: new BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.green.shade200,
+                  color: theme.primaryColor,
                 ),
                 child: new Container(
                   child: Image.asset(

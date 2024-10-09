@@ -52,27 +52,30 @@ class Data {
 class Counts {
   int? present;
   int? absent;
-  int? late;
-  int? halfDay;
-  int? holiday;
+  // int? late;
+  // int? halfDay;
+  // int? holiday;
+  int? leave;
 
-  Counts({this.present, this.absent, this.late, this.halfDay, this.holiday});
+  Counts({this.present, this.absent,  this.leave});
 
   Counts.fromJson(Map<String, dynamic> json) {
     present = json['Present'];
     absent = json['Absent'];
-    late = json['Late'];
-    halfDay = json['Half Day'];
-    holiday = json['Holiday'];
+    // late = json['Late'];
+    // halfDay = json['Half Day'];
+    // holiday = json['Holiday'];
+    leave = json['Leave'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['Present'] = this.present;
     data['Absent'] = this.absent;
-    data['Late'] = this.late;
-    data['Half Day'] = this.halfDay;
-    data['Holiday'] = this.holiday;
+    // data['Late'] = this.late;
+    // data['Half Day'] = this.halfDay;
+    // data['Holiday'] = this.holiday;
+    data['Leave'] = this.leave;
     return data;
   }
 }

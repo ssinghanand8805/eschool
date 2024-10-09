@@ -37,8 +37,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
           shape: BoxShape.circle,
         ),
         child: FloatingActionButton(
-          focusColor: Colors.green.shade600,
-          backgroundColor: Colors.green.shade600,
+          focusColor: theme.primaryColorDark,
+          backgroundColor: theme.primaryColorDark,
           onPressed: () {
             Navigator.push(
               context,
@@ -129,7 +129,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
               ),
               height: 45,
               decoration: BoxDecoration(
-                  color: Colors.green.shade100,
+                  color: theme.primaryColor,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10))),
@@ -210,7 +210,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
     if (status.toString() == "1") {
       return Colors.green;
     } else if (status.toString() == "0") {
-      return Colors.orange;
+      return theme.primaryColor;
     } else {
       return Colors.red;
     }

@@ -22,10 +22,9 @@ class MainBody extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
    return  Scaffold(
-     backgroundColor: Colors.green.shade100,
+     backgroundColor: theme.primaryColor,
       appBar: AppBar(
         actions:  actionWidget?? [],
-        backgroundColor: Colors.green.shade100,
         title: Text(AppbarTitle,style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
       ),
       body: Container(

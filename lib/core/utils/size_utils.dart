@@ -69,10 +69,10 @@ class SizeUtils {
   static late DeviceType deviceType;
 
   /// Device's Height
-  static late double height;
+  static late double height = 0;
 
   /// Device's Width
-  static late double width;
+  static late double width =0;
 
   static void setScreenSize(
     BoxConstraints constraints,

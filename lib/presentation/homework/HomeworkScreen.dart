@@ -63,7 +63,6 @@ class _HomeworkScreenState extends State<HomeworkScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green.shade100,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -76,7 +75,6 @@ class _HomeworkScreenState extends State<HomeworkScreen>
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                 decoration: BoxDecoration(
-
                   // color: Colors.blue, // Background color
                   borderRadius: BorderRadius.circular(12), // Rounded corners
                   border: Border.all(
@@ -127,7 +125,7 @@ class _HomeworkScreenState extends State<HomeworkScreen>
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
-                          color: Colors.green.shade100,
+                          color: theme.primaryColor,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),   // Apply circular radius to top left corner
                             bottomLeft: Radius.circular(10),// Apply circular radius to bottom left corner
@@ -195,7 +193,7 @@ class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
         return Theme(
             data: Theme.of(context).copyWith(
               tabBarTheme: TabBarTheme(
-                labelColor: Colors.orange,
+                labelColor: theme.primaryColorDark,
                 unselectedLabelColor: Colors.grey,
                 indicator: BoxDecoration(
                   border: Border(
@@ -208,7 +206,7 @@ class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             child: Container(
-                color: Colors.green.shade50,
+                color: theme.primaryColorLight,
                 child: Row(children: [
                   Expanded(
                     flex: 2,
@@ -235,7 +233,7 @@ class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
                       height: 33,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.orange),
+                          border: Border.all(color: theme.primaryColorDark),
                           borderRadius: BorderRadius.circular(50)),
                       child: GetBuilder(
                         init: controller,
@@ -302,7 +300,7 @@ class MyTabBar extends StatelessWidget implements PreferredSizeWidget {
                                           ),
                                           child: Text(
                                             value.name ?? '',
-                                            style: TextStyle(color: Colors.red),
+                                            style: TextStyle(color: theme.primaryColorDark),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
@@ -428,7 +426,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     height: 45,
                     decoration: BoxDecoration(
-                        color: Colors.green.shade100,
+                        color: theme.primaryColor,
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10))),
@@ -567,7 +565,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
                             EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         height: 45,
                         decoration: BoxDecoration(
-                            color: Colors.green.shade100,
+                            color: theme.primaryColor,
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(10),
                                 topRight: Radius.circular(10))),
@@ -693,7 +691,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
                             EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         height: 45,
                         decoration: BoxDecoration(
-                            color: Colors.green.shade100,
+                            color: theme.primaryColor,
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(10),
                                 topRight: Radius.circular(10))),

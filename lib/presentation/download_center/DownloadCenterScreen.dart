@@ -90,7 +90,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                         borderRadius: BorderRadius.only(
                             topRight: Radius.circular(8),
                             topLeft: Radius.circular(8)),
-                        color: Colors.green.shade100,
+                        color: theme.primaryColor,
                       ),
                       child: TabBar(
                         labelStyle: theme.textTheme.titleMedium!.copyWith(
@@ -99,7 +99,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                           Tab(text: 'CONTENTS'),
                           Tab(text: 'VIDEO TUTORIAL'),
                         ],
-                        indicatorColor: Colors.orange,
+                        indicatorColor: theme.primaryColorDark,
                       ),
                     ),
                     Expanded(
@@ -429,7 +429,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                               _btnController.success();
                             },
                             color: Colors.blue,
-                            successColor: Colors.green,
+                            successColor: theme.primaryColorDark,
                             width: 60,
                             height: 60,
                             borderRadius: 30,
@@ -519,7 +519,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                 ),
                 title: Row(
                   children: [
-                    Icon(Icons.download_done, color: Colors.green), // Icon
+                    Icon(Icons.download_done, color: theme.primaryColor), // Icon
                     SizedBox(width: 10),
                     Text(
                       'Download Complete',
@@ -561,7 +561,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
                   ),
                   TextButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade500,
+                      backgroundColor: theme.primaryColorDark,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -612,7 +612,7 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
+        backgroundColor: theme.primaryColorDark,
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 17),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
