@@ -6,8 +6,8 @@ import 'package:lerno/presentation/common_widgets/custom_loader.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/app_export.dart';
-import '../../theme/theme_helper.dart';
 import 'model/Attendance.dart';
+import 'monthlyAttendence.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({Key? key});
@@ -42,6 +42,21 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          actions: [
+            InkWell(
+              child: TextButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MonthlyAttendanceScreen()),
+                  );
+                },
+                child: Text(
+                    'Monthly Report'
+                ),
+              ),
+            )
+          ],
           backgroundColor: Colors.green.shade100,
           title: Text('Attendance',
               style: theme.textTheme.titleLarge!.copyWith(fontSize: 17))),

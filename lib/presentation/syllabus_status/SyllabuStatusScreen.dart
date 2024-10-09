@@ -26,6 +26,7 @@ class _SyllabuStatusScreenState extends State<SyllabuStatusScreen> {
       imageUrl: 'assets/projectImages/assignmentpage.jpg',
       AppbarTitle: 'Syllabus Status',
       widget: _buildChildWidget(),
+
     );
   }
 
@@ -34,42 +35,38 @@ class _SyllabuStatusScreenState extends State<SyllabuStatusScreen> {
       init: controller,
       builder: (_) {
         return FutureBuilder(
-          future: controller.fetchDataFuture, //controller.getData(context),
+          future: controller.fetchDataFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
-              return CustomLoader(); // CustomLoader();
+              return CustomLoader();
             } else {
+              var subjectsList = controller.syllabusStatusModelObj.value.subjects;
+              if (subjectsList == null || subjectsList.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/projectImages/no_data.png"),
+                      Text("No data found!"),
+                    ],
+                  ),
+                );
+              }
               return ListView.builder(
-                itemCount:
-                    controller.syllabusStatusModelObj.value.subjects?.length ??
-                        0,
+                itemCount: subjectsList.length,
                 itemBuilder: (context, index) {
-                  return controller
-                              .syllabusStatusModelObj.value.subjects!.length >
-                          0
-                      ? _buildTimeTableCard(
-                          data: controller
-                              .syllabusStatusModelObj.value.subjects![index],
-                        )
-                      : Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/projectImages/no_data.png",
-                          ),
-                          Text("No data found!")
-                        ],
-                      ));
+                  return _buildTimeTableCard(
+                    data: subjectsList[index],
+                  );
                 },
               );
-              ;
             }
           },
         );
       },
     );
   }
+
 
   Widget _buildTimeTableCard({required Subjects data}) {
     return CommonCardExtended(
