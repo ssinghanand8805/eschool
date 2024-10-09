@@ -25,15 +25,14 @@ class _ClassTimeTableScreenState extends State<FeesReceiptScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
+    super.initState();
     controller.getFeesReceiptData();
   }
 
   @override
   Widget build(BuildContext context) {
     return MainBody(
-      label: 'Your Fees\n Receipt!',
+      label: 'Your Fees\n Receipt Here!',
       imageUrl: 'assets/projectImages/feespage.jpeg',
       AppbarTitle: 'Fees Receipt',
       widget: _buildChildWidget(),
@@ -45,39 +44,39 @@ class _ClassTimeTableScreenState extends State<FeesReceiptScreen> {
       init: controller,
       builder: (_) {
         return FutureBuilder(
-          future: controller.fetchDataFuture2, //controller.getData(context),
+          future: controller.fetchDataFuture2,
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
-              return CustomLoader(); // CustomLoader();
+              return CustomLoader();
             } else {
+              var receiptList = controller.feesReceiptModalObj.value?.receipt;
+
+              if (receiptList == null || receiptList.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/projectImages/no_data.png"),
+                      Text("No data found!"),
+                    ],
+                  ),
+                );
+              }
               return ListView.builder(
-                itemCount:
-                controller.feesReceiptModalObj.value.receipt!.length ?? 0,
+                itemCount: receiptList.length,
                 itemBuilder: (context, index) {
-                  return controller.feesReceiptModalObj.value.receipt!.length > 0
-                      ? _buildTimeTableCard(
-                    data:
-                    controller.feesReceiptModalObj.value.receipt![index],
-                  )
-                      : Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/projectImages/no_data.png",
-                          ),
-                          Text("No data found!")
-                        ],
-                      ));
+                  return _buildTimeTableCard(
+                    data: receiptList[index],
+                  );
                 },
               );
-              ;
             }
           },
         );
       },
     );
   }
+
 
   Widget _buildTimeTableCard({required Receipt data}) {
     return CommonCard(

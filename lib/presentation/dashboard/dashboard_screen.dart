@@ -22,9 +22,10 @@ class DashboardScreen extends GetView<DashboardController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // leading: IconButton(  onPressed: () {  }, icon: Icon(Icons.),),
         centerTitle: true,
-        title: Obx( () => controller.schoolImageUrl == "" ? Image.asset("assets/projectImages/LearnoLogo.png", height: 30): Image.network(controller.schoolImageUrl.toString(), height: 30)),
+        title: Obx(() => controller.schoolImageUrl == ""
+            ? Image.asset("assets/projectImages/LearnoLogo.png", height: 30)
+            : Image.network(controller.schoolImageUrl.toString(), height: 30)),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 15.0),
@@ -33,7 +34,6 @@ class DashboardScreen extends GetView<DashboardController> {
               children: [
                 IconButton(
                   onPressed: () {
-                    // controller2.markNotificationAsRead(null);
                     Get.toNamed("/notificationsList");
                   },
                   icon: Image.asset(
@@ -102,14 +102,11 @@ class DashboardScreen extends GetView<DashboardController> {
                       child: Row(
                         children: [
                           userData.getIsUserImage
-                              ?
-
-                          CircleAvatar(
+                              ? CircleAvatar(
                                   radius: 30,
                                   backgroundColor: Colors.orange,
                                   backgroundImage: NetworkImage(
                                       userData.getUserImage.toString()),
-
                                 )
                               : CircleAvatar(
                                   radius: 30,
@@ -125,17 +122,19 @@ class DashboardScreen extends GetView<DashboardController> {
                             child: Column(
                               children: [
                                 InkWell(
-                                  onTap: (){
-                                    print( userData.getUserImage.toString());
+                                  onTap: () {
+                                    print(userData.getUserImage.toString());
                                   },
                                   child: Text(
-                                    userData.getUserStudentName,
-                                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 14),
+                                    userData.getUsername,
+                                    style: theme.textTheme.titleSmall!
+                                        .copyWith(fontSize: 14),
                                   ),
                                 ),
                                 Text(
                                   userData.getUserClassSection,
-                                  style: theme.textTheme.bodySmall!.copyWith(fontSize: 14),
+                                  style: theme.textTheme.bodySmall!
+                                      .copyWith(fontSize: 14),
                                 ),
                                 SizedBox(
                                   height: 5,
@@ -168,21 +167,21 @@ class DashboardScreen extends GetView<DashboardController> {
                       Icons.home_outlined,
                       size: 18,
                     ),
-                    title: Text(
-                      'Home',
-                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 13)
-                    ),
-                    onTap: () {},
+                    title: Text('Home',
+                        style:
+                            theme.textTheme.titleSmall!.copyWith(fontSize: 13)),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                   ),
                   ListTile(
                     leading: Icon(
                       Icons.person_add_alt_rounded,
                       size: 18,
                     ),
-                    title: Text(
-                      'Profile',
-                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 13)
-                    ),
+                    title: Text('Profile',
+                        style:
+                            theme.textTheme.titleSmall!.copyWith(fontSize: 13)),
                     onTap: () {
                       /// Close Navigation drawer before
                       Navigator.pop(context);
@@ -190,20 +189,22 @@ class DashboardScreen extends GetView<DashboardController> {
                       //Navigator.push(context, MaterialPageRoute(builder: (context) => FavouriteScreen()),);
                     },
                   ),
-
                   ListTile(
                     leading: Icon(
                       Icons.password,
                       size: 18,
                     ),
-                    title: Text(
-                      'Change Password',
-                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 13)
-                    ),
+                    title: Text('Change Password',
+                        style:
+                            theme.textTheme.titleSmall!.copyWith(fontSize: 13)),
                     onTap: () {
                       /// Close Navigation drawer before
                       Navigator.pop(context);
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordScreen()),);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ChangePasswordScreen()),
+                      );
                     },
                   ),
                   ListTile(
@@ -211,37 +212,21 @@ class DashboardScreen extends GetView<DashboardController> {
                       Icons.error_outline,
                       size: 18,
                     ),
-                    title: Text(
-                      'About School',
-                        style: theme.textTheme.titleSmall!.copyWith(fontSize: 13)
-                    ),
+                    title: Text('About School',
+                        style:
+                            theme.textTheme.titleSmall!.copyWith(fontSize: 13)),
                     onTap: () {
                       Get.toNamed("/aboutSchool");
                     },
                   ),
-                  // ListTile(
-                  //   leading: Icon(
-                  //     Icons.settings,
-                  //     size: 18,
-                  //   ),
-                  //   title: Text(
-                  //     'Setting',
-                  //       style: theme.textTheme.titleSmall!.copyWith(fontSize: 14)
-                  //   ),
-                  //   onTap: () {
-                  //
-                  //
-                  //   },
-                  // ),
                   ListTile(
                     leading: Icon(
                       Icons.login,
                       size: 18,
                     ),
-                    title: Text(
-                      'Logout',
-                      style: theme.textTheme.titleSmall!.copyWith(fontSize: 13)
-                    ),
+                    title: Text('Logout',
+                        style:
+                            theme.textTheme.titleSmall!.copyWith(fontSize: 13)),
                     onTap: () {
                       controller.logOutDialog(context);
                     },
@@ -265,7 +250,6 @@ class DashboardScreen extends GetView<DashboardController> {
         builder: (_) {
           return RefreshIndicator(
             onRefresh: () async {
-              // Implement your refresh logic here
               await controller.eLearningapi(); // Example method to load data
             },
             child: CustomScrollView(
@@ -309,14 +293,14 @@ class DashboardScreen extends GetView<DashboardController> {
                                 height: 10,
                               ),
                               Text(
-                                userData.getUserStudentName,
+                                userData.getUsername ?? "",
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 "Admission No. ${userData.getUserAdmissionNo}  Class: ${userData.getUserClassSection}",
                                 style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.normal),
                               ),
                               SizedBox(

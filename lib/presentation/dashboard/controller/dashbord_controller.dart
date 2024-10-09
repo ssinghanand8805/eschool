@@ -252,6 +252,7 @@ class DashboardController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    eLearningapi();
     gridViewWidgets.add(customContainer());
     gridViewWidgets.add(customContainer());
     gridViewWidgets.add(customContainer());

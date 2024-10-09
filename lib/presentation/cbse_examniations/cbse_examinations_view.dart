@@ -66,12 +66,15 @@ class _CustomTabViewState extends State<CustomTabView> {
         children: [
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-           // padding: EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: Colors.green.shade100,
+             color: Colors.green.shade100,
               borderRadius: BorderRadius.circular(50),
             ),
             child: TabBar(
+              labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+              labelPadding: EdgeInsets.zero,
+              indicatorPadding: EdgeInsets.zero,
               dividerHeight: 0.0,
               labelColor: Colors.white,
               unselectedLabelColor: Colors.black,
@@ -83,13 +86,13 @@ class _CustomTabViewState extends State<CustomTabView> {
                 Tab(
                   child: Container(
                     alignment: Alignment.center,
-                    child: Text("Assignment"),
+                    child: Text("CBSE Marks",),
                   ),
                 ),
                 Tab(
                   child: Container(
                     alignment: Alignment.center,
-                    child: Text("Other Tab"),
+                    child: Text("CBSE Results"),
                   ),
                 ),
               ],

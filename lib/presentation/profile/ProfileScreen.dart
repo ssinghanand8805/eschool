@@ -330,7 +330,7 @@ class MyHomePage extends StatelessWidget {
                                         .copyWith(fontSize: 12),
                                     title: 'Bank Name',
                                     value: controller.profileModelObj.value!
-                                        .studentResult!.bankName!,
+                                        .studentResult!.bankName,
                                   ),
                                   InfoRow(
                                     style: theme.textTheme.titleSmall!
@@ -348,7 +348,7 @@ class MyHomePage extends StatelessWidget {
                                         .copyWith(fontSize: 12),
                                     title: 'Ifsc Code',
                                     value: controller.profileModelObj.value!
-                                        .studentResult!.ifscCode!,
+                                        .studentResult!.ifscCode,
                                   ),
                                   InfoRow(
                                     style: theme.textTheme.titleSmall!

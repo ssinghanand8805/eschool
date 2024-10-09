@@ -843,8 +843,8 @@ class HomeworkCard extends GetView<HomeWorkController> {
 
 // ignore: must_be_immutable
 class InfoRow extends StatelessWidget {
-  final String title;
-  final String value;
+  final String? title;
+  final String? value;
   TextStyle? style;
   TextStyle? style1;
 
@@ -867,13 +867,13 @@ class InfoRow extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Text(
-              title,
+              title!,
               style: style == false ? theme.textTheme.titleMedium : style,
             ),
           ),
           Expanded(
             flex: 4,
-            child: value.isEmpty || value == null
+            child: value == null || value!.isEmpty
                 ? Text(
                     "------------",
                     style: style1 == false
@@ -882,7 +882,7 @@ class InfoRow extends StatelessWidget {
                         : style1,
                   )
                 : Text(
-                    value.capitalize!,
+                    value!.capitalize!,
                     style: style1 == false
                         ? theme.textTheme.titleMedium!
                             .copyWith(color: Colors.grey.shade700)
