@@ -29,8 +29,15 @@ class NoticeBoardController extends GetxController {
     var data  = await apiRespository.postApiCallByJson(Constants.getNotificationsUrl, body);
     print("DATA @@@@ ${data.body}");
     print("userData getRole ${userData.getRole}");
-    noticeBoardModelObj.value = NotiiceBoard.fromJson(data.body);
+
+    if(data.statusCode == 200)
+    {
+    noticeBoardModelObj.value = NotiiceBoard.fromJson(data.body['data']);
     print("111111111111111111111 ${noticeBoardModelObj.value.data}");
     update();
+    }else{
+
+    }
+
   }
 }

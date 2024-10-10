@@ -25,7 +25,7 @@ class CustomLoader extends StatelessWidget {
                   CircularProgressIndicator(
                     strokeWidth: 4.0,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).primaryColor,
+                      Theme.of(context).primaryColorDark,
                     ),
                   ),
                   SizedBox(height: 16.0),
@@ -34,7 +34,7 @@ class CustomLoader extends StatelessWidget {
                     style: TextStyle(
                       fontSize: fontSize,
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor,
+                      color: Theme.of(context).primaryColorDark,
                     ),
                   ),
                 ],

@@ -137,17 +137,17 @@ class LoginController extends GetxController {
           ///navigate here to dashboard
           print('one child found:::::::::');
           usersData.saveAllDataToSharedPreferences();
-
-          Get.toNamed(AppRoutes.formScreen);
-
           Get.snackbar(
             "Login Successful",
-            "Welcome back, ${usersData.getUsername}",
+            "Welcome, ${usersData.getUsername}",
             snackPosition: SnackPosition.BOTTOM,
             duration: Duration(seconds: 3),
             backgroundColor: Colors.green,
             colorText: Colors.white,
           );
+          Get.toNamed(AppRoutes.formScreen);
+
+
           // Navigator.push(
           //   context,
           //   MaterialPageRoute(builder: (context) => DashboardScreen()),
@@ -241,17 +241,21 @@ class LoginController extends GetxController {
         print(data);
         print('end profile lock data:::::::::');
         usersData.saveAllDataToSharedPreferences();
+        Get.snackbar(
+          "Login Successful",
+          "Welcome, ${usersData.getUsername}",
+          snackPosition: SnackPosition.BOTTOM,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
         Get.toNamed(AppRoutes.formScreen);
       }
     } else {
       print('login failed:::::::::');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.green.shade100,
-          content:
-              Text(data.body["message"], style: theme.textTheme.titleMedium),
-        ),
-      );
+
+      Get.showSnackbar(Ui.ErrorSnackBar(message: data.body["message"]));
+
     }
 
     //print("DATA USING DATA MODEL ${usersData.role}");

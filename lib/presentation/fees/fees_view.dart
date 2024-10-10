@@ -27,35 +27,36 @@ class _FeesPageState extends State<FeesPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return MainBody(
         label: 'Your Fees Details\n is Here!',
         imageUrl: 'assets/projectImages/feespage.jpeg',
         AppbarTitle: 'Fees',
-        actionWidget : [Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => FeesReceiptScreen()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-               backgroundColor: Colors.yellow.shade200,
-              padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 10.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4.0),
+        actionWidget: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FeesReceiptScreen()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.yellow.shade200,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 13.0, vertical: 10.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+              ),
+              child: Text(
+                "Fees Receipt",
+                style: theme.textTheme.titleLarge!.copyWith(
+                  fontSize: 14,
+                ),
               ),
             ),
-            child: Text(
-              "Fees Receipt",
-              style: theme.textTheme.titleLarge!.copyWith(fontSize: 14,),
-            ),
-          ),
-        )
+          )
         ],
         widget: _buildChildWidget());
   }
@@ -65,17 +66,17 @@ class _FeesPageState extends State<FeesPage> {
       init: controller,
       builder: (_) {
         return FutureBuilder(
-          future: controller.fetchDataFuture, //controller.getData(context),
+          future: controller.fetchDataFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return controller.feesDataModal.value!.studentDueFee!.length > 0
+              return controller.feesDataModal.value!.studentDueFee != null ||
+                      controller.feesDataModal.value!.studentDueFee!.length > 0
                   ? Column(
                       children: [
-                        _buildRouteCard(
-                            data: controller.feesDataModal.value.grandFee!),
-                        Expanded(
+
+                        Flexible(
                           child: ListView.builder(
                             itemCount: controller.feesDataModal.value!
                                     .studentDueFee!.length ??
@@ -102,11 +103,8 @@ class _FeesPageState extends State<FeesPage> {
                             },
                           ),
                         ),
-                        // Expanded(
-                        //   child: transportFee(
-                        //     data: controller.feesDataModal.value!.transportFees!,
-                        //   ),
-                        // )
+                        _buildRouteCard(
+                            data: controller.feesDataModal.value.grandFee!),
                       ],
                     )
                   : Center(
@@ -131,7 +129,7 @@ class _FeesPageState extends State<FeesPage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(5),
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(boxShadow: [
@@ -298,12 +296,14 @@ class _FeesPageState extends State<FeesPage> {
                       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                       height: 35,
                       decoration: BoxDecoration(
-                          color: data![index].status == "paid" ? theme.primaryColor : Colors.red.shade100,
+                          color: data![index].status == "paid"
+                              ? theme.primaryColor
+                              : Colors.red.shade100,
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10))),
                       width: Get.width,
-                      child: Text( data![index].type!,
+                      child: Text(data![index].type!,
                           style: theme.textTheme.titleMedium!.copyWith(
                               fontSize: 14, fontWeight: FontWeight.w600)),
                     ),

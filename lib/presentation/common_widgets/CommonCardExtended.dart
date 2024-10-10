@@ -34,7 +34,7 @@ Widget CommonCardExtended(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 45,
+            height: 50,
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
                 color: theme.primaryColor,
@@ -50,14 +50,16 @@ Widget CommonCardExtended(
                 SizedBox(
                   width: 10,
                 ),
-                Flexible(
+                Expanded(
                   child: Text(
                     title.capitalize!,
                     style: theme.textTheme.titleMedium!
                         .copyWith(fontWeight: FontWeight.w600, fontSize: 13),
+                    maxLines: 2,
+                    overflow: TextOverflow.visible,
                   ),
                 ),
-                Spacer(),
+
                 Text(
                   subtitle ?? '',
                   style: style == false

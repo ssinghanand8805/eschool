@@ -406,6 +406,9 @@ class HomeworkCard extends GetView<HomeWorkController> {
     String description = homework.description
         .toString()
         .replaceAll(RegExp(r'<\/?p>', caseSensitive: false), '');
+
+
+    String document = Uri.parse(homework.document!).pathSegments.last.split('!').last;
     return Padding(
       padding: EdgeInsets.all(16.0),
       child: controller.tabController.index == 0
@@ -498,7 +501,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
                                     ),
                                     Flexible(
                                         child: Text(
-                                      homework.document.toString(),
+                                      document.toString(),
                                       style: theme.textTheme.bodySmall!
                                           .copyWith(
                                               overflow: TextOverflow.ellipsis,
@@ -755,7 +758,7 @@ class HomeworkCard extends GetView<HomeWorkController> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text("Document"),
-                                  Text(homework.document.toString()),
+                                  Text(document.toString()),
                                   Icon(
                                     Icons.remove_red_eye_sharp,
                                     color: Colors.blue,

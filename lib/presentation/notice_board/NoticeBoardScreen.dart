@@ -36,26 +36,27 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return controller.noticeBoardModelObj.value.data!.length > 0  ? ListView.builder(
-                itemCount:
-                    controller.noticeBoardModelObj.value.data?.length,
-                itemBuilder: (context, index) {
-                  return _buildTimeTableCard(
+              return controller.noticeBoardModelObj.value.data != null
+                  ? ListView.builder(
+                      itemCount:
+                          controller.noticeBoardModelObj.value.data?.length,
+                      itemBuilder: (context, index) {
+                        return _buildTimeTableCard(
                           data:
                               controller.noticeBoardModelObj.value.data![index],
                         );
-                },
-              ):Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/projectImages/no_data.png",
-                      ),
-                      Text("No data found!")
-                    ],
-                  ))
-              ;
+                      },
+                    )
+                  : Center(
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/projectImages/no_data.png",
+                        ),
+                        Text("No data found!")
+                      ],
+                    ));
             }
           },
         );
@@ -67,11 +68,10 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
     return CommonCard(
         title: data.title!,
         newWidget: Padding(
-          padding: const EdgeInsets.only(left: 8.0,bottom: 8),
+          padding: const EdgeInsets.only(left: 8.0, bottom: 8),
           child: Column(
             children: [
               Html(
-
                 data: data.message!,
                 style: {
                   "body": Style(
@@ -82,7 +82,10 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
               ),
               Row(
                 children: [
-                  Image.asset("assets/projectImages/ic_nav_attendance.png",height: 18,),
+                  Image.asset(
+                    "assets/projectImages/ic_nav_attendance.png",
+                    height: 18,
+                  ),
                   SizedBox(
                     width: 10,
                   ),
@@ -104,7 +107,10 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
               ),
               Row(
                 children: [
-                  Image.asset("assets/projectImages/ic_calender.png",height: 18,),
+                  Image.asset(
+                    "assets/projectImages/ic_calender.png",
+                    height: 18,
+                  ),
                   SizedBox(
                     width: 10,
                   ),
@@ -126,7 +132,10 @@ class _ClassTimeTableScreenState extends State<NoticeBoardScreen> {
               ),
               Row(
                 children: [
-                  Image.asset("assets/projectImages/ic_nav_teachers.png",height: 18,),
+                  Image.asset(
+                    "assets/projectImages/ic_nav_teachers.png",
+                    height: 18,
+                  ),
                   SizedBox(
                     width: 10,
                   ),

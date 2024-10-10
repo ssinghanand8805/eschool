@@ -35,7 +35,7 @@ class MonthlySummary {
   int? absent;
   int? leave;
   int? totalWorkingDays;
-  int? attendancePercentage;
+  double? attendancePercentage;
 
   MonthlySummary(
       {this.monthName,
@@ -51,7 +51,7 @@ class MonthlySummary {
     absent = json['Absent'];
     leave = json['Leave'];
     totalWorkingDays = json['total_working_days'];
-    attendancePercentage = json['attendance_percentage'];
+    attendancePercentage = double.parse(json['attendance_percentage'].toString());
   }
 
   Map<String, dynamic> toJson() {

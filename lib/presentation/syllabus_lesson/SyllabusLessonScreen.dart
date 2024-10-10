@@ -5,6 +5,7 @@ import 'package:lerno/presentation/class_time_table/controller/class_time_table_
 import 'package:lerno/presentation/daily_assignment/DailyAssignmentScreen.dart';
 import 'package:lerno/presentation/notice_board/model/NoticeBoard.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:readmore/readmore.dart';
 import '../../apiHelper/toastMessage.dart';
 import '../common_widgets/CommonCard.dart';
 import '../common_widgets/CommonCardExtended.dart';
@@ -97,11 +98,29 @@ class _SyllabusLessonScreenState extends State<SyllabusLessonScreen> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      topics[index].name!,
-                      style:
-                          theme.textTheme.titleMedium!.copyWith(fontSize: 13),
+                    // Expanded(
+                    //   child: Text(
+                    //     topics[index].name!,
+                    //     style: theme.textTheme.titleMedium!.copyWith(fontSize: 13),
+                    //     maxLines: 30,
+                    //     overflow: TextOverflow.visible,
+                    //   ),
+                    // ),
+                    Expanded(
+                      child: ReadMoreText(
+                        topics[index].name!,
+                        trimMode: TrimMode.Line,
+                        style: theme.textTheme.bodySmall!
+                            .copyWith(fontSize: 13),
+                        trimLines: 2,
+                        colorClickableText: Colors.pink,
+                        trimCollapsedText: 'Show more',
+                        trimExpandedText: 'Show less',
+                        moreStyle: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.bold),
+                      ),
                     ),
+
                     Spacer(),
                     Text(
                       topics[index].completeDate == null

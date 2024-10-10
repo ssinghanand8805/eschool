@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lerno/presentation/attendance/controller/attendanceController.dart';
 import 'package:lerno/presentation/common_widgets/custom_loader.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../../apiHelper/toastMessage.dart';
 import '../../core/app_export.dart';
 import '../../theme/theme_controller.dart';
 import 'model/Attendance.dart';
@@ -230,15 +231,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   Widget monthlyReport(BuildContext context) {
     return Obx(() {
       if (controller.monthlyAttendanceModelObj.value.monthlySummary == null) {
-        return Center(child: CircularProgressIndicator());
+        return CustomLoader();
       }
 
-      List<MonthlySummary>? monthlySummary =
-          controller.monthlyAttendanceModelObj.value.monthlySummary;
-      OverallSummary? overallSummary =
-          controller.monthlyAttendanceModelObj.value.overallSummary;
+      List<MonthlySummary>? monthlySummary = controller.monthlyAttendanceModelObj.value.monthlySummary;
+      OverallSummary? overallSummary = controller.monthlyAttendanceModelObj.value.overallSummary;
 
-      return Column(
+      return monthlySummary!.length > 0? Column(
         children: [
           Flexible(
             child: ListView.builder(
@@ -266,7 +265,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 '${overallSummary?.attendancePercentage ?? 0}'),
           ),
         ],
-      );
+      ):Ui.NoDataWidget();
     });
   }
 
@@ -305,8 +304,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     );
   }
 
-  Widget _buildMonthCard(String month, String total, String present,
-      String absent, String leave, double percentage) {
+  Widget _buildMonthCard(String month,  String present,
+      String absent, String leave,String total, double percentage,) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
@@ -351,7 +350,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Total Working $total',
+                  Text('Total Working days $total',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,

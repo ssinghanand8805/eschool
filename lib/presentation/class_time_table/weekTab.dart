@@ -35,7 +35,7 @@ class WeekTabScreen extends StatelessWidget {
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.black54,
                   indicator: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).primaryColorDark,
                     borderRadius: BorderRadius.circular(25),
                   ),
                   labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
