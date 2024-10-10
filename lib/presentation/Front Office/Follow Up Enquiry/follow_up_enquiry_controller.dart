@@ -4,8 +4,10 @@ import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
 
 import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import 'follow_up_data_modal.dart';
+import 'follow_up_list.dart';
 
 class FollowUpEnquiryController extends GetxController{
 
@@ -15,22 +17,27 @@ class FollowUpEnquiryController extends GetxController{
   Rx<TextEditingController> nextFollowUpDateC = TextEditingController().obs;
   Rx<TextEditingController> responseC = TextEditingController().obs;
   Rx<TextEditingController> noteC = TextEditingController().obs;
-
+  var enquiryId;
+  late Future<void> fetchDataFuture;
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    followUpDateC.value.text =
-        DateFormat('dd/MM/yyyy').format(DateTime.now());
-    nextFollowUpDateC.value.text =
-        DateFormat('dd/MM/yyyy').format(DateTime.now());
-    followUp();
-  }
+    enquiryId = Get.arguments['enquiry_id'];
+    fetchDataFuture = initializeData();
 
+
+  }
+  Future<void> initializeData() async  {
+    // followUpDateC.value.text =
+    //     DateFormat('dd/MM/yyyy').format(DateTime.now());
+    // nextFollowUpDateC.value.text =
+    //     DateFormat('dd/MM/yyyy').format(DateTime.now());
+    await followUp(); // Initialize fetchDataFuture here
+  }
   followUp() async {
     Map<String, dynamic> body = {
-      "enquiry_id":28,
-      "status":"won"
+      "enquiry_id":enquiryId
     };
     print("ssss "+body.toString());
     var data = await apiRespository.postApiCallByJson(Constants.followUp, body);
@@ -48,7 +55,7 @@ class FollowUpEnquiryController extends GetxController{
   }
 
   var followUpList;
-  FollowUpDataModal get getFollowUpList => FollowUpDataModal.fromJson(followUpList);
+  FollowUpDetails get getFollowUpList => FollowUpDetails.fromJson(followUpList);
   set updateFollowUpList( val){
     followUpList = val;
     update();

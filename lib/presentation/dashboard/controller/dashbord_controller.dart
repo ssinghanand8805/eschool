@@ -392,7 +392,7 @@ class DashboardController extends GetxController {
                           data[index].name!,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                           // overflow: TextOverflow.ellipsis,
+                           overflow: TextOverflow.ellipsis,
                             color: Colors.grey.shade600,
                             fontWeight: FontWeight.w600,
                             fontSize: 12,

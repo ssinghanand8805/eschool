@@ -73,6 +73,7 @@ class Constants {
   static const String admissionEnquiry = 'enquiry/getEnquiryList';
   static const String addEntry = 'enquiry/add';
   static const String followUp = 'enquiry/follow_up';
+  static const String followUpList = 'enquiry/follow_up_list';
   static const String addFollowUp = 'enquiry/follow_up_insert';
 
 

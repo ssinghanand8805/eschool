@@ -32,19 +32,25 @@ class AdmissionEnquiryController extends GetxController {
   Rx<TextEditingController> lastClassC = TextEditingController().obs;
   Rx<TextEditingController> occupationC = TextEditingController().obs;
   Rx<TextEditingController> discriptionC = TextEditingController().obs;
-
+  late Future<void> fetchDataFuture;
   @override
-  void onInit() async {
+  void onInit()  {
     super.onInit();
-    fromDateC.value.text = await GlobalData().ConvertToSchoolDateTimeFormat(DateTime.now());
+    // fromDateC.value.text = await GlobalData().ConvertToSchoolDateTimeFormat(DateTime.now());
+    //
+    // toDateC.value.text = await GlobalData().ConvertToSchoolDateTimeFormat(DateTime.now());
+    // fetchDataFuture = enquiry();
+    fetchDataFuture = initializeData();
 
-    toDateC.value.text = await GlobalData().ConvertToSchoolDateTimeFormat(DateTime.now());
-    enquiry();
   }
-
+  Future<void> initializeData() async  {
+    fromDateC.value.text = await GlobalData().ConvertToSchoolDateTimeFormat(DateTime.now());
+    toDateC.value.text = await GlobalData().ConvertToSchoolDateTimeFormat(DateTime.now());
+    await enquiry(); // Initialize fetchDataFuture here
+  }
   enquiry() async {
     Map<String, dynamic> body = {
-      "class_id":"1",
+      // "class_id":"1",
       "from_date" : fromDateC.value.text,
       "to_date" :   toDateC.value.text
     };

@@ -1,13 +1,14 @@
 class FollowUpDataModal {
-  int? id;
+  String? id;
   EnquiryData? enquiryData;
-  String? assignedStaff;
-  List<String>? nextDate;
-  List<CreatedBy>? createdBy;
+  AssignedStaff? assignedStaff;
+  List<NextDate>? nextDate;
+  List<AssignedStaff>? createdBy;
   EnquiryStatus? enquiryStatus;
   String? staffRole;
   String? loginStaffId;
   String? superadminRest;
+  List<FollowUpList>? followUpList;
 
   FollowUpDataModal(
       {this.id,
@@ -18,24 +19,27 @@ class FollowUpDataModal {
         this.enquiryStatus,
         this.staffRole,
         this.loginStaffId,
-        this.superadminRest});
+        this.superadminRest,
+        this.followUpList});
 
   FollowUpDataModal.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     enquiryData = json['enquiry_data'] != null
         ? new EnquiryData.fromJson(json['enquiry_data'])
         : null;
-    assignedStaff = json['assigned_staff'];
+    assignedStaff = json['assigned_staff'] != null
+        ? new AssignedStaff.fromJson(json['assigned_staff'])
+        : null;
     if (json['next_date'] != null) {
-      nextDate = <String>[];
+      nextDate = <NextDate>[];
       json['next_date'].forEach((v) {
-        nextDate!.add(v.toString());
+        nextDate!.add(new NextDate.fromJson(v));
       });
     }
     if (json['created_by'] != null) {
-      createdBy = <CreatedBy>[];
+      createdBy = <AssignedStaff>[];
       json['created_by'].forEach((v) {
-        createdBy!.add(new CreatedBy.fromJson(v));
+        createdBy!.add(new AssignedStaff.fromJson(v));
       });
     }
     enquiryStatus = json['enquiry_status'] != null
@@ -44,6 +48,12 @@ class FollowUpDataModal {
     staffRole = json['staff_role'];
     loginStaffId = json['login_staff_id'];
     superadminRest = json['superadmin_rest'];
+    if (json['follow_up_list'] != null) {
+      followUpList = <FollowUpList>[];
+      json['follow_up_list'].forEach((v) {
+        followUpList!.add(new FollowUpList.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -52,9 +62,11 @@ class FollowUpDataModal {
     if (this.enquiryData != null) {
       data['enquiry_data'] = this.enquiryData!.toJson();
     }
-    data['assigned_staff'] = this.assignedStaff;
+    if (this.assignedStaff != null) {
+      data['assigned_staff'] = this.assignedStaff!.toJson();
+    }
     if (this.nextDate != null) {
-      data['next_date'] = this.nextDate!.map((v) => v).toList();
+      data['next_date'] = this.nextDate!.map((v) => v.toJson()).toList();
     }
     if (this.createdBy != null) {
       data['created_by'] = this.createdBy!.map((v) => v.toJson()).toList();
@@ -65,6 +77,10 @@ class FollowUpDataModal {
     data['staff_role'] = this.staffRole;
     data['login_staff_id'] = this.loginStaffId;
     data['superadmin_rest'] = this.superadminRest;
+    if (this.followUpList != null) {
+      data['follow_up_list'] =
+          this.followUpList!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -81,7 +97,7 @@ class EnquiryData {
   String? note;
   String? sourceId;
   String? email;
-  Null? assigned;
+  String? assigned;
   String? classId;
   String? noOfChild;
   String? status;
@@ -93,10 +109,10 @@ class EnquiryData {
   String? createdBy;
   String? createdAt;
   String? classname;
-  Null? staffId;
-  Null? staffName;
-  Null? staffSurname;
-  Null? employeeId;
+  String? staffId;
+  String? staffName;
+  String? staffSurname;
+  String? employeeId;
 
   EnquiryData(
       {this.id,
@@ -190,13 +206,13 @@ class EnquiryData {
   }
 }
 
-class CreatedBy {
+class AssignedStaff {
   String? id;
   String? employeeId;
   String? langId;
   String? currencyId;
-  Null? department;
-  Null? designation;
+  String? department;
+  String? designation;
   String? qualification;
   String? workExp;
   String? name;
@@ -208,8 +224,8 @@ class CreatedBy {
   String? email;
   String? dob;
   String? maritalStatus;
-  Null? dateOfJoining;
-  Null? dateOfLeaving;
+  String? dateOfJoining;
+  String? dateOfLeaving;
   String? localAddress;
   String? permanentAddress;
   String? note;
@@ -239,13 +255,13 @@ class CreatedBy {
   String? userId;
   String? isActive;
   String? verificationCode;
-  Null? disableAt;
-  Null? language;
-  Null? isRtl;
+  String? disableAt;
+  String? language;
+  String? isRtl;
   String? userType;
   String? roleId;
 
-  CreatedBy(
+  AssignedStaff(
       {this.id,
         this.employeeId,
         this.langId,
@@ -300,7 +316,7 @@ class CreatedBy {
         this.userType,
         this.roleId});
 
-  CreatedBy.fromJson(Map<String, dynamic> json) {
+  AssignedStaff.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     employeeId = json['employee_id'];
     langId = json['lang_id'];
@@ -415,6 +431,51 @@ class CreatedBy {
   }
 }
 
+class NextDate {
+  String? id;
+  String? enquiryId;
+  String? date;
+  String? nextDate;
+  String? response;
+  String? note;
+  String? followupBy;
+  String? createdAt;
+
+  NextDate(
+      {this.id,
+        this.enquiryId,
+        this.date,
+        this.nextDate,
+        this.response,
+        this.note,
+        this.followupBy,
+        this.createdAt});
+
+  NextDate.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    enquiryId = json['enquiry_id'];
+    date = json['date'];
+    nextDate = json['next_date'];
+    response = json['response'];
+    note = json['note'];
+    followupBy = json['followup_by'];
+    createdAt = json['created_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['enquiry_id'] = this.enquiryId;
+    data['date'] = this.date;
+    data['next_date'] = this.nextDate;
+    data['response'] = this.response;
+    data['note'] = this.note;
+    data['followup_by'] = this.followupBy;
+    data['created_at'] = this.createdAt;
+    return data;
+  }
+}
+
 class EnquiryStatus {
   String? active;
   String? passive;
@@ -439,6 +500,67 @@ class EnquiryStatus {
     data['dead'] = this.dead;
     data['won'] = this.won;
     data['lost'] = this.lost;
+    return data;
+  }
+}
+
+class FollowUpList {
+  String? id;
+  String? enquiryId;
+  String? date;
+  String? nextDate;
+  String? response;
+  String? note;
+  String? followupBy;
+  String? createdAt;
+  String? employeeId;
+  String? name;
+  String? surname;
+  String? createdBy;
+
+  FollowUpList(
+      {this.id,
+        this.enquiryId,
+        this.date,
+        this.nextDate,
+        this.response,
+        this.note,
+        this.followupBy,
+        this.createdAt,
+        this.employeeId,
+        this.name,
+        this.surname,
+        this.createdBy});
+
+  FollowUpList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    enquiryId = json['enquiry_id'];
+    date = json['date'];
+    nextDate = json['next_date'];
+    response = json['response'];
+    note = json['note'];
+    followupBy = json['followup_by'];
+    createdAt = json['created_at'];
+    employeeId = json['employee_id'];
+    name = json['name'];
+    surname = json['surname'];
+    createdBy = json['created_by'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['enquiry_id'] = this.enquiryId;
+    data['date'] = this.date;
+    data['next_date'] = this.nextDate;
+    data['response'] = this.response;
+    data['note'] = this.note;
+    data['followup_by'] = this.followupBy;
+    data['created_at'] = this.createdAt;
+    data['employee_id'] = this.employeeId;
+    data['name'] = this.name;
+    data['surname'] = this.surname;
+    data['created_by'] = this.createdBy;
     return data;
   }
 }

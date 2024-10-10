@@ -64,8 +64,9 @@ class _DatePickerTextFieldState extends State<DatePickerTextField> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
+      firstDate: DateTime(2000),
       lastDate: DateTime(DateTime.now().year + 1),
+
     );
     return picked;
   }
