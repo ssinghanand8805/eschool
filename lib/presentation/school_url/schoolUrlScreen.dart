@@ -32,10 +32,13 @@ class _SchoolUrlState extends State<SchoolUrl> {
           backgroundColor: Colors.transparent, //
           body: Column(
             children: [
-              SizedBox(
-                width: double.infinity,
-                height: size.height * 0.15,
-                child:  Image.asset('assets/images/LearnoLogo.png') ,
+              Padding(
+                padding: const EdgeInsets.only(top: 38.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: size.height * 0.30,
+                  child:  Image.asset('assets/images/rksss_transparent.png') ,
+                ),
               ),
               Expanded(
                 child: Container(
