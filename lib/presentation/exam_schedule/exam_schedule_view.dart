@@ -38,7 +38,7 @@ class _ExamScheduleScreenState extends State<ExamScheduleScreen> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CustomLoader(); // CustomLoader();
             } else {
-              return controller.examScheduleModelObj.value.result!
+              return controller.examScheduleModelObj.value.result != null && controller.examScheduleModelObj.value.result!
                   .length >
                   0
                   ? ListView.builder(

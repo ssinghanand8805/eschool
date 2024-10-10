@@ -17,39 +17,76 @@ import '../model/CbseExaminations.dart';
 /// current loginModelObj
 class CbseExaminationsController extends GetxController {
   UserData userData = Get.put(UserData());
-  ApiRespository apiRespository = ApiRespository(apiClient:Get.find());
-  RxList<Exam> cbseResultModelObj = <Exam>[].obs;
+  ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
+  RxList<Exams> cbseResultModelObj = <Exams>[].obs;
 
   late Future<void> fetchDataFuture;
   @override
   void onClose() {
     super.onClose();
-
   }
+
   @override
   void onInit() {
     super.onInit();
-    fetchDataFuture = getCBSEEXamResult();
+    fetchDataFuture = getCBSEExamResult();
   }
 
-  getCBSEEXamResult()async{
-    Map<String,dynamic> body = {
-      "student_session_id" : userData.getStudent_session_id };
+  getCBSEExamResult() async {
+    try {
+      Map<String, dynamic> body = {
+        "student_session_id": userData.getStudent_session_id,
+      };
 
-      var data  = await apiRespository.postApiCallByJson(Constants.getCbseexamresultUrl, body);
-print("body @@@$body");
-  for(var i=0;i<data.body!['exams'].length; i++)
-    {
-      print("getdailyassignmentUrl ${data.body}");
-      var d = Exam.fromJson(data.body!['exams'][i]);
-      cbseResultModelObj.value.add(d);
+      var response = await apiRespository.postApiCallByJson(
+        Constants.getCbseexamresultUrlNew,
+        body,
+      );
+
+      print("Request Body: $body");
+      print("Response Body: ${response.body}");
+
+      if (response.body != null && response.body['exams'] != null) {
+        cbseResultModelObj.clear();
+
+        for (var examJson in response.body['exams']) {
+          try {
+            Exams exams = Exams.fromJson(examJson);
+            // Exam examModel = Exam(exams: [exams]);
+            cbseResultModelObj.add(exams);
+           // print("Parsed Exam: ${examModel.toJson()}");
+          } catch (e) {
+            log("Error parsing exam JSON: $examJson\nError: $e");
+          }
+        }
+
+        update();
+      } else {
+        log("Error: 'exams' data not found in the response.");
+      }
+    } catch (e) {
+      log("Error occurred while fetching CBSE Exam results: ${e.toString()}");
     }
- update();
-
-
-    log("####### ${cbseResultModelObj.value![0].toJson()}");
-
-
   }
 
+
+// getCBSEEXamResult() async {
+  //   Map<String, dynamic> body = {
+  //     "student_session_id": userData.getStudent_session_id
+  //   };
+  //
+  //   var data = await apiRespository.postApiCallByJson(
+  //       Constants.getCbseexamresultUrlNew, body);
+  //   print("body @@@$body");
+  //   for (var i = 0; i < data.body!['exams'].length; i++) {
+  //     print("getdailyassignmentUrl ${data.body}");
+  //     var d = Exam.fromJson(data.body!['exams'][i]);
+  //     cbseResultModelObj.value.add(d);
+  //
+  //     print("getCBSEEXamResult${d}");
+  //   }
+  //   update();
+  //
+  //   log("####### ${cbseResultModelObj.toJson()}");
+  // }
 }

@@ -32,7 +32,7 @@ class ExamScheduleController extends GetxController {
   }
 
   getExamSchedule()async{
-    Map<String,dynamic> body = {
+    var body = {
       "student_session_id" : userData.getStudent_session_id };
 
     print("nkjnjnjnjnjn${userData.getStudent_session_id}");
@@ -40,8 +40,19 @@ class ExamScheduleController extends GetxController {
       var data  = await apiRespository.postApiCallByJson(Constants.getCbseexamtimetableUrl, body);
 
       print("vsvsgsgvvsgv${body}");
-
+      print("vsvsgsgvvsgv${data.body}");
+if(data.statusCode == 200 && data.body.length > 0)
+  {
+    print("ggggg");
     examScheduleModelObj.value = ExamSchedule.fromJson(data.body);
+    print(examScheduleModelObj.value.toJson());
+    update();
+  }
+else
+  {
+
+  }
+
 
     print("getCbseexamtimetableUrl ${data.body}");
 

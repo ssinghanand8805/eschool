@@ -51,7 +51,6 @@ class _DailyAssignmentScreenState extends State<CbseExaminationsScreen> {
 }
 
 class CustomTabView extends StatefulWidget {
-
   @override
   State<CustomTabView> createState() => _CustomTabViewState();
 }
@@ -67,26 +66,30 @@ class _CustomTabViewState extends State<CustomTabView> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
-             color: theme.primaryColor,
+              color: Colors.green.shade100,
               borderRadius: BorderRadius.circular(50),
             ),
             child: TabBar(
-              labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-              unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+              labelStyle:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              unselectedLabelStyle:
+                  const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
               labelPadding: EdgeInsets.zero,
               indicatorPadding: EdgeInsets.zero,
               dividerHeight: 0.0,
               labelColor: Colors.white,
               unselectedLabelColor: Colors.black,
               indicator: BoxDecoration(
-                color: theme.primaryColorDark,
+                color: Colors.green,
                 borderRadius: BorderRadius.circular(50),
               ),
               tabs: [
                 Tab(
                   child: Container(
                     alignment: Alignment.center,
-                    child: Text("CBSE Marks",),
+                    child: Text(
+                      "CBSE Marks",
+                    ),
                   ),
                 ),
                 Tab(
@@ -102,7 +105,15 @@ class _CustomTabViewState extends State<CustomTabView> {
             child: TabBarView(
               children: [
                 _buildChildWidget(),
-                Center(child: Text("This is another tab")),
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/projectImages/no_data.png"),
+                      Text("No data found!"),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -123,8 +134,7 @@ class _CustomTabViewState extends State<CustomTabView> {
             } else {
               return controller.cbseResultModelObj.length > 0
                   ? ListView.builder(
-                      itemCount:
-                          controller.cbseResultModelObj.length ?? 0,
+                      itemCount: controller.cbseResultModelObj.length ?? 0,
                       itemBuilder: (context, index) {
                         return _buildAssignmentCard(
                           data: controller.cbseResultModelObj[index],
@@ -148,120 +158,86 @@ class _CustomTabViewState extends State<CustomTabView> {
     );
   }
 
-  List<DataColumn> _getColumns(Exam data) {
+  List<DataColumn> _getColumns(Exams data) {
     List<DataColumn> columns = [
       DataColumn(
         label: Text('Subject', style: theme.textTheme.titleSmall),
-      )
-    ];
-    if (data.examData!.subjects![0].examAssessments!.examAssessment1 != null) {
-      columns.add(
-        DataColumn(
-          label: Text(
-              'Theory' +
-                  " ( " +
-                  data.examData!.subjects![0].examAssessments!.examAssessment1!
-                      .maximumMarks! +
-                  " )",
-              style: theme.textTheme.titleSmall),
-        ),
-      );
-    }
-    if (data.examData!.subjects![0].examAssessments!.examAssessment2 != null) {
-      columns.add(
-        DataColumn(
-          label: Text('Practical', style: theme.textTheme.titleSmall),
-        ),
-      );
-    }
-    if (data.examData!.subjects![0].examAssessments!.examAssessment3 != null) {
-      columns.add(
-        DataColumn(
-          label: Text('Assignment', style: theme.textTheme.titleSmall),
-        ),
-      );
-    }
-    columns.add(
+      ),
+      DataColumn(
+        label: Text('Obtained Marks', style: theme.textTheme.titleSmall),
+      ),
       DataColumn(
         label: Text('Total Marks', style: theme.textTheme.titleSmall),
       ),
-    );
+    ];
+
+    // if (data != null) {
+    //   // for (var exam in data.exams!) {
+    //     for (var assessment in data.examAssessments!) {
+    //       columns.add(
+    //         DataColumn(
+    //           label: Text(
+    //             assessment.assessmentName!,
+    //             style: theme.textTheme.titleSmall,
+    //           ),
+    //         ),
+    //       );
+    //     }
+    //   // }
+    // }
+
     return columns;
   }
 
-  _gteRowsForDataTable(Exam data) {
+  List<DataRow> _gteRowsForDataTable(Exams data) {
     List<DataRow> rows = [];
 
-    for (var i = 0; i < data.examData!.subjects!.length; i++) {
-      double totalMarks = 0.0;
-      List<DataCell> cells = [
-        DataCell(Text(data.examData!.subjects![i].subjectName!,
-            style: theme.textTheme.bodySmall))
-      ];
-      if (data.examData!.subjects![i].examAssessments!.examAssessment1 !=
-          null) {
-        if (data.examData!.subjects![i].examAssessments!.examAssessment1!.marks
-                .toString() !=
-            "xx") {
-          totalMarks = totalMarks +
-              double.parse(data.examData!.subjects![i].examAssessments!
-                  .examAssessment1!.marks!);
-        }
+    if (data != null) {
+      // for (var exam in data.exams!) {
+      for (var assessment in data.examAssessments!) {
+        for (var subject in assessment.subjects!) {
+          List<DataCell> cells = [
+            DataCell(Text(subject.subjectName.toString(),
+                style: theme.textTheme.bodySmall!)),
+            DataCell(Text(subject.marks.toString(),
+                style: theme.textTheme.bodySmall!)),
+            DataCell(Text(subject.maximumMarks.toString(),
+                style: theme.textTheme.bodySmall!)),
+          ];
 
-        cells.add(
-          DataCell(Text(
-              data.examData!.subjects![i].examAssessments!.examAssessment1!
-                  .marks!,
-              style: theme.textTheme.bodySmall)),
-        );
-      }
-      if (data.examData!.subjects![i].examAssessments!.examAssessment2 !=
-          null) {
-        if (data.examData!.subjects![i].examAssessments!.examAssessment2!.marks
-                .toString() !=
-            "xx") {
-          totalMarks = totalMarks +
-              double.parse(data.examData!.subjects![i].examAssessments!
-                  .examAssessment2!.marks!);
+          // for (var examAssessment in data.examAssessments ?? []) {
+          //   var matchingSubject = examAssessment.subjects?.firstWhere(
+          //         (s) => s.subjectId == subject.subjectId,
+          //     orElse: () => Subjects(subjectId: 'N/A', marks: 'N/A'),
+          //   );
+          //
+          //   if (matchingSubject?.subjectId != 'N/A') {
+          //     cells.add(DataCell(Text(
+          //       matchingSubject.marks ?? 'N/A',
+          //       style: theme.textTheme.bodySmall!,
+          //     )));
+          //   } else {
+          //     cells.add(DataCell(Text(
+          //       'N/A',
+          //       style: theme.textTheme.bodySmall!,
+          //     )));
+          //   }
+          // }
+
+          rows.add(DataRow(cells: cells));
         }
-        cells.add(
-          DataCell(Text(
-              data.examData!.subjects![i].examAssessments!.examAssessment2!
-                  .marks!,
-              style: theme.textTheme.bodySmall)),
-        );
       }
-      if (data.examData!.subjects![i].examAssessments!.examAssessment3 !=
-          null) {
-        if (data.examData!.subjects![i].examAssessments!.examAssessment3!.marks
-                .toString() !=
-            "xx") {
-          totalMarks = totalMarks +
-              double.parse(data.examData!.subjects![i].examAssessments!
-                  .examAssessment3!.marks!);
-        }
-        cells.add(
-          DataCell(Text(
-              data.examData!.subjects![i].examAssessments!.examAssessment3!
-                  .marks!,
-              style: theme.textTheme.bodySmall)),
-        );
-      }
-      cells.add(
-        DataCell(
-            Text(totalMarks.toString(), style: theme.textTheme.titleSmall)),
-      );
-      rows.add(DataRow(cells: cells));
-      print("TOTAL MARKS $totalMarks");
+      // }
     }
 
     return rows;
   }
 
-  Widget _buildAssignmentCard({required Exam data, required int index}) {
+  Widget _buildAssignmentCard({required Exams data, required int index}) {
+    // print(data.);
     return CommonCardExtended(
         bottomTitle: true,
-        title: data.name!,
+        title: data.examName.toString(),
         leadingWidget: SizedBox(),
         newWidget: Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 5, bottom: 10),
@@ -270,15 +246,16 @@ class _CustomTabViewState extends State<CustomTabView> {
             child: DataTable(
               showBottomBorder: false,
               headingRowHeight: 40,
+              dataRowHeight: 40, // Assuming you want the same height for data rows
+              columnSpacing: 10,
+              horizontalMargin: 0,
+              showCheckboxColumn: false,
+              dividerThickness: 0.1,
               onSelectAll: (b) {
                 print(b);
               },
               columns: _getColumns(data),
               rows: _gteRowsForDataTable(data),
-              columnSpacing: _getColumns(data).length < 5 ? 100 : 10,
-              horizontalMargin: 0,
-              showCheckboxColumn: false,
-              dividerThickness: 0.1,
             ),
           ),
         ),
@@ -289,14 +266,14 @@ class _CustomTabViewState extends State<CustomTabView> {
                 Expanded(
                     child: InfoRow(
                   title: "Total Marks",
-                  value: '${data!.examObtainMarks}/${data!.examTotalMarks}',
+                  value: ' ${data.totalMarks} / ${data.maxMarks}',
                   style: theme.textTheme.titleSmall,
                   style1: theme.textTheme.bodySmall,
                 )),
                 Expanded(
                     child: InfoRow(
                   title: 'Percentage',
-                  value: '${data!.examPercentage}%',
+                  value: '${data.percentage}%',
                   style: theme.textTheme.titleSmall,
                   style1: theme.textTheme.bodySmall,
                 )),
@@ -307,14 +284,14 @@ class _CustomTabViewState extends State<CustomTabView> {
                 Expanded(
                     child: InfoRow(
                   title: 'Grade',
-                  value: '${data!.examGrade}+',
+                  value: '${data.grade}+',
                   style: theme.textTheme.titleSmall,
                   style1: theme.textTheme.bodySmall,
                 )),
                 Expanded(
                     child: InfoRow(
                   title: 'Rank',
-                  value: '${data!.examRank}',
+                  value: '${data.examRank}',
                   style: theme.textTheme.titleSmall,
                   style1: theme.textTheme.bodySmall,
                 )),
