@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/userData.dart';
 import '../../../core/app_export.dart';
+import '../../../widgets/CheckForUpdate.dart';
 import '../models/s_model.dart';
 
 /// A controller class for the SScreen.
@@ -15,6 +17,11 @@ class SController extends GetxController {
   RxString splashScreenImage = "assets/images/LearnoLogo.png".obs;
   RxBool isSplashAsset = true.obs;
   RxString appName = "Lerno".obs;
+
+
+
+
+
   @override
   void onReady() async {
     final prefs = await SharedPreferences.getInstance();

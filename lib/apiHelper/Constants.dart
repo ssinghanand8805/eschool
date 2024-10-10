@@ -9,6 +9,7 @@ class Constants {
   static const String getsyllabussubjectsUrl = 'webservice/getsyllabussubjects';
   static const String getSubjectsLessonsUrl = 'webservice/getSubjectsLessons';
   static const String getAttendenceRecordsUrl = 'webservice/getAttendenceRecords';
+  static const String getattendanceSummary = 'webservice/getattendanceSummary';
   static const String getDocumentUrl = 'webservice/getDocument';
   static const String getStudentProfileUrl = 'webservice/getStudentProfile';
   static const String gettransportUrl = 'webservice/getTransportRoute';

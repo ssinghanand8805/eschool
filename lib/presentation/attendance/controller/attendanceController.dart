@@ -6,6 +6,7 @@ import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';
 import '../model/Attendance.dart';
+import '../model/monthlyAttendance.dart';
 
 class AttendanceController extends GetxController {
   UserData userData = Get.put(UserData());
@@ -14,10 +15,13 @@ class AttendanceController extends GetxController {
   Rx<String> month = "".obs;
   Rx<String> currentMont = "".obs;
   Rx<AttendanceDataModal> attendanceModelObj = AttendanceDataModal().obs;
+  Rx<MonthlyAttendance> monthlyAttendanceModelObj = MonthlyAttendance().obs;
+
   RxMap<DateTime, List<Event>> _kEventSource = <DateTime, List<Event>>{}.obs;
   final Rx<LinkedHashMap<DateTime, List<Event>>> kEvents =
-  Rx<LinkedHashMap<DateTime, List<Event>>>(LinkedHashMap());
+      Rx<LinkedHashMap<DateTime, List<Event>>>(LinkedHashMap());
   late Future<void> fetchDataFuture;
+  late Future<void> fetchDataFuture2;
   RxBool isLoading = false.obs;
 
   @override
@@ -25,26 +29,22 @@ class AttendanceController extends GetxController {
     super.onClose();
   }
 
-  // Retrieve events by date
   List<Event>? getEvents(DateTime date) {
-    // print("##################${date}");
     return kEvents.value[date];
   }
 
-
-  changeMonth(DateTime now)
-  {
+  changeMonth(DateTime now) {
     currentMont.value = getCurrentMonthName(now);
     //update();
   }
+
   @override
   void onInit() {
     super.onInit();
     kEvents.value = LinkedHashMap<DateTime, List<Event>>(
       equals: isSameDay,
       hashCode: getHashCode,
-    )
-      ..addAll(_kEventSource.value);
+    )..addAll(_kEventSource.value);
     DateTime now = DateTime.now();
 
     getDataFromApi(now);
@@ -66,7 +66,6 @@ class AttendanceController extends GetxController {
       'December'
     ];
 
-
     return months[now.month - 1];
   }
 
@@ -74,7 +73,8 @@ class AttendanceController extends GetxController {
     String year = DateFormat('yyyy').format(now); // Extracts the year
     String month = DateFormat('MM').format(now); // Extracts the month
     fetchDataFuture = getData(year, month);
-   changeMonth(now);
+    fetchDataFuture2 = getMonthlyAttendanceData();
+    changeMonth(now);
     update();
   }
 
@@ -109,14 +109,12 @@ class AttendanceController extends GetxController {
     kEvents.value = LinkedHashMap<DateTime, List<Event>>(
       equals: isSameDay,
       hashCode: getHashCode,
-    )
-      ..addAll(_kEventSource.value);
+    )..addAll(_kEventSource.value);
 
     print("111111111111111111111 ${kEvents}");
     isLoading.value = false; // Hide loader once data is fetched
     update();
   }
-
 
   bool isSameDay(DateTime a, DateTime b) {
     return a.year == b.year && a.month == b.month && a.day == b.day;
@@ -126,4 +124,15 @@ class AttendanceController extends GetxController {
     return key.day * 1000000 + key.month * 10000 + key.year;
   }
 
+  Future<void> getMonthlyAttendanceData() async {
+    Map<String, dynamic> body = {"student_id": userData.getUserStudentId};
+    print("Body @@@@ getMonthlyAttendanceData${body}");
+    var data = await apiRespository.postApiCallByJson(
+        Constants.getattendanceSummary, body);
+    print("DATA @@@@ ${data.body}");
+    print("111111111111111111111 ${monthlyAttendanceModelObj.value.toJson()}");
+    monthlyAttendanceModelObj.value = MonthlyAttendance.fromJson(data.body);
+    print("getMonthlyAttendanceData ${monthlyAttendanceModelObj.value.toJson()}");
+    update();
+  }
 }

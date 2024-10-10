@@ -1,13 +1,11 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:lerno/presentation/attendance/controller/attendanceController.dart';
 import 'package:lerno/presentation/common_widgets/custom_loader.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 import '../../core/app_export.dart';
+import '../../theme/theme_controller.dart';
 import 'model/Attendance.dart';
-import 'monthlyAttendence.dart';
+import 'model/monthlyAttendance.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({Key? key});
@@ -40,159 +38,349 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          actions: [
-            InkWell(
-              child: TextButton(
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MonthlyAttendanceScreen()),
-                  );
-                },
-                child: Text(
-                    'Monthly Report'
+    return GetBuilder<ThemeController>(
+      init: ThemeController(),
+      builder: (context1) {
+        return DefaultTabController(
+          length: 2, // Number of tabs
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: theme.primaryColor,
+              title: Text(
+                'Attendance',
+                style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),
+              ),
+            ),
+            body: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: theme.primaryColor,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: TabBar(
+                    labelStyle: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 12),
+                    unselectedLabelStyle: const TextStyle(
+                        fontWeight: FontWeight.normal, fontSize: 12),
+                    labelPadding: EdgeInsets.zero,
+                    indicatorPadding: EdgeInsets.zero,
+                    dividerHeight: 0.0,
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.black,
+                    indicator: BoxDecoration(
+                      color: theme.primaryColorDark,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    tabs: [
+                      Tab(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text("Attendance"),
+                        ),
+                      ),
+                      Tab(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text("Monthly Report"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      // First tab: CBSE Marks view
+                      _buildAttendanceView(context),
+
+                      monthlyReport(context)
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAttendanceView(BuildContext context) {
+    return GetBuilder<AttendanceController>(
+      init: controller,
+      builder: (context) {
+        return ListView(
+          children: [
+            TableCalendar<Event>(
+              headerStyle: HeaderStyle(formatButtonVisible: false),
+              daysOfWeekHeight: 30,
+              daysOfWeekStyle: DaysOfWeekStyle(
+                  decoration: BoxDecoration(
+                      color: theme.primaryColor,
+                      borderRadius: BorderRadius.all(Radius.circular(50)))),
+              eventLoader: (DateTime date) => controller.getEvents(date) ?? [],
+              calendarFormat: _calendarFormat,
+              onFormatChanged: (format) {},
+              focusedDay: _focusedDay,
+              firstDay: _firstDay,
+              lastDay: _lastDay,
+              onPageChanged: (focusedDay) {
+                setState(() {
+                  _focusedDay = focusedDay;
+                });
+                controller.getDataFromApi(focusedDay);
+              },
+              selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                });
+              },
+              calendarStyle: const CalendarStyle(
+                selectedDecoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red,
                 ),
               ),
-            )
+              calendarBuilders:
+                  CalendarBuilders(headerTitleBuilder: (context, day) {
+                String dateString = day.toString();
+                String cleanedDateString = dateString.substring(0, 10);
+                return Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(cleanedDateString),
+                );
+              }, markerBuilder: (context, day, events) {
+                return events.isNotEmpty
+                    ? PositionedDirectional(
+                        bottom: 0,
+                        end: 0,
+                        child: Center(
+                          child: Container(
+                            width: 15,
+                            height: 15,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: getAttendanceColor(events[0].title),
+                            ),
+                          ),
+                        ),
+                      )
+                    : null;
+              }),
+            ),
+            SizedBox(height: 10),
+            Obx(() {
+              return Center(
+                child: Text(
+                  "${controller.currentMont.value} Month Attendance",
+                  style: theme.textTheme.titleLarge!.copyWith(
+                    fontSize: 16,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              );
+            }),
+            Obx(() {
+              if (controller.isLoading.value) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 18.0),
+                    child: CustomLoader(),
+                  ),
+                );
+              }
+              if (controller.kEvents.value.isNotEmpty) {
+                Map<String, dynamic> countsMap =
+                    controller.attendanceModelObj.value.counts == null
+                        ? {}
+                        : controller.attendanceModelObj.value.counts!.toJson();
+                List<String> keys = countsMap.keys.toList();
+                List<dynamic> values = countsMap.values.toList();
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: keys.length,
+                  itemBuilder: (context, index) {
+                    int presentDays = values[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: StatusCard(
+                        color: getAttendanceColor(keys[index]),
+                        count: presentDays.toString(),
+                        countBackgroundColor: getAttendanceColor(keys[index]),
+                        label: keys[index],
+                      ),
+                    );
+                  },
+                );
+              } else {
+                return Center(child: Text('No attendance records available.'));
+              }
+            }),
           ],
-          title: Text('Attendance',
-              style: theme.textTheme.titleLarge!.copyWith(fontSize: 17))),
-      body: GetBuilder(
-          init: controller,
-          builder: (context) {
-            return ListView(
-              children: [
-                TableCalendar<Event>(
-                  headerStyle: HeaderStyle(
-                    formatButtonVisible: false,
-                  ),
-                  daysOfWeekHeight: 30,
-                  daysOfWeekStyle: DaysOfWeekStyle(
-                      decoration: BoxDecoration(
-                          color: theme.primaryColor,
-                          borderRadius: BorderRadius.all(Radius.circular(50)))),
-                  eventLoader: (DateTime date) =>
-                      controller.getEvents(date) ?? [],
-                  calendarFormat: _calendarFormat,
-                  onFormatChanged: (format) {
-                    // setState(() {
-                    //   _calendarFormat = format;
-                    // });
-                  },
-                  focusedDay: _focusedDay,
-                  firstDay: _firstDay,
-                  lastDay: _lastDay,
-                  onPageChanged: (focusedDay) {
-                    print("********${focusedDay}");
+        );
+      },
+    );
+  }
 
-                    setState(() {
-                      _focusedDay = focusedDay;
-                    });
-                    controller.getDataFromApi(focusedDay);
-                  },
-                  selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
-                  onDaySelected: (selectedDay, focusedDay) {
-                    setState(() {
-                      _selectedDay = selectedDay;
-                      _focusedDay = focusedDay;
-                    });
-                  },
-                  calendarStyle: const CalendarStyle(
-                    // weekendTextStyle: TextStyle(
-                    //   color: Colors.red,
-                    // ),
-                    selectedDecoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.red,
-                    ),
-                  ),
-                  calendarBuilders:
-                      CalendarBuilders(headerTitleBuilder: (context, day) {
+  Widget monthlyReport(BuildContext context) {
+    return Obx(() {
+      if (controller.monthlyAttendanceModelObj.value.monthlySummary == null) {
+        return Center(child: CircularProgressIndicator());
+      }
 
-                    String dateString = day.toString();
+      List<MonthlySummary>? monthlySummary =
+          controller.monthlyAttendanceModelObj.value.monthlySummary;
+      OverallSummary? overallSummary =
+          controller.monthlyAttendanceModelObj.value.overallSummary;
 
-                    String cleanedDateString =
-                        dateString.substring(0, 10); // Extracts "2024-04-01"
-                    print(cleanedDateString);
-                    print("dgfgfdg" + day.toString());
-                    return Container(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(cleanedDateString.toString()),
-                    );
-                  }, markerBuilder: (context, day, events) {
-                    return events.isNotEmpty
-                        ? PositionedDirectional(
-                            bottom: 0,
-                            end: 0,
-                            child: Center(
-                                child: Container(
-                              width: 15,
-                              height: 15,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: getAttendanceColor(events[0].title),
-                              ),
-                            )),
-                          )
-                        : null;
-                  }),
+      return Column(
+        children: [
+          Flexible(
+            child: ListView.builder(
+              itemCount: monthlySummary!.length,
+              itemBuilder: (context, index) {
+                var month = monthlySummary[index];
+                return _buildMonthCard(
+                  '${month.monthName}',
+                  month.present.toString(),
+                  month.absent.toString(),
+                  month.leave.toString(),
+                  month.totalWorkingDays.toString(),
+                  month.attendancePercentage!.toDouble(),
+                );
+              },
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(2),
+            color: Colors.grey[200], // Optional styling
+            child: _buildSummaryCard(
+                '${overallSummary?.present ?? 0}',
+                '${overallSummary?.absent ?? 0}',
+                '${overallSummary?.leave ?? 0}',
+                '${overallSummary?.attendancePercentage ?? 0}'),
+          ),
+        ],
+      );
+    });
+  }
+
+
+  Widget _buildSummaryCard(
+    String value,
+    String value1,
+    String value2,
+    String value4,
+  ) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      color: theme.primaryColorDark,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildSummaryItem('Total Present', value, Colors.white),
+          _buildSummaryItem('Total Absent', value1, Colors.red),
+          _buildSummaryItem('Total Leave', value2, Colors.orange),
+          _buildSummaryItem('Percentage', '${value4}' + '%', Colors.white),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSummaryItem(String label, String value, Color color) {
+    return Column(
+      children: [
+        Text(label, style: TextStyle(color: color, fontSize: 14)),
+        Text(value,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold)),
+      ],
+    );
+  }
+
+  Widget _buildMonthCard(String month, String total, String present,
+      String absent, String leave, double percentage) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 50,
+            height: 120,
+            decoration: BoxDecoration(
+              color: theme.primaryColorDark,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
+              ),
+            ),
+            child: Center(
+              child: RotatedBox(
+                quarterTurns: 3,
+                child: Text(
+                  month,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-
-                Obx(() {
-               return Center(
-                  child: Text(
-                      controller.currentMont.value + " Month Attendance",
-                      style: theme.textTheme.titleLarge!
-                          .copyWith(fontSize: 16, fontStyle: FontStyle.italic)),
-                );     }),
-                Obx(() {
-                  if (controller.isLoading.value) {
-                    return Center(
-                        child: Padding(
-                      padding: const EdgeInsets.only(top: 18.0),
-                      child: CustomLoader(),
-                    ));
-                  }
-
-                  if (controller.kEvents.value.isNotEmpty) {
-                    Map<String, dynamic> countsMap =
-                        controller.attendanceModelObj.value.counts == null
-                            ? {}
-                            : controller.attendanceModelObj.value.counts!
-                                .toJson();
-                    List<String> keys = countsMap.keys.toList();
-                    List<dynamic> values = countsMap.values.toList();
-
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: keys.length,
-                      itemBuilder: (context, index) {
-                        final item = values[index];
-                        int presentDays = values[index];
-                        return Padding(
-                            padding: const EdgeInsets.only(top: 15.0),
-                            child: StatusCard(
-                              color: getAttendanceColor(keys[index]),
-                              count: presentDays.toString() ?? "",
-                              countBackgroundColor:
-                                  getAttendanceColor(keys[index]),
-                              label: keys[index] ?? '',
-                            ));
-                      },
-                    );
-                  } else {
-                    return Center(
-                        child: Text('No attendance records available.'));
-                  }
-                }),
-              ],
-            );
-          }),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Total Working $total',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      )),
+                  Text('Your Present $present',
+                      style: TextStyle(
+                          color: theme.primaryColorDark, fontSize: 14)),
+                  Text('Your Absent $absent',
+                      style: TextStyle(color: Colors.red, fontSize: 14)),
+                  Text('Your Leave $leave',
+                      style: TextStyle(color: Colors.orange, fontSize: 14)),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            width: 80,
+            alignment: Alignment.center,
+            child: Text(
+              '${percentage.toStringAsFixed(2)}%',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: theme.primaryColorDark,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -208,7 +396,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         return Colors.orange;
       case 'holiday':
         return Colors.grey;
-        case 'leave':
+      case 'leave':
         return Colors.yellow;
       default:
         return Colors.transparent;

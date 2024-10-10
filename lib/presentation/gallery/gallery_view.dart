@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../apiHelper/toastMessage.dart';
 import '../../theme/theme_helper.dart';
+import '../common_widgets/MainBody.dart';
 import 'Images.dart';
 import 'controller/gallery_controller.dart';
 import 'model/gallery.dart';
@@ -17,31 +18,39 @@ class _GalleryPageState extends State<GalleryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Gallery",
-          style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),
-        ),
-        backgroundColor: theme.primaryColor,
-      ),
-      body: GetBuilder(
+
+  return  MainBody(
+      label: 'Your Images \nis here!',
+      imageUrl: 'assets/projectImages/downloadpage.jpg',
+      AppbarTitle: 'Gallery',
+      widget: GetBuilder(
           init: GalleryController(),
           builder: (context) {
-            return controller.galleryModalObj.length > 0 ?GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.0,
-                crossAxisSpacing: 4.0,
-                mainAxisSpacing: 4.0,
-              ),
-              itemCount: controller.galleryModalObj.length,
-              itemBuilder: (context, index) {
-                return GridItemWidget(item: controller.galleryModalObj[index]);
-              },
-            ):Ui.NoDataWidget();
+            return buildGalleryGrid();
           }),
     );
+  }
+
+  Widget buildGalleryGrid() {
+    if (controller.galleryModalObj.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 1.0,
+            crossAxisSpacing: 4.0,
+            mainAxisSpacing: 4.0,
+          ),
+          itemCount: controller.galleryModalObj.length,
+          itemBuilder: (context, index) {
+            return GridItemWidget(item: controller.galleryModalObj[index]);
+          },
+        ),
+      );
+    } else {
+      return Ui.NoDataWidget(); // Your custom NoData widget
+    }
   }
 }
 
@@ -104,7 +113,7 @@ class GridItemWidget extends StatelessWidget {
                       // Title part
                       Container(
                         width: double.infinity,
-                        color: Colors.grey.withOpacity(0.8),
+                        color: theme.primaryColor,
                         padding: const EdgeInsets.all(10.0),
                         child: Text(
                           item.title ?? '',

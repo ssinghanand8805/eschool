@@ -14,7 +14,7 @@ Version currentVersion = Version(0, 0, 0);
 
 class Updater {
   static const APP_STORE_URL =
-      'https://apps.apple.com/us/app/ct-employee-portal/id1586282555';
+      '';
   static const PLAY_STORE_URL =
       'https://play.google.com/store/apps/details?id=lerno.info.apps';
 

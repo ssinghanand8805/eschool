@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lerno/theme/theme_controller.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../theme/theme_helper.dart';
 import 'controller/event_controller.dart';
@@ -47,56 +48,62 @@ class _EventCalendarState extends State<EventCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GetBuilder(
+      init: ThemeController(),
+      builder: (context1) {
+        return Scaffold(
 
-        appBar: AppBar(
-          title:  Text('Event Calendar',style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
-        ),
-        body: GetBuilder(
-          init: EventController(),
-          builder: (context2) {
-            return SfCalendar(
-              onTap: (CalendarTapDetails details) {
-               controller.onEventTap(details, context, controller.showEventDialog); // Pass the correct function
-              },
-              view: CalendarView.month,
+            appBar: AppBar(
+              backgroundColor: theme.primaryColor,
+              title:  Text('Event Calendar',style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
+            ),
+            body: GetBuilder(
+              init: EventController(),
+              builder: (context2) {
+                return SfCalendar(
+                  onTap: (CalendarTapDetails details) {
+                   controller.onEventTap(details, context, controller.showEventDialog); // Pass the correct function
+                  },
+                  view: CalendarView.month,
 
-              allowAppointmentResize: true,
-              todayHighlightColor: Colors.blue,
-              //monthCellBuilder: monthCellBuilder,
-              //appointmentBuilder: appointmentBuilder,
-              dataSource: MeetingDataSource(_getDataSource()),
+                  allowAppointmentResize: true,
+                  todayHighlightColor: Colors.blue,
+                  //monthCellBuilder: monthCellBuilder,
+                  //appointmentBuilder: appointmentBuilder,
+                  dataSource: MeetingDataSource(_getDataSource()),
 
-              monthViewSettings: MonthViewSettings(
-                  dayFormat: 'EEE',
-                  appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-                  showTrailingAndLeadingDates: false,
-                  showAgenda: true,
-                  agendaItemHeight: 60,
-                  agendaViewHeight: 200,
-                  agendaStyle: AgendaStyle(
-                    backgroundColor: Colors.white,
-                    appointmentTextStyle: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                        color: Colors.white),
-                    dateTextStyle: TextStyle(
-                        fontStyle: FontStyle.normal,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black),
-                    dayTextStyle: TextStyle(
-                        fontStyle: FontStyle.normal,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black),
-                  ),
-                  monthCellStyle: MonthCellStyle(
-                      textStyle: TextStyle(fontSize: 18, color: Colors.black))),
-            );
-          }
-        ));
+                  monthViewSettings: MonthViewSettings(
+                      dayFormat: 'EEE',
+                      appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+                      showTrailingAndLeadingDates: false,
+                      showAgenda: true,
+                      agendaItemHeight: 60,
+                      agendaViewHeight: 200,
+                      agendaStyle: AgendaStyle(
+                        backgroundColor: Colors.white,
+                        appointmentTextStyle: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.normal,
+                            color: Colors.white),
+                        dateTextStyle: TextStyle(
+                            fontStyle: FontStyle.normal,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                        dayTextStyle: TextStyle(
+                            fontStyle: FontStyle.normal,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black),
+                      ),
+                      monthCellStyle: MonthCellStyle(
+                          textStyle: TextStyle(fontSize: 18, color: Colors.black))),
+                );
+              }
+            ));
+      }
+    );
   }
 
   Widget appointmentBuilder(BuildContext context,

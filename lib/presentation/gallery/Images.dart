@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lerno/theme/theme_controller.dart';
 
 import '../../apiHelper/GlobalData.dart';
 import '../../theme/theme_helper.dart';
@@ -25,32 +26,38 @@ class _ImagesPageState extends State<ImagesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return GetBuilder(
+      init: ThemeController(),
+      builder: (context1) {
+        return Scaffold(
+          appBar: AppBar(
 
-        title: Text(
-          "Images",
-          style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),
-        ),
-        backgroundColor: Colors.green.shade100,
-      ),
-      body: GetBuilder(
-          init: GalleryController(),
-          builder: (context) {
-            return GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.0,
-                crossAxisSpacing: 4.0,
-                mainAxisSpacing: 4.0,
-              ),
-              itemCount: controller.PageContentsModalObj.length,
-              itemBuilder: (context, index) {
-                return GridItemWidget(
-                    item: controller.PageContentsModalObj[index]);
-              },
-            );
-          }),
+
+            title: Text(
+              "Images",
+              style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),
+            ),
+            backgroundColor: theme.primaryColor,
+          ),
+          body: GetBuilder(
+              init: GalleryController(),
+              builder: (context) {
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 1.0,
+                    crossAxisSpacing: 4.0,
+                    mainAxisSpacing: 4.0,
+                  ),
+                  itemCount: controller.PageContentsModalObj.length,
+                  itemBuilder: (context, index) {
+                    return GridItemWidget(
+                        item: controller.PageContentsModalObj[index]);
+                  },
+                );
+              }),
+        );
+      }
     );
   }
 }

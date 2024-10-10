@@ -5,6 +5,7 @@ import 'package:lerno/core/app_export.dart';
 import 'package:lerno/presentation/library/model/IssuedBook.dart';
 
 import '../../core/utils/common_utilities.dart';
+import '../../theme/theme_controller.dart';
 import '../common_widgets/CommonCardExtended.dart';
 import '../common_widgets/MainBody.dart';
 import '../common_widgets/custom_loader.dart';
@@ -23,105 +24,111 @@ class _ClassWorkViewState extends State<ClassWorkView> {
   ClassWorkController controller = Get.put(ClassWorkController());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Class Work',style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
-            IconButton(
-              icon: Icon(Icons.calendar_month),
-              onPressed: () => controller.selectDate(context),
-            ),
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 18.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return GetBuilder(
+        init: ThemeController(),
+      builder: (context1) {
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: theme.primaryColor,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Obx(() {
-                  // Access the formatted date from the controller
-                  return Text(
-                    "Date: ${controller.formattedDate}",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(fontSize: 14),
-                  );
-                }),
-                Container(
-                  height: 35,
-                  width: 150,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: theme.primaryColorDark),
-                      borderRadius: BorderRadius.circular(50)),
-                  child: GetBuilder(
-                    init: controller,
-                    builder: (_) => FutureBuilder(
-                        future: controller.fetchDataFutureForSubjects,
-                        builder: (_, snanpshot) {
-                          if (snanpshot.connectionState !=
-                              ConnectionState.done) {
-                            return SizedBox(
-                              width: 20.0, // Set your desired width
-                              height: 20.0, // Set your desired height
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.0, // You can also customize the stroke width if needed
-                              ),
-                            );
-                          } else {
-                            return Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              constraints: BoxConstraints(
-                                maxWidth: MediaQuery.of(context).size.width * 0.8,
-                              ),
-                              child: DropdownButton<Subjectlist>(
-                                value: controller.currentSelectedSubject.value.subjectId == null
-                                    ? controller.studentSubjectsModelObj.value.subjectlist![0]
-                                    : controller.currentSelectedSubject.value,
-                                icon: Icon(Icons.keyboard_arrow_down_rounded),
-                                isExpanded: true, // Makes the dropdown take the full width
-                                onChanged: (Subjectlist? newValue) {
-                                  if (newValue != null) {
-                                    controller.currentSelectedSubject.value = newValue;
-                                    controller.currentSelectedSubejectId.value = newValue.subjectGroupSubjectsId!;
-                                    controller.update();
-                                    controller.getData(selectedDate: controller.selectedDate.value);
-                                  }
-                                },
-                                items: (controller.studentSubjectsModelObj.value?.subjectlist ?? [])
-                                    .map<DropdownMenuItem<Subjectlist>>((Subjectlist value) {
-                                  return DropdownMenuItem<Subjectlist>(
-                                    value: value,
-                                    child: Text(
-                                      value.name ?? '', // Assuming 'name' is the display property
-                                      style: TextStyle(fontSize: 14, color: theme.primaryColorDark),
-                                      overflow: TextOverflow.ellipsis, // Prevent text overflow
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            );
-                          ;
-
-                        }
-                        }),
-                  ),
+                Text('Class Work',style: theme.textTheme.titleLarge!.copyWith(fontSize: 17),),
+                IconButton(
+                  icon: Icon(Icons.calendar_month),
+                  onPressed: () => controller.selectDate(context),
                 ),
               ],
             ),
-            Expanded(child: _buildChildWidget()),
-          ],
-        ),
-      ),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.only(top: 18.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Obx(() {
+                      // Access the formatted date from the controller
+                      return Text(
+                        "Date: ${controller.formattedDate}",
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(fontSize: 14),
+                      );
+                    }),
+                    Container(
+                      height: 35,
+                      width: 150,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: theme.primaryColorDark),
+                          borderRadius: BorderRadius.circular(50)),
+                      child: GetBuilder(
+                        init: controller,
+                        builder: (_) => FutureBuilder(
+                            future: controller.fetchDataFutureForSubjects,
+                            builder: (_, snanpshot) {
+                              if (snanpshot.connectionState !=
+                                  ConnectionState.done) {
+                                return SizedBox(
+                                  width: 20.0, // Set your desired width
+                                  height: 20.0, // Set your desired height
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.0, // You can also customize the stroke width if needed
+                                  ),
+                                );
+                              } else {
+                                return Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    maxWidth: MediaQuery.of(context).size.width * 0.8,
+                                  ),
+                                  child: DropdownButton<Subjectlist>(
+                                    value: controller.currentSelectedSubject.value.subjectId == null
+                                        ? controller.studentSubjectsModelObj.value.subjectlist![0]
+                                        : controller.currentSelectedSubject.value,
+                                    icon: Icon(Icons.keyboard_arrow_down_rounded),
+                                    isExpanded: true, // Makes the dropdown take the full width
+                                    onChanged: (Subjectlist? newValue) {
+                                      if (newValue != null) {
+                                        controller.currentSelectedSubject.value = newValue;
+                                        controller.currentSelectedSubejectId.value = newValue.subjectGroupSubjectsId!;
+                                        controller.update();
+                                        controller.getData(selectedDate: controller.selectedDate.value);
+                                      }
+                                    },
+                                    items: (controller.studentSubjectsModelObj.value?.subjectlist ?? [])
+                                        .map<DropdownMenuItem<Subjectlist>>((Subjectlist value) {
+                                      return DropdownMenuItem<Subjectlist>(
+                                        value: value,
+                                        child: Text(
+                                          value.name ?? '', // Assuming 'name' is the display property
+                                          style: TextStyle(fontSize: 14, color: theme.primaryColorDark),
+                                          overflow: TextOverflow.ellipsis, // Prevent text overflow
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                );
+                              ;
+
+                            }
+                            }),
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(child: _buildChildWidget()),
+              ],
+            ),
+          ),
+        );
+      }
     );
   }
 
