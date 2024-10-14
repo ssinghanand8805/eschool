@@ -23,7 +23,7 @@ class Chat {
 }
 
 class Data {
-  Null? user;
+  User? user;
   Group? group;
   List<Conversations>? conversations;
   List<Conversations>? media;
@@ -37,7 +37,7 @@ class Data {
         this.chatRequest});
 
   Data.fromJson(Map<String, dynamic> json) {
-    user = json['user'];
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
     group = json['group'] != null ? new Group.fromJson(json['group']) : null;
     if (json['conversations'] != null) {
       conversations = <Conversations>[];
@@ -71,7 +71,236 @@ class Data {
     return data;
   }
 }
+class CommonGroups {
+  String? id;
+  String? name;
+  String? description;
+  String? photoUrl;
+  int? privacy;
+  int? groupType;
+  int? createdBy;
+  String? createdAt;
+  String? updatedAt;
+  int? myRole;
+  bool? removedFromGroup;
+  List<Users>? users;
+  List<UsersWithTrashed>? usersWithTrashed;
 
+  CommonGroups(
+      {this.id,
+        this.name,
+        this.description,
+        this.photoUrl,
+        this.privacy,
+        this.groupType,
+        this.createdBy,
+        this.createdAt,
+        this.updatedAt,
+        this.myRole,
+        this.removedFromGroup,
+        this.users,
+        this.usersWithTrashed});
+
+  CommonGroups.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    description = json['description'];
+    photoUrl = json['photo_url'];
+    privacy = json['privacy'];
+    groupType = json['group_type'];
+    createdBy = json['created_by'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    myRole = json['my_role'];
+    removedFromGroup = json['removed_from_group'];
+    if (json['users'] != null) {
+      users = <Users>[];
+      json['users'].forEach((v) {
+        users!.add(new Users.fromJson(v));
+      });
+    }
+    if (json['users_with_trashed'] != null) {
+      usersWithTrashed = <UsersWithTrashed>[];
+      json['users_with_trashed'].forEach((v) {
+        usersWithTrashed!.add(new UsersWithTrashed.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['description'] = this.description;
+    data['photo_url'] = this.photoUrl;
+    data['privacy'] = this.privacy;
+    data['group_type'] = this.groupType;
+    data['created_by'] = this.createdBy;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['my_role'] = this.myRole;
+    data['removed_from_group'] = this.removedFromGroup;
+    if (this.users != null) {
+      data['users'] = this.users!.map((v) => v.toJson()).toList();
+    }
+    if (this.usersWithTrashed != null) {
+      data['users_with_trashed'] =
+          this.usersWithTrashed!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+class User {
+  int? id;
+  String? name;
+  String? email;
+  String? emailVerifiedAt;
+  String? phone;
+  String? lastSeen;
+  bool? isOnline;
+  int? isActive;
+  String? about;
+  String? photoUrl;
+  String? activationCode;
+  String? createdAt;
+  String? updatedAt;
+  bool? isSystem;
+  String? playerId;
+  bool? isSubscribed;
+  int? privacy;
+  int? gender;
+  String? deletedAt;
+  String? language;
+  bool? isSuperAdmin;
+  String? roleName;
+  List<Roles>? roles;
+  String? userStatus;
+  String? reportedUser;
+  bool? isBlockedByAuthUser;
+  bool? isBlocked;
+  bool? isMyContact;
+  bool? isReqSendReceive;
+  bool? isPrivateAccount;
+  List<CommonGroups>? commonGroups;
+
+  User(
+      {this.id,
+        this.name,
+        this.email,
+        this.emailVerifiedAt,
+        this.phone,
+        this.lastSeen,
+        this.isOnline,
+        this.isActive,
+        this.about,
+        this.photoUrl,
+        this.activationCode,
+        this.createdAt,
+        this.updatedAt,
+        this.isSystem,
+        this.playerId,
+        this.isSubscribed,
+        this.privacy,
+        this.gender,
+        this.deletedAt,
+        this.language,
+        this.isSuperAdmin,
+        this.roleName,
+        this.roles,
+        this.userStatus,
+        this.reportedUser,
+        this.isBlockedByAuthUser,
+        this.isBlocked,
+        this.isMyContact,
+        this.isReqSendReceive,
+        this.isPrivateAccount,
+        this.commonGroups});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    email = json['email'];
+    emailVerifiedAt = json['email_verified_at'];
+    phone = json['phone'];
+    lastSeen = json['last_seen'];
+    isOnline = json['is_online'];
+    isActive = json['is_active'];
+    about = json['about'];
+    photoUrl = json['photo_url'];
+    activationCode = json['activation_code'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    isSystem = json['is_system'];
+    playerId = json['player_id'];
+    isSubscribed = json['is_subscribed'];
+    privacy = json['privacy'];
+    gender = json['gender'];
+    deletedAt = json['deleted_at'];
+    language = json['language'];
+    isSuperAdmin = json['is_super_admin'];
+    roleName = json['role_name'];
+    if (json['roles'] != null) {
+      roles = <Roles>[];
+      json['roles'].forEach((v) {
+        roles!.add(new Roles.fromJson(v));
+      });
+    }
+    userStatus = json['user_status'];
+    reportedUser = json['reported_user'];
+    isBlockedByAuthUser = json['is_blocked_by_auth_user'];
+    isBlocked = json['is_blocked'];
+    isMyContact = json['is_my_contact'];
+    isReqSendReceive = json['is_req_send_receive'];
+    isPrivateAccount = json['is_private_account'];
+    if (json['common_groups'] != null) {
+      commonGroups = <CommonGroups>[];
+      json['common_groups'].forEach((v) {
+        commonGroups!.add(new CommonGroups.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['email_verified_at'] = this.emailVerifiedAt;
+    data['phone'] = this.phone;
+    data['last_seen'] = this.lastSeen;
+    data['is_online'] = this.isOnline;
+    data['is_active'] = this.isActive;
+    data['about'] = this.about;
+    data['photo_url'] = this.photoUrl;
+    data['activation_code'] = this.activationCode;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['is_system'] = this.isSystem;
+    data['player_id'] = this.playerId;
+    data['is_subscribed'] = this.isSubscribed;
+    data['privacy'] = this.privacy;
+    data['gender'] = this.gender;
+    data['deleted_at'] = this.deletedAt;
+    data['language'] = this.language;
+    data['is_super_admin'] = this.isSuperAdmin;
+    data['role_name'] = this.roleName;
+    if (this.roles != null) {
+      data['roles'] = this.roles!.map((v) => v.toJson()).toList();
+    }
+    data['user_status'] = this.userStatus;
+    data['reported_user'] = this.reportedUser;
+    data['is_blocked_by_auth_user'] = this.isBlockedByAuthUser;
+    data['is_blocked'] = this.isBlocked;
+    data['is_my_contact'] = this.isMyContact;
+    data['is_req_send_receive'] = this.isReqSendReceive;
+    data['is_private_account'] = this.isPrivateAccount;
+    if (this.commonGroups != null) {
+      data['common_groups'] =
+          this.commonGroups!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
 class Group {
   String? id;
   String? name;
@@ -106,7 +335,8 @@ class Group {
         this.users,
         this.usersWithTrashed,
         this.lastConversations,
-        this.createdByUser});
+        this.createdByUser
+      });
 
   Group.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -505,9 +735,9 @@ class CreatedByUser {
   String? updatedAt;
   bool? isSystem;
   String? playerId;
-  String? isSubscribed;
+  bool? isSubscribed;
   int? privacy;
-  String? gender;
+  int? gender;
   String? deletedAt;
   String? language;
   bool? isSuperAdmin;
@@ -619,7 +849,7 @@ class Conversations {
   int? isGroup;
   String? replyMessage;
   CreatedByUser? sender;
-  String? receiver;
+  CreatedByUser? receiver;
   List<ReadBy>? readBy;
 
   Conversations(
@@ -663,7 +893,9 @@ class Conversations {
     sender = json['sender'] != null
         ? new CreatedByUser.fromJson(json['sender'])
         : null;
-    receiver = json['receiver'];
+    receiver = json['sender'] != null
+        ? new CreatedByUser.fromJson(json['sender'])
+        : null;
     if (json['read_by'] != null) {
       readBy = <ReadBy>[];
       json['read_by'].forEach((v) {
@@ -693,7 +925,10 @@ class Conversations {
     if (this.sender != null) {
       data['sender'] = this.sender!.toJson();
     }
-    data['receiver'] = this.receiver;
+    if (this.receiver != null) {
+      data['receiver'] = this.receiver!.toJson();
+    }
+    // data['receiver'] = this.receiver;
     if (this.readBy != null) {
       data['read_by'] = this.readBy!.map((v) => v.toJson()).toList();
     }
@@ -706,9 +941,9 @@ class ReadBy {
   int? userId;
   int? conversationId;
   String? groupId;
-  Null? readAt;
-  Null? createdAt;
-  Null? updatedAt;
+  String? readAt;
+  String? createdAt;
+  String? updatedAt;
 
   ReadBy(
       {this.id,
