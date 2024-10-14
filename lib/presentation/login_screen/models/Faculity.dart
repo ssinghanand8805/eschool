@@ -57,6 +57,8 @@ class Faculity {
   String? symbol;
   String? basePrice;
   String? currency;
+  String? chatAccessToken;
+  String? chatUserId;
   Roles? roles;
 
   Faculity(
@@ -116,6 +118,8 @@ class Faculity {
         this.symbol,
         this.basePrice,
         this.currency,
+        this.chatAccessToken,
+        this.chatUserId,
         this.roles});
 
   Faculity.fromJson(Map<String, dynamic> json) {
@@ -177,6 +181,8 @@ class Faculity {
     symbol = json['symbol'];
     basePrice = json['base_price'];
     currency = json['currency'];
+    chatAccessToken = json['chatAccessToken'];
+    chatUserId = json['chatUserId'];
     roles = json['roles'] != null ? new Roles.fromJson(json['roles']) : null;
   }
 
@@ -238,6 +244,8 @@ class Faculity {
     data['symbol'] = this.symbol;
     data['base_price'] = this.basePrice;
     data['currency'] = this.currency;
+    data['chatAccessToken'] = this.chatAccessToken;
+    data['chatUserId'] = this.chatUserId;
     if (this.roles != null) {
       data['roles'] = this.roles!.toJson();
     }

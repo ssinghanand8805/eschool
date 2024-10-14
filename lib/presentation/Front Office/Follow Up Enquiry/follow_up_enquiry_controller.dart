@@ -19,6 +19,7 @@ class FollowUpEnquiryController extends GetxController{
   Rx<TextEditingController> noteC = TextEditingController().obs;
   var enquiryId;
   late Future<void> fetchDataFuture;
+
   @override
   void onInit() {
     // TODO: implement onInit

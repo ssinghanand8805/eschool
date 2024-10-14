@@ -76,5 +76,9 @@ class Constants {
   static const String followUpList = 'enquiry/follow_up_list';
   static const String addFollowUp = 'enquiry/follow_up_insert';
 
+  //chat
+  static const String getRecentChatUrl = 'conversations';
+  static const String getChatUrl = 'users/';
+
 
 }

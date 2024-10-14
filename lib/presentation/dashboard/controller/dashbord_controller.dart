@@ -447,6 +447,7 @@ class DashboardController extends GetxController {
                 data.body["image"];
     update();
     print("+++++++++++++++++++++${schoolImageUrl.value}");
+
   }
 
   eLearningapi() async {
@@ -456,6 +457,7 @@ class DashboardController extends GetxController {
     Map<String, dynamic> body = {
       "roleId": f!.roles!.roleId.toString(),
     };
+    print("))))))))))))))${f.chatAccessToken}");
     var data = await apiRespository.postApiCallByJson(
         Constants.findPermissionsUrl, body);
     Menus menus = Menus.fromJson(data.body);

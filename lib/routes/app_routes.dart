@@ -21,6 +21,7 @@ import 'package:learnladderfaculity/presentation/academics/Class%20Timetable/cla
 import 'package:learnladderfaculity/presentation/academics/Class/Binding/class_binding.dart';
 import 'package:learnladderfaculity/presentation/academics/Promote%20Student/Binding/promote_student_bindding.dart';
 import 'package:learnladderfaculity/presentation/academics/Subject/subject_view.dart';
+import 'package:learnladderfaculity/presentation/chat/RecentChatScreen.dart';
 import 'package:learnladderfaculity/presentation/download_center/Upload%20Content/Binding/upload_share_content_binding.dart';
 import 'package:learnladderfaculity/presentation/school_url/bindings/school_url_binding.dart';
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Syllabus%20Status/manage_syllabus_status_binding.dart';
@@ -112,6 +113,9 @@ import '../presentation/approve_leave/approve_leave_view.dart';
 import '../presentation/approve_leave/binding/approve_leave.dart';
 import '../presentation/attendance_bydate/attendance_bydate_view.dart';
 import '../presentation/attendance_bydate/binding/attendance_bydate.dart';
+import '../presentation/chat/ChatScreen.dart';
+import '../presentation/chat/binding/chat.dart';
+import '../presentation/chat/binding/recentchat.dart';
 import '../presentation/dashboard/binding/dashboard_binding.dart';
 import '../presentation/dashboard/dashboard_screen.dart';
 import '../presentation/download_center/Content Share List/Binding/content_share_list_binding.dart';
@@ -227,6 +231,8 @@ class AppRoutes {
   /// Admission Enquiry
   static const String admission_enquiry = '/admission_enquiry';
   static const String follow_up_enquiry = '/follow_up_admission_enquiry';
+  static const String chat = '/chat';
+  static const String chatMain = '/chatMain';
 
 
 
@@ -628,6 +634,16 @@ class AppRoutes {
       name: follow_up_enquiry,
       page: () => FollowUpEnquiryView(),
       bindings: [FollowUpBinding()],
+    ),
+    GetPage(
+      name: chat,
+      page: () => RecentChatScreen(),
+      bindings: [RecentChatBinding()],
+    ),
+    GetPage(
+      name: chatMain,
+      page: () => ChatScreen(),
+      bindings: [ChatBinding()],
     ),
 
   ];

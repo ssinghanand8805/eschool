@@ -6,6 +6,8 @@ import 'package:learnladderfaculity/apiHelper/userData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/api.dart';
+import '../../../apiHelper/chatApi.dart';
+import '../../../apiHelper/chat_api_repo.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
 import '../../../core/app_export.dart';
@@ -32,6 +34,7 @@ class SchoolUrlController extends GetxController {
   getSchoolUrl(code) async
   {
     String newUrl = "";
+    String newChatBaseUrl = "";
   var t= jsonEncode(<String, String>{
     'schoolCode': code,
   });
@@ -49,19 +52,24 @@ class SchoolUrlController extends GetxController {
   var data = jsonDecode(response.body) as Map<String, dynamic>;
   print(data);
   newUrl = data['baseurl'];
+      newChatBaseUrl = data['chatbaseurl'];
 
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
       newUrl = "";
+      newChatBaseUrl = "";
     }
-return newUrl;
+    var d = {"newUrl":newUrl,"newChatBaseUrl":newChatBaseUrl};
+return d;
   }
   Future<void> getData(context) async
   {
     var httpClient = HttpClient();
     try {
-      String baseUrl = await getSchoolUrl(urlController.value.text.toString()); //urlController.value.text.toString()!.endsWith("/") ? urlController.value.text.toString().toString() : urlController.value.text.toString().toString() + "/";
+      var resB = await getSchoolUrl(urlController.value.text.toString()); //urlController.value.text.toString()!.endsWith("/") ? urlController.value.text.toString().toString() : urlController.value.text.toString().toString() + "/";
+      String baseUrl  = resB['newUrl'];
+      String chatBaseUrl  = resB['newChatBaseUrl'];
       // Define the Uri. Replace 'https://example.com/api' with your API endpoint.
           if(baseUrl != "")
             {
@@ -86,6 +94,7 @@ return newUrl;
                 print('Response: $data');
                 final prefs = await SharedPreferences.getInstance();
                 await  prefs.setString("schoolBaseUrl",  baseUrl.toString());
+                await  prefs.setString("schoolChatBaseUrl",  chatBaseUrl.toString());
                 await  prefs.setString("schoolName",data["name"] ?? "");
                 await  prefs.setString("schoolAddress",data["address"] ?? "");
                 await  prefs.setString("schoolPhone",data["phone"] ?? "");
@@ -96,9 +105,10 @@ return newUrl;
                 await  prefs.setString("schoolStartMonthNumber",data["start_month"] ?? "");
                 await  prefs.setString("schoolImage",data["image"] ?? "");
 
-                Get.lazyPut(()=>ApiClient(appBaseUrl: "${baseUrl}api/"),fenix: true);
-                //repose
-                Get.lazyPut(()=>ApiRespository(apiClient: Get.find()));
+                Get.lazyPut(()=>ApiClient(appBaseUrl: "${baseUrl}api/"),tag: 'generalApi', fenix: true);
+                Get.lazyPut(()=>ApiRespository(apiClient: Get.find(tag: 'generalApi')));
+                Get.lazyPut(()=>chatApiClient(appBaseUrl: "${chatBaseUrl}api/"),tag: 'chatApi',fenix: true);
+                Get.lazyPut(()=>ChatApiRespository(apiClient: Get.find(tag: 'chatApi')));
 
                 // data.forEach((key, value) async {
                 //   if (value is String) {

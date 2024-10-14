@@ -7,6 +7,7 @@ import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../widgets/alert_dialogue.dart';
+import 'CustomScaffoldController.dart';
 import 'enquiry_data_modal.dart';
 
 class AdmissionEnquiryController extends GetxController {
@@ -32,22 +33,51 @@ class AdmissionEnquiryController extends GetxController {
   Rx<TextEditingController> lastClassC = TextEditingController().obs;
   Rx<TextEditingController> occupationC = TextEditingController().obs;
   Rx<TextEditingController> discriptionC = TextEditingController().obs;
+
+
+
+  RxString selectedClassName = "".obs;
+  RxString selectedSourceName = "".obs;
+  RxString selectedStatusName = "".obs;
+  RxString selectedFollowUpDate = ''.obs;
+  RxString selectedNextFollowUpDate = ''.obs;
   late Future<void> fetchDataFuture;
   @override
   void onInit()  {
     super.onInit();
-    // fromDateC.value.text = await GlobalData().ConvertToSchoolDateTimeFormat(DateTime.now());
+
+    fromDateC.value.addListener(() {
+      selectedFollowUpDate.value = fromDateC.value.text;
+    });
+
+    toDateC.value.addListener(() {
+      selectedNextFollowUpDate.value = toDateC.value.text;
+    });
+    CustomScaffoldController customScaffoldController = Get.put(CustomScaffoldController());
+
+    Map<String, RxString> chipData  = {
+      'Class': selectedClassName,
+      'Source': selectedSourceName,
+       'Follow Up Date': selectedFollowUpDate,
+      'Next Follow Up Date': selectedNextFollowUpDate,
+      'Status': selectedStatusName,
+    };
+    customScaffoldController.updateChipDataList = chipData;
+    customScaffoldController.watchRxStringVariables(chipData);
     //
-    // toDateC.value.text = await GlobalData().ConvertToSchoolDateTimeFormat(DateTime.now());
-    // fetchDataFuture = enquiry();
     fetchDataFuture = initializeData();
 
   }
+
+  // Helper function to watch multiple RxString variables
+
   Future<void> initializeData() async  {
     fromDateC.value.text = await GlobalData().ConvertToSchoolDateTimeFormat(DateTime.now());
     toDateC.value.text = await GlobalData().ConvertToSchoolDateTimeFormat(DateTime.now());
     await enquiry(); // Initialize fetchDataFuture here
   }
+
+
   enquiry() async {
     Map<String, dynamic> body = {
       // "class_id":"1",

@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 import 'api.dart';
+import 'chatApi.dart';
+import 'chat_api_repo.dart';
 
 
 Future<void> init()async {
@@ -15,10 +17,13 @@ Future<void> init()async {
   final prefs = await SharedPreferences.getInstance();
 
   bool isBaseUrlFound = prefs.containsKey("schoolBaseUrl");
+  bool isChatBaseUrlFound = prefs.containsKey("schoolChatBaseUrl");
   String? baseUrlP ;
+  String? chatBaseUrlP ;
   if(isBaseUrlFound == true)
     {
       baseUrlP =  prefs.getString("schoolBaseUrl");
+      chatBaseUrlP =  prefs.getString("schoolChatBaseUrl");
     }
   else
     {
@@ -27,10 +32,18 @@ Future<void> init()async {
     }
   // String? baseUrlP =  prefs.getString("schoolBaseUrl");
   String baseUrl = baseUrlP!.endsWith("/") ? baseUrlP.toString() : baseUrlP.toString() + "/"; //"http://172.16.19.96/school3/api/"
+  String chatBaseUrl = chatBaseUrlP!.endsWith("/") ? chatBaseUrlP.toString() : chatBaseUrlP.toString() + "/"; //"http://172.16.19.96/school3/api/"
   await GetStorage.init();
   Get.lazyPut(()=>ApiClient(appBaseUrl: "${baseUrl}api/"),fenix: true);
   //repose
   Get.lazyPut(()=>ApiRespository(apiClient: Get.find()));
+
+
+
+  Get.lazyPut(()=>ApiClient(appBaseUrl: "${baseUrl}api/"),tag: 'generalApi', fenix: true);
+  Get.lazyPut(()=>ApiRespository(apiClient: Get.find(tag: 'generalApi')));
+  Get.lazyPut(()=>chatApiClient(appBaseUrl: "${chatBaseUrl}api/"),tag: 'chatApi',fenix: true);
+  Get.lazyPut(()=>ChatApiRespository(apiClient: Get.find(tag: 'chatApi')));
 
  // Get.lazyPut(()=>LoginController(popularProductRepo: Get.find()));
 

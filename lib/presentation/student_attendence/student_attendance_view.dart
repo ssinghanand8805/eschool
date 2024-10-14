@@ -6,6 +6,7 @@ import 'package:learnladderfaculity/presentation/common_widgets/custom_loader.da
 import '../../../widgets/myCustomsd.dart';
 import '../../apiHelper/GlobalData.dart';
 import '../../theme/theme_helper.dart';
+import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/datePickerTextField.dart';
 import '../common_widgets/CommonForm.dart';
 import '../common_widgets/controller/CommonController.dart';
@@ -133,21 +134,13 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
                 ),
                 widgetformData: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Student List',
-                          style: theme.textTheme.bodyMedium,
-                        ),
-                      ],
-                    ),
+                SizedBox(height: 10,),
                     Expanded(
                         child: controller.isLoadingStudentList.isTrue
                             ? CustomLoader()
                             : controller.studentListModel.value.length == 0
                                 ? Text("No Data")
-                                : StudentListPage())
+                                : AttendancePage())
                   ],
                 ),
                 onTapAction: filterData);
@@ -164,6 +157,12 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
   }
 }
 
+
+
+
+
+
+
 class StudentListPage extends StatefulWidget {
   @override
   _StudentListPageState createState() => _StudentListPageState();
@@ -174,8 +173,7 @@ class _StudentListPageState extends State<StudentListPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    StudentAttendanceController controller2 =
-        Get.put(StudentAttendanceController());
+
   }
 
   StudentAttendanceController controller =
@@ -447,5 +445,181 @@ class _StudentTileState extends State<StudentTile> {
         ],
       ),
     );
+  }
+}
+
+
+
+
+
+class AttendancePage extends StatefulWidget {
+  @override
+  State<AttendancePage> createState() => _AttendancePageState();
+}
+
+class _AttendancePageState extends State<AttendancePage> {
+  String _selectedValue = 'i';
+   // Initialize all as 'P' (Present)
+  StudentAttendanceController controller =
+  Get.put(StudentAttendanceController());
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  _markAll(controller,'P'); // Mark all as present
+                },
+                icon: Icon(Icons.check_circle, color: Colors.green),
+                label: Text('All Present'),
+                style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white),
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  _markAll(controller,'A'); // Mark all as absent
+                },
+                icon: Icon(Icons.cancel, color: Colors.red),
+                label: Text('All Absent'),
+                style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white),
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  _markAll(controller,'L'); // Mark all as on leave
+                },
+                icon: Icon(Icons.event_busy, color: Colors.orange),
+                label: Text('All Leave'),
+                style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: controller.studentListModel.value.length,
+            itemBuilder: (context, index) {
+              Resultlist student =  controller.studentListModel.value[index];
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: ListTile(
+
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage('https://thumbs.dreamstime.com/b/child-girl-schoolgirl-elementary-school-student-123686003.jpg'),
+                  ),
+                  title: Text('${student.firstname} ${student.middlename ?? ""} ${student.lastname ?? ""}',style: TextStyle(fontSize: 14),),
+                  subtitle: Text('Roll No. ${student.rollNo}',style: TextStyle(fontSize: 14),),
+                  trailing: Column(
+
+                    children: [
+                      Text("${student.admissionNo}"),
+                      SizedBox(height: 5,),
+                      GestureDetector(
+                        onTap: () {
+                          _toggleAttendance(controller,index); // Toggle individual attendance
+                        },
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            color: _getAttendanceColor(controller.attendanceStatus[index]),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              controller.attendanceStatus[index],
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: CustomElevatedButton(
+                  onPressed: () {
+                    controller.saveAttendance();
+                  },
+                  text: 'Mark Attendance',
+                  buttonTextStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+
+              SizedBox(width: 8),
+
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Mark all students as present, absent, or on leave
+  void _markAll(controller,String status) {
+    controller.attendanceStatus = List.filled(controller.attendanceStatus.length, status);
+    controller.update();
+    // setState(() {
+    //   _attendanceStatus = List.filled(_attendanceStatus.length, status);
+    // });
+  }
+
+  // Toggle individual attendance status
+  void _toggleAttendance(controller,int index) {
+    setState(() {
+      if (controller.attendanceStatus[index] == 'P') {
+        controller.attendanceStatus[index] = 'A'; // Present to Absent
+      } else if (controller.attendanceStatus[index] == 'A') {
+        controller.attendanceStatus[index] = 'L'; // Absent to Leave
+      } else {
+        controller.attendanceStatus[index] = 'P'; // Leave to Present
+      }
+    });
+  }
+
+  // Get the color for each attendance status
+  Color _getAttendanceColor(String status) {
+    switch (status) {
+      case 'P':
+        return Colors.green;
+      case 'A':
+        return Colors.red;
+      case 'L':
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
   }
 }

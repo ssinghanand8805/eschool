@@ -27,7 +27,7 @@ class StudentAttendanceController extends GetxController {
   RxList<Attendencetypeslist> attendencetypestListModel =
       <Attendencetypeslist>[].obs;
   var remarks = <String, TextEditingController>{}.obs;
-
+  List<String> attendanceStatus = List.filled(8, 'P');
   late Future<void> fetchDataFuture;
   @override
   void onClose() {
@@ -137,7 +137,21 @@ class StudentAttendanceController extends GetxController {
 
   saveAttendance() async {
     for (var i = 0; i < studentAttendenceModel.value.length; i++) {
-      studentAttendenceModel.value[i].remark = getRemarkController( studentAttendenceModel.value[i].studentSession!)!.text;
+      String st = attendanceStatus[i];
+      int attID = 0;
+      if(st == 'P')
+        {
+          attID  = 1;
+        }
+      else if(st == 'A')
+      {
+        attID  =4;
+      }
+      else if(st == 'L')
+      {
+        attID  = 5;
+      }
+      studentAttendenceModel.value[i].attendencetype = attID.toString();//getRemarkController( studentAttendenceModel.value[i].studentSession!)!.text;
     }
     List<Map<String, dynamic>> students = studentAttendenceModel.value
         .map((student) => student.toJson())

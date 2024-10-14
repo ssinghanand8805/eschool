@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/api.dart';
 import '../../../apiHelper/userData.dart';
+import '../../Front Office/admission _enquiry/CustomScaffoldController.dart';
 import '../../common_widgets/controller/CommonApiController.dart';
 import '../../login_screen/models/Faculity.dart';
 import 'DataModal.dart';
@@ -20,13 +21,27 @@ class StudentDetailsController extends GetxController{
   Rx<TextEditingController> searchC = TextEditingController().obs;
 
   CommonApiController commonApiController = Get.put(CommonApiController());
-
-
+  late Future<void> fetchDataFuture;
+  RxString selectedClassName = "".obs;
+  RxString selectedSectionName = ''.obs;
   @override
   void onInit() async {
     super.onInit();
-  }
+    Map<String, RxString> chipData  = {
+      'Class': selectedClassName,
+      'Section': selectedSectionName
+    };
+    CustomScaffoldController customScaffoldController = Get.put(CustomScaffoldController());
+    customScaffoldController.updateChipDataList = chipData;
+    customScaffoldController.watchRxStringVariables(chipData);
 
+    fetchDataFuture = initializeData();
+  }
+  Future<void> initializeData() async  {
+    studentDetailsList = [];
+
+ // Initialize fetchDataFuture here
+  }
 
 
   studentByClassSection() async {

@@ -9,12 +9,16 @@ class GlobalData {
   GlobalData._internal();
 
   String baseUrlValueFromPref = '';
+  String chatBaseUrlValueFromPref = '';
 
   Future<void> loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String ur = prefs.getString('schoolBaseUrl') ?? 'http://aatreya.avadhconnect.com/';
+    String cur = prefs.getString('schoolChatBaseUrl') ?? '';
     String baseUrl = ur.toString().endsWith("/") ? ur.toString() :ur.toString().toString() + "/";
+    String chatUrl = cur.toString().endsWith("/") ? cur.toString() :cur.toString().toString() + "/";
     baseUrlValueFromPref = baseUrl;
+    chatBaseUrlValueFromPref = chatUrl;
   }
 
   Future<String> ConvertToSchoolDateTimeFormat(DateTime dateTobeConvert) async {
