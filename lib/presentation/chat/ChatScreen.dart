@@ -76,13 +76,15 @@ class ChatScreen extends  GetView<ChatController> {
                         print(message.sender);
                         String senderUserId = message!.sender == null ? "" : message!.sender!.id!.toString();
                         String msgSenderName = message!.sender == null ? "" : message!.sender!.name!.toString();
+                        bool isNoti = message.sender == null ? true : false;
                         bool isSentByMe = senderUserId == controller.chatUserId  ? true : false;
                         return MessageItem(
                            controller:controller,
                           message: message,
                           isGroupChat: controller.isGroup == 1 ?  true: false,
                             isSentByMe:isSentByMe,
-                            msgSenderName:msgSenderName
+                            msgSenderName:msgSenderName,
+                            isNoti:isNoti
                         );
                       },
                     ),
@@ -110,6 +112,7 @@ class MessageItem extends StatelessWidget {
   final Conversations message;
   final bool isGroupChat;
   final bool isSentByMe;
+  final bool isNoti;
   final String msgSenderName;
 
   const MessageItem( {
@@ -118,6 +121,7 @@ class MessageItem extends StatelessWidget {
     required this.message,
     this.isGroupChat = false,
     this.isSentByMe = false,
+    this.isNoti = false,
     required this.msgSenderName ,
   }) : super(key: key);
 
