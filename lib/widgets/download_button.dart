@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import '../theme/theme_helper.dart';
@@ -47,7 +47,7 @@ Future<void> downloadFileFromAPI(String fileUrl, String fileName) async {
     final file = File(filePath);
     await file.writeAsBytes(response.bodyBytes);
     print('File downloaded: $filePath');
-    await OpenFile.open(filePath);
+    await OpenFilex.open(filePath);
   } catch (e) {
     print('Error downloading file: $e');
   }

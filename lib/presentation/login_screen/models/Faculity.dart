@@ -1,6 +1,6 @@
 import '../../../apiHelper/GlobalData.dart';
 
-class Faculity {
+class Faculity{
   String? id;
   String? employeeId;
   String? langId;
@@ -182,7 +182,7 @@ class Faculity {
     basePrice = json['base_price'];
     currency = json['currency'];
     chatAccessToken = json['chatAccessToken'];
-    chatUserId = json['chatUserId'];
+    chatUserId = json['chatUserId'].toString();
     roles = json['roles'] != null ? new Roles.fromJson(json['roles']) : null;
   }
 

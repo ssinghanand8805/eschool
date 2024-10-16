@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:learnladderfaculity/core/app_export.dart';
 
 import '../common_widgets/custom_loader.dart';
 import 'ChatScreen.dart';
@@ -24,41 +25,13 @@ class RecentChatScreen extends StatefulWidget {
 
 class _RecentChatScreenState extends State<RecentChatScreen> {
   RecentChatController controller = Get.put(RecentChatController());
-  final List<Map<String, dynamic>> recentChats = [
-    {
-      'name': 'John Doe',
-      'message': 'Hey, how are you?',
-      'time': '12:30 PM',
-      'isGroupChat': false,
-      'avatar': 'https://gratisography.com/wp-content/uploads/2024/01/gratisography-cyber-kitty-800x525.jpg'
-    },
-    {
-      'name': 'Flutter Devs',
-      'message': 'New project update',
-      'time': '11:00 AM',
-      'isGroupChat': true,
-      'avatar': 'https://gratisography.com/wp-content/uploads/2024/01/gratisography-cyber-kitty-800x525.jpg'
-    },
-    {
-      'name': 'Emily Watson',
-      'message': 'Lunch tomorrow?',
-      'time': '10:15 AM',
-      'isGroupChat': false,
-      'avatar': 'https://gratisography.com/wp-content/uploads/2024/01/gratisography-cyber-kitty-800x525.jpg'
-    },
-    {
-      'name': 'Team Alpha',
-      'message': 'Meeting at 3 PM',
-      'time': '9:00 AM',
-      'isGroupChat': true,
-      'avatar': 'https://gratisography.com/wp-content/uploads/2024/01/gratisography-cyber-kitty-800x525.jpg'
-    }
-  ];
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: theme.primaryColorLight,
         title: const Text('Recent Chats'),
       ),
       body: GetBuilder(

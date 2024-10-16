@@ -22,12 +22,7 @@ class CustomLoader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(
-                    strokeWidth: 4.0,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).primaryColor,
-                    ),
-                  ),
+                  CircularProgressIndicator(backgroundColor: Colors.red.shade400,),
                   SizedBox(height: 16.0),
                   Text(
                     message,
