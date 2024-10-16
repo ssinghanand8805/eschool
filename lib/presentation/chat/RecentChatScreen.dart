@@ -51,6 +51,7 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
                     onTap: () {
                       final String chatID = chat.isGroup == 1 ? chat.group!.id! : chat.user!.id!.toString();
                       final int isGroupChat = chat.isGroup!;
+
                       Get.toNamed('/chatMain',arguments: { 'chat': chat,'isGroup': isGroupChat,"chatId": chatID});
                       // Navigator.push(
                       //   context,
