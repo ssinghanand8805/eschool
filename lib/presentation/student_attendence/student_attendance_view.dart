@@ -124,7 +124,7 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
 
                     DatePickerTextField(
                         controller: controller.attendanceDate.value,
-                        title: 'Next Follow up date',
+                        title: 'Attendace date',
                         onDateSelected: (date) async {
                           controller.attendanceDate.value.text =
                           await GlobalData().ConvertToSchoolDateTimeFormat(date);

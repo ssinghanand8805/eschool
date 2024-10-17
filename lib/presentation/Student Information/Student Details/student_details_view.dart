@@ -12,6 +12,11 @@ import 'DataModal.dart';
 class StudentDetailsView extends GetView<StudentDetailsController>{
   @override
   Widget build(BuildContext context) {
+    if(controller.isInit)
+      {
+        filterControls(context);
+        controller.isInit = false;
+      }
 
     return CustomScaffold(parentController: controller,
       filterFunction: filterControls,
@@ -218,28 +223,7 @@ class StudentDetailsView extends GetView<StudentDetailsController>{
                               ),
                             ),
                           )
-                        // Column(
-                        //   children: [
-                        //     Row(
-                        //       children: [
-                        //         CircleAvatar(
-                        //           backgroundColor: Colors.green.shade100,
-                        //           radius: 22,
-                        //           child: Icon(Icons.person,),
-                        //         ),
-                        //         Text("Student Name(01101)",style: theme.textTheme.bodyMedium,),
-                        //       ],
-                        //     ),
-                        //     Row(
-                        //       children: [
-                        //         Text("Class",style: theme.textTheme.bodySmall),
-                        //         Text("class 1(A)",style: theme.textTheme.bodySmall)
-                        //       ],
-                        //     )
-                        //
-                        //
-                        //   ],
-                        // ),
+
                       ),
                     ),
                   );
@@ -879,6 +863,8 @@ class StudentDetailsView extends GetView<StudentDetailsController>{
                 valFrom: "className",
                 label: 'Class',
                 labelText: 'Class',
+                initialValue: [{ 'parameter': 'id',
+                  'value': controller.commonApiController.selectedClassId!}],
                 onChanged: (val) {
                   if(controller.commonApiController.classListModelMap.value.length > 0)
                   {
@@ -905,6 +891,8 @@ class StudentDetailsView extends GetView<StudentDetailsController>{
                 valFrom: "section",
                 label: 'Section',
                 labelText: 'Section',
+                initialValue: [{ 'parameter': 'id',
+                  'value': controller.commonApiController.selectedSectionId!}],
                 onChanged: (val) {
                   print(val);
                   if(controller.commonApiController.sectionListModelMap.value.length > 0)

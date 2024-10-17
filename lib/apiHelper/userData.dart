@@ -1,6 +1,7 @@
 
 
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:learnladderfaculity/apiHelper/popular_product_repo.dart';
@@ -44,7 +45,10 @@ class UserData extends GetxController {
 
 
   void saveFaculity(Faculity user) async {
+
     userData.write('faculityData', user.toJson()); // Saving the user model as JSON
+    print("#@#@#");
+    log(json.encode(getFaculity()!.toJson()));
     final prefs = await SharedPreferences.getInstance();
     prefs.setString("faculityData", json.encode(user.toJson()));
     await prefs.setBool('isLoggegIn', true);

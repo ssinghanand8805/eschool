@@ -24,9 +24,11 @@ class StudentDetailsController extends GetxController{
   late Future<void> fetchDataFuture;
   RxString selectedClassName = "".obs;
   RxString selectedSectionName = ''.obs;
+  bool isInit = false;
   @override
   void onInit() async {
     super.onInit();
+    isInit = true;
     Map<String, RxString> chipData  = {
       'Class': selectedClassName,
       'Section': selectedSectionName
@@ -36,7 +38,10 @@ class StudentDetailsController extends GetxController{
     customScaffoldController.watchRxStringVariables(chipData);
 
     fetchDataFuture = initializeData();
+
   }
+
+
   Future<void> initializeData() async  {
     studentDetailsList = [];
 

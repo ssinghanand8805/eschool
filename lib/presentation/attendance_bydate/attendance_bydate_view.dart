@@ -12,7 +12,9 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/myCustomsd.dart';
+import '../../apiHelper/GlobalData.dart';
 import '../../widgets/customTextField.dart';
+import '../../widgets/datePickerTextField.dart';
 import '../common_widgets/CommonForm.dart';
 import '../common_widgets/controller/CommonApiController.dart';
 import '../common_widgets/controller/CommonController.dart';
@@ -142,27 +144,13 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
                       SizedBox(
                         height: 3,
                       ),
-                      Container(
-                        height: 43,
-                        child: TextField(
-                          style: theme.textTheme.bodySmall,
-                          decoration: InputDecoration(
-                            hintText: DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                                borderRadius: BorderRadius.all(Radius.circular(5))),
-                          ),
-                          readOnly: true,
+                      DatePickerTextField(
                           controller: controller.attendanceDate.value,
-                          onTap: () async {
-                            final date = await getDate();
-                            if (date != null) {
-                              controller.attendanceDate.value.text =
-                                  DateFormat('dd/MM/yyyy').format(date);
-                            }
-                          },
-                        ),
-                      ),
+                          title: 'Attendace date',
+                          onDateSelected: (date) async {
+                            controller.attendanceDate.value.text =
+                            await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                          }),
                       SizedBox(
                         height: 17,
                       ),

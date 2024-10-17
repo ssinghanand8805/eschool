@@ -105,8 +105,8 @@ return d;
                 await  prefs.setString("schoolStartMonthNumber",data["start_month"] ?? "");
                 await  prefs.setString("schoolImage",data["image"] ?? "");
 
-                Get.lazyPut(()=>ApiClient(appBaseUrl: "${baseUrl}api/"),tag: 'generalApi', fenix: true);
-                Get.lazyPut(()=>ApiRespository(apiClient: Get.find(tag: 'generalApi')));
+                Get.lazyPut(()=>ApiClient(appBaseUrl: "${baseUrl}api/"), fenix: true);
+                Get.lazyPut(()=>ApiRespository(apiClient: Get.find()));
                 Get.lazyPut(()=>chatApiClient(appBaseUrl: "${chatBaseUrl}api/"),tag: 'chatApi',fenix: true);
                 Get.lazyPut(()=>ChatApiRespository(apiClient: Get.find(tag: 'chatApi')));
 

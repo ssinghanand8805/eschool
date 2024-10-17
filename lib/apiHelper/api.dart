@@ -28,6 +28,8 @@ class ApiClient extends GetConnect implements GetxService {
     token=  userData.getAccessToken;
     UserData usersData = UserData();
     Faculity? f =  usersData.getFaculity();
+   // loadHeader();
+    // print("**********${f!.toJson()}");
     // _mainHeader['userID'] = f == null ? "2" : f.id.toString();
     _mainHeader= {
       'token': userData.getAccessToken,
@@ -43,8 +45,14 @@ class ApiClient extends GetConnect implements GetxService {
 loadHeader() async
 {
   UserData usersData = UserData();
+  print("*************************************");
   Faculity? f = await usersData.getFaculity();
+  log(json.encode(f!.toJson()));
   _mainHeader['userID'] = f == null ? "2" : f.id.toString();
+  _mainHeader['Staff-Id'] = f == null ? "0" : f.id.toString();
+  _mainHeader['Role'] = f != null ? f.roles!.roleId! : "0";
+  _mainHeader['userID'] = f != null ? f.id! : "0";
+
 
 
 }
@@ -52,7 +60,7 @@ loadHeader() async
   Future<Response> getData(
     String uri,
   ) async {
-
+    await loadHeader();
     print("Api Url  $baseUrl$uri");
     print("Request header $_mainHeader");
     try {
@@ -65,7 +73,7 @@ loadHeader() async
 
   Future<Response> postDataFormData(uri,body)async{
 
-
+    await loadHeader();
     try{
       print("Api Url  $baseUrl$uri");
       print("Request body $body");
@@ -82,6 +90,31 @@ loadHeader() async
   }
 
   Future<Response> postDatabyJson(uri,body)async{
+    await loadHeader();
+    log("Api Url  "+(baseUrl!+uri).toString());
+    log("header  ${_mainHeader}");
+    log("body  ${body}");
+
+
+    try{
+      Response response=await post(uri, body,headers: _mainHeader ,contentType: 'application/json');
+      print("eEEEEEEEEEEEEEEEEEEEEE${response.body}");
+      return response;
+    }on SocketException{
+      return const Response(statusCode: -1,statusText:"No Internet found");
+    }
+    on TimeoutException{
+      return const Response(statusCode: -2,statusText:"Something went wrong ! please try again ");
+    }
+    catch(e){
+      return Response(statusCode: 0,statusText: e.toString());
+    }
+
+
+  }
+
+  Future<Response> postDatabyJsonForLogin(uri,body)async{
+   // await loadHeader();
     log("Api Url  "+(baseUrl!+uri).toString());
     log("header  ${_mainHeader}");
     log("body  ${body}");

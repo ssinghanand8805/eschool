@@ -59,38 +59,40 @@ class CustomScaffold extends GetView<CustomScaffoldController> {
                         children: [
                           Column(
                             children: [
-                              SizedBox(
-                                height: 50,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  // Sort the keys based on whether their corresponding values are empty or not
-                                  itemCount: controller.getChipDataList.keys.length,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    // Get all entries from the map and split them based on whether their values are non-empty
-                                    List<MapEntry<String, RxString>> sortedEntries = [
-                                      ...controller.getChipDataList.entries.where((entry) => entry.value.value.isNotEmpty), // Non-empty first
-                                      ...controller.getChipDataList.entries.where((entry) => entry.value.value.isEmpty),    // Empty after
-                                    ];
+                      SizedBox(
+                      height: 50,
+                        child: controller.getChipDataList.entries
+                            .any((entry) => entry.value.value.isNotEmpty)
+                            ? ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: controller.getChipDataList.entries
+                              .where((entry) => entry.value.value.isNotEmpty)
+                              .length,
+                          itemBuilder: (BuildContext context, int index) {
+                            // Filter entries to only include those with non-empty values
+                            List<MapEntry<String, RxString>> nonEmptyEntries = controller
+                                .getChipDataList.entries
+                                .where((entry) => entry.value.value.isNotEmpty)
+                                .toList();
 
-                                    // Get the entry based on the index
-                                    String key = sortedEntries[index].key;
-                                    RxString rxValue = sortedEntries[index].value;
+                            // Get the entry based on the index
+                            String key = nonEmptyEntries[index].key;
+                            RxString rxValue = nonEmptyEntries[index].value;
 
-                                    // Return the widget for each entry
-                                    return Obx(() {
-                                      return Chip(
-                                        label: Text("$key: ${rxValue.value}"),
-                                      );
-                                    });
-                                  },
-                                )
-                                ,
-
-
-                              ),
+                            // Return the widget for each non-empty entry
+                            return Obx(() {
+                              return Chip(
+                                label: Text("$key: ${rxValue.value}"),
+                              );
+                            });
+                          },
+                        )
+                            : Container(),
+                      ),
 
 
-                            ],
+
+                      ],
                           ),
 
                          bodyWidget

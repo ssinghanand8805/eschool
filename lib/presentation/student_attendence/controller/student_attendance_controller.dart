@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../apiHelper/Constants.dart';
 import '../../../../apiHelper/popular_product_repo.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/userData.dart';
 import '../../common_widgets/controller/CommonApiController.dart';
 import '../model/Student_Attendance.dart';
@@ -39,10 +40,17 @@ class StudentAttendanceController extends GetxController {
     super.onInit();
 
     DateTime now = DateTime.now();
-    getData();
+    setDateOnInit();
+
     //getDataFromApi( now);// Initialize the future when the controller is created
   }
-
+setDateOnInit()
+async {
+  DateTime now = DateTime.now();
+ var d =  await GlobalData().ConvertToSchoolDateTimeFormat(now);
+  attendanceDate.value.text = d;
+  getData();
+}
   void addOrUpdateRemarkController(String studentId,{bool remarkFound = false,String? remark = ""}) {
     if (!remarks.containsKey(studentId)) {
       remarks[studentId] = TextEditingController();

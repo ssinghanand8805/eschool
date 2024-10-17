@@ -39,7 +39,7 @@ class LoginController extends GetxController {
       "deviceToken": userData.getUserFCMDeviceToken
     };
 
-    var data = await apiRespository.postApiCallByJson(Constants.authUrl, body);
+    var data = await apiRespository.postApiCallByJsonForLogin(Constants.authUrl, body);
 
     print("DATA @@@@ ${data.body}");
     if(data.body is bool)

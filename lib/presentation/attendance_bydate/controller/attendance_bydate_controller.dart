@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../apiHelper/Constants.dart';
 import '../../../../apiHelper/popular_product_repo.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/userData.dart';
 import '../../add_homework/model/addHomework.dart';
 import '../../common_widgets/controller/CommonApiController.dart';
@@ -52,13 +53,22 @@ class AttendanceByDateController extends GetxController {
     searchController.value.addListener(() {
       filterStudentList();
     });
-    kEvents.value = LinkedHashMap<DateTime, List<Event>>(
-      equals: isSameDay,
-      hashCode: getHashCode,
-    )..addAll(_kEventSource.value);
-    DateTime now = DateTime.now();
-    getData();
+    setDateOnInit();
+    // kEvents.value = LinkedHashMap<DateTime, List<Event>>(
+    //   equals: isSameDay,
+    //   hashCode: getHashCode,
+    // )..addAll(_kEventSource.value);
+    // DateTime now = DateTime.now();
+    // getData();
  // Initialize the future when the controller is created
+  }
+
+  setDateOnInit()
+  async {
+    DateTime now = DateTime.now();
+    var d =  await GlobalData().ConvertToSchoolDateTimeFormat(now);
+    attendanceDate.value.text = d;
+    // getData();
   }
   void filterStudentList() {
     final query = searchController.value.text.toLowerCase();
@@ -127,7 +137,9 @@ class AttendanceByDateController extends GetxController {
     update();
   }
   Future<void> getData() async {
+
     CommonApiController controller3 = Get.put(CommonApiController());
+    controller3.classListModelMap.clear();
     controller3.getClassList();
     update();
   }

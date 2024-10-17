@@ -32,7 +32,13 @@ Future<void> init()async {
     }
   // String? baseUrlP =  prefs.getString("schoolBaseUrl");
   String baseUrl = baseUrlP!.endsWith("/") ? baseUrlP.toString() : baseUrlP.toString() + "/"; //"http://172.16.19.96/school3/api/"
-  String chatBaseUrl = chatBaseUrlP!.endsWith("/") ? chatBaseUrlP.toString() : chatBaseUrlP.toString() + "/"; //"http://172.16.19.96/school3/api/"
+  if(chatBaseUrlP != null)
+    {
+      String chatBaseUrl = chatBaseUrlP!.endsWith("/") ? chatBaseUrlP.toString() : chatBaseUrlP.toString() + "/"; //"http://172.16.19.96/school3/api/"
+      Get.lazyPut(()=>chatApiClient(appBaseUrl: "${chatBaseUrl}api/"),tag: 'chatApi',fenix: true);
+      Get.lazyPut(()=>ChatApiRespository(apiClient: Get.find(tag: 'chatApi')));
+    }
+
   await GetStorage.init();
   Get.lazyPut(()=>ApiClient(appBaseUrl: "${baseUrl}api/"),fenix: true);
   //repose
@@ -40,10 +46,9 @@ Future<void> init()async {
 
 
 
-  Get.lazyPut(()=>ApiClient(appBaseUrl: "${baseUrl}api/"),tag: 'generalApi', fenix: true);
-  Get.lazyPut(()=>ApiRespository(apiClient: Get.find(tag: 'generalApi')));
-  Get.lazyPut(()=>chatApiClient(appBaseUrl: "${chatBaseUrl}api/"),tag: 'chatApi',fenix: true);
-  Get.lazyPut(()=>ChatApiRespository(apiClient: Get.find(tag: 'chatApi')));
+  // Get.lazyPut(()=>ApiClient(appBaseUrl: "${baseUrl}api/"),tag: 'generalApi', fenix: true);
+  // Get.lazyPut(()=>ApiRespository(apiClient: Get.find(tag: 'generalApi')));
+
 
  // Get.lazyPut(()=>LoginController(popularProductRepo: Get.find()));
 
