@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/presentation/common_widgets/controller/CommonApiController.dart';
 import 'package:learnladderfaculity/presentation/common_widgets/custom_loader.dart';
+import 'package:lottie/lottie.dart';
 import '../../../widgets/myCustomsd.dart';
 import '../../apiHelper/GlobalData.dart';
 import '../../theme/theme_helper.dart';
@@ -139,7 +140,7 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
                         child: controller.isLoadingStudentList.isTrue
                             ? CustomLoader()
                             : controller.studentListModel.value.length == 0
-                                ? Text("No Data")
+                                ? Container(child: Lottie.asset("assets/images/no_data_found.json"),)
                                 : AttendancePage())
                   ],
                 ),
