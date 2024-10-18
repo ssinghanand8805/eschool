@@ -42,9 +42,18 @@ class UserData extends GetxController {
   bool get getIsUserImage => userData.read('isUserImage') ?? false;
   String get getLastUserId => userData.read('lastUserId') ?? "";
   String get getLastUserPwd => userData.read('lastUserPwd') ?? "";
+  Faculity? cachedFaculity;
 
 
-  void saveFaculity(Faculity user) async {
+  Future<void> initializeFaculity() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString("faculityData");
+
+    if (jsonString != null) {
+      cachedFaculity = Faculity.fromJson(json.decode(jsonString));
+    }
+  }
+      void saveFaculity(Faculity user) async {
 
     userData.write('faculityData', user.toJson()); // Saving the user model as JSON
     print("#@#@#");
@@ -52,13 +61,14 @@ class UserData extends GetxController {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString("faculityData", json.encode(user.toJson()));
     await prefs.setBool('isLoggegIn', true);
+    initializeFaculity();
   }
   Faculity? getFaculity() {
     final json = userData.read('faculityData');
     if (json != null) {
       return Faculity.fromJson(json); // Reading the user model from JSON
     }
-    return null;
+    return cachedFaculity;
   }
   addAccessToken(String val) {userData.write('accessToken', val);}
   addUserFCMDeviceToken(String val) {userData.write('fcm_tocken', val);}
@@ -160,7 +170,7 @@ class UserData extends GetxController {
       "deviceToken": deviceTokenFromPref
     };
 
-    var data = await apiRespository.postApiCallByJson(Constants.authUrl, body);
+    var data = await apiRespository.postApiCallByJsonForLogin(Constants.authUrl, body);
 
     print("DATA @@@@ ${data.body}");
     if(data.body is bool) {

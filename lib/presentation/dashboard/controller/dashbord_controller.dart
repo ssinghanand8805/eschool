@@ -421,7 +421,7 @@ class DashboardController extends GetxController {
   getSchoolDetails() async {
     Map<String, dynamic> body = {};
     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
-    var data = await apiRespository.postApiCallByJson(
+    var data = await apiRespository.postApiCallByJsonForLogin(
         "webservice/getSchoolDetails", body);
 
     final prefs = await SharedPreferences.getInstance();

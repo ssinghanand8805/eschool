@@ -367,12 +367,12 @@ class DashboardScreen extends GetView<DashboardController> {
                                 height: 10,
                               ),
                               Text(
-                                userData.getFaculity()!.name!,
+                                  userData.getFaculity() != null ? userData.getFaculity()!.name! :  "",
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                "Role. ${userData.getFaculity()!.roles!.roleName!} ",
+                                  userData.getFaculity() != null ?   "Role. ${userData.getFaculity()!.roles!.roleName! ?? ""} " : "",
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.normal),

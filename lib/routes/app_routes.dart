@@ -131,6 +131,8 @@ import '../presentation/profile/ProfileScreen.dart';
 import '../presentation/profile/binding/profile.dart';
 import '../presentation/s_screen/binding/s_binding.dart';
 import '../presentation/s_screen/s_screen.dart';
+import '../presentation/school_attendace/binding/school_attendance_bydate.dart';
+import '../presentation/school_attendace/school_attendance_bydate_view.dart';
 import '../presentation/school_url/schoolUrlScreen.dart';
 import '../presentation/student_attendence/binding/student_attendance.dart';
 import '../presentation/student_attendence/student_attendance_view.dart';
@@ -233,6 +235,7 @@ class AppRoutes {
   static const String follow_up_enquiry = '/follow_up_admission_enquiry';
   static const String chat = '/chat';
   static const String chatMain = '/chatMain';
+  static const String school_attendance = '/school_attendance';
 
 
 
@@ -644,6 +647,11 @@ class AppRoutes {
       name: chatMain,
       page: () => ChatScreen(),
       bindings: [ChatBinding()],
+    ),
+    GetPage(
+      name: school_attendance,
+      page: () => SchoolAttendanceByDateScreen(),
+      bindings: [SchoolAttendanceByDateBinding()],
     ),
 
   ];
