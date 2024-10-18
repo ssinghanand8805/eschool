@@ -47,20 +47,21 @@ class StudentDetailsController extends GetxController{
 
  // Initialize fetchDataFuture here
   }
-
+  RxBool isLoading = false.obs;
 
   studentByClassSection() async {
-
+    isLoading.value = true;
     Map<String, dynamic> body = {
       "class_id" : commonApiController.selectedClassId.value,
       "section_id":commonApiController.selectedSectionId.value
     };
-
+  //  await Future.delayed(Duration(seconds: 4));
     var data = await apiRespository.postApiCallByJson(Constants.studentDetails, body);
 
     print("DATA @@@@ ${data.body}");
 
     updateStudentDetailsList = data.body;
+    isLoading.value = false;
 
   }
 
@@ -85,14 +86,23 @@ class StudentDetailsController extends GetxController{
   }
 
   Future<void> searchStuInfo(String searchKey) async {
-    Map<String, dynamic> body = {
-      "searchTerm": searchKey.toLowerCase().trim(),
-    };
-
-    var data = await apiRespository.postApiCallByJson(Constants.searchStudentInfo, body);
-    print("SEARCH DATA @@@@ ${data.body}");
-
-    updateSearchStudentInfo = data.body;
+    List<StudentDetailsDataModal>.from((searchC.value.text == ''
+        ? studentDetailsList
+        : studentDetailsList.where((element) => (element['firstname']
+        .toString()
+        .toLowerCase()
+        .trim())
+        .contains(searchC.value.text.toLowerCase().trim()))
+    ).map((element) => StudentDetailsDataModal.fromJson(element))
+    );
+    // Map<String, dynamic> body = {
+    //   "searchTerm": searchKey.toLowerCase().trim(),
+    // };
+    //
+    // var data = await apiRespository.postApiCallByJson(Constants.searchStudentInfo, body);
+    // print("SEARCH DATA @@@@ ${data.body}");
+    //
+    // updateSearchStudentInfo = data.body;
   }
   set updateSearchStudentInfo(List val) {
     searchStudentInfoList = val;

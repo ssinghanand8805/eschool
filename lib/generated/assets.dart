@@ -30,7 +30,11 @@ class Assets {
   static const String imagesImgVector = 'assets/images/img_vector.png';
   static const String imagesImgVector193x375 = 'assets/images/img_vector_193x375.png';
   static const String imagesLoading = 'assets/images/loading.json';
+  static const String imagesLottiebookloader = 'assets/images/lottiebookloader.json';
+  static const String imagesNoDataFound = 'assets/images/no_data_found.json';
+  static const String imagesNoInternet = 'assets/images/no_internet.json';
   static const String imagesSplashJson = 'assets/images/splashJson.json';
+  static const String imagesUpdate = 'assets/images/update.json';
   static const String projectImagesAddLeave = 'assets/projectImages/add_leave.png';
   static const String projectImagesAppIcon = 'assets/projectImages/app_icon.png';
   static const String projectImagesAssignmentpage = 'assets/projectImages/assignmentpage.jpg';
@@ -224,6 +228,7 @@ class Assets {
   static const String projectImagesSettingpage = 'assets/projectImages/settingpage.jpg';
   static const String projectImagesShadowfile = 'assets/projectImages/shadowfile.xml';
   static const String projectImagesSplashLogo = 'assets/projectImages/splash_logo.png';
+  static const String projectImagesStudent = 'assets/projectImages/student.png';
   static const String projectImagesStyleButton = 'assets/projectImages/style_button.xml';
   static const String projectImagesStyleButtonBackground = 'assets/projectImages/style_button_background.xml';
   static const String projectImagesSyllabusstatuspage = 'assets/projectImages/syllabusstatuspage.jpg';

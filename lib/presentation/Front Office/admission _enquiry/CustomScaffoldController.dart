@@ -14,6 +14,7 @@ class CustomScaffoldController extends GetxController {
 
 
   late Map<String, RxString> chipData;
+  RxBool isSearch = false.obs;
 
 
   @override
@@ -59,6 +60,12 @@ class CustomScaffoldController extends GetxController {
     print(chipData);
 
     // Trigger UI update
+    update();
+  }
+
+  updateSearchStatus()
+  {
+    isSearch.value = !isSearch.value;
     update();
   }
 

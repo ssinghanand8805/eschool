@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class CustomLoader extends StatelessWidget {
   final String message;
@@ -22,7 +23,8 @@ class CustomLoader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(backgroundColor: Colors.red.shade400,),
+                  Lottie.asset("assets/images/lottiebookloader.json"),
+                  //CircularProgressIndicator(backgroundColor: Colors.red.shade400,),
                   SizedBox(height: 16.0),
                   Text(
                     message,
