@@ -83,5 +83,13 @@ class Constants {
   static const String getNoticeBoardUrl = 'notification/notificationList';
 
 
+  //downloadcenter apis
+  static const String getcontenttypelistUrl = 'contenttype/getcontenttypelist';
+  static const String save_content_typeUrl = 'contenttype/save_content_type';
+  static const String getcontenttypebyidUrl = 'contenttype/getcontenttypebyid';
+  static const String contenttypeeditUrl = 'contenttype/edit';
+  static const String contenttypedeleteUrl = 'contenttype/delete';
+
+
 
 }
