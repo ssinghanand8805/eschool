@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
 import '../../../apiHelper/GlobalData.dart';
 import '../../../widgets/alert_dialogue.dart';
