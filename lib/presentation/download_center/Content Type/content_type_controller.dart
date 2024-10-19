@@ -1,40 +1,120 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ContentTypeController extends GetxController{
+import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/popular_product_repo.dart';
+import '../../../apiHelper/toastMessage.dart';
+import 'content_type_modal.dart';
 
-  TextEditingController searchC = TextEditingController();
+class ContentTypeController extends GetxController {
+
+  ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
+  Rx<TextEditingController> searchC = TextEditingController().obs;
   TextEditingController nameC = TextEditingController();
   TextEditingController descriptionC = TextEditingController();
-
+  Rx<ContentTypeModal> filteredContentTypeList = ContentTypeModal().obs;
+  int contentTypeId = 0;
+  late Future<void> fetchDataFuture;
   final formKey = GlobalKey<FormState>().obs;
+  RxBool isLoading = false.obs;
+  @override
+  void onInit() async {
+    super.onInit();
+    fetchDataFuture = initializeData();
+}
 
-  List<Map<String, dynamic>> data = [
+  // Store the original data list separately
+  List<Data> originalContentTypeList = [];
+
+// Function to perform search
+  Future<void> searchContentType(String searchKey) async {
+    // Check if the searchKey is empty or not
+    if (searchKey.isEmpty) {
+      // Reset to the original list when searchKey is cleared
+      filteredContentTypeList.update((val) {
+        val?.data = originalContentTypeList;  // Reset to original list
+      });
+    } else {
+      // Filter the list based on the searchKey
+      List<Data> filteredList = originalContentTypeList
+          .where((element) => element.name != null &&
+          element.name!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
+          .toList();
+
+      // Update the filtered list
+      filteredContentTypeList.update((val) {
+        val?.data = filteredList;
+      });
+    }
+  }
+
+// Call this function once when you first load the data to store the original list
+  void initializeOriginalList() {
+    originalContentTypeList = List.from(filteredContentTypeList.value.data!);  // Make a copy of the original data
+  }
+
+  Future<void> initializeData() async  {
+    isLoading.value = true;
+    try
+        {
+          var body = {};
+          var data = await apiRespository.postApiCallByJson(Constants.getcontenttypelistUrl, body);
+
+          filteredContentTypeList.value = ContentTypeModal.fromJson(data.body);
+          initializeOriginalList();
+          update();
+        }
+        catch(e)
     {
-      'studentId': 18001,
-      'class': 'Class 4',
-      'section': 'A',
-      'subjectGroup': 'Class 1st Subject Group',
-      'subject': 'Hindi (230)',
-      'homeworkDate': DateTime(2024, 4, 5),
-      'submissionDate': DateTime(2024, 4, 9),
-      'evaluationDate': DateTime(2024, 4, 9),
-      'createdBy': 'Joe Black',
-      'approvedId': 9000,
-    },
+
+    }
+
+    // Initialize fetchDataFuture here
+  }
+  void getcontenttypebyId(context,id) async
+  {
+
+    var body = {
+      "id":id
+    };
+    var data = await apiRespository.postApiCallByFormData(Constants.getcontenttypebyidUrl, body);
+    var da = ContentTypeModal.fromJson(data.body);
+    if(da != null)
+      {
+        contentTypeId = id;
+        nameC.text = da.data![0].name.toString();
+        descriptionC.text = da.data![0].description.toString();
+        update();
+      }
+
+  }
+  void saveContentType(context) async
+  {
+    String desc = descriptionC.value.text.trim().toString();
+    var body = {
+   "name":nameC.value.text.trim().toString(),
+      "description":desc.isNotEmpty ? desc : ""
+    };
+    String url = Constants.save_content_typeUrl;
+    String msgFor = "Save";
+    if(contentTypeId != 0)
+      {
+        body['id'] = contentTypeId.toString();
+        url = Constants.contenttypeeditUrl;
+        msgFor = "Update";
+      }
+    var data = await apiRespository.postApiCallByFormData(url, body);
+    if(data.body['status'] == 'success')
     {
-      'studentId': 18002,
-      'class': 'Class 4',
-      'section': 'A',
-      'subjectGroup': 'Class 1st Subject Group',
-      'subject': 'Hindi (230)',
-      'homeworkDate': DateTime(2024, 4, 5),
-      'submissionDate': DateTime(2024, 4, 9),
-      'evaluationDate': DateTime(2024, 4, 9),
-      'createdBy': 'Kirti Singh',
-      'approvedId': 9000,
-    },
-    // Add more data as needed
-  ];
+      nameC.text = "";
+      Get.showSnackbar(Ui.SuccessSnackBar(message: '${msgFor}d Success'));
+      Navigator.pop(context);
+    }
+    else
+      {
+        Get.showSnackbar(Ui.ErrorSnackBar(message: 'Error Occurred while ${msgFor}'));
+      }
+
+  }
 
 }
