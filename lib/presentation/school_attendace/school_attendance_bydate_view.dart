@@ -87,7 +87,7 @@ class _SchoolAttendanceByDateScreenState extends State<SchoolAttendanceByDateScr
     return Column(
       children: [
 
-        controller.filteredStudentListModel.value.resultlist!.length == 0 ?
+        controller.filteredStudentListModel.value.resultlist == null || controller.filteredStudentListModel.value.resultlist!.length == 0 ?
         Center(child: Text("No Data")) :
         Padding(
           padding: const EdgeInsets.only(top: 8.0),

@@ -20,8 +20,6 @@ class CustomScaffold extends GetView<CustomScaffoldController> {
 
   @override
   Widget build(BuildContext context) {
-    print("5555555 "+controller.getChipDataList.length.toString());
-    print("5555555 "+controller.getChipDataList[0].toString());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green.shade100,
@@ -53,51 +51,58 @@ class CustomScaffold extends GetView<CustomScaffoldController> {
                   else
                   {
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                      child: Column(
-                        children: [
-                          Column(
-                            children: [
-                      SizedBox(
-                      height: 50,
-                        child: controller.getChipDataList.entries
-                            .any((entry) => entry.value.value.isNotEmpty)
-                            ? ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: controller.getChipDataList.entries
-                              .where((entry) => entry.value.value.isNotEmpty)
-                              .length,
-                          itemBuilder: (BuildContext context, int index) {
-                            // Filter entries to only include those with non-empty values
-                            List<MapEntry<String, RxString>> nonEmptyEntries = controller
-                                .getChipDataList.entries
+                    return SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+                        child: Column(
+                          children: [
+                            Column(
+                              children: [
+                        SizedBox(
+                         height: controller.getChipDataList.entries
+                             .any((entry) => entry.value.value.isNotEmpty)?50:0,
+                          child: controller.getChipDataList.entries
+                              .any((entry) => entry.value.value.isNotEmpty)
+                              ? ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: controller.getChipDataList.entries
                                 .where((entry) => entry.value.value.isNotEmpty)
-                                .toList();
+                                .length,
+                            itemBuilder: (BuildContext context, int index) {
+                              // Filter entries to only include those with non-empty values
+                              List<MapEntry<String, RxString>> nonEmptyEntries = controller
+                                  .getChipDataList.entries
+                                  .where((entry) => entry.value.value.isNotEmpty)
+                                  .toList();
 
-                            // Get the entry based on the index
-                            String key = nonEmptyEntries[index].key;
-                            RxString rxValue = nonEmptyEntries[index].value;
+                              // Get the entry based on the index
+                              String key = nonEmptyEntries[index].key;
+                              RxString rxValue = nonEmptyEntries[index].value;
 
-                            // Return the widget for each non-empty entry
-                            return Obx(() {
-                              return Chip(
-                                label: Text("$key: ${rxValue.value}"),
-                              );
-                            });
-                          },
-                        )
-                            : Container(),
-                      ),
-
-
-
-                      ],
+                              // Return the widget for each non-empty entry
+                              return Obx(() {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Chip(
+                                    label: Text("$key: ${rxValue.value}"),
+                                  ),
+                                );
+                              });
+                            },
+                          )
+                              : Container(
                           ),
-
-                         bodyWidget
-
+                        ),
+                      
+                      
+                      
                         ],
+                            ),
+                      
+                           bodyWidget
+                      
+                          ],
+                        ),
                       ),
                     );
                   }

@@ -7,10 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../theme/theme_helper.dart';
 
 import '../../widgets/button.dart';
+import '../../widgets/customTextField.dart';
 import '../../widgets/myCustomsd.dart';
 import '../../widgets/permissionWidget.dart';
 import '../common_filter/CommonFilter.dart';
@@ -55,19 +57,19 @@ class _ApproveLeaveScreenState extends State<ApproveLeaveScreen> {
           builder: (context) {
             return CommonFilter(onTapAction: controller.filterData, widgetMain: MyTable(),);
           }),
-      floatingActionButton: PermissionWidget(
-
-        routeName: 'approve_leave',
-        permissionType: 'can_add',
-        childWidget: FloatingActionButton(
-            onPressed: () {
-        print("dd");
-        showAddLeave();
-            },
-            child: Icon(Icons.add),
-        backgroundColor: Colors.green.shade400,
-        ),
-      ),
+      // floatingActionButton: PermissionWidget(
+      //
+      //   routeName: 'approve_leave',
+      //   permissionType: 'can_add',
+      //   childWidget: FloatingActionButton(
+      //       onPressed: () {
+      //   print("dd");
+      //   showAddLeave();
+      //       },
+      //       child: Icon(Icons.add),
+      //   backgroundColor: Colors.green.shade400,
+      //   ),
+      // ),
     );
   }
 
@@ -529,17 +531,17 @@ class _MyTableState extends State<MyTable> {
 
 
   int _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
-  late ResultSource _source;
+  // late ResultSource _source;
 
   @override
   void initState() {
     super.initState();
-    _source = ResultSource(controller.filteredStudentListModel);
+    // _source = ResultSource(controller.filteredStudentListModel);
   }
 
   @override
   void dispose() {
-    _source.dispose();
+    // _source.dispose();
     super.dispose();
   }
   @override
@@ -561,138 +563,254 @@ class _MyTableState extends State<MyTable> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          TextField(
+          CustomTextField(
             controller: controller.searchController.value,
-            decoration: InputDecoration(
-              labelText: 'Search Students',
-              border: OutlineInputBorder(),
-              prefixIcon: Icon(Icons.search),
-            ),
+            hint: 'Search Student',
+            title: 'Search Student',
+      
           ),
-          controller.filteredStudentListModel.value.length == 0 ?
-          Text("No Data") :
-          SingleChildScrollView(
-            child: AdvancedPaginatedDataTable(
-              addEmptyRows: false,
-              source: _source,
-              showFirstLastButtons: true,
-              rowsPerPage: _rowsPerPage,
-              availableRowsPerPage: [1, 5, 10, 50],
-              onRowsPerPageChanged: (newRowsPerPage) {
-                if (newRowsPerPage != null) {
-                  setState(() {
-                    _rowsPerPage = newRowsPerPage;
-                  });
-                }
-              },
-              columns: [
-                DataColumn(label: Text('Student Name')),
-                DataColumn(label: Text('Class')),
-                DataColumn(label: Text('Section')),
-                DataColumn(label: Text('Apply Date')),
-                DataColumn(label: Text('From Date')),
-                DataColumn(label: Text('To Date')),
-                DataColumn(label: Text('Status')),
-                DataColumn(label: Text('Approve Disapprove By')),
-                DataColumn(label: Text('Action')),
-              ],
-            ),
-          ),
+          // TextField(
+          //   controller: controller.searchController.value,
+          //   decoration: InputDecoration(
+          //     labelText: 'Search Students',
+          //     border: OutlineInputBorder(),
+          //     prefixIcon: Icon(Icons.search),
+          //   ),
+          // ),
+          // controller.filteredStudentListModel.value.length == 0 ?
+          // Text("No Data") :
+      controller.isLoadingStudentList.isTrue ? CustomLoader() : Container(child: controller.filteredStudentListModel.length > 0 ?
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: controller.filteredStudentListModel.value.length,
+              itemBuilder: (context, index) {
+                ApproveLeaveController controller = Get.put(ApproveLeaveController());
+                Resultlist leaveData = controller.filteredStudentListModel[index];
+                return  Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 160,width: Get.width,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.grey.shade200)
+                    ),
+                    child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              boxShadow:  [
+                                BoxShadow(
+                                  color: Colors.grey.shade400,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 1), // Shadow position
+                                ),
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding:
+                                  const EdgeInsets.only(top: 10, bottom: 10),
+                                  child: Container(
+                                    width: 4,
+                                    decoration: BoxDecoration(
+                                        color: Colors.green.shade500,
+                                        borderRadius: BorderRadius.circular(5.0)),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            InkWell(
+                                              onTap: (){
+                                                showEditLeave(leaveData.id!);
+                                              },
+                                                child: Icon(Icons.edit,size: 15,)),
+                                            // IconButton(
+                                            //     onPressed: controller.deleteApproveLeave(leaveData.id!),
+                                            //     icon: Icon(Icons.delete, size: 15),)
+                                            // PermissionWidget(
+                                            //   routeName: 'approve_leave',
+                                            //   permissionType: 'can_edit',
+                                            //   childWidget: IconButton(
+                                            //     icon: Icon(Icons.edit, size: 15),
+                                            //     onPressed: () {
+                                            //       showEditLeave(leaveData.id!);
+                                            //     },
+                                            //   ),
+                                            // ),
+                                            // PermissionWidget(
+                                            //   routeName: 'approve_leave',
+                                            //   permissionType: 'can_delete',
+                                            //   childWidget: IconButton(
+                                            //     icon: Icon(Icons.delete, size: 15),
+                                            //     onPressed: () {
+                                            //       controller.deleteApproveLeave(leaveData.id!);
+                                            //       print("Delete leave");
+                                            //     },
+                                            //   ),
+                                            // ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                                height: 25,
+                                                width: 25,
+                                                child: Icon(Icons.person)),
+                                            const SizedBox(width: 5),
+                                            Expanded(
+                                                child: Text(
+                                                  leaveData.firstname.toString(),
+                                                  maxLines: 1,
+                                                  style: theme.textTheme.bodySmall,)),
+            
+                                            InkWell(
+                                                onTap: (){
+            
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Text("Admission No.: ",style: theme.textTheme.bodySmall,),
+                                                    Text(leaveData.admissionNo.toString(),style: theme.textTheme.bodySmall,),
+                                                  ],
+                                                )),
+                                          ],
+                                        ),
+                                        SizedBox(height: 8,),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Class: ",
+                                                  style: theme.textTheme.bodySmall,),
+                                                Text(
+                                                  leaveData.className.toString()+" (${leaveData.section})",
+                                                  maxLines: 3,
+                                                  style: theme.textTheme.bodySmall,),
+                                              ],
+                                            ),
+            
+                                            Row(
+            
+                                              children: [
+                                                Text(
+                                                  "Apply Date: ",
+                                                  style: theme.textTheme.bodySmall,),
+                                                Text(
+                                                  leaveData.applyDate.toString(),
+                                                  maxLines: 3,
+                                                  style: theme.textTheme.bodySmall,),
+                                              ],
+                                            ),
+            
+            
+                                          ],
+                                        ),
+                                        SizedBox(height: 8,),
+                                        Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Row(
+            
+                                                  children: [
+                                                    Text(
+                                                      "Form Date: ",
+                                                      style: theme.textTheme.bodySmall,),
+                                                    Text(
+                                                      leaveData.fromDate.toString(),
+                                                      maxLines: 3,
+                                                      style: theme.textTheme.bodySmall,),
+                                                  ],
+                                                ),
+            
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      "To Date: ",
+                                                      style: theme.textTheme.bodySmall,),
+                                                    Text(
+                                                      leaveData.toDate.toString(),
+                                                      maxLines: 3,
+                                                      style: theme.textTheme.bodySmall,),
+                                                  ],
+                                                ),
+            
+                                              ],
+                                            ),
+                                            SizedBox(height: 8,),
+            
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Row(
+            
+                                                  children: [
+                                                    Text(
+                                                      "Status: ",
+                                                      style: theme.textTheme.bodySmall,),
+                                                    Text(
+                                                      leaveData.status.toString(),
+                                                      maxLines: 3,
+                                                      style: theme.textTheme.bodySmall,),
+                                                  ],
+                                                ),
+            
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      "Approve Disapprove By: ",
+                                                      style: theme.textTheme.bodySmall,),
+                                                    Text(
+                                                      leaveData.approveBy.toString(),
+                                                      style: theme.textTheme.bodySmall,),
+                                                  ],
+                                                ),
+            
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+            
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+            
+                    ),
+                  ),
+                );
+              },),
+          ):Container(child: Lottie.asset("assets/images/no_data_found.json"),),),
         ],
       ),
     );
   }
-}
-class ResultSource extends AdvancedDataTableSource<Resultlist>{
-  final RxList<Resultlist> filteredStudentListModel;
-  late final StreamSubscription _subscription;
 
-  ResultSource(this.filteredStudentListModel) {
-    _subscription = filteredStudentListModel.listen((_) {
-      print("Data Change${filteredStudentListModel.value.length}");
-      setNextView();
-      notifyListeners();
-    });
-  }
-
-
-
-
-  @override
-  DataRow? getRow(int index) {
-    ApproveLeaveController controller = Get.put(ApproveLeaveController());
-    // Check if the index is within the bounds of the list
-    if (index < 0 || index >= filteredStudentListModel.value.length) {
-      return null;  // Return null if the index is out of bounds
-    }
-    final currentRowData = filteredStudentListModel.value[index];
-    return DataRow(cells: [
-      DataCell(
-        Text(currentRowData.firstname.toString()),
-      ),
-      DataCell(
-        Text(currentRowData.className!),
-      ),
-      DataCell(
-        Text(currentRowData.section!),
-      ),
-      DataCell(
-        Text(currentRowData.applyDate!),
-      ),
-      DataCell(
-        Text(currentRowData.fromDate!),
-      ),
-       DataCell(
-        Text(currentRowData.toDate!),
-      ),
-      DataCell(
-        Text(currentRowData.status!),
-      ),
-      DataCell(
-        Text(currentRowData.approveBy == null ? "-" : currentRowData.approveBy!),
-      ),
-      DataCell(
-          Row(
-            children: [
-              PermissionWidget(
-
-                routeName: 'approve_leave',
-                permissionType: 'can_edit',
-                childWidget: IconButton(
-                  icon: Icon(Icons.edit, size: 15),
-                  onPressed: () {
-                    showEditLeave(currentRowData.id!);
-                  },
-                ),
-              ),
-              PermissionWidget(
-
-                routeName: 'approve_leave',
-                permissionType: 'can_delete',
-                childWidget: IconButton(
-                  icon: Icon(Icons.delete, size: 15),
-                  onPressed: () {
-                    controller.deleteApproveLeave(currentRowData.id!);
-                    print("Delete leave");
-                  },
-                ),
-              ),
-            ],
-          )
-      ),
-
-    ]);
-  }
-  getDate() async {
-
-    var date = await showDatePicker(
-      context: Get.context!,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2023),
-      lastDate: DateTime(2025),
-    );
-    return date;
-  }
   void showEditLeave(String index) async {
     CommonApiController controller3 =
     Get.put(CommonApiController());
@@ -1026,26 +1144,132 @@ class ResultSource extends AdvancedDataTableSource<Resultlist>{
       },
     );
   }
-  @override
-  int get selectedRowCount => 0;
 
-  @override
-  Future<RemoteDataSourceDetails<Resultlist>> getNextPage(
-      NextPageRequest pageRequest) async {
-    return RemoteDataSourceDetails(
-      filteredStudentListModel.value.length,
-      filteredStudentListModel.value
-          .skip(pageRequest.offset)
-          .take(pageRequest.pageSize)
-          .toList(),
+  getDate() async {
+
+    var date = await showDatePicker(
+      context: Get.context!,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2025),
     );
+    return date;
   }
 
-  @override
-  void dispose() {
-    _subscription.cancel();
-    super.dispose();
-  }
+
 }
+// class ResultSource extends AdvancedDataTableSource<Resultlist>{
+//   final RxList<Resultlist> filteredStudentListModel;
+//   late final StreamSubscription _subscription;
+//
+//   ResultSource(this.filteredStudentListModel) {
+//     _subscription = filteredStudentListModel.listen((_) {
+//       print("Data Change${filteredStudentListModel.value.length}");
+//       setNextView();
+//       notifyListeners();
+//     });
+//   }
+//
+//
+//
+//
+//   @override
+//   DataRow? getRow(int index) {
+//     ApproveLeaveController controller = Get.put(ApproveLeaveController());
+//     // Check if the index is within the bounds of the list
+//     if (index < 0 || index >= filteredStudentListModel.value.length) {
+//       return null;  // Return null if the index is out of bounds
+//     }
+//     final currentRowData = filteredStudentListModel.value[index];
+//     return DataRow(cells: [
+//       DataCell(
+//         Text(currentRowData.firstname.toString()),
+//       ),
+//       DataCell(
+//         Text(currentRowData.className!),
+//       ),
+//       DataCell(
+//         Text(currentRowData.section!),
+//       ),
+//       DataCell(
+//         Text(currentRowData.applyDate!),
+//       ),
+//       DataCell(
+//         Text(currentRowData.fromDate!),
+//       ),
+//        DataCell(
+//         Text(currentRowData.toDate!),
+//       ),
+//       DataCell(
+//         Text(currentRowData.status!),
+//       ),
+//       DataCell(
+//         Text(currentRowData.approveBy == null ? "-" : currentRowData.approveBy!),
+//       ),
+//       DataCell(
+//           Row(
+//             children: [
+//               PermissionWidget(
+//
+//                 routeName: 'approve_leave',
+//                 permissionType: 'can_edit',
+//                 childWidget: IconButton(
+//                   icon: Icon(Icons.edit, size: 15),
+//                   onPressed: () {
+//                     showEditLeave(currentRowData.id!);
+//                   },
+//                 ),
+//               ),
+//               PermissionWidget(
+//
+//                 routeName: 'approve_leave',
+//                 permissionType: 'can_delete',
+//                 childWidget: IconButton(
+//                   icon: Icon(Icons.delete, size: 15),
+//                   onPressed: () {
+//                     controller.deleteApproveLeave(currentRowData.id!);
+//                     print("Delete leave");
+//                   },
+//                 ),
+//               ),
+//             ],
+//           )
+//       ),
+//
+//     ]);
+//   }
+//   getDate() async {
+//
+//     var date = await showDatePicker(
+//       context: Get.context!,
+//       initialDate: DateTime.now(),
+//       firstDate: DateTime(2023),
+//       lastDate: DateTime(2025),
+//     );
+//     return date;
+//   }
+//
+//
+//   @override
+//   int get selectedRowCount => 0;
+//
+//   @override
+//   Future<RemoteDataSourceDetails<Resultlist>> getNextPage(
+//       NextPageRequest pageRequest) async {
+//     return RemoteDataSourceDetails(
+//       filteredStudentListModel.value.length,
+//       filteredStudentListModel.value
+//           .skip(pageRequest.offset)
+//           .take(pageRequest.pageSize)
+//           .toList(),
+//     );
+//   }
+//
+//   @override
+//   void dispose() {
+//     _subscription.cancel();
+//     super.dispose();
+//   }
+// }
 
 

@@ -40,7 +40,7 @@ class StudentDetailsView extends GetView<StudentDetailsController>{
                   controller.update();
                 },
               ),
-              SizedBox(height: 10,),
+              //SizedBox(height: 10,),
              controller.isLoading.isTrue ? CustomLoader() : Container(child: controller.getStudentDetailsList.length > 0 ?  ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,

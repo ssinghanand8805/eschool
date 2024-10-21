@@ -7,12 +7,14 @@ import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/myCustomsd.dart';
 import '../../apiHelper/GlobalData.dart';
+import '../../widgets/alert_dialogue.dart';
 import '../../widgets/customTextField.dart';
 import '../../widgets/datePickerTextField.dart';
 import '../common_widgets/CommonForm.dart';
@@ -68,7 +70,10 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:  Text('Attendance',style: theme.textTheme.titleMedium,),),
+      appBar: AppBar(
+        title:  Text('Attendance',style: theme.textTheme.titleLarge,),
+        backgroundColor: Colors.green.shade100,
+      ),
       body: GetBuilder(
         init: controller,
         builder: (context) {
@@ -85,65 +90,76 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
               ),
               widgetFilterData: Column(
                 children: [
-                  Obx( () => MyCustomSD(
+                  Row(
+                    children: [
+                      Expanded(
+                          child: Obx( () => MyCustomSD(
 
-                    hideSearch: true,
-                    borderColor: Colors.grey,
-                    listToSearch: controller3.classListModelMap.value,
-                    valFrom: "className",
-                    label: 'Class',
-                    labelText: 'Class',
-                    onChanged: (val) {
-                      if(controller3.classListModelMap.value.length > 0)
-                      {
-                        print("5555555555555");
+                            hideSearch: true,
+                            borderColor: Colors.grey,
+                            listToSearch: controller3.classListModelMap.value,
+                            valFrom: "className",
+                            label: 'Class',
+                            labelText: 'Class',
+                            onChanged: (val) {
+                              if(controller3.classListModelMap.value.length > 0)
+                              {
+                                print("5555555555555");
 
-                        controller3.selectedClassId.value = val['id'].toString();
-                        controller3.selectedClassName.value = val['className'].toString();
-                        controller3.update();
-                        controller3.getSectionList();
-                      }
+                                controller3.selectedClassId.value = val['id'].toString();
+                                controller3.selectedClassName.value = val['className'].toString();
+                                controller3.update();
+                                controller3.getSectionList();
+                              }
 
-                    },
-                  )),
-                  SizedBox(
-                    height: 10,
+                            },
+                          )),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                          child: Obx( () => MyCustomSD(
+                            hideSearch: true,
+                            borderColor: Colors.grey,
+                            listToSearch: controller3.sectionListModelMap.value,
+                            valFrom: "section",
+                            label: 'Section',
+                            labelText: 'Section',
+                            onChanged: (val) {
+                              print(val);
+                              if(controller3.sectionListModelMap.value.length > 0)
+                              {
+
+
+                                controller3.selectedSectionId.value = val['id'].toString();
+                                controller3.selectedSectionName.value = val['section'].toString();
+                                controller3.update();
+
+                              }
+
+                            },
+                          )),
+                      )
+                    ],
                   ),
-                  Obx( () => MyCustomSD(
-                    hideSearch: true,
-                    borderColor: Colors.grey,
-                    listToSearch: controller3.sectionListModelMap.value,
-                    valFrom: "section",
-                    label: 'Section',
-                    labelText: 'Section',
-                    onChanged: (val) {
-                      print(val);
-                      if(controller3.sectionListModelMap.value.length > 0)
-                      {
 
 
-                        controller3.selectedSectionId.value = val['id'].toString();
-                        controller3.selectedSectionName.value = val['section'].toString();
-                        controller3.update();
 
-                      }
-
-                    },
-                  )),
                   SizedBox(
-                    height: 10,
+                    height: 5,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 3.0),
-                        child: Text("Attendance Date",
-                            style: theme.textTheme.bodySmall!.copyWith(fontSize: 14)),
-                      ),
-                      SizedBox(
-                        height: 3,
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 3.0),
+                      //   child: Text("Attendance Date",
+                      //       style: theme.textTheme.bodySmall!.copyWith(fontSize: 14)),
+                      // ),
+                      // SizedBox(
+                      //   height: 3,
+                      // ),
                       DatePickerTextField(
                           controller: controller.attendanceDate.value,
                           title: 'Attendace date',
@@ -182,39 +198,44 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
   {
     // var rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
     // final source =  ResultSource(controller.filteredStudentListModel);
-    return Column(
-      children: [
-        CustomTextField(
-          controller: controller.searchController.value, hint: 'Search Student', title: 'Search Student',
-
-        ),
-        controller.filteredStudentListModel.value.length == 0 ?
-        Text("No Data") :
-        SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: AdvancedPaginatedDataTable(
-              addEmptyRows: false,
-              source: _source,
-              showFirstLastButtons: true,
-              rowsPerPage: _rowsPerPage,
-              availableRowsPerPage: [1, 5, 10, 50],
-              onRowsPerPageChanged: (newRowsPerPage) {
-                if (newRowsPerPage != null) {
-                  setState(() {
-                    _rowsPerPage = newRowsPerPage;
-                  });
-                }
-              },
-              columns: [
-                DataColumn(label: Text('Student')),
-                DataColumn(label: Text('Status')),
-                DataColumn(label: Text('Remark'))
-              ],
-            ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          CustomTextField(
+            controller: controller.searchController.value,
+            hint: 'Search Student',
+            title: 'Search Student',
+      
           ),
-        ),
-      ],
+          // controller.filteredStudentListModel.value.length == 0 ?
+          // Text("No Data") :
+          controller.isLoadingStudentList.isTrue ? CustomLoader() : Container(child: controller.filteredStudentListModel.length > 0 ?
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: AdvancedPaginatedDataTable(
+                addEmptyRows: false,
+                source: _source,
+                showFirstLastButtons: true,
+                rowsPerPage: _rowsPerPage,
+                availableRowsPerPage: [1, 5, 10, 50],
+                onRowsPerPageChanged: (newRowsPerPage) {
+                  if (newRowsPerPage != null) {
+                    setState(() {
+                      _rowsPerPage = newRowsPerPage;
+                    });
+                  }
+                },
+                columns: [
+                  DataColumn(label: Text('Student')),
+                  DataColumn(label: Text('Status')),
+                  DataColumn(label: Text('Remark'))
+                ],
+              ),
+            ),
+          ):Container(child: Lottie.asset("assets/images/no_data_found.json"),),)
+        ],
+      ),
     );
   }
 
@@ -277,6 +298,7 @@ class ResultSource extends AdvancedDataTableSource<Resultlist>{
     _subscription.cancel();
     super.dispose();
   }
+
 }
 
 

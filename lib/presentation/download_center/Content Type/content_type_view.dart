@@ -4,6 +4,7 @@ import '../../../theme/theme_helper.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/customTextField.dart';
 import '../../../widgets/custom_button.dart';
+import '../../common_widgets/custom_loader.dart';
 import 'content_type_controller.dart';
 
 class ContentTypeView extends GetView<ContentTypeController> {
@@ -32,59 +33,83 @@ class ContentTypeView extends GetView<ContentTypeController> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0,right: 8),
-            child: CustomTextField(
-              controller: controller.searchC,
-              hint: 'Search.... ', title: '',),
-          ),
-
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columnSpacing: Get.width*0.2,
-              columns: const [
-                DataColumn(label: Text('Name')),
-                DataColumn(label: Text('Description')),
-                DataColumn(label: Text('Action')),
-              ],
-              rows: controller.data.asMap().entries.map((entry) {
-                int index = entry.key;
-                return DataRow(
-                  cells: [
-                    DataCell(Text(entry.value['class'],
-                        style: theme.textTheme.bodySmall!)),
-                    DataCell(Center(
-                      child: Text(entry.value['section'],
-                          style: theme.textTheme.bodySmall!),
-                    )),
-                    DataCell(
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.edit, size: 15),
-                            onPressed: () {
-                             //editHomework(index);
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete, size: 15),
-                            onPressed: () {
-                              print("Delete leave");
-                            },
-                          ),
-                        ],
-                      ),
+      body: GetBuilder(
+        init: controller,
+        builder: (context) {
+          return FutureBuilder(
+            future: controller.fetchDataFuture,
+            builder: (context,snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return CustomLoader(); // CustomLoader();
+              }
+              return controller.filteredContentTypeList.value.data != null && controller.filteredContentTypeList.value.data!.length > 0 ? Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0,right: 8),
+                    child: CustomTextField(
+                      controller: controller.searchC.value,
+                      hint: 'Search.... ', title: '',
+                      onChanged: (val) {
+                        controller.searchContentType(val);
+                        controller.update();
+                      },
                     ),
-                  ],
-                );
-              }).toList(),
-            ),
-          ),
+                  ),
 
-        ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      columnSpacing: Get.width*0.2,
+                      columns: const [
+                        DataColumn(label: Text('Name')),
+                        DataColumn(label: Text('Description')),
+                        DataColumn(label: Text('Action')),
+                      ],
+                      rows: controller.filteredContentTypeList.value.data!.asMap().entries.map((entry) {
+                        int index = entry.key;
+                        return DataRow(
+                          cells: [
+                            DataCell(Text(entry.value.name!,
+                                style: theme.textTheme.bodySmall!)),
+                            DataCell(Center(
+                              child: Text(entry.value.description!,
+                                  style: theme.textTheme.bodySmall!),
+                            )),
+                            DataCell(
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.edit, size: 15),
+                                    onPressed: () {
+                                     //editHomework(index);
+                                      controller.getcontenttypebyId(context,int.parse(entry.value.id!));
+                                      // if(controller.contentTypeId == int.parse(entry.value.id!))
+                                      //   {
+                                          addContent(context);
+                                        // }
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.delete, size: 15),
+                                    onPressed: () {
+                                      print("Delete leave");
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ),
+
+                ],
+              ):
+              Center(child: Text("No Data")) ;
+            }
+          );
+        }
       ),
 
     );
@@ -117,12 +142,7 @@ class ContentTypeView extends GetView<ContentTypeController> {
                   controller: controller.descriptionC,
                   hint: "Description....",
                   title: "Description",
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Description cannot be empty';
-                    }
-                    return null;
-                  }
+
               ),
 
               SizedBox(height: 20,),
@@ -135,6 +155,7 @@ class ContentTypeView extends GetView<ContentTypeController> {
                   color:Colors.green.shade100,
                   onPress: () {
                     if(controller.formKey.value.currentState!.validate()){
+                      controller.saveContentType(context);
 
                     }
                   },
