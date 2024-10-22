@@ -111,4 +111,7 @@ class StudentDetailsController extends GetxController{
   }
 
 
+
+
+
 }

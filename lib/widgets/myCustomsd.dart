@@ -16,6 +16,7 @@ class MyCustomSD extends StatefulWidget {
   final bool? hideSearch;
   final double? height;
   final Color? borderColor;
+  final bool?  multiSelect;
   const MyCustomSD({
     Key? key,
     this.enable,
@@ -30,6 +31,7 @@ class MyCustomSD extends StatefulWidget {
     this.borderColor,
     required this.valFrom,
     required this.onChanged,
+    this.multiSelect,
   }) : super(key: key);
   @override
   _MyCustomSDState createState() => _MyCustomSDState();
@@ -55,6 +57,7 @@ class _MyCustomSDState extends State<MyCustomSD> {
           style: theme.textTheme.bodySmall!.copyWith(fontSize: 14)),
     ),
         CustomSearchableDropDown(
+          multiSelect:widget.multiSelect ?? false,
           showLabelInMenu: true,
           suffixIcon: Icon(Icons.arrow_drop_down_sharp, color: Colors.grey),
           enabled: widget.enable,
