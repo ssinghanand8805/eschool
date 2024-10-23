@@ -117,6 +117,7 @@ class _TopicScreenState extends State<ClassTimetableScreen> {
           padding: const EdgeInsets.all(8.0),
           child: day.length == 0 ? Text("No Data Found"):ListView.builder(shrinkWrap: true,
             itemCount: day.length,
+            physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context,index) {
               return Card(child: DayCard(day[index]));
             }
@@ -129,10 +130,10 @@ class _TopicScreenState extends State<ClassTimetableScreen> {
   {
     return Column(
       children: [
-        Row(children: [Icon(Icons.subject,size: 15,), SizedBox(width: 10,),Text("Subject :${day!.subjectName!} (${day!.code!})",style: theme.textTheme.titleMedium,)]),
-        Row(children: [Icon(Icons.timelapse,size: 15,), SizedBox(width: 10,),Text("${day!.timeFrom!} -${day!.timeTo!}",style: theme.textTheme.titleMedium,)]),
-        Row(children: [Icon(Icons.person,size: 15,), SizedBox(width: 10,),Text("${day!.name!} (${day!.id!})",style: theme.textTheme.titleMedium,)]),
-        Row(children: [Icon(Icons.meeting_room,size: 15,), SizedBox(width: 10,),Text("Room No.: ${day!.roomNo!}",style: theme.textTheme.titleMedium,)]),
+        Row(children: [Icon(Icons.subject,size: 15,), SizedBox(width: 10,),Text("Subject :${day!.subjectName!} (${day.code!})",style: theme.textTheme.titleMedium,),]),
+        Row(children: [Icon(Icons.timelapse,size: 15,), SizedBox(width: 10,),Text("${day.timeFrom!} - ${day.timeTo!}",style: theme.textTheme.titleMedium,)]),
+        Row(children: [Icon(Icons.person,size: 15,), SizedBox(width: 10,),Text("${day.name!} (${day.id!})",style: theme.textTheme.titleMedium,)]),
+        Row(children: [Icon(Icons.meeting_room,size: 15,), SizedBox(width: 10,),Text("Room No.: ${day.roomNo!}",style: theme.textTheme.titleMedium,)]),
       ],
     );
   }

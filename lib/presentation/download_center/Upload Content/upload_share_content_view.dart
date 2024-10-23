@@ -56,12 +56,15 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
                     child: Row(
                       children: [
                         Container(
-                          height: 105,width: 100,
+                          width: 100,
                           decoration: BoxDecoration(
                               border: Border.all(),
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(5),bottomLeft: Radius.circular(5))
                           ),
-                          child: Icon(Icons.picture_as_pdf),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 35.5),
+                            child: Icon(Icons.picture_as_pdf),
+                          ),
                         ),
                         Expanded(
                           child: Container(
@@ -80,7 +83,7 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Booklist.pdf"),
+                                          Text("Booklist.pdf",style:theme.textTheme.titleMedium, ),
 
                                           controller.getIsChecked == false?
                                               InkWell(
@@ -98,12 +101,12 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
                                         ],
                                       ),
                                     ),
-                                    Text("Joe Black (9000)"),
-                                    SizedBox(height: 15,),
+                                    Text("Joe Black (9000)",style: theme.textTheme.titleMedium,),
+                                    SizedBox(height: 10,),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(DateTime.now().toString()),
+                                        Text(DateTime.now().toString(),style: theme.textTheme.titleMedium,),
                                         Row(
                                           children: [
                                             Icon(Icons.download),

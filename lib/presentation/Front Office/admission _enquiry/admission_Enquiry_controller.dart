@@ -1,12 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
+import '../../../apiHelper/toastMessage.dart';
 import '../../../widgets/alert_dialogue.dart';
 import 'CustomScaffoldController.dart';
 import 'enquiry_data_modal.dart';
-
+import 'package:http/http.dart' as http;
 class AdmissionEnquiryController extends GetxController {
 
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
@@ -85,15 +88,16 @@ print("ssss "+body.toString());
     var data = await apiRespository.postApiCallByJson(Constants.admissionEnquiry, body);
 
     print("DATA @@@@ ${data.body}");
-
+    print("ddddddddddddddd"+data.statusCode.toString());
     // updateStudentDetailsList = data.body;
     if (data.statusCode == 200) {
+      print("ddddddddddddddd");
           // print(await response.stream.bytesToString());
           updateAdmissionEnquiryController = data.body;
          print("ddd "+getAdmissionEnquiryList.toString());
         }
         else {
-
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "Something went wrong!"));
         }
   }
 
@@ -117,15 +121,15 @@ print("ssss "+body.toString());
   //   http.StreamedResponse response = await request.send();
   //
   //   if (response.statusCode == 200) {
-  //     // print(await response.stream.bytesToString());
+  //     print("ddddddddddddddd");
+  //         // print(await response.stream.bytesToString());
   //     var data = jsonDecode(await response.stream.bytesToString());
-  //     print("APIRESPONSE "+data.toString());
-  //     updateAdmissionEnquiryController = data;
-  //    print("ddd "+getAdmissionEnquiryList.toString());
-  //   }
-  //   else {
-  //   print(response.reasonPhrase);
-  //   }
+  //         updateAdmissionEnquiryController = data;
+  //        print("ddd "+getAdmissionEnquiryList.toString());
+  //       }
+  //       else {
+  //     Get.showSnackbar(Ui.ErrorSnackBar(message: "Something went wrong!"));
+  //       }
   // }
 
   var admissionEnquiryList ;
