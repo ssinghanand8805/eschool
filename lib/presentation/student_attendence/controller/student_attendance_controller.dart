@@ -178,6 +178,11 @@ async {
     };
     var data  = await apiRespository.postApiCallByJson(Constants.getstudentAttendenceUrl,body);
     print("DATA @@@@ ${data.body}");
+    if(data.statusCode==200){
+      Get.showSnackbar(Ui.SuccessSnackBar(message: data.body['message'].toString()));
+    }else{
+      Get.showSnackbar(Ui.ErrorSnackBar(message: data.body['message'].toString()));
+    }
     // SuccessSnackBar();
   }
 }

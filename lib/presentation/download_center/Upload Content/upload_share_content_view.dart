@@ -85,6 +85,7 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
                                         children: [
                                           Text("Booklist.pdf",style:theme.textTheme.titleMedium, ),
 
+
                                           controller.getIsChecked == false?
                                               InkWell(
                                                 onTap:(){

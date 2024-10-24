@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/presentation/common_widgets/controller/CommonApiController.dart';
 import 'package:learnladderfaculity/presentation/common_widgets/custom_loader.dart';
 import 'package:lottie/lottie.dart';
 import '../../../widgets/myCustomsd.dart';
 import '../../apiHelper/GlobalData.dart';
 import '../../theme/theme_helper.dart';
+import '../../widgets/custom_button.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/datePickerTextField.dart';
 import '../common_widgets/CommonForm.dart';
@@ -24,7 +24,7 @@ class StudentAttendanceScreen extends StatefulWidget {
 
 class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
   StudentAttendanceController controller =
-      Get.put(StudentAttendanceController());
+  Get.put(StudentAttendanceController());
 
   getDate() async {
     var date = await showDatePicker(
@@ -38,6 +38,7 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
 
   CommonController controller2 = Get.put(CommonController());
   CommonApiController controller3 = Get.put(CommonApiController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,97 +52,133 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
             return CommonForm(
                 widgetFilterSelectedData: Row(
                   children: [
-                    Text(
-                      "Class :  ",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Colors.green.shade200)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 10),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Class :  ",
+                              style:
+                              TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                                controller3.selectedClassName.value +
+                                    " ( " +
+                                    controller3.selectedSectionName.value +
+                                    " )",
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.grey.shade800)),
+                          ],
+                        ),
+                      ),
                     ),
-                    Text(
-                        controller3.selectedClassName.value +
-                            " ( " +
-                            controller3.selectedSectionName.value +
-                            " )",
-                        style: TextStyle(
-                            fontSize: 14, color: Colors.grey.shade800)),
-                    SizedBox(width: 20),
-                    Text(
-                      "Date :  ",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
-                    Text(controller.attendanceDate.value.text,
-                        style: TextStyle(
-                            fontSize: 14, color: Colors.grey.shade800)),
+
+                    SizedBox(width: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Colors.green.shade200)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 10),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Date :  ",
+                              style:
+                              TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                            Text(controller.attendanceDate.value.text,
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.grey.shade800)),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 widgetFilterData: Column(
                   children: [
-                    Obx(() => MyCustomSD(
-                          hideSearch: true,
-                          borderColor: Colors.grey,
-                          listToSearch: controller3.classListModelMap.value,
-                          valFrom: "className",
-                          label: 'Class',
-                          labelText: 'Class',
-                          onChanged: (val) {
-                            if (controller3.classListModelMap.value.length >
-                                0) {
-                              print("5555555555555");
+                    Obx(() {
+                      return Row(
+                        children: [
+                          Expanded(child: MyCustomSD(
+                            hideSearch: true,
+                            borderColor: Colors.grey,
+                            listToSearch: controller3.classListModelMap.value,
+                            valFrom: "className",
+                            label: 'Class',
+                            labelText: 'Class',
+                            onChanged: (val) {
+                              if (controller3.classListModelMap.value.length >
+                                  0) {
+                                print("5555555555555");
 
-                              controller3.selectedClassId.value =
-                                  val['id'].toString();
-                              controller3.selectedClassName.value =
-                                  val['className'].toString();
-                              controller3.update();
-                              controller3.getSectionList();
-                            }
-                          },
-                        )),
+                                controller3.selectedClassId.value =
+                                    val['id'].toString();
+                                controller3.selectedClassName.value =
+                                    val['className'].toString();
+                                controller3.update();
+                                controller3.getSectionList();
+                              }
+                            },
+                          )),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(child: MyCustomSD(
+                            hideSearch: true,
+                            borderColor: Colors.grey,
+                            listToSearch: controller3.sectionListModelMap.value,
+                            valFrom: "section",
+                            label: 'Section',
+                            labelText: 'Section',
+                            onChanged: (val) {
+                              print(val);
+                              if (controller3.sectionListModelMap.value.length >
+                                  0) {
+                                controller3.selectedSectionId.value =
+                                    val['id'].toString();
+                                controller3.selectedSectionName.value =
+                                    val['section'].toString();
+                                controller3.update();
+                              }
+                            },
+                          ))
+                        ],
+                      );
+                    }),
                     SizedBox(
-                      height: 10,
-                    ),
-                    Obx(() => MyCustomSD(
-                          hideSearch: true,
-                          borderColor: Colors.grey,
-                          listToSearch: controller3.sectionListModelMap.value,
-                          valFrom: "section",
-                          label: 'Section',
-                          labelText: 'Section',
-                          onChanged: (val) {
-                            print(val);
-                            if (controller3.sectionListModelMap.value.length >
-                                0) {
-                              controller3.selectedSectionId.value =
-                                  val['id'].toString();
-                              controller3.selectedSectionName.value =
-                                  val['section'].toString();
-                              controller3.update();
-                            }
-                          },
-                        )),
-                    SizedBox(
-                      height: 10,
+                      height: 8,
                     ),
 
                     DatePickerTextField(
                         controller: controller.attendanceDate.value,
-                        title: 'Attendace date',
+                        title: 'Attendance date',
                         onDateSelected: (date) async {
                           controller.attendanceDate.value.text =
-                          await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                          await GlobalData().ConvertToSchoolDateTimeFormat(
+                              date);
                         }),
+                    SizedBox(height: 10,),
 
                   ],
                 ),
                 widgetformData: Column(
                   children: [
-                SizedBox(height: 10,),
+                    SizedBox(height: 10,),
                     Expanded(
                         child: controller.isLoadingStudentList.isTrue
                             ? CustomLoader()
                             : controller.studentListModel.value.length == 0
-                                ? Container(child: Lottie.asset("assets/images/no_data_found.json"),)
-                                : AttendancePage())
+                            ? Container(child: Lottie.asset(
+                            "assets/images/no_data_found.json"),)
+                            : AttendancePage())
                   ],
                 ),
                 onTapAction: filterData);
@@ -152,16 +189,11 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
   filterData() {
     print("Perform search action here");
     StudentAttendanceController controller =
-        Get.put(StudentAttendanceController());
+    Get.put(StudentAttendanceController());
     controller.getFilterData();
     controller2.isSearchExpand.value = true;
   }
 }
-
-
-
-
-
 
 
 class StudentListPage extends StatefulWidget {
@@ -174,11 +206,10 @@ class _StudentListPageState extends State<StudentListPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
   }
 
   StudentAttendanceController controller =
-      Get.put(StudentAttendanceController());
+  Get.put(StudentAttendanceController());
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +236,7 @@ class _StudentListPageState extends State<StudentListPage> {
               itemCount: controller.attendencetypestListModel.value.length,
               itemBuilder: (BuildContext context, int index) {
                 final status =
-                    controller.attendencetypestListModel.value[index].id!;
+                controller.attendencetypestListModel.value[index].id!;
                 return RadioListTile<String>(
                   contentPadding: EdgeInsets.zero,
                   title: Text(
@@ -232,18 +263,19 @@ class _StudentListPageState extends State<StudentListPage> {
         Expanded(
           child: ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            separatorBuilder: (BuildContext context, int index) => SizedBox(
-              height: 15,
-            ),
+            separatorBuilder: (BuildContext context, int index) =>
+                SizedBox(
+                  height: 15,
+                ),
             itemCount: controller.studentListModel.value.length,
             itemBuilder: (context, index) {
               controller.addOrUpdateRemarkController(
                   controller.studentListModel.value[index].studentSessionId!,
                   remarkFound: true,
                   remark:
-                      controller.studentListModel.value[index]!.remark == null
-                          ? ""
-                          : controller.studentListModel.value[index]!.remark);
+                  controller.studentListModel.value[index]!.remark == null
+                      ? ""
+                      : controller.studentListModel.value[index]!.remark);
 
               return StudentTile(
                 student: controller.studentListModel.value[index],
@@ -265,7 +297,7 @@ class _StudentListPageState extends State<StudentListPage> {
               child: Text(
                 'Save Attendance',
                 style:
-                    theme.textTheme.titleMedium!.copyWith(color: Colors.white),
+                theme.textTheme.titleMedium!.copyWith(color: Colors.white),
               ),
             ),
           ),
@@ -292,12 +324,13 @@ class StudentTile extends StatefulWidget {
 class _StudentTileState extends State<StudentTile> {
   String? attendanceStatus;
   var selectedStatus = "";
+
   @override
   void initState() {
     super.initState();
 
     StudentAttendanceController controller2 =
-        Get.put(StudentAttendanceController());
+    Get.put(StudentAttendanceController());
     attendanceStatus = controller2.selectedStatus.value;
     selectedStatus = controller2.attendencetypestListModel
         .firstWhere((element) => element.id! == attendanceStatus)
@@ -305,7 +338,7 @@ class _StudentTileState extends State<StudentTile> {
   }
 
   StudentAttendanceController controller =
-      Get.put(StudentAttendanceController());
+  Get.put(StudentAttendanceController());
 
   @override
   Widget build(BuildContext context) {
@@ -314,7 +347,7 @@ class _StudentTileState extends State<StudentTile> {
 
     selectedStatus = controller.studentAttendenceModel.value
         .firstWhere((element) =>
-            element.studentSession == widget.student.studentSessionId)
+    element.studentSession == widget.student.studentSessionId)
         .attendencetype ?? "";
     String firstName = widget.student.firstname == null
         ? ""
@@ -392,7 +425,7 @@ class _StudentTileState extends State<StudentTile> {
             itemCount: controller.attendencetypestListModel.value.length,
             itemBuilder: (BuildContext context, int index) {
               var status =
-                  controller.attendencetypestListModel.value[index].id!;
+              controller.attendencetypestListModel.value[index].id!;
               return RadioListTile<String>(
                 contentPadding: EdgeInsets.zero,
                 title: Text(
@@ -427,7 +460,7 @@ class _StudentTileState extends State<StudentTile> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                    EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                   ),
                   style: TextStyle(fontSize: 14.0),
                   maxLines: 1,
@@ -450,9 +483,6 @@ class _StudentTileState extends State<StudentTile> {
 }
 
 
-
-
-
 class AttendancePage extends StatefulWidget {
   @override
   State<AttendancePage> createState() => _AttendancePageState();
@@ -460,9 +490,11 @@ class AttendancePage extends StatefulWidget {
 
 class _AttendancePageState extends State<AttendancePage> {
   String _selectedValue = 'i';
-   // Initialize all as 'P' (Present)
+
+  // Initialize all as 'P' (Present)
   StudentAttendanceController controller =
   Get.put(StudentAttendanceController());
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -475,31 +507,37 @@ class _AttendancePageState extends State<AttendancePage> {
             children: [
               ElevatedButton.icon(
                 onPressed: () {
-                  _markAll(controller,'P'); // Mark all as present
+                  _markAll(controller, 'P'); // Mark all as present
                 },
                 icon: Icon(Icons.check_circle, color: Colors.green),
                 label: Text('All Present'),
                 style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(15),
+                    elevation: 3,
                     foregroundColor: Colors.black,
                     backgroundColor: Colors.white),
               ),
               ElevatedButton.icon(
                 onPressed: () {
-                  _markAll(controller,'A'); // Mark all as absent
+                  _markAll(controller, 'A'); // Mark all as absent
                 },
                 icon: Icon(Icons.cancel, color: Colors.red),
                 label: Text('All Absent'),
                 style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(15),
+                    elevation: 3,
                     foregroundColor: Colors.black,
                     backgroundColor: Colors.white),
               ),
               ElevatedButton.icon(
                 onPressed: () {
-                  _markAll(controller,'L'); // Mark all as on leave
+                  _markAll(controller, 'L'); // Mark all as on leave
                 },
                 icon: Icon(Icons.event_busy, color: Colors.orange),
                 label: Text('All Leave'),
                 style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(15),
+                    elevation: 3,
                     foregroundColor: Colors.black,
                     backgroundColor: Colors.white),
               ),
@@ -510,7 +548,7 @@ class _AttendancePageState extends State<AttendancePage> {
           child: ListView.builder(
             itemCount: controller.studentListModel.value.length,
             itemBuilder: (context, index) {
-              Resultlist student =  controller.studentListModel.value[index];
+              Resultlist student = controller.studentListModel.value[index];
               return Container(
                 margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -528,10 +566,14 @@ class _AttendancePageState extends State<AttendancePage> {
                 child: ListTile(
 
                   leading: CircleAvatar(
-                    backgroundImage: NetworkImage('https://thumbs.dreamstime.com/b/child-girl-schoolgirl-elementary-school-student-123686003.jpg'),
+                    backgroundImage: NetworkImage(
+                        'https://thumbs.dreamstime.com/b/child-girl-schoolgirl-elementary-school-student-123686003.jpg'),
                   ),
-                  title: Text('${student.firstname} ${student.middlename ?? ""} ${student.lastname ?? ""}',style: TextStyle(fontSize: 14),),
-                  subtitle: Text('Roll No. ${student.rollNo}',style: TextStyle(fontSize: 14),),
+                  title: Text(
+                    '${student.firstname} ${student.middlename ?? ""} ${student
+                        .lastname ?? ""}', style: TextStyle(fontSize: 14),),
+                  subtitle: Text('Roll No. ${student.rollNo}',
+                    style: TextStyle(fontSize: 14),),
                   trailing: Column(
 
                     children: [
@@ -539,13 +581,15 @@ class _AttendancePageState extends State<AttendancePage> {
                       SizedBox(height: 5,),
                       GestureDetector(
                         onTap: () {
-                          _toggleAttendance(controller,index); // Toggle individual attendance
+                          _toggleAttendance(controller,
+                              index); // Toggle individual attendance
                         },
                         child: Container(
                           width: 35,
                           height: 35,
                           decoration: BoxDecoration(
-                            color: _getAttendanceColor(controller.attendanceStatus[index]),
+                            color: _getAttendanceColor(
+                                controller.attendanceStatus[index]),
                             shape: BoxShape.circle,
                           ),
                           child: Center(
@@ -565,32 +609,48 @@ class _AttendancePageState extends State<AttendancePage> {
             },
           ),
         ),
+
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: CustomElevatedButton(
-                  onPressed: () {
-                    controller.saveAttendance();
-                  },
-                  text: 'Mark Attendance',
-                  buttonTextStyle: TextStyle(color: Colors.white),
-                ),
-              ),
-
-              SizedBox(width: 8),
-
-            ],
+          padding: const EdgeInsets.only(top: 20,left: 5,right: 5),
+          child: MyButton(
+            title: 'Mark Attendance',
+            textStyle: TextStyle(
+              color: Colors.black,
+            ),
+            color: Colors.green.shade300,
+            onPress: () {
+              controller.saveAttendance();
+            },
           ),
         ),
+        // Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   child: Row(
+        //     children: [
+        //       Expanded(
+        //         child: CustomElevatedButton(
+        //           height: 43,
+        //           onPressed: () {
+        //             controller.saveAttendance();
+        //           },
+        //           text: 'Mark Attendance',
+        //           buttonTextStyle: TextStyle(color: Colors.white),
+        //         ),
+        //       ),
+        //
+        //       SizedBox(width: 8),
+        //
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }
 
   // Mark all students as present, absent, or on leave
-  void _markAll(controller,String status) {
-    controller.attendanceStatus = List.filled(controller.attendanceStatus.length, status);
+  void _markAll(controller, String status) {
+    controller.attendanceStatus =
+        List.filled(controller.attendanceStatus.length, status);
     controller.update();
     // setState(() {
     //   _attendanceStatus = List.filled(_attendanceStatus.length, status);
@@ -598,7 +658,7 @@ class _AttendancePageState extends State<AttendancePage> {
   }
 
   // Toggle individual attendance status
-  void _toggleAttendance(controller,int index) {
+  void _toggleAttendance(controller, int index) {
     setState(() {
       if (controller.attendanceStatus[index] == 'P') {
         controller.attendanceStatus[index] = 'A'; // Present to Absent

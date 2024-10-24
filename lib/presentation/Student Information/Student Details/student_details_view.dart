@@ -115,7 +115,7 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
                                                                     width: 4,
                                                                     decoration: BoxDecoration(
                                                                         color: Colors
-                                                                            .red,
+                                                                            .green.shade200,
                                                                         borderRadius:
                                                                             BorderRadius.circular(5.0)),
                                                                   ),
