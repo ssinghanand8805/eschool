@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
@@ -213,7 +212,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                   ),
 
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
                         onTap: () {
@@ -222,7 +221,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                           modal.controller.update();
                         },
                         child: Container(
-                          height: 40, width: Get.width / 2.1,
+                          height: 40, width: Get.width / 2.2,
                           decoration: BoxDecoration(
                             color: modal.controller.isUpcomingHomeworkList
                                 .value == "Upcoming homework" ? Colors.green
@@ -244,7 +243,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                           modal.controller.update();
                         },
                         child: Container(
-                          height: 40, width: Get.width / 2.1,
+                          height: 40, width: Get.width / 2.2,
                           decoration: BoxDecoration(
                             color: modal.controller.isUpcomingHomeworkList
                                 .value == "Close homework" ? Colors.green

@@ -210,30 +210,126 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
           // controller.filteredStudentListModel.value.length == 0 ?
           // Text("No Data") :
           controller.isLoadingStudentList.isTrue ? CustomLoader() : Container(child: controller.filteredStudentListModel.length > 0 ?
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: AdvancedPaginatedDataTable(
-                addEmptyRows: false,
-                source: _source,
-                showFirstLastButtons: true,
-                rowsPerPage: _rowsPerPage,
-                availableRowsPerPage: [1, 5, 10, 50],
-                onRowsPerPageChanged: (newRowsPerPage) {
-                  if (newRowsPerPage != null) {
-                    setState(() {
-                      _rowsPerPage = newRowsPerPage;
-                    });
-                  }
-                },
-                columns: [
-                  DataColumn(label: Text('Student')),
-                  DataColumn(label: Text('Status')),
-                  DataColumn(label: Text('Remark'))
-                ],
-              ),
-            ),
-          ):Container(child: Lottie.asset("assets/images/no_data_found.json"),),)
+
+              ListView.builder(
+                itemCount: controller.filteredStudentListModel.value.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  final currentRowData = controller.filteredStudentListModel.value[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey,
+                            blurRadius: 5,
+                            offset: Offset(1, 4), // Shadow position
+                          ),
+                        ],
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
+                      child: Row(
+                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 25,
+                            width: 4,
+                            decoration: BoxDecoration(
+                                color: Colors.green.shade300,
+                                borderRadius: BorderRadius.circular(5.0)),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        children: [
+                                          // Text(
+                                          //   "Student: ",
+                                          //   style: theme.textTheme.titleSmall,),
+                                          Text(
+                                            currentRowData.firstname.toString(),
+                                            style: theme.textTheme.titleSmall,),
+                                        ],
+                                      ),
+
+
+                                      Row(
+                                        children: [
+                                          Text("Status.: ",
+                                            style: theme.textTheme.titleSmall,),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: currentRowData.attType.toString()=="Present"?Colors.green:currentRowData.attType.toString()=="Absent"?Colors.red:Colors.orange,
+                                              borderRadius: BorderRadius.circular(20),
+                                              border: Border.all(color: currentRowData.attType.toString()=="Present"?Colors.green:currentRowData.attType.toString()=="Absent"?Colors.red:Colors.orange)
+                                            ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 14.0,vertical: 4),
+                                                child: Text(currentRowData.attType.toString(), style: theme.textTheme.titleSmall!.copyWith(color: Colors.white))
+                                                //Text(currentRowData.attType.toString(), style: currentRowData.attType.toString()=="Present"?theme.textTheme.bodySmall!.copyWith(color: Colors.green):currentRowData.attType.toString()=="Absent"?theme.textTheme.bodySmall!.copyWith(color: Colors.red):theme.textTheme.bodySmall!.copyWith(color: Colors.orange),),
+                                              )),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10,),
+
+
+
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },)
+
+
+
+
+          // SingleChildScrollView(
+          //   child: Padding(
+          //     padding: const EdgeInsets.only(top: 8.0),
+          //     child: AdvancedPaginatedDataTable(
+          //       addEmptyRows: false,
+          //       source: _source,
+          //       showFirstLastButtons: true,
+          //       rowsPerPage: _rowsPerPage,
+          //       availableRowsPerPage: [1, 5, 10, 50],
+          //       onRowsPerPageChanged: (newRowsPerPage) {
+          //         if (newRowsPerPage != null) {
+          //           setState(() {
+          //             _rowsPerPage = newRowsPerPage;
+          //           });
+          //         }
+          //       },
+          //       columns: [
+          //         DataColumn(label: Text('Student')),
+          //         DataColumn(label: Text('Status')),
+          //         DataColumn(label: Text('Remark'))
+          //       ],
+          //     ),
+          //   ),
+          // )
+              :Container(child: Lottie.asset("assets/images/no_data_found.json"),),)
         ],
       ),
     );
