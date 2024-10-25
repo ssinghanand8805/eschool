@@ -11,7 +11,8 @@ class CommonApiController extends GetxController {
   RxList<Sections> sectionListModel = <Sections>[].obs;
   RxList<dynamic> sectionListModelMap = <dynamic>[].obs;
   Rx<String> selectedClassId = "".obs;
-
+  RxBool isClassLoading = false.obs;
+  RxBool isSectionLoading = false.obs;
   Rx<String> selectedSectionId = "".obs;
   Rx<bool> isLoadingStudentList = false.obs;
   Rx<String> selectedClassName = "".obs;
@@ -34,7 +35,8 @@ class CommonApiController extends GetxController {
   }
   Future<void> getClassList() async
   {
-
+    isClassLoading.value = true;
+    update();
     var data  = await apiRespository.getApiCallByJson(Constants.getClassListUrl);
     print("DATA @@@@ ${data.body}");
 
@@ -49,11 +51,14 @@ class CommonApiController extends GetxController {
       return item.toJson();
     }).toList();
 
+    isClassLoading.value = false;
     update();
   }
 
   Future<void> getSectionList() async
   {
+    isSectionLoading.value = true;
+    update();
 var body = {
   "class_id": selectedClassId.value
 };
@@ -71,6 +76,7 @@ var body = {
       return item.toJson();
     }).toList();
 
+    isSectionLoading.value = false;
     update();
   }
 }

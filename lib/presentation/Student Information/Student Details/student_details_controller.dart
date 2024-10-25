@@ -24,6 +24,7 @@ class StudentDetailsController extends GetxController{
   late Future<void> fetchDataFuture;
   RxString selectedClassName = "".obs;
   RxString selectedSectionName = ''.obs;
+
   bool isInit = false;
   @override
   void onInit() async {

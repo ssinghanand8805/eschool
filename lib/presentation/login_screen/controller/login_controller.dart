@@ -43,49 +43,59 @@ class LoginController extends GetxController {
     var data = await apiRespository.postApiCallByJsonForLogin(Constants.authUrl, body);
 
     print("DATA @@@@ ${data.body}");
-    if(data.body is bool)
+    if(data.statusCode == 200)
       {
-        isLoading.value = false;
-        update();
-        final prefs = await SharedPreferences.getInstance();
-        prefs.clear();
-        Get.showSnackbar(Ui.ErrorSnackBar(message: "Enter correct username and password!"));
-       Get.toNamed('/s_screen');
-
-
-        print('login failed:::::::::');
-        return;
-      }
-    else if(data.body != null)
-      {
-        isLoading.value = false;
-        update();
-        Faculity fac = Faculity.fromJson(data.body);
-
-        UserData usersData = UserData();
-        userData.addLastUserId(idController.text);
-        userData.addLastUserPwd(passwordController.text);
-        usersData.saveFaculity(fac);
-        if(fac.roles!.roleId.toString() == '7')
+        if(data.body is bool)
         {
-          Get.showSnackbar(Ui.SuccessSnackBar(message: "Welcome ${fac.name}"));
-          //superadmin found no restriction
-          //navigate to dashboard
-          Get.toNamed(AppRoutes.formScreen);
+          isLoading.value = false;
+          update();
+          final prefs = await SharedPreferences.getInstance();
+          prefs.clear();
+          Get.showSnackbar(Ui.ErrorSnackBar(message: "Enter correct username and password!"));
+          Get.toNamed('/s_screen');
+
+
+          print('login failed:::::::::');
+          return;
+        }
+        else if(data.body != null)
+        {
+          isLoading.value = false;
+          update();
+          Faculity fac = Faculity.fromJson(data.body);
+
+          UserData usersData = UserData();
+          userData.addLastUserId(idController.text);
+          userData.addLastUserPwd(passwordController.text);
+          usersData.saveFaculity(fac);
+          if(fac.roles!.roleId.toString() == '7')
+          {
+            Get.showSnackbar(Ui.SuccessSnackBar(message: "Welcome ${fac.name}"));
+            //superadmin found no restriction
+            //navigate to dashboard
+            Get.toNamed(AppRoutes.formScreen);
+          }
+          else
+          {
+            Get.showSnackbar(Ui.SuccessSnackBar(message: "Welcome ${fac.name}"));
+            Get.toNamed(AppRoutes.formScreen);
+            //check permission wise and navigate to dashboard
+          }
         }
         else
         {
-          Get.showSnackbar(Ui.SuccessSnackBar(message: "Welcome ${fac.name}"));
-          Get.toNamed(AppRoutes.formScreen);
-          //check permission wise and navigate to dashboard
+          Get.showSnackbar(Ui.ErrorSnackBar(message: "Server Error Occured"));
+          isLoading.value = false;
+          update();
         }
       }
     else
       {
-        Get.showSnackbar(Ui.ErrorSnackBar(message: "Server Error Occured"));
+        Get.showSnackbar(Ui.ErrorSnackBar(message: data.body['message']));
         isLoading.value = false;
         update();
       }
+
 
 
 

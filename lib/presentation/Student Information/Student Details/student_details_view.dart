@@ -306,8 +306,8 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Obx(() => MyCustomSD(
+            Obx(() => controller.commonApiController.isClassLoading.value ?  CircularProgressIndicator() : Expanded(
+                child: MyCustomSD(
                     hideSearch: true,
                     borderColor: Colors.grey,
                     listToSearch:
@@ -337,13 +337,13 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
                         controller.commonApiController.getSectionList();
                       }
                     },
-                  )),
-            ),
+                  ),
+              )),
             SizedBox(
               width: 10,
             ),
-            Expanded(
-              child: Obx(() => MyCustomSD(
+            Obx(() => controller.commonApiController.isSectionLoading.value ? CircularProgressIndicator(): Expanded(
+              child: MyCustomSD(
                     hideSearch: true,
                     borderColor: Colors.grey,
                     listToSearch: controller
@@ -372,8 +372,8 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
                         controller.commonApiController.update();
                       }
                     },
-                  )),
-            ),
+                  ),
+            )),
           ],
         ),
         SizedBox(
