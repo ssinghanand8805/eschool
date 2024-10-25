@@ -29,7 +29,9 @@ class StudentAttendanceController extends GetxController {
       <Attendencetypeslist>[].obs;
   var remarks = <String, TextEditingController>{}.obs;
   List<String> attendanceStatus = List.filled(8, 'P');
+  Map studentAttendaceDet = {};
   late Future<void> fetchDataFuture;
+  RxBool isSavingData = false.obs;
   @override
   void onClose() {
     super.onClose();
@@ -76,7 +78,7 @@ async {
   Future<void> getFilterData() async {
     CommonApiController commonApiController = Get.put(CommonApiController());
     DateTime parsedDate = DateFormat("dd/MM/yyyy").parse(attendanceDate.value.text.toString());
-    String formattedDate = DateFormat("MM/dd/yyyy").format(parsedDate);
+    String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(parsedDate);
     var body = {
       "class_id": commonApiController.selectedClassId.value,
       "section_id": commonApiController.selectedSectionId.value,
@@ -106,6 +108,8 @@ async {
       ss.studentSession = e.studentSessionId;
       ss.remark = e.remark;
       studentAttendenceModel.value.add(ss);
+      Resultlist student =  studentListModel.value[i];
+      studentAttendaceDet[student.studentSessionId] =  student.attendenceTypeId.toString() == '1' ? 'P' : student.attendenceTypeId.toString() == '4' ? 'A' : student.attendenceTypeId.toString() == '5' ? 'L' : 'P';
     }
 
     update();
@@ -142,10 +146,24 @@ async {
       update();
     }
   }
+  void toggleAttendance(index) {
 
+    if (studentAttendaceDet[index] == 'P') {
+      studentAttendaceDet[index] = 'A'; // Present to Absent
+    } else if (studentAttendaceDet[index] == 'A') {
+      print("UUUUUUUUUUU*${studentAttendaceDet[index]}");
+      studentAttendaceDet[index] = 'L'; // Absent to Leave
+    } else {
+      studentAttendaceDet[index] = 'P'; // Leave to Present
+    }
+    update();
+  }
   saveAttendance() async {
+    isSavingData.value = true;
+    update();
     for (var i = 0; i < studentAttendenceModel.value.length; i++) {
-      String st = attendanceStatus[i];
+      StudentAttendenceModel student = studentAttendenceModel.value[i]!;
+      String st = studentAttendaceDet[student.studentSession];
       int attID = 0;
       if(st == 'P')
         {
@@ -167,7 +185,7 @@ async {
   print(students);
     CommonApiController commonApiController = Get.put(CommonApiController());
     DateTime parsedDate = DateFormat("dd/MM/yyyy").parse(attendanceDate.value.text.toString());
-    String formattedDate = DateFormat("MM/dd/yyyy").format(parsedDate);
+    String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(parsedDate);
     var body = {
       "class_id": commonApiController.selectedClassId.value,
       "section_id": commonApiController.selectedSectionId.value,
@@ -180,8 +198,12 @@ async {
     print("DATA @@@@ ${data.body}");
     if(data.statusCode==200){
       Get.showSnackbar(Ui.SuccessSnackBar(message: data.body['message'].toString()));
+      isSavingData.value = false;
+      update();
     }else{
       Get.showSnackbar(Ui.ErrorSnackBar(message: data.body['message'].toString()));
+      isSavingData.value = false;
+      update();
     }
     // SuccessSnackBar();
   }

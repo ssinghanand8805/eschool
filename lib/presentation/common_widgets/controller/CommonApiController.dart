@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
+import '../../../apiHelper/toastMessage.dart';
 import '../model/CommonModel.dart';
 
 class CommonApiController extends GetxController {
@@ -22,14 +23,7 @@ class CommonApiController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // searchController.value.addListener(() {
-    //   filterStudentList();
-    // });
-    // kEvents.value = LinkedHashMap<DateTime, List<Event>>(
-    //   equals: isSameDay,
-    //   hashCode: getHashCode,
-    // )..addAll(_kEventSource.value);
-    // DateTime now = DateTime.now();
+
     getClassList();
     // Initialize the future when the controller is created
   }
@@ -39,44 +33,65 @@ class CommonApiController extends GetxController {
     update();
     var data  = await apiRespository.getApiCallByJson(Constants.getClassListUrl);
     print("DATA @@@@ ${data.body}");
-
-    for(var i=0;i<data.body.length;i++)
+    if(data.body != null)
       {
-        Classes s = Classes.fromJson(data.body[i]);
-        classListModel.value.add(s);
+        for(var i=0;i<data.body.length;i++)
+        {
+          Classes s = Classes.fromJson(data.body[i]);
+          classListModel.value.add(s);
+        }
+
+
+        classListModelMap.value = classListModel.value.map((item) {
+          return item.toJson();
+        }).toList();
+
+        isClassLoading.value = false;
+        update();
+      }
+    else
+      {
+        Get.showSnackbar(Ui.ErrorSnackBar(message: "Class Loading Failed..Try Again"));
+        isClassLoading.value = false;
+        update();
       }
 
-
-    classListModelMap.value = classListModel.value.map((item) {
-      return item.toJson();
-    }).toList();
-
-    isClassLoading.value = false;
-    update();
   }
 
   Future<void> getSectionList() async
   {
     isSectionLoading.value = true;
     update();
+    sectionListModel.clear();
+    sectionListModelMap.clear();
 var body = {
   "class_id": selectedClassId.value
 };
     var data  = await apiRespository.postApiCallByJson(Constants.getSectionListUrl,body);
     print("DATA @@@@ ${data.body}");
 
-    for(var i=0;i<data.body.length;i++)
-    {
-      Sections s = Sections.fromJson(data.body[i]);
-      sectionListModel.value.add(s);
-    }
+    if(data.body != null)
+      {
+        for(var i=0;i<data.body.length;i++)
+        {
+          Sections s = Sections.fromJson(data.body[i]);
+          sectionListModel.value.add(s);
+        }
 
 
-    sectionListModelMap.value = sectionListModel.value.map((item) {
-      return item.toJson();
-    }).toList();
+        sectionListModelMap.value = sectionListModel.value.map((item) {
+          return item.toJson();
+        }).toList();
 
-    isSectionLoading.value = false;
-    update();
+        isSectionLoading.value = false;
+        update();
+      }
+    else
+      {
+        Get.showSnackbar(Ui.ErrorSnackBar(message: "Section Loading Failed..Try Again"));
+        isSectionLoading.value = false;
+        update();
+      }
+
   }
 }

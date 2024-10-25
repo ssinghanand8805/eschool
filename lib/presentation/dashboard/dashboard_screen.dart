@@ -72,95 +72,95 @@ class DashboardScreen extends GetView<DashboardController> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          AlertDialogue().show(context,
-              newWidget: [
-                Column(
-                  // mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ListTile(
-                      leading: Icon(Icons.message),
-                      title: Text('Term'),
-                      onTap: () async {
-                        await Get.toNamed(AppRoutes.termRoute);
-                        Navigator.pop(context); // Close the bottom sheet
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.email),
-                      title: Text('Assessment'),
-                      onTap: () async {
-                        await Get.toNamed(AppRoutes.assessmentRoute);
-
-                        Navigator.pop(context); // Close the bottom sheet
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.email),
-                      title: Text('Exam Grade'),
-                      onTap: () async {
-                        await Get.toNamed(AppRoutes.exam_gradeRoute);
-                        Navigator.pop(context); // Close the bottom sheet
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.email),
-                      title: Text('Exam'),
-                      onTap: () async {
-                        await Get.toNamed(AppRoutes.examRoute);
-                        Navigator.pop(context); // Close the bottom sheet
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.email),
-                      title: Text('Exam Schedule'),
-                      onTap: () async {
-                        await Get.toNamed(AppRoutes.exam_scheduleRoute);
-                        Navigator.pop(context); // Close the bottom sheet
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.email),
-                      title: Text('Assign Observation'),
-                      onTap: () async {
-                        await Get.toNamed(AppRoutes.assign_observationRoute);
-                        Navigator.pop(context); // Close the bottom sheet
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.email),
-                      title: Text('Observation Parameter'),
-                      onTap: () async {
-                        await Get.toNamed(AppRoutes.observation_ParameterRoute);
-                        Navigator.pop(context); // Close the bottom sheet
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.email),
-                      title: Text('Print Marksheet'),
-                      onTap: () async {
-                        await Get.toNamed(AppRoutes.print_marksheetRoute);
-                        Navigator.pop(context); // Close the bottom sheet
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.email),
-                      title: Text('Observation'),
-                      onTap: () async {
-                        await Get.toNamed(AppRoutes.observationRoute);
-                        Navigator.pop(context); // Close the bottom sheet
-                      },
-                    ),
-
-                    // Add more ListTiles for additional buttons
-                  ],
-                )
-              ]);
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.green.shade400,
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     AlertDialogue().show(context,
+      //         newWidget: [
+      //           Column(
+      //             // mainAxisSize: MainAxisSize.min,
+      //             children: <Widget>[
+      //               ListTile(
+      //                 leading: Icon(Icons.message),
+      //                 title: Text('Term'),
+      //                 onTap: () async {
+      //                   await Get.toNamed(AppRoutes.termRoute);
+      //                   Navigator.pop(context); // Close the bottom sheet
+      //                 },
+      //               ),
+      //               ListTile(
+      //                 leading: Icon(Icons.email),
+      //                 title: Text('Assessment'),
+      //                 onTap: () async {
+      //                   await Get.toNamed(AppRoutes.assessmentRoute);
+      //
+      //                   Navigator.pop(context); // Close the bottom sheet
+      //                 },
+      //               ),
+      //               ListTile(
+      //                 leading: Icon(Icons.email),
+      //                 title: Text('Exam Grade'),
+      //                 onTap: () async {
+      //                   await Get.toNamed(AppRoutes.exam_gradeRoute);
+      //                   Navigator.pop(context); // Close the bottom sheet
+      //                 },
+      //               ),
+      //               ListTile(
+      //                 leading: Icon(Icons.email),
+      //                 title: Text('Exam'),
+      //                 onTap: () async {
+      //                   await Get.toNamed(AppRoutes.examRoute);
+      //                   Navigator.pop(context); // Close the bottom sheet
+      //                 },
+      //               ),
+      //               ListTile(
+      //                 leading: Icon(Icons.email),
+      //                 title: Text('Exam Schedule'),
+      //                 onTap: () async {
+      //                   await Get.toNamed(AppRoutes.exam_scheduleRoute);
+      //                   Navigator.pop(context); // Close the bottom sheet
+      //                 },
+      //               ),
+      //               ListTile(
+      //                 leading: Icon(Icons.email),
+      //                 title: Text('Assign Observation'),
+      //                 onTap: () async {
+      //                   await Get.toNamed(AppRoutes.assign_observationRoute);
+      //                   Navigator.pop(context); // Close the bottom sheet
+      //                 },
+      //               ),
+      //               ListTile(
+      //                 leading: Icon(Icons.email),
+      //                 title: Text('Observation Parameter'),
+      //                 onTap: () async {
+      //                   await Get.toNamed(AppRoutes.observation_ParameterRoute);
+      //                   Navigator.pop(context); // Close the bottom sheet
+      //                 },
+      //               ),
+      //               ListTile(
+      //                 leading: Icon(Icons.email),
+      //                 title: Text('Print Marksheet'),
+      //                 onTap: () async {
+      //                   await Get.toNamed(AppRoutes.print_marksheetRoute);
+      //                   Navigator.pop(context); // Close the bottom sheet
+      //                 },
+      //               ),
+      //               ListTile(
+      //                 leading: Icon(Icons.email),
+      //                 title: Text('Observation'),
+      //                 onTap: () async {
+      //                   await Get.toNamed(AppRoutes.observationRoute);
+      //                   Navigator.pop(context); // Close the bottom sheet
+      //                 },
+      //               ),
+      //
+      //               // Add more ListTiles for additional buttons
+      //             ],
+      //           )
+      //         ]);
+      //   },
+      //   child: Icon(Icons.add),
+      //   backgroundColor: Colors.green.shade400,
+      // ),
       drawer: Drawer(
         child: SingleChildScrollView(
           child: Column(

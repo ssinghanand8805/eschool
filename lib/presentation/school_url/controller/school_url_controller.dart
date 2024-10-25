@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:learnladderfaculity/apiHelper/dependencies.dart';
 import 'package:learnladderfaculity/apiHelper/userData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../apiHelper/Constants.dart';
@@ -107,11 +108,11 @@ return d;
                 await prefs.setString("schoolStartMonth",data["start_month_name"] ?? "");
                 await  prefs.setString("schoolStartMonthNumber",data["start_month"] ?? "");
                 await  prefs.setString("schoolImage",data["image"] ?? "");
-
-                Get.lazyPut(()=>ApiClient(appBaseUrl: "${baseUrl}api/"), fenix: true);
-                Get.lazyPut(()=>ApiRespository(apiClient: Get.find()));
-                Get.lazyPut(()=>chatApiClient(appBaseUrl: "${chatBaseUrl}api/"),tag: 'chatApi',fenix: true);
-                Get.lazyPut(()=>ChatApiRespository(apiClient: Get.find(tag: 'chatApi')));
+                init();
+                // Get.lazyPut(()=>ApiClient(appBaseUrl: "${baseUrl}api/"), fenix: true);
+                // Get.lazyPut(()=>ApiRespository(apiClient: Get.find()));
+                // Get.lazyPut(()=>chatApiClient(appBaseUrl: "${chatBaseUrl}api/"),tag: 'chatApi',fenix: true);
+                // Get.lazyPut(()=>ChatApiRespository(apiClient: Get.find(tag: 'chatApi')));
                 isLoading.value = false;
                 update();
                 // data.forEach((key, value) async {

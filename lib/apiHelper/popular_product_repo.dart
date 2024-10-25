@@ -23,7 +23,7 @@ class ApiRespository extends GetxService {
     return await apiClient.postDatabyJson( endPoint, body );
   }
   Future<Response> postApiCallByJsonForLogin(endPoint , body) async{
-    log("Api Url  "+(endPoint).toString());
+    log("Endpoint Url  "+(endPoint).toString());
     return await apiClient.postDatabyJsonForLogin( endPoint, body );
   }
   Future<Response> postApiCallByFormData(endPoint , body) async{

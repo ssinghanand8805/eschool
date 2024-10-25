@@ -354,7 +354,11 @@ class DashboardController extends GetxController {
                 child: InkWell(
                   onTap: () {
                     print(data[index].shortCode.toString());
-                    Get.toNamed("/" + data[index].shortCode.toString());
+                    Navigator.pushNamed(
+                      context,
+                        "/" + data[index].shortCode.toString());
+                  //  Get.toNamed("/" + data[index].shortCode.toString());
+
                   },
                   child: Container(
                     padding: EdgeInsets.all(5),

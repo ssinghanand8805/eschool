@@ -84,9 +84,9 @@ class Resultlist {
     classSection = json['class_section'];
     classId = json['class_id'];
     sectionId = json['section_id'];
-    totalPresent = json['total_present'];
-    totalAbsent = json['total_absent'];
-    totalLeave = json['total_leave'];
+    totalPresent = json['total_present'].toString();
+    totalAbsent = json['total_absent'].toString();
+    totalLeave = json['total_leave'].toString();
     presentPercent = json['present_percent'];
     absentPercent = json['absent_percent'];
     leavePercent = json['leave_percent'];

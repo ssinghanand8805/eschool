@@ -40,7 +40,7 @@ class ImageConstant {
 
   static String imgQuestions = '$imagePath/img_questions.png';
 
-  static String imgAddUserMale = '$imagePath/img_add_user_male.png';
+  // static String imgAddUserMale = '$imagePath/img_add_user_male.png';
 
 // Form images
   static String imgGroup149 = '$imagePath/img_group_149.png';
@@ -52,5 +52,5 @@ class ImageConstant {
 // Common images
   static String imgRectangle133x108 = '$imagePath/img_rectangle_133x108.png';
 
-  static String imageNotFound = 'assets/images/image_not_found.png';
+  // static String imageNotFound = 'assets/images/image_not_found.png';
 }

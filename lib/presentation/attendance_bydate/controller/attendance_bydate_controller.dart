@@ -98,7 +98,7 @@ class AttendanceByDateController extends GetxController {
     if(commonApiController.selectedClassId.value.isNotEmpty && commonApiController.selectedSectionId.value.isNotEmpty && attendanceDate.value.text.toString().isNotEmpty)
       {
         DateTime parsedDate = DateFormat("dd/MM/yyyy").parse(attendanceDate.value.text.toString());
-        String formattedDate = DateFormat("MM/dd/yyyy").format(parsedDate);
+        String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(parsedDate);
         var body = {
           "class_id": commonApiController.selectedClassId.value,
           "section_id": commonApiController.selectedSectionId.value,

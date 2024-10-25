@@ -91,7 +91,7 @@ class LoginController extends GetxController {
       }
     else
       {
-        Get.showSnackbar(Ui.ErrorSnackBar(message: data.body['message']));
+        Get.showSnackbar(Ui.ErrorSnackBar(message: "Server Error Occured"));
         isLoading.value = false;
         update();
       }

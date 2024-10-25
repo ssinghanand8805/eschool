@@ -69,11 +69,11 @@ class _MyCustomSDState extends State<MyCustomSD> {
           menuHeight: widget.height ?? 80,
           menuMode: false,
           labelStyle:
-              theme.textTheme.titleSmall!.copyWith(fontWeight: FontWeight.w500),
+              theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
           items: widget.listToSearch,
           label: widget.label ?? 'Select Name',
           dropdownItemStyle:
-              theme.textTheme.titleSmall!.copyWith(fontWeight: FontWeight.w500),
+              theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
           dropDownMenuItems: widget.listToSearch.map((item) {
             return item[widget.valFrom];
           }).toList(),

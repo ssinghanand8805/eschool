@@ -12,6 +12,7 @@ import 'package:lottie/lottie.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 
@@ -68,7 +69,7 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
     );
     return date;
   }
-generatePdf(filteredStudentListModel,dateFor,classFor)
+generatePdf(filteredStudentListModel,dateFor,classFor,isShare)
 async {
   final pdf = pw.Document();
 
@@ -147,7 +148,17 @@ async {
   final file = File(filePath);
   await file.writeAsBytes(await pdf.save());
   print(filePath);
-  await OpenFilex.open(filePath);
+
+  if(isShare)
+    {
+      final xFile = XFile(file.path);
+      Share.shareXFiles([xFile],subject:fileName);
+    }
+  else
+    {
+      await OpenFilex.open(filePath);
+    }
+
 }
   CommonApiController controller3 =
   Get.put(CommonApiController());
@@ -163,7 +174,7 @@ async {
               if(controller.filteredStudentListModel.length > 0 )
                 {
                   String classFor = controller3.selectedClassName.value + " ( " + controller3.selectedSectionName.value + " )";
-                  generatePdf(controller.filteredStudentListModel,controller.attendanceDate.value.text,classFor);
+                  generatePdf(controller.filteredStudentListModel,controller.attendanceDate.value.text,classFor,false);
                 }
               else
                 {
@@ -171,22 +182,90 @@ async {
                 }
 
             },
-              child: Icon(Icons.share,size: 22,))
+              child: Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: Icon(Icons.remove_red_eye,size: 22,),
+              )),
+          InkWell(
+              onTap: (){
+                if(controller.filteredStudentListModel.length > 0 )
+                {
+                  String classFor = controller3.selectedClassName.value + " ( " + controller3.selectedSectionName.value + " )";
+                  generatePdf(controller.filteredStudentListModel,controller.attendanceDate.value.text,classFor,true);
+                }
+                else
+                {
+                  print("No Data to share");
+                }
+
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: Icon(Icons.share,size: 22,),
+              )),
         ],
       ),
       body: GetBuilder(
         init: controller,
         builder: (context) {
           return CommonForm(
-              widgetFilterSelectedData: Row(
-                children: [
-                  Text("Class :  ",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
-                  Text(controller3.selectedClassName.value + " ( " + controller3.selectedSectionName.value + " )",
-                      style: TextStyle(fontSize: 14, color: Colors.grey.shade800)),
-                  SizedBox(width: 20),
-                  Text("Date :  ",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
-                  Text(controller.attendanceDate.value.text,style: TextStyle(fontSize: 14, color: Colors.grey.shade800)),
-                ],
+              widgetFilterSelectedData: Container(
+                width: Get.width*0.7,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: Colors.green.shade200)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 10),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Class :  ",
+                                style:
+                                TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                  controller3.selectedClassName.value +
+                                      " ( " +
+                                      controller3.selectedSectionName.value +
+                                      " )",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.grey.shade800)),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(width: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: Colors.green.shade200)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 10),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Date :  ",
+                                style:
+                                TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                              ),
+                              Text(controller.attendanceDate.value.text,
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.grey.shade800)),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
               widgetFilterData: Column(
                 children: [
@@ -352,38 +431,45 @@ async {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                        children: [
-                                          // Text(
-                                          //   "Student: ",
-                                          //   style: theme.textTheme.titleSmall,),
-                                          Text(
-                                            currentRowData.firstname.toString(),
-                                            style: theme.textTheme.titleSmall,),
-                                        ],
-                                      ),
-
-
-                                      Row(
-                                        children: [
-                                          Text("Status.: ",
-                                            style: theme.textTheme.titleSmall,),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: currentRowData.attType.toString()=="Present"?Colors.green:currentRowData.attType.toString()=="Absent"?Colors.red:Colors.orange,
-                                              borderRadius: BorderRadius.circular(20),
-                                              border: Border.all(color: currentRowData.attType.toString()=="Present"?Colors.green:currentRowData.attType.toString()=="Absent"?Colors.red:Colors.orange)
+                                      Expanded(
+                                        flex:3,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          children: [
+                                            // Text(
+                                            //   "Student: ",
+                                            //   style: theme.textTheme.titleSmall,),
+                                            Expanded(
+                                              child: Text(
+                                                                                      
+                                                currentRowData.firstname.toString(),
+                                                overflow:TextOverflow.ellipsis,
+                                                style: theme.textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w500),),
                                             ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal: 14.0,vertical: 4),
-                                                child: Text(currentRowData.attType.toString(), style: theme.textTheme.titleSmall!.copyWith(color: Colors.white))
-                                                //Text(currentRowData.attType.toString(), style: currentRowData.attType.toString()=="Present"?theme.textTheme.bodySmall!.copyWith(color: Colors.green):currentRowData.attType.toString()=="Absent"?theme.textTheme.bodySmall!.copyWith(color: Colors.red):theme.textTheme.bodySmall!.copyWith(color: Colors.orange),),
-                                              )),
-                                        ],
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex:2,
+                                        child: Row(
+                                          children: [
+                                            Text("Status: ",
+                                              style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: currentRowData.attType.toString()=="Present"?Colors.green:currentRowData.attType.toString()=="Absent"?Colors.red:Colors.orange,
+                                                borderRadius: BorderRadius.circular(20),
+                                                border: Border.all(color: currentRowData.attType.toString()=="Present"?Colors.green:currentRowData.attType.toString()=="Absent"?Colors.red:Colors.orange)
+                                              ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 14.0,vertical: 4),
+                                                  child: Text(currentRowData.attType.toString(), style: theme.textTheme.titleSmall!.copyWith(color: Colors.white))
+                                                  //Text(currentRowData.attType.toString(), style: currentRowData.attType.toString()=="Present"?theme.textTheme.bodySmall!.copyWith(color: Colors.green):currentRowData.attType.toString()=="Absent"?theme.textTheme.bodySmall!.copyWith(color: Colors.red):theme.textTheme.bodySmall!.copyWith(color: Colors.orange),),
+                                                )),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),

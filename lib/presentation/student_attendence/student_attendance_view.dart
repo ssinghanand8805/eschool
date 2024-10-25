@@ -50,57 +50,63 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
           init: controller,
           builder: (context) {
             return CommonForm(
-                widgetFilterSelectedData: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.green.shade200)
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 10),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Class :  ",
-                              style:
-                              TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                widgetFilterSelectedData: Container(
+                  width: Get.width*0.7,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(color: Colors.green.shade200)
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 10),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Class :  ",
+                                  style:
+                                  TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                                ),
+                                Text(
+                                    controller3.selectedClassName.value +
+                                        " ( " +
+                                        controller3.selectedSectionName.value +
+                                        " )",
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.grey.shade800)),
+                              ],
                             ),
-                            Text(
-                                controller3.selectedClassName.value +
-                                    " ( " +
-                                    controller3.selectedSectionName.value +
-                                    " )",
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.grey.shade800)),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
 
-                    SizedBox(width: 10),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.green.shade200)
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 10),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Date :  ",
-                              style:
-                              TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                        SizedBox(width: 10),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(color: Colors.green.shade200)
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 10),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Date :  ",
+                                  style:
+                                  TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                                ),
+                                Text(controller.attendanceDate.value.text,
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.grey.shade800)),
+                              ],
                             ),
-                            Text(controller.attendanceDate.value.text,
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.grey.shade800)),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
                 widgetFilterData: Column(
                   children: [
@@ -503,38 +509,40 @@ class _AttendancePageState extends State<AttendancePage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ElevatedButton.icon(
                 onPressed: () {
                   _markAll(controller, 'P'); // Mark all as present
                 },
                 icon: Icon(Icons.check_circle, color: Colors.green),
-                label: Text('All Present'),
+                label: Text('Present'),
                 style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(15),
                     elevation: 3,
                     foregroundColor: Colors.black,
                     backgroundColor: Colors.white),
               ),
+              // SizedBox(width: 5,),
               ElevatedButton.icon(
                 onPressed: () {
                   _markAll(controller, 'A'); // Mark all as absent
                 },
                 icon: Icon(Icons.cancel, color: Colors.red),
-                label: Text('All Absent'),
+                label: Text('Absent'),
                 style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(15),
                     elevation: 3,
                     foregroundColor: Colors.black,
                     backgroundColor: Colors.white),
               ),
+
               ElevatedButton.icon(
                 onPressed: () {
                   _markAll(controller, 'L'); // Mark all as on leave
                 },
                 icon: Icon(Icons.event_busy, color: Colors.orange),
-                label: Text('All Leave'),
+                label: Text('Leave'),
                 style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(15),
                     elevation: 3,
@@ -544,11 +552,15 @@ class _AttendancePageState extends State<AttendancePage> {
             ],
           ),
         ),
+        SizedBox(height: 5,),
         Expanded(
           child: ListView.builder(
             itemCount: controller.studentListModel.value.length,
             itemBuilder: (context, index) {
               Resultlist student = controller.studentListModel.value[index];
+            //  print("PPPPPP${student.attendenceTypeId}");
+            //  controller.studentAttendaceDet[student.studentSessionId] =  student.attendenceTypeId.toString() == '1' ? 'P' : student.attendenceTypeId.toString() == '4' ? 'A' : student.attendenceTypeId.toString() == '5' ? 'L' : 'P';
+
               return Container(
                 margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -566,35 +578,35 @@ class _AttendancePageState extends State<AttendancePage> {
                 child: ListTile(
 
                   leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        'https://thumbs.dreamstime.com/b/child-girl-schoolgirl-elementary-school-student-123686003.jpg'),
+                    backgroundImage: AssetImage(
+                        "assets/projectImages/student.png"),
                   ),
                   title: Text(
                     '${student.firstname} ${student.middlename ?? ""} ${student
-                        .lastname ?? ""}', style: TextStyle(fontSize: 14),),
+                        .lastname ?? ""}' + "( ${student.admissionNo} )", style: theme.textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w500),),
                   subtitle: Text('Roll No. ${student.rollNo}',
-                    style: TextStyle(fontSize: 14),),
+                    style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),),
                   trailing: Column(
 
                     children: [
-                      Text("${student.admissionNo}"),
+
                       SizedBox(height: 5,),
                       GestureDetector(
                         onTap: () {
-                          _toggleAttendance(controller,
-                              index); // Toggle individual attendance
+                          controller.toggleAttendance(
+                              student.studentSessionId); // Toggle individual attendance
                         },
                         child: Container(
                           width: 35,
                           height: 35,
                           decoration: BoxDecoration(
                             color: _getAttendanceColor(
-                                controller.attendanceStatus[index]),
+                                controller.studentAttendaceDet[student.studentSessionId]),
                             shape: BoxShape.circle,
                           ),
                           child: Center(
                             child: Text(
-                              controller.attendanceStatus[index],
+                              controller.studentAttendaceDet[student.studentSessionId],
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
@@ -618,6 +630,7 @@ class _AttendancePageState extends State<AttendancePage> {
               color: Colors.black,
             ),
             color: Colors.green.shade300,
+            prefixIcon:controller.isSavingData.value ? CircularProgressIndicator():SizedBox(),
             onPress: () {
               controller.saveAttendance();
             },
@@ -658,17 +671,7 @@ class _AttendancePageState extends State<AttendancePage> {
   }
 
   // Toggle individual attendance status
-  void _toggleAttendance(controller, int index) {
-    setState(() {
-      if (controller.attendanceStatus[index] == 'P') {
-        controller.attendanceStatus[index] = 'A'; // Present to Absent
-      } else if (controller.attendanceStatus[index] == 'A') {
-        controller.attendanceStatus[index] = 'L'; // Absent to Leave
-      } else {
-        controller.attendanceStatus[index] = 'P'; // Leave to Present
-      }
-    });
-  }
+
 
   // Get the color for each attendance status
   Color _getAttendanceColor(String status) {

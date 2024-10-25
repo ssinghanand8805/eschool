@@ -49,8 +49,10 @@ loadHeader() async
   print("*************************************");
   Faculity? f = await usersData.getFaculity();
   final prefs = await SharedPreferences.getInstance();
-  if(baseUrl == null)
+  print("baseUrl check in api ${baseUrl}");
+  if(baseUrl == null || baseUrl == 'api/')
     {
+      print("baseUrl not found");
       baseUrl = prefs.getString("schoolBaseUrl");
       baseUrl = baseUrl! + "api/";
     }
@@ -62,6 +64,18 @@ loadHeader() async
 
 
 
+}
+
+checkBaseUrl()
+async {
+  final prefs = await SharedPreferences.getInstance();
+  print("baseUrl check in api ${baseUrl}");
+  if(baseUrl == null || baseUrl == 'api/')
+  {
+    print("baseUrl not found");
+    baseUrl = prefs.getString("schoolBaseUrl");
+    baseUrl = baseUrl! + "api/";
+  }
 }
 
   Future<Response> getData(
@@ -121,7 +135,7 @@ loadHeader() async
   }
 
   Future<Response> postDatabyJsonForLogin(uri,body)async{
-   // await loadHeader();
+   await checkBaseUrl();
     log("Api Url  "+(baseUrl!+uri).toString());
     log("header  ${_mainHeader}");
     log("body  ${body}");

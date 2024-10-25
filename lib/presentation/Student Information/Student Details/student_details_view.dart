@@ -60,7 +60,7 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
                                                     .isEmpty
                                                 ? Text("No data found!")
                                                 : Container(
-                                                    height: 150,
+
                                                     width: Get.width,
                                                     decoration: BoxDecoration(
                                                         borderRadius:
@@ -112,6 +112,7 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
                                                                               10),
                                                                   child:
                                                                       Container(
+                                                                        height: 150,
                                                                     width: 4,
                                                                     decoration: BoxDecoration(
                                                                         color: Colors
@@ -149,7 +150,7 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
                                                                                 child: Text(
                                                                               studentData.firstname.toString() + " (${studentData.gender})",
                                                                               maxLines: 1,
-                                                                              style: theme.textTheme.bodySmall,
+                                                                              style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w800),
                                                                             )),
                                                                             InkWell(
                                                                                 onTap: () {},
@@ -157,11 +158,11 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
                                                                                   children: [
                                                                                     Text(
                                                                                       "Admission No.: ",
-                                                                                      style: theme.textTheme.bodySmall,
+                                                                                      style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
                                                                                     ),
                                                                                     Text(
                                                                                       studentData.admissionNo.toString(),
-                                                                                      style: theme.textTheme.bodySmall,
+                                                                                      style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
                                                                                     ),
                                                                                   ],
                                                                                 )),
@@ -179,12 +180,12 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
                                                                               children: [
                                                                                 Text(
                                                                                   "Class: ",
-                                                                                  style: theme.textTheme.bodySmall,
+                                                                                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
                                                                                 ),
                                                                                 Text(
                                                                                   studentData.classname.toString() + " (${studentData.section})",
                                                                                   maxLines: 3,
-                                                                                  style: theme.textTheme.bodySmall,
+                                                                                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
                                                                                 ),
                                                                               ],
                                                                             ),
@@ -192,12 +193,12 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
                                                                               children: [
                                                                                 Text(
                                                                                   "Roll No.: ",
-                                                                                  style: theme.textTheme.bodySmall,
+                                                                                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
                                                                                 ),
                                                                                 Text(
                                                                                   studentData.rollNo.toString(),
                                                                                   maxLines: 3,
-                                                                                  style: theme.textTheme.bodySmall,
+                                                                                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
                                                                                 ),
                                                                               ],
                                                                             ),
@@ -210,64 +211,74 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
                                                                         Column(
                                                                           children: [
                                                                             Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                               children: [
-                                                                                Row(
-                                                                                  children: [
-                                                                                    Text(
-                                                                                      "Father Name: ",
-                                                                                      style: theme.textTheme.bodySmall,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      studentData.fatherName.toString(),
-                                                                                      maxLines: 3,
-                                                                                      style: theme.textTheme.bodySmall,
-                                                                                    ),
-                                                                                  ],
+                                                                                Text(
+                                                                                  "DOB: ",
+                                                                                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
                                                                                 ),
-                                                                                Row(
-                                                                                  children: [
-                                                                                    Text(
-                                                                                      "DOB: ",
-                                                                                      style: theme.textTheme.bodySmall,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      studentData.dob.toString(),
-                                                                                      maxLines: 3,
-                                                                                      style: theme.textTheme.bodySmall,
-                                                                                    ),
-                                                                                  ],
+                                                                                Text(
+                                                                                  studentData.dob.toString(),
+                                                                                  maxLines: 3,
+                                                                                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                            SizedBox(
+                                                                              height:
+                                                                              8,
+                                                                            ),
+                                                                            Row(
+                                                                              children: [
+
+                                                                                Expanded(
+                                                                                  child: Row(
+                                                                                    children: [
+                                                                                      Text(
+                                                                                        "Father Name: ",
+                                                                                        style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                                      ),
+                                                                                      Expanded(
+                                                                                        child: Text(
+                                                                                          studentData.fatherName.toString(),
+                                                                                          maxLines: 3,
+                                                                                          style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
                                                                                 ),
                                                                               ],
                                                                             ),
                                                                             SizedBox(
                                                                               height: 8,
                                                                             ),
-                                                                            Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                            Column(
                                                                               children: [
                                                                                 Row(
                                                                                   children: [
                                                                                     Text(
                                                                                       "Guardian Name: ",
-                                                                                      style: theme.textTheme.bodySmall,
+                                                                                      style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
                                                                                     ),
                                                                                     Text(
                                                                                       studentData.guardianName.toString(),
                                                                                       maxLines: 3,
-                                                                                      style: theme.textTheme.bodySmall,
+                                                                                      style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
                                                                                     ),
                                                                                   ],
+                                                                                ),
+                                                                                SizedBox(
+                                                                                  height: 8,
                                                                                 ),
                                                                                 Row(
                                                                                   children: [
                                                                                     Text(
                                                                                       "Guardian Mob.: ",
-                                                                                      style: theme.textTheme.bodySmall,
+                                                                                      style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
                                                                                     ),
                                                                                     Text(
                                                                                       studentData.guardianPhone.toString(),
-                                                                                      style: theme.textTheme.bodySmall,
+                                                                                      style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
                                                                                     ),
                                                                                   ],
                                                                                 ),
@@ -306,7 +317,15 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Obx(() => controller.commonApiController.isClassLoading.value ?  CircularProgressIndicator() : Expanded(
+            Obx(() => controller.commonApiController.isClassLoading.value ?  Expanded(child: Material(
+              child: Column(
+               crossAxisAlignment: CrossAxisAlignment.start ,
+                children: [
+                  Text("Class"),
+                  CircularProgressIndicator(),
+                ],
+              ),
+            )) : Expanded(
                 child: MyCustomSD(
                     hideSearch: true,
                     borderColor: Colors.grey,
@@ -342,7 +361,15 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
             SizedBox(
               width: 10,
             ),
-            Obx(() => controller.commonApiController.isSectionLoading.value ? CircularProgressIndicator(): Expanded(
+            Obx(() => controller.commonApiController.isSectionLoading.value ?Expanded(child: Material(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start ,
+                children: [
+                  Text("Section"),
+                  CircularProgressIndicator(),
+                ],
+              ),
+            )): Expanded(
               child: MyCustomSD(
                     hideSearch: true,
                     borderColor: Colors.grey,
