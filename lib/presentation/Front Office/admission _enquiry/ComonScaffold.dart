@@ -53,14 +53,14 @@ class CustomScaffold extends GetView<CustomScaffoldController> {
 
                     return SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
                         child: Column(
                           children: [
                             Column(
                               children: [
                         SizedBox(
                          height: controller.getChipDataList.entries
-                             .any((entry) => entry.value.value.isNotEmpty)?50:0,
+                             .any((entry) => entry.value.value.isNotEmpty)?35:0,
                           child: controller.getChipDataList.entries
                               .any((entry) => entry.value.value.isNotEmpty)
                               ? ListView.builder(
@@ -83,9 +83,19 @@ class CustomScaffold extends GetView<CustomScaffoldController> {
                               return Obx(() {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
-                                  child: Chip(
-                                    label: Text("$key: ${rxValue.value}"),
-                                  ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25),
+                                      border: Border.all(color: Colors.green.shade200),
+                                    ),
+                                    child: Center(child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      child: Text("$key: ${rxValue.value}",style: theme.textTheme.titleMedium,),
+                                    )),
+                                  )
+                                  // Chip(
+                                  //   label: Text("$key: ${rxValue.value}"),
+                                  // ),
                                 );
                               });
                             },
