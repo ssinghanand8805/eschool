@@ -1,142 +1,155 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learnladderfaculity/presentation/download_center/Upload%20Content/upload_share_content_controller.dart';
+import 'package:learnladderfaculity/presentation/download_center/Upload%20Content/upload_share_content_modal.dart';
 import 'package:learnladderfaculity/theme/theme_helper.dart';
 import 'package:learnladderfaculity/widgets/custom_button.dart';
-import 'package:learnladderfaculity/widgets/myCustomsd.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/customTextField.dart';
+import '../../../widgets/myCustomsd.dart';
 
 class UploadShareContentView extends GetView<UploadShareContentController> {
-  UploadShareContentView({Key? key}) : super(key: key,);
+  UploadShareContentView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    final ScrollController scrollController = ScrollController();
+
+    // Add listener for scroll events
+    scrollController.addListener(() {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent &&
+          controller.hasMore.value &&
+          !controller.isLoading.value) {
+        controller.fetchData(); // Load more data
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green.shade100,
-        title: Text(
-          'Content Type List',
-          style: theme.textTheme.titleLarge,
-        ),
+        title: Text('Content List', style: theme.textTheme.titleLarge),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: MyButton(
               width: 120,
-              title:'Upload Content',textStyle: TextStyle(color: Colors.white),
-              color:theme.hintColor,
-              onPress: () {
+              title: 'Upload Content',
+              textStyle: TextStyle(color: Colors.white),
+              color: theme.hintColor,
+              onPress: () async {
+                await controller.getContypeList();
                 uploadContent(context);
-              },
+
+                },
             ),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0,right: 8),
-              child: CustomTextField(
-                controller: controller.searchC,
-                hint: 'Search.... ', title: '',),
-            ),
-            ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 40,
-                itemBuilder: (BuildContext context, int index){
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 100,
-                          decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(5),bottomLeft: Radius.circular(5))
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 35.5),
-                            child: Icon(Icons.picture_as_pdf),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                              width: Get.width,
-                              decoration: BoxDecoration(
-                                  border: Border.all(),
-                                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(5),topRight: Radius.circular(5))
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 5,right: 5,top: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 5,bottom: 5),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Booklist.pdf",style:theme.textTheme.titleMedium, ),
-
-                                          controller.getIsChecked == false?
-                                              InkWell(
-                                                onTap:(){
-
-                                                  controller.updateIsChecked = true;
-                                                    },
-                                                  child: Icon(Icons.check_box_outline_blank))
-                                          :
-                                          InkWell(
-                                            onTap:(){
-                                              controller.updateIsChecked = false;
+      body: GetBuilder<UploadShareContentController>(
+        init: controller,
+        builder: (_) {
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomTextField(
+                  controller: controller.searchC,
+                  hint: 'Search.... ',
+                  title: '',
+                  onChanged: (val) {
+                    controller.fetchData(isRefresh: true); // Fetch filtered data
                   },
-                                              child: Icon(Icons.check_box))
-                                        ],
-                                      ),
-                                    ),
-                                    Text("Joe Black (9000)",style: theme.textTheme.titleMedium,),
-                                    SizedBox(height: 10,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(DateTime.now().toString(),style: theme.textTheme.titleMedium,),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.download),
-                                            Icon(Icons.delete,color: Colors.red,)
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(height: 5,),
+                ),
+              ),
+              Expanded(
+                child: Obx(() {
+                  return ListView.builder(
+                    controller: scrollController,
+                    itemCount: controller.dataList.length + 1, // Extra item for loader
+                    itemBuilder: (BuildContext context, int index) {
+                      if (index == controller.dataList.length) {
+                        return controller.isLoading.value
+                            ? Center(child: CircularProgressIndicator())
+                            : Container(); // Show loader while more data is being fetched
+                      }
 
-                                  ],
-                                ),
-                              )
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              );
-            })
-        
-          ],
-        ),
+                      var item = controller.dataList[index];
+                      return buildContentItem(item,context);
+                    },
+                  );
+                }),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 
+  Widget buildContentItem(Content item,context) {
+    String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
+    String mediaUrl = baseUrlFromPref +  item.thumbPath! + item.thumbName!;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Container(
+            height: 105,
+            width: 100,
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+            ),
+            child: Image.network(mediaUrl)
+            // child: item.fileType!.toString() == "video" ?  Icon(Icons.video_collection) : item.fileType!.toString() == "png" ? Icon(Icons.image) : Icon(Icons.picture_as_pdf),
+          ),
+          Expanded(
+            child: Container(
+              width: Get.width,
+              decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.only(bottomRight: Radius.circular(5), topRight: Radius.circular(5)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(item.realName.toString()), // Display item name
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Uploaded by ${item.staffName} (${item.employeeId})",style: TextStyle(fontSize: 10),),
+                        Row(
+                          children: [
+                           item.vidUrl!.trim() != '' ? Icon(Icons.remove_red_eye) : Icon(Icons.download),
+                            InkWell(child: Icon(Icons.delete, color: Colors.red),onTap: () {
 
-  uploadContent(context){
+                                // If the user confirms the deletion
+                                controller.deletecontenttypebyId(context, int.parse(item.id!));
+                               // Navigator.of(context).pop(); // Close the dialog
+
+
+                            },),
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void uploadContent(context){
     AlertDialogue().show(context,
       newWidget: [
         Column(
@@ -144,21 +157,17 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
             Text("Upload content",style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),),
             MyCustomSD(
                 borderColor: Colors.grey,
-              label: "Content Type",
-                listToSearch: [
-                  {
-                    'name':"Faheem"
-                  },
-                  {
-                    'name':"Faheem"
-                  },
-                  {
-                    'name':"Faheem"
-                  },
-                ],
+                label: "Content Type",
+                listToSearch:  controller.filteredContentTypeList.value.data!.map((entry) {
+                  return {
+                    'id': entry.id,  // Assuming the list items have an `id` property
+                    'name': entry.name  // Assuming the list items have a `name` property
+                  };
+                }).toList(),
+
                 valFrom: 'name',
                 onChanged: (val){
-
+                  controller.selectedContentTypeId.value = val['id'];
                 }),
             SizedBox(height: 20,),
 
@@ -169,8 +178,8 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
               child: Container(
                 height: 40,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all()
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all()
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -190,7 +199,7 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
                   Container(
                     height: 2,width: 80,
                     decoration: BoxDecoration(
-                      color: Colors.black
+                        color: Colors.black
                     ),
                   ),
                   Padding(
@@ -200,16 +209,16 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
                   Container(
                     height: 2,width: 80,
                     decoration: BoxDecoration(
-                        color: Colors.black,
-                  ),
+                      color: Colors.black,
+                    ),
                   )
                 ],
               ),
             ),
             CustomTextField(
-                controller: controller.videoLinkC,
-                hint: "Upload Youtube Video Link",
-                title: "Upload Youtube Video Link: ",),
+              controller: controller.videoLinkC,
+              hint: "Upload Youtube Video Link",
+              title: "Upload Youtube Video Link: ",),
             SizedBox(height: 20,),
 
             Align(
@@ -218,8 +227,8 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
                 width: 120,
                 title:'Save',textStyle: TextStyle(color: Colors.black,),
                 color:Colors.green.shade100,
-                onPress: () {
-
+                onPress: ()  {
+                  controller.saveContentType(context);
                 },
               ),
             ),
@@ -234,9 +243,17 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
   final ImagePicker _picker = ImagePicker();
 
   Future<void> getImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
+    final List<XFile>? pickedFiles = await _picker.pickMultipleMedia();
 
-    if (pickedFile != null) {
+    if (pickedFiles != null) {
+
+      for(var i = 0; i<pickedFiles.length;i++ )
+        {
+          var f =  File(pickedFiles[i].path);
+          controller.pickedFile.value.add(f);
+        }
+      controller.update();
+
       // controller.image.value = File(pickedFile.path);
     }
   }
@@ -283,17 +300,17 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
                       getImage(ImageSource.gallery);
                     },
                   ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.camera_alt,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    title: Text('Take a Picture'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.camera);
-                    },
-                  ),
+                  // ListTile(
+                  //   leading: Icon(
+                  //     Icons.camera_alt,
+                  //     color: Theme.of(context).primaryColor,
+                  //   ),
+                  //   title: Text('Take a Picture'),
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //     getImage(ImageSource.camera);
+                  //   },
+                  // ),
                 ],
               ),
             ),
@@ -302,6 +319,4 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
       },
     );
   }
-
-
 }

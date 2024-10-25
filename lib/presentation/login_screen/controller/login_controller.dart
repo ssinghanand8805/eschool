@@ -19,6 +19,7 @@ class LoginController extends GetxController {
   // GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   Rx<bool> isShowPassword = true.obs;
   RxString schoolImageUrl = "".obs;
+  RxBool isLoading = false.obs;
   @override
   void onClose() {
     super.onClose();
@@ -32,7 +33,7 @@ class LoginController extends GetxController {
   }
 
   loginApi(context) async {
-
+    isLoading.value = true;
     Map<String, dynamic> body = {
       "username": idController.text,
       "password": passwordController.text,
@@ -44,16 +45,21 @@ class LoginController extends GetxController {
     print("DATA @@@@ ${data.body}");
     if(data.body is bool)
       {
+        isLoading.value = false;
+        update();
         final prefs = await SharedPreferences.getInstance();
         prefs.clear();
+        Get.showSnackbar(Ui.ErrorSnackBar(message: "Enter correct username and password!"));
        Get.toNamed('/s_screen');
-       //  Get.showSnackbar(Ui.ErrorSnackBar(message: "Enter correct username and password!"));
+
 
         print('login failed:::::::::');
         return;
       }
-    else
+    else if(data.body != null)
       {
+        isLoading.value = false;
+        update();
         Faculity fac = Faculity.fromJson(data.body);
 
         UserData usersData = UserData();
@@ -62,15 +68,23 @@ class LoginController extends GetxController {
         usersData.saveFaculity(fac);
         if(fac.roles!.roleId.toString() == '7')
         {
+          Get.showSnackbar(Ui.SuccessSnackBar(message: "Welcome ${fac.name}"));
           //superadmin found no restriction
           //navigate to dashboard
           Get.toNamed(AppRoutes.formScreen);
         }
         else
         {
+          Get.showSnackbar(Ui.SuccessSnackBar(message: "Welcome ${fac.name}"));
           Get.toNamed(AppRoutes.formScreen);
           //check permission wise and navigate to dashboard
         }
+      }
+    else
+      {
+        Get.showSnackbar(Ui.ErrorSnackBar(message: "Server Error Occured"));
+        isLoading.value = false;
+        update();
       }
 
 

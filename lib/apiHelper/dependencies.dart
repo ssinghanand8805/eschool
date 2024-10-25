@@ -31,7 +31,7 @@ Future<void> init()async {
 //return to main url enter page
     }
   // String? baseUrlP =  prefs.getString("schoolBaseUrl");
-  String baseUrl = baseUrlP!.endsWith("/") ? baseUrlP.toString() : baseUrlP.toString() + "/"; //"http://172.16.19.96/school3/api/"
+  String baseUrl = baseUrlP != null ? baseUrlP!.endsWith("/") ? baseUrlP.toString() : baseUrlP.toString() + "/" : ""; //"http://172.16.19.96/school3/api/"
   if(chatBaseUrlP != null)
     {
       String chatBaseUrl = chatBaseUrlP!.endsWith("/") ? chatBaseUrlP.toString() : chatBaseUrlP.toString() + "/"; //"http://172.16.19.96/school3/api/"

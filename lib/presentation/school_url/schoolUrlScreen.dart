@@ -60,7 +60,7 @@ class _SchoolUrlState extends State<SchoolUrl> {
                             },
                         ),
                         const SizedBox(height: 30,),
-                        CustomFormButton(innerText: 'Submit', onPressed: _handleForgetPassword,),
+    Obx(() { return CustomFormButton(innerText: 'Submit', onPressed: _handleForgetPassword,isLoading : controller.isLoading.value); }),
                       ],
                     ),
                   ),

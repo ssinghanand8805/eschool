@@ -20,6 +20,7 @@ class SchoolUrlController extends GetxController {
   // Rx<NotiiceBoard> noticeBoardModelObj = NotiiceBoard().obs;
   Rx<TextEditingController> urlController = TextEditingController().obs;
   late Future<void> fetchDataFuture;
+  RxBool isLoading = false.obs;
   @override
   void onClose() {
     super.onClose();
@@ -65,6 +66,8 @@ return d;
   }
   Future<void> getData(context) async
   {
+    isLoading.value = true;
+    update();
     var httpClient = HttpClient();
     try {
       var resB = await getSchoolUrl(urlController.value.text.toString()); //urlController.value.text.toString()!.endsWith("/") ? urlController.value.text.toString().toString() : urlController.value.text.toString().toString() + "/";
@@ -109,7 +112,8 @@ return d;
                 Get.lazyPut(()=>ApiRespository(apiClient: Get.find()));
                 Get.lazyPut(()=>chatApiClient(appBaseUrl: "${chatBaseUrl}api/"),tag: 'chatApi',fenix: true);
                 Get.lazyPut(()=>ChatApiRespository(apiClient: Get.find(tag: 'chatApi')));
-
+                isLoading.value = false;
+                update();
                 // data.forEach((key, value) async {
                 //   if (value is String) {
                 //     await prefs.setString(key, value);
@@ -137,6 +141,8 @@ return d;
             }
 
       } else {
+            isLoading.value = false;
+            update();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.green.shade100,
@@ -151,6 +157,8 @@ return d;
       }
     } catch (e) {
       print("Error occurred: $e");
+      isLoading.value = false;
+      update();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.green.shade100,

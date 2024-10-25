@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:learnladderfaculity/apiHelper/userData.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../presentation/login_screen/models/Faculity.dart';
 import '../presentation/login_screen/models/userDataModal.dart';
@@ -47,7 +48,13 @@ loadHeader() async
   UserData usersData = UserData();
   print("*************************************");
   Faculity? f = await usersData.getFaculity();
-  log(json.encode(f!.toJson()));
+  final prefs = await SharedPreferences.getInstance();
+  if(baseUrl == null)
+    {
+      baseUrl = prefs.getString("schoolBaseUrl");
+      baseUrl = baseUrl! + "api/";
+    }
+ // log(json.encode(f!.toJson()));
   _mainHeader['userID'] = f == null ? "2" : f.id.toString();
   _mainHeader['Staff-Id'] = f == null ? "0" : f.id.toString();
   _mainHeader['Role'] = f != null ? f.roles!.roleId! : "0";

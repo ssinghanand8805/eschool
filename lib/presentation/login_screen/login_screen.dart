@@ -70,12 +70,13 @@ class LoginScreen extends StatelessWidget {
                         const SizedBox(
                           height: 20,
                         ),
-                        CustomFormButton(
+                        Obx(() { return CustomFormButton(
                           innerText: 'Login',
                           onPressed: (){
                             _handleLoginUser(context);
                           },
-                        ),
+                          isLoading: controller.isLoading.value,
+                        );}),
                         const SizedBox(
                           height: 18,
                         ),

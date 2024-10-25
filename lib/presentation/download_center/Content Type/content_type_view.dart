@@ -92,9 +92,36 @@ class ContentTypeView extends GetView<ContentTypeController> {
                                   IconButton(
                                     icon: Icon(Icons.delete, size: 15),
                                     onPressed: () {
-                                      print("Delete leave");
+                                      // Show a confirmation dialog before deleting
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('Confirm Delete'),
+                                            content: Text('Are you sure you want to delete this item?'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  // If the user cancels the deletion
+                                                  Navigator.of(context).pop(); // Close the dialog
+                                                },
+                                                child: Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  // If the user confirms the deletion
+                                                  controller.deletecontenttypebyId(context, int.parse(entry.value.id!));
+                                                  Navigator.of(context).pop(); // Close the dialog
+                                                },
+                                                child: Text('Delete'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     },
                                   ),
+
                                 ],
                               ),
                             ),

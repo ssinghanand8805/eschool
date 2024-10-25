@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:io';
 
 
 import 'package:advanced_datatable/advanced_datatable_source.dart';
@@ -8,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 
@@ -24,7 +28,7 @@ import '../common_widgets/custom_loader.dart';
 import '../student_attendence/controller/student_attendance_controller.dart';
 import '../student_attendence/model/Student_Attendance.dart';
 import 'controller/attendance_bydate_controller.dart';
-
+import 'package:pdf/widgets.dart' as pw;
 class AttendanceByDateScreen extends StatefulWidget {
   const AttendanceByDateScreen({Key? key});
 
@@ -64,7 +68,87 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
     );
     return date;
   }
+generatePdf(filteredStudentListModel,dateFor,classFor)
+async {
+  final pdf = pw.Document();
 
+  pdf.addPage(
+    pw.Page(
+      build: (pw.Context context) {
+        return pw.Column(
+          children: [
+            pw.Text('Attendance class ${classFor} on ${dateFor}', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+            pw.SizedBox(height: 20),
+            // Create a list for students
+            pw.ListView.builder(
+              itemCount: filteredStudentListModel.length,
+              itemBuilder: (context, index) {
+                final currentRowData = filteredStudentListModel[index];
+
+                return pw.Container(
+                  decoration: pw.BoxDecoration(
+                    border: pw.Border.all(color: PdfColors.grey),
+                    borderRadius: pw.BorderRadius.circular(10),
+                  ),
+                  margin: pw.EdgeInsets.symmetric(vertical: 5),
+                  padding: pw.EdgeInsets.all(10),
+                  child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+
+                      pw.Expanded(
+                        child: pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: [
+                            pw.Text(
+                              currentRowData.firstname +
+                                  // + " " + currentRowData.middlename == null ? "" : currentRowData.middlename + " " + currentRowData.lastname == null ? "" : currentRowData.lastname  +
+                                  " ( " + currentRowData.admissionNo + ")",
+                              style: pw.TextStyle(fontSize: 16),
+                            ),
+                            pw.SizedBox(height: 10),
+                          ],
+                        ),
+                      ),
+                      pw.Container(
+                        decoration: pw.BoxDecoration(
+                          color: currentRowData.attType == "Present"
+                              ? PdfColors.green
+                              : currentRowData.attType == "Absent"
+                              ? PdfColors.red
+                              : PdfColors.orange,
+                          borderRadius: pw.BorderRadius.circular(20),
+                        ),
+                        padding: pw.EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: pw.Text(
+                          currentRowData.attType,
+                          style: pw.TextStyle(color: PdfColors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    ),
+  );
+
+  String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  String fileName = '$formattedDate.pdf';
+
+  // Get the temporary directory
+  final directory = await getTemporaryDirectory();
+  final filePath = '${directory.path}/$fileName';
+
+  // Save the PDF to the temp directory
+  final file = File(filePath);
+  await file.writeAsBytes(await pdf.save());
+  print(filePath);
+  await OpenFilex.open(filePath);
+}
   CommonApiController controller3 =
   Get.put(CommonApiController());
   @override
@@ -73,6 +157,22 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
       appBar: AppBar(
         title:  Text('Attendance',style: theme.textTheme.titleLarge,),
         backgroundColor: Colors.green.shade100,
+        actions: [
+          InkWell(
+            onTap: (){
+              if(controller.filteredStudentListModel.length > 0 )
+                {
+                  String classFor = controller3.selectedClassName.value + " ( " + controller3.selectedSectionName.value + " )";
+                  generatePdf(controller.filteredStudentListModel,controller.attendanceDate.value.text,classFor);
+                }
+              else
+                {
+                  print("No Data to share");
+                }
+
+            },
+              child: Icon(Icons.share,size: 22,))
+        ],
       ),
       body: GetBuilder(
         init: controller,

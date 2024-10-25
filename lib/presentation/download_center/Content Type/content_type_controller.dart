@@ -71,6 +71,8 @@ class ContentTypeController extends GetxController {
 
     // Initialize fetchDataFuture here
   }
+
+
   void getcontenttypebyId(context,id) async
   {
 
@@ -88,6 +90,29 @@ class ContentTypeController extends GetxController {
       }
 
   }
+
+  void deletecontenttypebyId(context,id) async
+  {
+
+    var body = {
+      "id":id
+    };
+    var data = await apiRespository.postApiCallByFormData(Constants.contenttypedeleteUrl, body);
+    String msgFor = "Delete";
+    if(data.body['status'] == 'success')
+    {
+
+      Get.showSnackbar(Ui.SuccessSnackBar(message: '${msgFor}d Success'));
+      initializeData();
+
+    }
+    else
+    {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: 'Error Occurred while ${msgFor}'));
+    }
+
+  }
+
   void saveContentType(context) async
   {
     String desc = descriptionC.value.text.trim().toString();
@@ -108,6 +133,7 @@ class ContentTypeController extends GetxController {
     {
       nameC.text = "";
       Get.showSnackbar(Ui.SuccessSnackBar(message: '${msgFor}d Success'));
+      initializeData();
       Navigator.pop(context);
     }
     else

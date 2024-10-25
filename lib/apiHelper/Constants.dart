@@ -90,6 +90,9 @@ class Constants {
   static const String contenttypeeditUrl = 'contenttype/edit';
   static const String contenttypedeleteUrl = 'contenttype/delete';
 
+  static const String getuploaddataUrl = 'content/getuploaddata';
+  static const String deleteuploaddataUrl = 'content/delete';
+  static const String ajaxuploadUrl = 'content/ajaxupload';
 
 
 }
