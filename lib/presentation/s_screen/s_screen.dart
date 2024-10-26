@@ -36,6 +36,8 @@ class _SScreenState extends State<SScreen> {
               children: <Widget>[
                 Center(
                   child: Obx(() {
+                    print("dWWWWWWW${controller.splashScreenImage.value}");
+
                     return controller.isSplashAsset.isTrue
                         ? Container(
                             height: 350,

@@ -320,8 +320,8 @@ updateSchoolInfo()async {
   /// Section Widget
   Widget buildGridItem(String heading, List<ModuleList> items, List images) {
     return Container(
-      padding: EdgeInsets.all(8.0),
-      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: EdgeInsets.all(4.0),
+      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: Colors.grey.shade400,

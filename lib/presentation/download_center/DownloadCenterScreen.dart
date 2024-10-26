@@ -1,5 +1,8 @@
 import 'dart:io';
-
+import 'package:dio/dio.dart';
+import 'package:path/path.dart' as path;
+import 'dart:typed_data';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -474,18 +477,129 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
       },
     );
   }
+  static Future<bool> _requestGalleryPermission() async {
+    // Check current permission status
+    var status = await Permission.photos.status;
 
+    if (status.isGranted) {
+      return true;
+    } else if (status.isDenied) {
+      // Request permission
+      status = await Permission.photos.request();
+      if (status.isGranted) {
+        return true;
+      }
+    } else if (status.isPermanentlyDenied) {
+      // Suggest the user to open app settings
+      openAppSettings();
+    }
+
+    return false;
+  }
+  onDownloadMethod(path)
+  {
+    print("PPPPPPP${path}");
+    Fluttertoast.showToast(
+      msg: "Download complete!",
+      toastLength: Toast.LENGTH_SHORT,
+      backgroundColor: Colors.green,
+      gravity: ToastGravity.BOTTOM,
+    );
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20), // Rounded corners
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.download_done, color: theme.primaryColor), // Icon
+              SizedBox(width: 10),
+              Text(
+                'Download Complete',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            'Your file has been downloaded. Do you want to open it?',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[800], // Custom content color
+            ),
+          ),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.red[500], // Custom button color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            TextButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: theme.primaryColorDark,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () {
+                OpenFilex.open(path);
+                Navigator.of(context).pop();
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  'Open',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
   Future<void> onPressDownload(String fileUrl) async {
     print("@@@@@@@@@@@@@@@$fileUrl");
 
     bool permissionStatus;
-    final deviceInfo = await DeviceInfoPlugin().androidInfo;
+    if(Platform.isAndroid)
+      {
+        final deviceInfo = await DeviceInfoPlugin().androidInfo;
 
-    if (deviceInfo.version.sdkInt > 32) {
-      permissionStatus = await Permission.photos.request().isGranted;
-    } else {
-      permissionStatus = await Permission.storage.request().isGranted;
-    }
+        if (deviceInfo.version.sdkInt > 32) {
+          permissionStatus = await Permission.photos.request().isGranted;
+        } else {
+          permissionStatus = await Permission.storage.request().isGranted;
+        }
+      }
+    else
+      {
+        permissionStatus = true;
+      }
+
 
     if (permissionStatus) {
       print("STATUS GRANTED ");
@@ -497,106 +611,70 @@ class _DownloadCenterScreenState extends State<DownloadCenterScreen> {
         gravity: ToastGravity.BOTTOM,
       );
 
-      // Proceed with file download
-      FileDownloader.downloadFile(
-        url: fileUrl,
-        onProgress: (String? fileName, double? progress) {
-        },
-        onDownloadCompleted: (String path) {
-          print('FILE DOWNLOADED TO PATH: $path');
-          Fluttertoast.showToast(
-            msg: "Download complete!",
-            toastLength: Toast.LENGTH_SHORT,
-            backgroundColor: Colors.green,
-            gravity: ToastGravity.BOTTOM,
-          );
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20), // Rounded corners
-                ),
-                title: Row(
-                  children: [
-                    Icon(Icons.download_done, color: theme.primaryColor), // Icon
-                    SizedBox(width: 10),
-                    Text(
-                      'Download Complete',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                content: Text(
-                  'Your file has been downloaded. Do you want to open it?',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[800], // Custom content color
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.red[500], // Custom button color
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.primaryColorDark,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      OpenFilex.open(path);
-                      Navigator.of(context).pop();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'Open',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+      if(Platform.isAndroid)
+        {
+          FileDownloader.downloadFile(
+            url: fileUrl,
+            onProgress: (String? fileName, double? progress) {
+            },
+            onDownloadCompleted: (String path) {
+              onDownloadMethod(path);
+            },
+            onDownloadError: (String error) {
+              print('DOWNLOAD ERROR: $error');
+
+              // Show toast if there's an error
+              Fluttertoast.showToast(
+                msg: "Download failed: $error",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
               );
             },
           );
-        },
-        onDownloadError: (String error) {
-          print('DOWNLOAD ERROR: $error');
+        }
+      else
+        {
+          try {
+            bool hasPermission = await _requestGalleryPermission();
 
-          // Show toast if there's an error
-          Fluttertoast.showToast(
-            msg: "Download failed: $error",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-          );
-        },
-      );
+            if (!hasPermission) {
+              Fluttertoast.showToast(
+                msg: 'Gallery permission denied',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+              );
+              return;
+
+            }
+
+            var appDocDir = await getTemporaryDirectory();
+
+            // Extract the file name and extension from the URL
+            String fileName = path.basename(fileUrl); // This will give you 'temp.gif'
+
+            // Create the full save path
+            String savePath = path.join(appDocDir.path, fileName);
+            await Dio().download(fileUrl, savePath);
+            final result =
+            await ImageGallerySaver.saveFile(savePath, isReturnPathOfIOS: true);
+            print(result);
+            // print(result);
+
+             onDownloadMethod(savePath);
+
+            return result['isSuccess'] ?? false;
+          } catch (e) {
+    print('Error saving file: $e');
+    Fluttertoast.showToast(
+      msg: 'Error saving file: $e',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+    );
+    }
+  }
+
+      // Proceed with file download
+
     } else {
       openAppSettings(); // Open app settings if permission is denied
       print("STATUS DENIED ");

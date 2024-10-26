@@ -6,7 +6,7 @@ import '../../../apiHelper/userData.dart';
 import '../../../core/app_export.dart';
 import '../../../widgets/CheckForUpdate.dart';
 import '../models/s_model.dart';
-
+import 'dart:io';
 /// A controller class for the SScreen.
 ///
 /// This class manages the state of the SScreen, including the
@@ -29,12 +29,21 @@ class SController extends GetxController {
     bool isBaseUrlFound = prefs.containsKey("schoolBaseUrl");
     bool isSplashScreenFound = prefs.containsKey("app_splash_screen_file");
     bool isAppNameFound = prefs.containsKey("app_name");
+
     if(isSplashScreenFound && prefs.getString("app_splash_screen_file") != null && prefs.getString("app_splash_screen_file")!.isNotEmpty)
       {
-        isSplashAsset.value = false;
-        splashScreenImage.value = (await prefs.getString("app_splash_screen_file"))!;
-        print("image on splash${splashScreenImage.value}");
-        update();
+        String splashFilePath = await prefs.getString("app_splash_screen_file")!;
+        if (!await File(splashFilePath).exists()) {
+          print("FFFFFFFF${splashFilePath}");
+          isSplashAsset.value = true;
+          update();
+        } else {
+          isSplashAsset.value = false;
+          splashScreenImage.value = splashFilePath;
+          print("image on splash${splashScreenImage.value}");
+          update();
+        }
+
       }
     if(isAppNameFound && prefs.getString("app_name") != null && prefs.getString("app_name")!.isNotEmpty)
     {
