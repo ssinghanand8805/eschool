@@ -33,18 +33,30 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
         backgroundColor: Colors.green.shade100,
         title: Text('Content List', style: theme.textTheme.titleLarge),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: MyButton(
-              width: 120,
-              title: 'Upload Content',
-              textStyle: TextStyle(color: Colors.white),
-              color: theme.hintColor,
-              onPress: () async {
-                await controller.getContypeList();
-                uploadContent(context);
-
+          Obx(() =>  Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: controller.checkboxStates.values.any((isChecked) => isChecked == true) ?
+              MyButton(
+                width: 120,
+                title: 'Share Content',
+                textStyle: TextStyle(color: Colors.white),
+                color: theme.hintColor,
+                onPress: () async {
+                  await controller.getContypeList();
+                  uploadContent(context);
+            
                 },
+              ) :MyButton(
+                width: 120,
+                title: 'Upload Content',
+                textStyle: TextStyle(color: Colors.white),
+                color: theme.hintColor,
+                onPress: () async {
+                  await controller.getContypeList();
+                  uploadContent(context);
+            
+                  },
+              ),
             ),
           ),
         ],
@@ -124,17 +136,35 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Uploaded by ${item.staffName} (${item.employeeId})",style: TextStyle(fontSize: 10),),
-                        Row(
+                        Column(
                           children: [
-                           item.vidUrl!.trim() != '' ? Icon(Icons.remove_red_eye) : Icon(Icons.download),
-                            InkWell(child: Icon(Icons.delete, color: Colors.red),onTap: () {
+                            Row(
+                              children: [
+                                Obx(() {
+                                  return Checkbox(
+                                    value: controller.checkboxStates[item.id] ?? false,
+                                    onChanged: (bool? value) {
+                                      if (value != null) {
+                                        controller.toggleCheckboxState(item.id!, value);
+                                      }
+                                    },
+                                  );
+                                }),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                               item.vidUrl!.trim() != '' ? Icon(Icons.remove_red_eye) : Icon(Icons.download),
+                                InkWell(child: Icon(Icons.delete, color: Colors.red),onTap: () {
 
-                                // If the user confirms the deletion
-                                controller.deletecontenttypebyId(context, int.parse(item.id!));
-                               // Navigator.of(context).pop(); // Close the dialog
+                                    // If the user confirms the deletion
+                                    controller.deletecontenttypebyId(context, int.parse(item.id!));
+                                   // Navigator.of(context).pop(); // Close the dialog
 
 
-                            },),
+                                },),
+                              ],
+                            ),
                           ],
                         )
                       ],
@@ -150,9 +180,8 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
   }
 
   void uploadContent(context){
-    AlertDialogue().show(context,
-      newWidget: [
-        Column(
+    showCustomBottomSheet(context:context,
+      child: Column(
           children: [
             Text("Upload content",style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),),
             MyCustomSD(
@@ -235,7 +264,7 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
 
           ],
         )
-      ],
+
 
     );
   }

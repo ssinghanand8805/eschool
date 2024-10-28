@@ -90,9 +90,8 @@ class ContentShareView extends GetView<ContentShareController> {
   }
 
   showShareContents(context){
-    AlertDialogue().show(context,
-      newWidget: [
-        Column(
+    showCustomBottomSheet(context:context,
+      child:Column(
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Shared Content",style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
@@ -161,7 +160,7 @@ class ContentShareView extends GetView<ContentShareController> {
 
           ],
         )
-      ],
+
 
     );
   }

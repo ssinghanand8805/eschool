@@ -240,7 +240,33 @@ alertToast(context,message){
     msg: message,
   );
 }
-
+void showCustomBottomSheet({
+  required BuildContext context,
+  required Widget child,
+  bool isScrollControlled = true,
+  Color? backgroundColor,
+  double borderRadius = 20.0,
+}) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: isScrollControlled,
+    backgroundColor: backgroundColor ?? Theme.of(context).canvasColor,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(borderRadius),
+      ),
+    ),
+    builder: (context) => Padding(
+      padding: EdgeInsets.only(
+        left: 16.0,
+        right: 16.0,
+        top: 24.0,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 16.0,
+      ),
+      child: child,
+    ),
+  );
+}
 
 
 // class AlertDialogue2 {

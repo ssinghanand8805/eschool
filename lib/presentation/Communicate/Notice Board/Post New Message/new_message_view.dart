@@ -102,10 +102,8 @@ class NewMessageView extends GetView<NewMessageController>{
   }
 
   messageTo(context){
-    AlertDialogue().show(
-      context,
-      newWidget: [
-        Column(
+    showCustomBottomSheet(context:context,
+        child:Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Message To",style: theme.textTheme.bodyMedium,),
@@ -142,7 +140,7 @@ class NewMessageView extends GetView<NewMessageController>{
             ),
           ],
         )
-      ],
+
     );
   }
 

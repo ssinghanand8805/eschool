@@ -112,10 +112,8 @@ class SendEmailView extends GetView<SendEmailController>{
 
 
   messageTo(context){
-    AlertDialogue().show(
-      context,
-      newWidget: [
-        GetBuilder(
+    showCustomBottomSheet(context:context,
+      child:GetBuilder(
           init: controller,
           builder: (_) {
             return Column(
@@ -361,7 +359,7 @@ class SendEmailView extends GetView<SendEmailController>{
             );
           }
         )
-      ],
+
     );
   }
 

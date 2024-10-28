@@ -22,6 +22,12 @@ class UploadShareContentController extends GetxController {
   TextEditingController videoLinkC = TextEditingController();
   Rx<ContentTypeModal> filteredContentTypeList = ContentTypeModal().obs;
   RxString selectedContentTypeId = "".obs;
+  var checkboxStates = <String, bool>{}.obs;
+
+  // Toggle checkbox state and save it in the map
+  void toggleCheckboxState(String itemId, bool value) {
+    checkboxStates[itemId] = value;
+  }
   Future<void> fetchData({bool isRefresh = false}) async {
     if (isRefresh) {
       page.value = 1;

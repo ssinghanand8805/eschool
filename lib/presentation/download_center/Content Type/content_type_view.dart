@@ -145,9 +145,8 @@ class ContentTypeView extends GetView<ContentTypeController> {
 
 
   addContent(context){
-    AlertDialogue().show(context,
-      newWidget: [
-        Form(
+    showCustomBottomSheet(context:context,
+      child: Form(
           key: controller.formKey.value,
           child: Column(
             children: [
@@ -192,9 +191,9 @@ class ContentTypeView extends GetView<ContentTypeController> {
             ],
           ),
         )
-      ],
-      
     );
+      
+
   }
 
 }

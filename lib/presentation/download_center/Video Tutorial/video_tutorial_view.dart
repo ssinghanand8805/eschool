@@ -155,9 +155,8 @@ class VideoTutorialView extends GetView<VideoTutorialController> {
 
 
   addVideo(context){
-    AlertDialogue().show(context,
-      newWidget: [
-        Column(
+    showCustomBottomSheet(context:context,
+        child: Column(
           children: [
             Text("Add Video Tutorial",style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),),
             MyCustomSD(
@@ -216,7 +215,7 @@ class VideoTutorialView extends GetView<VideoTutorialController> {
 
           ],
         )
-      ],
+
 
     );
   }
