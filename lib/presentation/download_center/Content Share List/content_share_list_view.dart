@@ -5,6 +5,7 @@ import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
 import 'package:learnladderfaculity/widgets/download_button.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
+import '../../common_widgets/custom_loader.dart';
 import 'content_share_list_controller.dart';
 
 class ContentShareView extends GetView<ContentShareController> {
@@ -20,70 +21,89 @@ class ContentShareView extends GetView<ContentShareController> {
           style: theme.textTheme.titleLarge,
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0,right: 8),
-            child: CustomTextField(
-              controller: controller.searchC,
-              hint: 'Search.... ', title: '',),
-          ),
-
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columnSpacing: Get.width*0.1,
-              columns: const [
-                DataColumn(label: Text('Title')),
-                DataColumn(label: Text('Send To')),
-                DataColumn(label: Text('Share Date')),
-                DataColumn(label: Text('valid Upto')),
-                DataColumn(label: Text('Shared By')),
-                DataColumn(label: Text('Description')),
-                DataColumn(label: Text('Action')),
-              ],
-              rows: controller.data.asMap().entries.map((entry) {
-                int index = entry.key;
-                return DataRow(
-                  cells: [
-                    DataCell(Text(entry.value['class'],
-                        style: theme.textTheme.bodySmall!)),
-                    DataCell(Text(entry.value['section'],
-                        style: theme.textTheme.bodySmall!)),
-                    DataCell(Text(entry.value['subjectGroup'],
-                        style: theme.textTheme.bodySmall!)),
-                    DataCell(Text(entry.value['subject'],
-                        style: theme.textTheme.bodySmall!)),
-                    DataCell(Text(
-                        '${entry.value['homeworkDate'].day}/${entry.value['homeworkDate'].month}/${entry.value['homeworkDate'].year}',
-                        style: theme.textTheme.bodySmall!)),
-                    DataCell(Text(
-                        '${entry.value['submissionDate'].day}/${entry.value['submissionDate'].month}/${entry.value['submissionDate'].year}',
-                        style: theme.textTheme.bodySmall!)),
-                    DataCell(
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.remove_red_eye, size: 15),
-                            onPressed: () {
-                              showShareContents(context);
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete, size: 15),
-                            onPressed: () {
-                              print("Delete leave");
-                            },
-                          ),
-                        ],
-                      ),
+      body:  GetBuilder<ContentShareController>(
+          init: controller,
+        builder: (_) {
+          return FutureBuilder(
+            future:controller.fetchDataFuture ,
+            builder: (context,snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return CustomLoader();
+              }
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0,right: 8),
+                    child: CustomTextField(
+                      controller: controller.searchC,
+                      hint: 'Search.... ', title: '',
+                      onChanged: (val) {
+                        controller.searchContentType(val);
+                        controller.update();
+                      },
                     ),
-                  ],
-                );
-              }).toList(),
-            ),
-          ),
-        ],
+
+                  ),
+
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      columnSpacing: Get.width*0.1,
+                      columns: const [
+                        DataColumn(label: Text('Title')),
+                        DataColumn(label: Text('Send To')),
+                        DataColumn(label: Text('Share Date')),
+                        DataColumn(label: Text('valid Upto')),
+                        DataColumn(label: Text('Shared By')),
+                        DataColumn(label: Text('Description')),
+                        DataColumn(label: Text('Action')),
+                      ],
+                      rows: controller.filteredContentTypeList.value.data!.asMap().entries.map((entry) {
+                        int index = entry.key;
+                        return DataRow(
+                          cells: [
+                            DataCell(Text(entry.value.title!,
+                                style: theme.textTheme.bodySmall!)),
+                            DataCell(Text(entry.value.sendTo!,
+                                style: theme.textTheme.bodySmall!)),
+                            DataCell(Text(entry.value.shareDate!,
+                                style: theme.textTheme.bodySmall!)),
+                            DataCell(Text(entry.value.validUpto ?? "-",
+                                style: theme.textTheme.bodySmall!)),
+                            DataCell(Text(
+                                '${entry.value.name!}',
+                                style: theme.textTheme.bodySmall!)),
+                            DataCell(Text(
+                                '${entry.value.description!}',
+                                style: theme.textTheme.bodySmall!)),
+                            DataCell(
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.remove_red_eye, size: 15),
+                                    onPressed: () {
+                                      showShareContents(context);
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.delete, size: 15),
+                                    onPressed: () {
+                                      print("Delete leave");
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              );
+            }
+          );
+        }
       )
 
     );

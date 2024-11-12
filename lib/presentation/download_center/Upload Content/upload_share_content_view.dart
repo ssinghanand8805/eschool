@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/presentation/download_center/Upload%20Content/upload_share_content_controller.dart';
 import 'package:learnladderfaculity/presentation/download_center/Upload%20Content/upload_share_content_modal.dart';
 import 'package:learnladderfaculity/theme/theme_helper.dart';
@@ -11,6 +12,8 @@ import '../../../apiHelper/GlobalData.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/customTextField.dart';
 import '../../../widgets/myCustomsd.dart';
+import '../../common_widgets/CommonUserSelection.dart';
+import '../../common_widgets/controller/CommonUserSelectionController.dart';
 
 class UploadShareContentView extends GetView<UploadShareContentController> {
   UploadShareContentView({Key? key}) : super(key: key);
@@ -18,7 +21,7 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
   @override
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
-
+    Get.put(CommonUserSelectionController());
     // Add listener for scroll events
     scrollController.addListener(() {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent &&
@@ -43,7 +46,7 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
                 color: theme.hintColor,
                 onPress: () async {
                   await controller.getContypeList();
-                  uploadContent(context);
+                  shareContent(context);
             
                 },
               ) :MyButton(
@@ -176,6 +179,85 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
           ),
         ],
       ),
+    );
+  }
+  getDate() async {
+
+    var date = await showDatePicker(
+      context: Get.context!,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2025),
+    );
+    return date;
+  }
+  void shareContent(context){
+    showCustomBottomSheet(context:context,
+      child: SingleChildScrollView(
+        child: Column(
+            children: [
+              // Text("Share content",style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),),
+              CustomTextField(
+                controller: controller.shareSelectedTitleC,
+                hint: "Title",
+                title: "Title: ",),
+              SizedBox(height: 20,),
+              CustomTextField(
+                controller: controller.shareSelectedShareDateController.value,
+                hint: "Share Date",
+                title: "Share Date: ",onTap: () async {
+                // Show date picker for apply date
+                final date = await getDate();
+                if (date != null) {
+                  var d =  await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                  controller.shareSelectedShareDateController.value.text =d;
+                  controller.update();
+                }
+              }),
+              SizedBox(height: 20,),
+                  CustomTextField(
+                controller: controller.shareSelectedValidUpToDateController.value,
+                hint: "Valid Upto",
+                title: "Valid Upto: ",
+                      onTap: () async {
+                        // Show date picker for apply date
+                        final date = await getDate();
+                        if (date != null) {
+                          var d =  await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                          controller.shareSelectedValidUpToDateController.value.text =d;
+                          controller.update();
+                        }
+                      }
+                  ),
+        
+              SizedBox(height: 20,),
+              CustomTextField(
+                controller: controller.shareSelectedDescriptionC,
+                hint: "Description",
+                title: "Description: ",),
+        
+              SizedBox(height: 20,),
+              Text("Send To",style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),),
+              SizedBox(height: 20,),
+              CommonUserSelection(),
+              SizedBox(height: 20,),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: MyButton(
+                  width: 120,
+                  title:'Share',textStyle: TextStyle(color: Colors.black,),
+                  color:Colors.green.shade100,
+                  onPress: ()  {
+                    controller.share(context);
+                  },
+                ),
+              ),
+        
+            ],
+          ),
+      )
+
+
     );
   }
 

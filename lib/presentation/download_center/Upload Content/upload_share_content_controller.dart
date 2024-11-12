@@ -1,12 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/presentation/download_center/Upload%20Content/upload_share_content_modal.dart';
 
 import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
+import '../../common_widgets/controller/CommonUserSelectionController.dart';
 import '../Content Type/content_type_modal.dart';
 
 class UploadShareContentController extends GetxController {
@@ -20,6 +24,10 @@ class UploadShareContentController extends GetxController {
   RxList<File?> pickedFile = RxList<File?>([]);
   var searchC = TextEditingController();
   TextEditingController videoLinkC = TextEditingController();
+  TextEditingController shareSelectedTitleC = TextEditingController();
+  Rx<TextEditingController> shareSelectedShareDateController = TextEditingController().obs;
+  Rx<TextEditingController> shareSelectedValidUpToDateController = TextEditingController().obs;
+  TextEditingController shareSelectedDescriptionC = TextEditingController();
   Rx<ContentTypeModal> filteredContentTypeList = ContentTypeModal().obs;
   RxString selectedContentTypeId = "".obs;
   var checkboxStates = <String, bool>{}.obs;
@@ -28,6 +36,17 @@ class UploadShareContentController extends GetxController {
   void toggleCheckboxState(String itemId, bool value) {
     checkboxStates[itemId] = value;
   }
+
+  setDateOnInit()
+  async {
+    DateTime now = DateTime.now();
+    var d =  await GlobalData().ConvertToSchoolDateTimeFormat(now);
+    shareSelectedShareDateController.value.text = d;
+    shareSelectedValidUpToDateController.value.text = d;
+    // getData();
+  }
+
+
   Future<void> fetchData({bool isRefresh = false}) async {
     if (isRefresh) {
       page.value = 1;
@@ -71,9 +90,73 @@ class UploadShareContentController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    setDateOnInit();
     fetchData(isRefresh: true); // Initial data load
   }
+Future<void> share(context)
+async {
+  CommonUserSelectionController commonUserSelectionController = Get.put(CommonUserSelectionController());
 
+  FormData body = FormData({});
+  List<String> selectedContents = [];
+  var shareDate =  await GlobalData().ConvertToSchoolDateTimeFormat(DateFormat("dd/MM/yyyy").parse(shareSelectedShareDateController.value.text));
+  var validUpToDate =  await GlobalData().ConvertToSchoolDateTimeFormat(DateFormat("dd/MM/yyyy").parse(shareSelectedValidUpToDateController.value.text));
+
+  Map<String, String> bodyMap = {
+    'title':  shareSelectedTitleC.text.toString(),
+    'share_date': shareDate.toString(),
+    'valid_upto': validUpToDate.toString(),
+    'description': shareSelectedDescriptionC.value.text.toString(),
+    'send_to': "group",
+    'user[]': "student",
+    'selected_value': "",
+    'class_id': "",
+    'user_list': "",
+  };
+  if(commonUserSelectionController.selectedUserType.value == "group")
+    {
+      bodyMap['send_to'] =  "group";
+      bodyMap['users'] = commonUserSelectionController.selectedGroup.join(',');
+    }
+  else if(commonUserSelectionController.selectedUserType.value == "class")
+    {
+      bodyMap['send_to'] =  "class";
+      bodyMap['class_id'] =  commonUserSelectionController.selectedClassId.value;
+      bodyMap['class_section_id'] = commonUserSelectionController.selectedClassSectionId.join(',');
+    }
+  else if(commonUserSelectionController.selectedUserType.value == "individual")
+    {
+      bodyMap['send_to'] =  "individual";
+      var data = {};
+     commonUserSelectionController.selectedUserList.forEach((element) {
+       var cat = [{"category":element.type,"record_id":element.id,"parent_id":element.id}];
+
+        data["student_guardian-${element.id}"] = cat;
+      });
+
+      bodyMap['user_list'] =jsonEncode(data);
+      bodyMap['class_section_id'] = commonUserSelectionController.selectedClassSectionId.join(',');
+    }
+  checkboxStates.forEach((itemId, value) {
+    if(value)
+      {
+        selectedContents.add(itemId);
+      }
+
+  });
+  bodyMap['selected_contents'] = selectedContents.join(',');
+  body.fields.addAll(bodyMap.entries);
+  var data = await apiRespository.postApiCallByFormData(Constants.contentShareUrl, body);
+  if (data.statusCode == 200) {
+    Get.showSnackbar(Ui.SuccessSnackBar(message: "saved success!"));
+    Get.back();
+  }
+  else
+    {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "Something went wrong!"));
+    }
+  print(data);
+}
 
   void deletecontenttypebyId(context,id) async
   {

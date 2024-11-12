@@ -93,6 +93,16 @@ class Constants {
   static const String getuploaddataUrl = 'content/getuploaddata';
   static const String deleteuploaddataUrl = 'content/delete';
   static const String ajaxuploadUrl = 'content/ajaxupload';
+  static const String contentShareUrl = 'content/share';
+  static const String contentShareListUrl = 'content/getsharelist';
+  static const String getUserRoleListUrl = 'content/getUserRoleList';
 
+
+  static const String getAllStudentsGaurdianListUrl = 'content/getAllStudentsGaurdian';
+  static const String getAllStaffListUrl = 'content/getAllStaff';
+  static const String getAllParentListUrl = 'content/getAllParent';
+
+  static const String getVideoTutorialListUrl = 'video_tutorial/getVideoTutorialList';
+  static const String getVideoTutorialListBySearchUrl = 'video_tutorial/getVideoTutorialListBySearch';
 
 }
