@@ -568,14 +568,16 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                           child: Container(
                             height: 40,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all()
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                    color: Colors.green.shade200
+                                )
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.upload_file),
-                                Text("Drag and drop a file here or click"),
+                                Icon(Icons.upload_file,color: Colors.green),
+                                Text("Drag and drop a file here or click",style: TextStyle(color: Colors.green),),
                               ],
                             ),
 

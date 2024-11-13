@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:html_editor_enhanced/html_editor.dart';
 
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
@@ -10,7 +13,11 @@ class  NewsController extends GetxController{
   TextEditingController searchC = TextEditingController();
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   Rx< IssueReturn> filteredContentTypeList =  IssueReturn().obs;
-  Rx<TextEditingController> attendanceDate = TextEditingController().obs;
+  Rx<TextEditingController> dateC = TextEditingController().obs;
+
+  TextEditingController titleC = TextEditingController();
+  Rx<HtmlEditorController> HtmlController = HtmlEditorController().obs;
+  Rx<File?> pickedFile = Rx<File?>(null);
   late Future<void> fetchDataFuture;
   List<Data> originalContentTypeList = [];
   RxBool isLoading = false.obs;
