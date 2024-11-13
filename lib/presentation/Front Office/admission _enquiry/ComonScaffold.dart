@@ -25,7 +25,7 @@ class CustomScaffold extends GetView<CustomScaffoldController> {
         backgroundColor: Colors.green.shade100,
         title: Text(
           aapBarTitle,
-          style: theme.textTheme.titleLarge,
+          style: theme.textTheme.titleMedium,
         ),
         actions: [
           InkWell(
