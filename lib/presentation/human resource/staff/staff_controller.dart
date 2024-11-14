@@ -11,6 +11,21 @@ import 'staff_modal.dart';
 class StaffController extends GetxController{
 
   TextEditingController searchC = TextEditingController();
+  final staffIdC = TextEditingController();
+  final firstNameC = TextEditingController();
+  final lastNameC = TextEditingController();
+  final fatherNameC = TextEditingController();
+  final motherNameC = TextEditingController();
+  final emailC = TextEditingController();
+  final dateOfBirthC = TextEditingController();
+  final dateOfJoiningC = TextEditingController();
+  final phoneC = TextEditingController();
+  final emergencyContactC = TextEditingController();
+  final addressC = TextEditingController();
+  final permanentAddressC = TextEditingController();
+  final qualificationC = TextEditingController();
+  final workExperienceC = TextEditingController();
+  final noteC = TextEditingController();
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   Rx< Staff> filteredContentTypeList =  Staff().obs;
   Rx<TextEditingController> attendanceDate = TextEditingController().obs;

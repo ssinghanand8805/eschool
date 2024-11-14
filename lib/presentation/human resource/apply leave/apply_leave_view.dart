@@ -5,8 +5,11 @@ import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
+import '../../../widgets/datePickerTextField.dart';
+import '../../../widgets/myCustomsd.dart';
 import '../../common_widgets/custom_loader.dart';
 
 import 'apply_leave_controller.dart';
@@ -65,19 +68,18 @@ class ApplyLeaveView extends GetView< ApplyLeaveController> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('staff Id: ${"entry.bookType"}',
+                                    Text('Staff: ${"entry.bookType"}',
                                         style: theme.textTheme.bodySmall),
                                     SizedBox(height: 8),
-                                    Text('Name: ${"entry.bookTitle"}',
-                                        style: theme.textTheme.bodySmall),
-                                    SizedBox(height: 8),
-                                    Text('Role: ${"entry.bookTitle"}',
+                                    Text('Leave Type : ${"entry.bookTitle"}',
                                         style: theme.textTheme.bodySmall),SizedBox(height: 8),
-                                    Text('Department: ${"entry.bookTitle"}',
+                                    Text('Leave Date : ${"entry.bookTitle"}',
                                         style: theme.textTheme.bodySmall),SizedBox(height: 8),
-                                    Text('Designation: ${"entry.bookTitle"}',
+                                    Text('Days : ${"entry.bookTitle"}',
                                         style: theme.textTheme.bodySmall),SizedBox(height: 8),
-                                    Text('Mobile No.: ${"entry.bookTitle"}',
+                                    Text('Apply Date : ${"entry.bookTitle"}',
+                                        style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                    Text('Status : ${"entry.bookTitle"}',
                                         style: theme.textTheme.bodySmall),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
@@ -116,7 +118,7 @@ class ApplyLeaveView extends GetView< ApplyLeaveController> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          addImages(context);
+          applyLeave(context);
         },
         tooltip: 'Add Item',
         shape:CircleBorder() ,
@@ -128,7 +130,7 @@ class ApplyLeaveView extends GetView< ApplyLeaveController> {
     );
   }
 
-  void addImages(BuildContext context) {
+  void applyLeave(BuildContext context) {
     showCustomBottomSheet(context: context,
       child: SingleChildScrollView(
         child: Column(
@@ -137,11 +139,48 @@ class ApplyLeaveView extends GetView< ApplyLeaveController> {
           children: [
 
             // Book Title
-            CustomTextField(
-              controller: controller.titleC,
-              hint: 'Title',
-              title: 'Title',
+
+            DatePickerTextField(
+                controller: controller.applyDate.value,
+                title: 'Apply Date',
+                onDateSelected: (date) async {
+                  controller.applyDate.value.text =
+                  await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                }),
+
+            MyCustomSD(
+              hideSearch: true,
+              borderColor: Colors.grey,
+              listToSearch:[],
+              valFrom: "className",
+              label: 'Available Leave',
+              labelText: 'Available Leave',
+              onChanged: (val) {
+              },
             ),
+
+            DatePickerTextField(
+                controller: controller.fromDate.value,
+                title: 'From Date',
+                onDateSelected: (date) async {
+                  controller.fromDate.value.text =
+                  await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                }),  DatePickerTextField(
+                controller: controller.toDate.value,
+                title: 'To Date',
+                onDateSelected: (date) async {
+                  controller.toDate.value.text =
+                  await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                }),
+
+            CustomTextField(
+              controller: controller.reasonC,
+              hint: 'Reason',
+              title: 'Permanent Address',
+              maxLine: 3,
+
+            ),
+
             const SizedBox(height: 10),
             InkWell(
               onTap: (){
@@ -153,7 +192,7 @@ class ApplyLeaveView extends GetView< ApplyLeaveController> {
 
                     borderRadius: BorderRadius.circular(15),
                     border: Border.all(
-                      color: Colors.green.shade200
+                        color: Colors.green.shade200
                     )
                 ),
                 child: Row(
@@ -166,35 +205,8 @@ class ApplyLeaveView extends GetView< ApplyLeaveController> {
 
               ),
             ),
-            const SizedBox(height: 10),
 
-            SizedBox(
-              height: 250,
-              child: HtmlEditor(
-                htmlToolbarOptions: HtmlToolbarOptions(
-                    toolbarItemHeight: 35,
-                    toolbarType: ToolbarType.nativeGrid,
-                    textStyle: theme.textTheme.titleMedium,
-                    defaultToolbarButtons: [
-                      const StyleButtons(),
-                      const FontButtons(
-                          clearAll: true,
-                          strikethrough: false,
-                          subscript: false,
-                          superscript: false)
-                    ]),
-                controller: controller.HtmlController.value,
-                //required
-                htmlEditorOptions: const HtmlEditorOptions(
-                  hint: "Please enter ...",
-                  shouldEnsureVisible: true,
-                  autoAdjustHeight: true,
-                  adjustHeightForKeyboard: true,
-                ),
-                otherOptions: const OtherOptions(),
-              ),
-            ),
-            //  const SizedBox(height: 24),
+            const SizedBox(height: 24),
 
             // Save Button
             SizedBox(

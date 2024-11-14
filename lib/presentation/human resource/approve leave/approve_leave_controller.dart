@@ -15,6 +15,13 @@ class ApproveLeaveController extends GetxController{
   Rx< ApproveLeaveModal> filteredContentTypeList =  ApproveLeaveModal().obs;
   Rx<TextEditingController> attendanceDate = TextEditingController().obs;
   TextEditingController titleC = TextEditingController();
+  final reasonC = TextEditingController();
+  final noteC = TextEditingController();
+  String status = 'Pending';
+
+  Rx<TextEditingController> applyDate = TextEditingController().obs;
+  Rx<TextEditingController> fromDate = TextEditingController().obs;
+  Rx<TextEditingController> toDate = TextEditingController().obs;
   Rx<HtmlEditorController> HtmlController = HtmlEditorController().obs;
   Rx<File?> pickedFile = Rx<File?>(null);
   late Future<void> fetchDataFuture;

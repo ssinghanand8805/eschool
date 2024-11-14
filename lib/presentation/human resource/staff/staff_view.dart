@@ -125,9 +125,9 @@ class StaffView extends GetView< StaffController> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          addImages(context);
+          addStaffs(context);
         },
-        tooltip: 'Add Item',
+        tooltip: 'Add Staff',
         shape:CircleBorder() ,
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
@@ -137,95 +137,182 @@ class StaffView extends GetView< StaffController> {
     );
   }
 
-  void addImages(BuildContext context) {
+  void addStaffs(BuildContext context) {
     showCustomBottomSheet(context: context,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
+      child: Container(
+        height: Get.height-150,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
 
-            // Book Title
-            CustomTextField(
-              controller: controller.titleC,
-              hint: 'Title',
-              title: 'Title',
-            ),
-            const SizedBox(height: 10),
-            InkWell(
-              onTap: (){
-                _showImagePicker(context);
-              },
-              child: Container(
-                height: 40,
-                decoration: BoxDecoration(
-
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                      color: Colors.green.shade200
-                    )
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.upload_file,color: Colors.green),
-                    Text("Drag and drop a file here or click",style: TextStyle(color: Colors.green),),
-                  ],
-                ),
+              // Book Title
+              CustomTextField(
+                controller: controller.staffIdC,
+                hint: 'Staff ID',
+                title: 'Staff ID',
 
               ),
-            ),
-            const SizedBox(height: 10),
-
-            SizedBox(
-              height: 250,
-              child: HtmlEditor(
-                htmlToolbarOptions: HtmlToolbarOptions(
-                    toolbarItemHeight: 35,
-                    toolbarType: ToolbarType.nativeGrid,
-                    textStyle: theme.textTheme.titleMedium,
-                    defaultToolbarButtons: [
-                      const StyleButtons(),
-                      const FontButtons(
-                          clearAll: true,
-                          strikethrough: false,
-                          subscript: false,
-                          superscript: false)
-                    ]),
-                controller: controller.HtmlController.value,
-                //required
-                htmlEditorOptions: const HtmlEditorOptions(
-                  hint: "Please enter ...",
-                  shouldEnsureVisible: true,
-                  autoAdjustHeight: true,
-                  adjustHeightForKeyboard: true,
-                ),
-                otherOptions: const OtherOptions(),
-              ),
-            ),
-            //  const SizedBox(height: 24),
-
-            // Save Button
-            SizedBox(
-              width: double.infinity,
-              height: 40,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.green,
-                ),
-                onPressed: () {
-                  // Implement save functionality
-                  Navigator.pop(context);
+              MyCustomSD(
+                hideSearch: true,
+                borderColor: Colors.grey,
+                listToSearch:[],
+                valFrom: "className",
+                label: 'Role',
+                labelText: 'Role',
+                onChanged: (val) {
                 },
-                child: const Text(
-                  'Save',
-                  style: TextStyle(color: Colors.white),
+              ),
+              MyCustomSD(
+                hideSearch: true,
+                borderColor: Colors.grey,
+                listToSearch:[],
+                valFrom: "className",
+                label: 'Designation',
+                labelText: 'Designation',
+                onChanged: (val) {
+                },
+              ),
+              MyCustomSD(
+                hideSearch: true,
+                borderColor: Colors.grey,
+                listToSearch:[],
+                valFrom: "className",
+                label: 'Department',
+                labelText: 'Department',
+                onChanged: (val) {
+                },
+              ),
+              CustomTextField(
+                controller: controller.firstNameC,
+                hint: 'First Name',
+                title: 'First Name',
+
+              ),
+              CustomTextField(
+                controller: controller.lastNameC,
+                hint: 'Last Name',
+                title: 'Last Name',
+              ),
+              CustomTextField(
+                controller: controller.fatherNameC,
+                hint: 'Father Name',
+                title: 'Father Name',
+              ),
+              CustomTextField(
+                controller: controller.motherNameC,
+                hint: 'Mother Name',
+                title: 'Mother Name',
+              ),
+              CustomTextField(
+                controller: controller.emailC,
+                hint: 'Email (Login Username)',
+                title: 'Email',
+
+              ),
+              CustomTextField(
+                controller: controller.dateOfBirthC,
+                hint: 'Date of Birth',
+                title: 'Date of Birth',
+
+              ),
+              CustomTextField(
+                controller: controller.dateOfJoiningC,
+                hint: 'Date of Joining',
+                title: 'Date of Joining',
+              ),
+              CustomTextField(
+                controller: controller.phoneC,
+                hint: 'Phone',
+                title: 'Phone',
+              ),
+              CustomTextField(
+                controller: controller.emergencyContactC,
+                hint: 'Emergency Contact Number',
+                title: 'Emergency Contact',
+              ),
+              CustomTextField(
+                controller: controller.qualificationC,
+                hint: 'Qualification',
+                title: 'Qualification',
+              ),
+              CustomTextField(
+                controller: controller.workExperienceC,
+                hint: 'Work Experience',
+                title: 'Work Experience',
+              ),
+              CustomTextField(
+                controller: controller.addressC,
+                hint: 'Address',
+                title: 'Address',
+                maxLine: 3,
+
+              ),
+              CustomTextField(
+                controller: controller.permanentAddressC,
+                hint: 'Permanent Address',
+                title: 'Permanent Address',
+                maxLine: 3,
+
+              ),
+
+              CustomTextField(
+                controller: controller.noteC,
+                hint: 'Note',
+                title: 'Note',
+                maxLine: 3,
+
+              ),
+              const SizedBox(height: 10),
+              InkWell(
+                onTap: (){
+                  _showImagePicker(context);
+                },
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: Colors.green.shade200
+                      )
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.upload_file,color: Colors.green),
+                      Text("Drag and drop a file here or click",style: TextStyle(color: Colors.green),),
+                    ],
+                  ),
+
                 ),
               ),
-            ),
-            // const SizedBox(height: 16),
-          ],
+
+              const SizedBox(height: 24),
+
+              // Save Button
+              SizedBox(
+                width: double.infinity,
+                height: 40,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Colors.green,
+                  ),
+                  onPressed: () {
+                    // Implement save functionality
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Save',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              // const SizedBox(height: 16),
+            ],
+          ),
         ),
       ),
     );

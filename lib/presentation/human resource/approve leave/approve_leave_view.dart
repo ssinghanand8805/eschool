@@ -5,8 +5,11 @@ import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
+import '../../../widgets/datePickerTextField.dart';
+import '../../../widgets/myCustomsd.dart';
 import '../../common_widgets/custom_loader.dart';
 
 import 'approve_leave_controller.dart';
@@ -65,10 +68,18 @@ class ApproveLeaveRequestView extends GetView< ApproveLeaveController> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Title: ${"entry.bookType"}',
+                                    Text('Staff: ${"entry.bookType"}',
                                         style: theme.textTheme.bodySmall),
                                     SizedBox(height: 8),
-                                    Text('URL: ${"entry.bookTitle"}',
+                                    Text('Leave Type : ${"entry.bookTitle"}',
+                                        style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                    Text('Leave Date : ${"entry.bookTitle"}',
+                                        style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                    Text('Days : ${"entry.bookTitle"}',
+                                        style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                    Text('Apply Date : ${"entry.bookTitle"}',
+                                        style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                    Text('Status : ${"entry.bookTitle"}',
                                         style: theme.textTheme.bodySmall),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
@@ -107,7 +118,7 @@ class ApproveLeaveRequestView extends GetView< ApproveLeaveController> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          addImages(context);
+          approveLeave(context);
         },
         tooltip: 'Add Item',
         shape:CircleBorder() ,
@@ -119,95 +130,168 @@ class ApproveLeaveRequestView extends GetView< ApproveLeaveController> {
     );
   }
 
-  void addImages(BuildContext context) {
+  void approveLeave(BuildContext context) {
     showCustomBottomSheet(context: context,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
+      child: Container(
+        height: Get.height-150,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
 
-            // Book Title
-            CustomTextField(
-              controller: controller.titleC,
-              hint: 'Title',
-              title: 'Title',
-            ),
-            const SizedBox(height: 10),
-            InkWell(
-              onTap: (){
-                _showImagePicker(context);
-              },
-              child: Container(
-                height: 40,
-                decoration: BoxDecoration(
-
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                      color: Colors.green.shade200
-                    )
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.upload_file,color: Colors.green),
-                    Text("Drag and drop a file here or click",style: TextStyle(color: Colors.green),),
-                  ],
-                ),
-
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            SizedBox(
-              height: 250,
-              child: HtmlEditor(
-                htmlToolbarOptions: HtmlToolbarOptions(
-                    toolbarItemHeight: 35,
-                    toolbarType: ToolbarType.nativeGrid,
-                    textStyle: theme.textTheme.titleMedium,
-                    defaultToolbarButtons: [
-                      const StyleButtons(),
-                      const FontButtons(
-                          clearAll: true,
-                          strikethrough: false,
-                          subscript: false,
-                          superscript: false)
-                    ]),
-                controller: controller.HtmlController.value,
-                //required
-                htmlEditorOptions: const HtmlEditorOptions(
-                  hint: "Please enter ...",
-                  shouldEnsureVisible: true,
-                  autoAdjustHeight: true,
-                  adjustHeightForKeyboard: true,
-                ),
-                otherOptions: const OtherOptions(),
-              ),
-            ),
-            //  const SizedBox(height: 24),
-
-            // Save Button
-            SizedBox(
-              width: double.infinity,
-              height: 40,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.green,
-                ),
-                onPressed: () {
-                  // Implement save functionality
-                  Navigator.pop(context);
+              // Book Title
+              MyCustomSD(
+                hideSearch: true,
+                borderColor: Colors.grey,
+                listToSearch:[],
+                valFrom: "className",
+                label: 'Role',
+                labelText: 'Role',
+                onChanged: (val) {
                 },
-                child: const Text(
-                  'Save',
-                  style: TextStyle(color: Colors.white),
+              ),
+              MyCustomSD(
+                hideSearch: true,
+                borderColor: Colors.grey,
+                listToSearch:[],
+                valFrom: "className",
+                label: 'Name',
+                labelText: 'Name',
+                onChanged: (val) {
+                },
+              ),
+              MyCustomSD(
+                hideSearch: true,
+                borderColor: Colors.grey,
+                listToSearch:[],
+                valFrom: "className",
+                label: 'Leave Type',
+                labelText: 'Leave Type',
+                onChanged: (val) {
+                },
+              ),
+
+              DatePickerTextField(
+                  controller: controller.applyDate.value,
+                  title: 'Apply Date',
+                  onDateSelected: (date) async {
+                    controller.applyDate.value.text =
+                    await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                  }),  DatePickerTextField(
+                  controller: controller.fromDate.value,
+                  title: 'From Date',
+                  onDateSelected: (date) async {
+                    controller.fromDate.value.text =
+                    await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                  }),  DatePickerTextField(
+                  controller: controller.toDate.value,
+                  title: 'To Date',
+                  onDateSelected: (date) async {
+                    controller.toDate.value.text =
+                    await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                  }),
+
+              CustomTextField(
+                controller: controller.reasonC,
+                hint: 'Reason',
+                title: 'Permanent Address',
+                maxLine: 3,
+
+              ),
+
+              CustomTextField(
+                controller: controller.noteC,
+                hint: 'Note',
+                title: 'Note',
+                maxLine: 3,
+
+              ),
+              const SizedBox(height: 10),
+              InkWell(
+                onTap: (){
+                  _showImagePicker(context);
+                },
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                          color: Colors.green.shade200
+                      )
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.upload_file,color: Colors.green),
+                      Text("Drag and drop a file here or click",style: TextStyle(color: Colors.green),),
+                    ],
+                  ),
+
                 ),
               ),
-            ),
-            // const SizedBox(height: 16),
-          ],
+
+              const SizedBox(height: 24),
+              Text('Status'),
+              SizedBox(height: 5),
+            Row(
+              children: [
+                Radio(
+                  value: 'Pending',
+                  groupValue: controller.status,
+                  onChanged: (String? value) {
+
+                      controller.status = value!;
+
+                  },
+                ),
+                Text('Pending'),
+                Radio(
+                  value: 'Approved',
+                  groupValue:  controller.status,
+                  onChanged: (String?value) {
+
+                      controller.status = value!;
+
+                  },
+                ),
+                Text('Approved'),
+                Radio(
+                  value: 'Disapproved',
+                  groupValue:  controller.status,
+                  onChanged: (String?value) {
+
+                      controller.status = value!;
+
+                  },
+                ),
+                Text('Disapproved'),
+              ]),
+              const SizedBox(height: 24),
+
+              // Save Button
+              SizedBox(
+                width: double.infinity,
+                height: 40,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Colors.green,
+                  ),
+                  onPressed: () {
+                    // Implement save functionality
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Save',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              // const SizedBox(height: 16),
+            ],
+          ),
         ),
       ),
     );

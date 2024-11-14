@@ -16,6 +16,10 @@ class ApplyLeaveController extends GetxController{
   Rx<TextEditingController> attendanceDate = TextEditingController().obs;
   TextEditingController titleC = TextEditingController();
   Rx<HtmlEditorController> HtmlController = HtmlEditorController().obs;
+  Rx<TextEditingController> applyDate = TextEditingController().obs;
+  Rx<TextEditingController> fromDate = TextEditingController().obs;
+  Rx<TextEditingController> toDate = TextEditingController().obs;
+  final reasonC = TextEditingController();
   Rx<File?> pickedFile = Rx<File?>(null);
   late Future<void> fetchDataFuture;
   List<Data> originalContentTypeList = [];
