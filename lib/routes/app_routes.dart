@@ -259,6 +259,11 @@ class AppRoutes {
   static const String event = '/event';
   static const String notice = '/notice';
 
+  /// HR
+  static const String staff = '/staff';
+  static const String approve_leave_request = '/approve_leave_request';
+  static const String apply_leave = '/apply_leave';
+
 
   static List<GetPage> pages = [
 
