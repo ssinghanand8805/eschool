@@ -11,8 +11,8 @@ import '../../common_widgets/custom_loader.dart';
 
 import 'approve_leave_controller.dart';
 
-class ApproveLeaveView extends GetView< ApproveLeaveController> {
-  ApproveLeaveView({Key? key}) : super(key: key,);
+class ApproveLeaveRequestView extends GetView< ApproveLeaveController> {
+  ApproveLeaveRequestView({Key? key}) : super(key: key,);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ApproveLeaveView extends GetView< ApproveLeaveController> {
       appBar: AppBar(
         backgroundColor: Colors.green.shade100,
         title: Text(
-          'Gallery',
+          'Approve Leave Request',
           style: theme.textTheme.titleLarge,
         ),
       ),

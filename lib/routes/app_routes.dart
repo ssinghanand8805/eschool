@@ -29,6 +29,12 @@ import 'package:learnladderfaculity/presentation/front%20cms/gallery/gallery_bin
 import 'package:learnladderfaculity/presentation/front%20cms/gallery/gallery_view.dart';
 import 'package:learnladderfaculity/presentation/front%20cms/news/news_binding.dart';
 import 'package:learnladderfaculity/presentation/front%20cms/news/news_view.dart';
+import 'package:learnladderfaculity/presentation/human%20resource/apply%20leave/apply_leave_binding.dart';
+import 'package:learnladderfaculity/presentation/human%20resource/apply%20leave/apply_leave_view.dart';
+import 'package:learnladderfaculity/presentation/human%20resource/approve%20leave/approve_leave_binding.dart';
+import 'package:learnladderfaculity/presentation/human%20resource/approve%20leave/approve_leave_view.dart';
+import 'package:learnladderfaculity/presentation/human%20resource/staff/staff_binding.dart';
+import 'package:learnladderfaculity/presentation/human%20resource/staff/staff_view.dart';
 import 'package:learnladderfaculity/presentation/library/add%20student/add_student_view.dart';
 import 'package:learnladderfaculity/presentation/library/book%20list/book_list_binding.dart';
 import 'package:learnladderfaculity/presentation/library/book%20list/book_list_view.dart';
@@ -709,6 +715,23 @@ class AppRoutes {
       name: notice,
       page: () => NewsView(),
       bindings: [NewsBinding()],
+    ),
+
+
+    /// HR
+    GetPage(
+      name: staff,
+      page: () => StaffView(),
+      bindings: [StaffBinding()],
+    ),
+    GetPage(
+      name: approve_leave_request,
+      page: () => ApproveLeaveRequestView(),
+      bindings: [ ApproveLeaveRequestBinding()],
+    ),  GetPage(
+      name: apply_leave,
+      page: () => ApplyLeaveView(),
+      bindings: [ApplyLeaveBinding()],
     ),
   ];
 }

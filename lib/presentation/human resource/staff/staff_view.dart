@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
+import '../../../widgets/myCustomsd.dart';
 import '../../common_widgets/custom_loader.dart';
 
 import 'staff_controller.dart';
@@ -20,7 +21,7 @@ class StaffView extends GetView< StaffController> {
       appBar: AppBar(
         backgroundColor: Colors.green.shade100,
         title: Text(
-          'Gallery',
+          'Staff',
           style: theme.textTheme.titleLarge,
         ),
       ),
@@ -34,70 +35,87 @@ class StaffView extends GetView< StaffController> {
                     return CustomLoader();
                   }
                   return SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8),
-                          child: CustomTextField(
+                    child: Padding(
+                      padding: const  EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                      child: Column(
+                        children: [
+                          MyCustomSD(
+                            hideSearch: true,
+                            borderColor: Colors.grey,
+                            listToSearch:[],
+                            valFrom: "className",
+                            label: 'Class',
+                            labelText: 'Class',
+                            onChanged: (val) {
+                            },
+                          ),
+                          CustomTextField(
                             controller: controller.searchC,
-                            hint: 'Search.... ', title: '',
+                            hint: 'Search.... ', title: 'Search',
                             onChanged: (val) {
                               controller.searchContentType(val);
                               controller.update();
                             },
                           ),
-
-                        ),
-                        SizedBox(height: 8),
-                        Column(
-                          children: controller.filteredContentTypeList.value
-                              .data!.map((entry) {
-                            return Card(
-                              elevation: 1,
-                              margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20), // Smoother corners
-                              ),
-                              color: Colors.white,
-                              shadowColor: Colors.green,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Title: ${"entry.bookType"}',
-                                        style: theme.textTheme.bodySmall),
-                                    SizedBox(height: 8),
-                                    Text('URL: ${"entry.bookTitle"}',
-                                        style: theme.textTheme.bodySmall),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(
-                                              Icons.edit, size: 15),
-                                          onPressed: () {
-                                           // addEditContents(context);
-                                          },
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.close, size: 15),
-                                          onPressed: () {
-
-                                          },
-                                        ),
-                                      ],
-                                    ),
-
-                                  ],
+                          SizedBox(height: 8),
+                          Column(
+                            children: controller.filteredContentTypeList.value
+                                .data!.map((entry) {
+                              return Card(
+                                elevation: 1,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20), // Smoother corners
                                 ),
-                              ),
-                            );
-                          }).toList(),
-                        )
+                                color: Colors.white,
+                                shadowColor: Colors.green,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Staff Id: ${"entry.bookType"}',
+                                          style: theme.textTheme.bodySmall),
+                                      SizedBox(height: 8),
+                                      Text('Name: ${"entry.bookTitle"}',
+                                          style: theme.textTheme.bodySmall),
+                                      SizedBox(height: 8),
+                                      Text('Role: ${"entry.bookTitle"}',
+                                          style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                      Text('Department: ${"entry.bookTitle"}',
+                                          style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                      Text('Designation: ${"entry.bookTitle"}',
+                                          style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                      Text('Mobile No.: ${"entry.bookTitle"}',
+                                          style: theme.textTheme.bodySmall),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(
+                                                Icons.view_list_outlined, size: 15),
+                                            onPressed: () {
+                                             // addEditContents(context);
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.edit, size: 15),
+                                            onPressed: () {
+
+                                            },
+                                          ),
+                                        ],
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          )
 
 
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 }

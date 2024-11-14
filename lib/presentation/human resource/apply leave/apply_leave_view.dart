@@ -20,7 +20,7 @@ class ApplyLeaveView extends GetView< ApplyLeaveController> {
       appBar: AppBar(
         backgroundColor: Colors.green.shade100,
         title: Text(
-          'Gallery',
+          'Apply Leave',
           style: theme.textTheme.titleLarge,
         ),
       ),
@@ -65,10 +65,19 @@ class ApplyLeaveView extends GetView< ApplyLeaveController> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Title: ${"entry.bookType"}',
+                                    Text('staff Id: ${"entry.bookType"}',
                                         style: theme.textTheme.bodySmall),
                                     SizedBox(height: 8),
-                                    Text('URL: ${"entry.bookTitle"}',
+                                    Text('Name: ${"entry.bookTitle"}',
+                                        style: theme.textTheme.bodySmall),
+                                    SizedBox(height: 8),
+                                    Text('Role: ${"entry.bookTitle"}',
+                                        style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                    Text('Department: ${"entry.bookTitle"}',
+                                        style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                    Text('Designation: ${"entry.bookTitle"}',
+                                        style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                    Text('Mobile No.: ${"entry.bookTitle"}',
                                         style: theme.textTheme.bodySmall),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
