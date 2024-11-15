@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
+import '../../../apiHelper/toastMessage.dart';
 import '../../common_widgets/controller/CommonApiController.dart';
 import 'book_list_modal.dart';
 
-class BookListController  extends GetxController{
+class BookListController  extends GetxController {
 
   TextEditingController searchC = TextEditingController();
   final bookTypeController = TextEditingController();
@@ -25,84 +26,117 @@ class BookListController  extends GetxController{
   Rx<TextEditingController> postDate = TextEditingController().obs;
   CommonApiController commonApiController = Get.put(CommonApiController());
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
-  Rx<BookList> filteredContentTypeList = BookList().obs;
+  Rx<BookDataModal> filteredContentTypeList = BookDataModal().obs;
   late Future<void> fetchDataFuture;
-  List<Data> originalContentTypeList = [];
+  List<Listbook> originalContentTypeList = [];
   RxBool isLoading = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
     fetchDataFuture = initializeData();
+    // bookList();
   }
+
   void initializeOriginalList() {
-    originalContentTypeList = List.from(filteredContentTypeList.value.data!);  // Make a copy of the original data
+    print("fffff${filteredContentTypeList.value.data!.listbook}");
+    originalContentTypeList = List.from(filteredContentTypeList.value.data!.listbook!); // Make a copy of the original data
   }
+
   Future<void> searchContentType(String searchKey) async {
     // Check if the searchKey is empty or not
     if (searchKey.isEmpty) {
       // Reset to the original list when searchKey is cleared
       filteredContentTypeList.update((val) {
-        val?.data = originalContentTypeList;  // Reset to original list
+        val?.data!.listbook = originalContentTypeList; // Reset to original list
       });
     } else {
       // Filter the list based on the searchKey
-      List<Data> filteredList = originalContentTypeList
-          .where((element) => element.name != null &&
-          element.name!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
+      List<Listbook> filteredList = originalContentTypeList
+          .where((element) =>
+      element.bookTitle != null &&
+          element.bookTitle!.toLowerCase().contains(searchKey.toLowerCase().trim())) // Perform case-insensitive search
           .toList();
 
       // Update the filtered list
       filteredContentTypeList.update((val) {
-        val?.data = filteredList;
+        val!.data!.listbook = filteredList;
       });
     }
   }
-  Future<void> initializeData() async  {
-    //isLoading.value = true;
-    try
-    {
-      var body = {};
-      var data = await apiRespository.postApiCallByJson(Constants.contentShareListUrl, body);
 
-      filteredContentTypeList.value = BookList.fromJson(data.body);
-      print(filteredContentTypeList.value.toJson());
+  Future<void> initializeData() async {
+    //isLoading.value = true;
+    try {
+      var body = {};
+      var data = await apiRespository.postApiCallByJson(Constants.getAllBookUrl, body);
+
+      filteredContentTypeList.value = BookDataModal.fromJson(data.body);
+      print("wwwww${filteredContentTypeList.value.toJson()}");
       initializeOriginalList();
       update();
     }
-    catch(e)
-    {
+    catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");
       update();
     }
-
-    // Initialize fetchDataFuture here
   }
-  // List<Map<String, dynamic>> data = [
-  //   {
-  //     'studentId': 18001,
-  //     'class': 'Class 4',
-  //     'section': 'A',
-  //     'subjectGroup': 'Class 1st Subject Group',
-  //     'subject': 'Hindi (230)',
-  //     'homeworkDate': DateTime(2024, 4, 5),
-  //     'submissionDate': DateTime(2024, 4, 9),
-  //     'evaluationDate': DateTime(2024, 4, 9),
-  //     'createdBy': 'Joe Black',
-  //     'approvedId': 9000,
-  //   },
-  //   {
-  //     'studentId': 18002,
-  //     'class': 'Class 4',
-  //     'section': 'A',
-  //     'subjectGroup': 'Class 1st Subject Group',
-  //     'subject': 'Hindi (230)',
-  //     'homeworkDate': DateTime(2024, 4, 5),
-  //     'submissionDate': DateTime(2024, 4, 9),
-  //     'evaluationDate': DateTime(2024, 4, 9),
-  //     'createdBy': 'Kirti Singh',
-  //     'approvedId': 9000,
-  //   },
-  //   // Add more data as needed
-  // ];
+
+  /// api work by faheem
+
+
+  clearController(){
+    bookTitleController.clear();
+    bookNumberController.clear();
+    isbnNumberController.clear();
+    subjectController.clear();
+    rackNumberController.clear();
+    publisherController.clear();
+    authorController.clear();
+    quantityController.clear();
+    bookPriceController.clear();
+    descriptionController.clear();
+    postDateController.clear();
+  }
+
+  bookList() async {
+    var body = {};
+    var data = await apiRespository.postApiCallByJson(Constants.getAllBookUrl, body);
+    print("LibraryApi: ${data.body}");
+  }
+
+  RxString bookTypeId = "".obs;
+
+  createBook(context) async {
+    var body = {
+      "book_type": bookTypeId.value,
+      "book_title": bookTitleController.value.text,
+      "book_no": bookNumberController.value.text,
+      "isbn_no": isbnNumberController.value.text,
+      "subject": subjectController.value.text,
+      "rack_no": rackNumberController.value.text,
+      "publish": publisherController.value.text,
+      "author": authorController.value.text,
+      "qty": quantityController.value.text,
+      "perunitcost": bookPriceController.value.text,
+      "description": descriptionController.value.text,
+      "postdate": postDateController.value.text
+    };
+    print("BODY ${body}");
+    var data = await apiRespository.postApiCallByFormData(Constants.crateBookUrl, body);
+    print("sssssssssss"+data.body.toString());
+    if(data.body['status']==1){
+      fetchDataFuture = initializeData();
+      Get.showSnackbar(Ui.SuccessSnackBar(message: data.body['msg'].toString()));
+      Navigator.pop(context);
+      clearController();
+    }else{
+      Get.showSnackbar(Ui.ErrorSnackBar(message: data.body['msg'].toString()));
+    }
+  }
+
+  deleteBookDetails(){
+
+  }
 
 }

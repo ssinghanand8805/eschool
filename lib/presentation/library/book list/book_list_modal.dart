@@ -1,88 +1,156 @@
-class BookList {
-  String? status;
+class BookDataModal {
+  int? status;
   String? error;
-  String? message;
-  List<Data>? data;
+  Data? data;
 
-  BookList({this.status, this.error, this.message, this.data});
+  BookDataModal({this.status, this.error, this.data});
 
-  BookList.fromJson(Map<String, dynamic> json) {
+  BookDataModal.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     error = json['error'];
-    message = json['message'];
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
     data['error'] = this.error;
-    data['message'] = this.message;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
 class Data {
-  String? id;
-  String? sendTo;
-  String? title;
-  String? shareDate;
-  String? validUpto;
-  String? description;
-  String? createdBy;
-  String? createdAt;
-  String? name;
-  String? surname;
-  String? employeeId;
+  List<Listbooktype>? listbooktype;
+  List<Listbook>? listbook;
 
-  Data(
-      {this.id,
-        this.sendTo,
-        this.title,
-        this.shareDate,
-        this.validUpto,
-        this.description,
-        this.createdBy,
-        this.createdAt,
-        this.name,
-        this.surname,
-        this.employeeId});
+  Data({this.listbooktype, this.listbook});
 
   Data.fromJson(Map<String, dynamic> json) {
+    if (json['listbooktype'] != null) {
+      listbooktype = <Listbooktype>[];
+      json['listbooktype'].forEach((v) {
+        listbooktype!.add(new Listbooktype.fromJson(v));
+      });
+    }
+    if (json['listbook'] != null) {
+      listbook = <Listbook>[];
+      json['listbook'].forEach((v) {
+        listbook!.add(new Listbook.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.listbooktype != null) {
+      data['listbooktype'] = this.listbooktype!.map((v) => v.toJson()).toList();
+    }
+    if (this.listbook != null) {
+      data['listbook'] = this.listbook!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Listbooktype {
+  String? id;
+  String? bookTypeName;
+
+  Listbooktype({this.id, this.bookTypeName});
+
+  Listbooktype.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    sendTo = json['send_to'];
-    title = json['title'];
-    shareDate = json['share_date'];
-    validUpto = json['valid_upto'];
-    description = json['description'];
-    createdBy = json['created_by'];
-    createdAt = json['created_at'];
-    name = json['name'];
-    surname = json['surname'];
-    employeeId = json['employee_id'];
+    bookTypeName = json['book_type_name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['send_to'] = this.sendTo;
-    data['title'] = this.title;
-    data['share_date'] = this.shareDate;
-    data['valid_upto'] = this.validUpto;
+    data['book_type_name'] = this.bookTypeName;
+    return data;
+  }
+}
+
+class Listbook {
+  String? id;
+  String? bookTitle;
+  String? bookNo;
+  String? isbnNo;
+  String? subject;
+  String? rackNo;
+  String? publish;
+  String? author;
+  String? qty;
+  String? perunitcost;
+  String? postdate;
+  String? description;
+  String? available;
+  String? bookTypeId;
+  String? isActive;
+  String? createdAt;
+  String? updatedAt;
+
+  Listbook(
+      {this.id,
+        this.bookTitle,
+        this.bookNo,
+        this.isbnNo,
+        this.subject,
+        this.rackNo,
+        this.publish,
+        this.author,
+        this.qty,
+        this.perunitcost,
+        this.postdate,
+        this.description,
+        this.available,
+        this.bookTypeId,
+        this.isActive,
+        this.createdAt,
+        this.updatedAt});
+
+  Listbook.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    bookTitle = json['book_title'];
+    bookNo = json['book_no'];
+    isbnNo = json['isbn_no'];
+    subject = json['subject'];
+    rackNo = json['rack_no'];
+    publish = json['publish'];
+    author = json['author'];
+    qty = json['qty'];
+    perunitcost = json['perunitcost'];
+    postdate = json['postdate'];
+    description = json['description'];
+    available = json['available'];
+    bookTypeId = json['book_type_id'];
+    isActive = json['is_active'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['book_title'] = this.bookTitle;
+    data['book_no'] = this.bookNo;
+    data['isbn_no'] = this.isbnNo;
+    data['subject'] = this.subject;
+    data['rack_no'] = this.rackNo;
+    data['publish'] = this.publish;
+    data['author'] = this.author;
+    data['qty'] = this.qty;
+    data['perunitcost'] = this.perunitcost;
+    data['postdate'] = this.postdate;
     data['description'] = this.description;
-    data['created_by'] = this.createdBy;
+    data['available'] = this.available;
+    data['book_type_id'] = this.bookTypeId;
+    data['is_active'] = this.isActive;
     data['created_at'] = this.createdAt;
-    data['name'] = this.name;
-    data['surname'] = this.surname;
-    data['employee_id'] = this.employeeId;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }
