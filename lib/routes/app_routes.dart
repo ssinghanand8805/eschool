@@ -23,6 +23,23 @@ import 'package:learnladderfaculity/presentation/academics/Promote%20Student/Bin
 import 'package:learnladderfaculity/presentation/academics/Subject/subject_view.dart';
 import 'package:learnladderfaculity/presentation/chat/RecentChatScreen.dart';
 import 'package:learnladderfaculity/presentation/download_center/Upload%20Content/Binding/upload_share_content_binding.dart';
+import 'package:learnladderfaculity/presentation/front%20cms/event/event_binding.dart';
+import 'package:learnladderfaculity/presentation/front%20cms/event/event_view.dart';
+import 'package:learnladderfaculity/presentation/front%20cms/gallery/gallery_binding.dart';
+import 'package:learnladderfaculity/presentation/front%20cms/gallery/gallery_view.dart';
+import 'package:learnladderfaculity/presentation/front%20cms/news/news_binding.dart';
+import 'package:learnladderfaculity/presentation/front%20cms/news/news_view.dart';
+import 'package:learnladderfaculity/presentation/human%20resource/apply%20leave/apply_leave_binding.dart';
+import 'package:learnladderfaculity/presentation/human%20resource/apply%20leave/apply_leave_view.dart';
+import 'package:learnladderfaculity/presentation/human%20resource/approve%20leave/approve_leave_binding.dart';
+import 'package:learnladderfaculity/presentation/human%20resource/approve%20leave/approve_leave_view.dart';
+import 'package:learnladderfaculity/presentation/human%20resource/staff/staff_binding.dart';
+import 'package:learnladderfaculity/presentation/human%20resource/staff/staff_view.dart';
+import 'package:learnladderfaculity/presentation/library/add%20student/add_student_view.dart';
+import 'package:learnladderfaculity/presentation/library/book%20list/book_list_binding.dart';
+import 'package:learnladderfaculity/presentation/library/book%20list/book_list_view.dart';
+import 'package:learnladderfaculity/presentation/library/issue%20return/issueReturn_binding.dart';
+import 'package:learnladderfaculity/presentation/library/issue%20return/issueReturn_view.dart';
 import 'package:learnladderfaculity/presentation/school_url/bindings/school_url_binding.dart';
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Syllabus%20Status/manage_syllabus_status_binding.dart';
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Syllabus%20Status/manage_syllabus_status_view_details.dart';
@@ -125,6 +142,7 @@ import '../presentation/download_center/Content Type/content_type_view.dart';
 import '../presentation/download_center/Upload Content/upload_share_content_view.dart';
 import '../presentation/download_center/Video Tutorial/Binding/video_tutorial_binding.dart';
 import '../presentation/download_center/Video Tutorial/video_tutorial_view.dart';
+import '../presentation/library/add student/add_student_binding.dart';
 import '../presentation/login_screen/binding/login_binding.dart';
 import '../presentation/login_screen/login_screen.dart';
 import '../presentation/profile/ProfileScreen.dart';
@@ -237,7 +255,20 @@ class AppRoutes {
   static const String chatMain = '/chatMain';
   static const String school_attendance = '/school_attendance';
 
+/// library
+  static const String books = '/books';
+  static const String issue_return = '/issue_return';
+  static const String add_student = '/add_student';
 
+  /// front cms
+  static const String gallery = '/gallery';
+  static const String event = '/event';
+  static const String notice = '/notice';
+
+  /// HR
+  static const String staff = '/staff';
+  static const String approve_leave_request = '/approve_leave_request';
+  static const String apply_leave = '/apply_leave';
 
 
   static List<GetPage> pages = [
@@ -654,5 +685,53 @@ class AppRoutes {
       bindings: [SchoolAttendanceByDateBinding()],
     ),
 
+    /// library
+    GetPage(
+      name: books,
+      page: () => BookListView(),
+      bindings: [BookListBinding()],
+    ),
+    GetPage(
+      name: issue_return,
+      page: () => IssueReturnView(),
+      bindings: [IssueReturnBinding()],
+    ),  GetPage(
+      name: add_student,
+      page: () => AddStudentView(),
+      bindings: [AddStudentBinding()],
+    ),
+
+    /// front cms
+    GetPage(
+      name: gallery,
+      page: () => GalleryView(),
+      bindings: [GalleryBinding()],
+    ),
+    GetPage(
+      name: event,
+      page: () => EventView(),
+      bindings: [EventBinding()],
+    ),  GetPage(
+      name: notice,
+      page: () => NewsView(),
+      bindings: [NewsBinding()],
+    ),
+
+
+    /// HR
+    GetPage(
+      name: staff,
+      page: () => StaffView(),
+      bindings: [StaffBinding()],
+    ),
+    GetPage(
+      name: approve_leave_request,
+      page: () => ApproveLeaveRequestView(),
+      bindings: [ ApproveLeaveRequestBinding()],
+    ),  GetPage(
+      name: apply_leave,
+      page: () => ApplyLeaveView(),
+      bindings: [ApplyLeaveBinding()],
+    ),
   ];
 }

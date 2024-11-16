@@ -105,4 +105,10 @@ class Constants {
   static const String getVideoTutorialListUrl = 'video_tutorial/getVideoTutorialList';
   static const String getVideoTutorialListBySearchUrl = 'video_tutorial/getVideoTutorialListBySearch';
 
+  /// Library Apis
+  static const String getAllBookUrl = 'book/getall';
+  static const String crateBookUrl = 'book/create';
+
+
+
 }

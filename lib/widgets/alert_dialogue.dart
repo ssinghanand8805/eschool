@@ -240,6 +240,7 @@ alertToast(context,message){
     msg: message,
   );
 }
+
 void showCustomBottomSheet({
   required BuildContext context,
   required Widget child,
@@ -263,7 +264,7 @@ void showCustomBottomSheet({
         top: 24.0,
         bottom: MediaQuery.of(context).viewInsets.bottom + 16.0,
       ),
-      child: child,
+      child: SingleChildScrollView(child: child),
     ),
   );
 }
