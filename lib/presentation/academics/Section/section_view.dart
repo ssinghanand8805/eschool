@@ -17,24 +17,6 @@ class SectionView extends GetView<SectionController> {
           'Section List',
           style: theme.textTheme.titleLarge,
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: MyButton(
-              width: 120,
-              prefixIcon: Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-              title: 'Add',
-              textStyle: TextStyle(fontSize: 18, color: Colors.white),
-              color: theme.hintColor,
-              onPress: () {
-                addSection(context);
-              },
-            ),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -53,44 +35,59 @@ class SectionView extends GetView<SectionController> {
                 children: [
                   Text(
                     "Section",
-                    style: theme.textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600),
+                    style: theme.textTheme.bodyMedium!
+                        .copyWith(fontWeight: FontWeight.w600),
                   ),
                   Text(
                     "Action",
-                    style: theme.textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600),
+                    style: theme.textTheme.bodyMedium!
+                        .copyWith(fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
             ),
             Expanded(
-              child:  GetBuilder<SectionController>(
+              child: GetBuilder<SectionController>(
                 builder: (controller) {
                   if (controller.sectionList.value.data!.sectionlist!.isEmpty) {
                     return Center(child: CircularProgressIndicator());
                   }
 
                   return ListView.builder(
-                    itemCount: controller.sectionList.value.data!.sectionlist!.length,
+                    itemCount:
+                        controller.sectionList.value.data!.sectionlist!.length,
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
-                      final section = controller.sectionList.value.data!.sectionlist![index];
+                      final section = controller
+                          .sectionList.value.data!.sectionlist![index];
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.only(left: 10.0,right: 8),
                         child: Row(
                           children: [
-                            Text(section.section!.capitalizeFirst ?? ""),
+                            Text(
+                              section.section!.capitalizeFirst ?? "",
+                              style: theme.textTheme.bodyMedium!
+                                  .copyWith(fontWeight: FontWeight.w600),
+                            ),
                             Spacer(),
                             IconButton(
                               onPressed: () {
-                                //_showEditDialog(context, controller, section.id, section.section);
+                                _showEditDialog(
+                                    context, section.id!, section.section!);
                               },
-                              icon: Icon(Icons.edit),
+                              icon: Icon(
+                                Icons.edit,
+                                color: Colors.green,
+                              ),
                             ),
                             IconButton(
                               onPressed: () {
-                               //controller.deleteSection(section!.id);
+                              controller.deleteSection(context,section.id);
                               },
-                              icon: Icon(Icons.delete),
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
                             ),
                           ],
                         ),
@@ -100,54 +97,67 @@ class SectionView extends GetView<SectionController> {
                 },
               ),
             ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          addSection(context);
+        },
+        tooltip: 'Add Item',
+        shape: CircleBorder() ,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        child: Icon(Icons.add),
+      ),
 
+    );
+  }
+
+  void _showEditDialog(BuildContext context, String id, String currentName) {
+    showCustomBottomSheet(
+      context: context,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CustomTextField(
+              controller: controller.sectionC.value,
+              hint: 'Section Name',
+              title: 'Section Name',
+            ),
+            const SizedBox(height: 16),
+
+            // Save Button
+            SizedBox(
+              width: double.infinity,
+              height: 40,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: Colors.green,
+                ),
+                onPressed: () {
+                  final newName = controller.sectionC.value.text.trim();
+                  if (newName.isNotEmpty) {
+                    controller.editSection(id, newName);
+                    Navigator.pop(context);
+                  }
+                },
+                child: Text("Save"),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
-  void _showEditDialog(BuildContext context, SectionController controller, int id, String currentName) {
-    TextEditingController textController = TextEditingController(text: currentName);
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Edit Section"),
-          content: TextField(
-            controller: textController,
-            decoration: InputDecoration(
-              labelText: "Section Name",
-              border: OutlineInputBorder(),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text("Cancel"),
-            ),
-            TextButton(
-              onPressed: () {
-                final newName = textController.text.trim();
-                if (newName.isNotEmpty) {
-                 // controller.editSection(id, newName);
-                  Navigator.pop(context);
-                }
-              },
-              child: Text("Save"),
-            ),
-          ],
-        );
-      },
-    );
-  }
   addSection(context) {
-    AlertDialogue().show(
-      context,
-      newWidget: [
-        Column(
+    showCustomBottomSheet(
+        context: context,
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -155,7 +165,7 @@ class SectionView extends GetView<SectionController> {
               style: theme.textTheme.bodyMedium,
             ),
             CustomTextField(
-              controller: controller.sectionC.value,
+              controller: controller.newSectionC.value,
               hint: "Section Name....",
               title: "",
             ),
@@ -171,12 +181,14 @@ class SectionView extends GetView<SectionController> {
                   color: Colors.black,
                 ),
                 color: Colors.green.shade100,
-                onPress: () {},
+                onPress: () {
+
+                  controller.addSection();
+
+                },
               ),
             ),
           ],
-        )
-      ],
-    );
+        ));
   }
 }

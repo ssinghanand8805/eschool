@@ -117,6 +117,9 @@ class Constants {
 /// section api
 
   static const String getSectionList = '/sections/getSectionList';
+  static const String deleteSectionList = '/sections/delete';
+  static const String editSectionList = '/sections/edit';
+  static const String addSectionList = '/sections/add';
 
 
 }
