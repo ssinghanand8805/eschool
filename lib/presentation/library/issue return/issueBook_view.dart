@@ -11,6 +11,7 @@ class LibraryManagementPage extends GetView<IssueReturnController> {
   LibraryManagementPage({Key? key}) : super(key: key,);
 
   Widget build(BuildContext context) {
+    String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
     return Scaffold(
       appBar: AppBar(
         title: Text('Library Management System',  style: theme.textTheme.titleLarge,),
@@ -45,22 +46,40 @@ class LibraryManagementPage extends GetView<IssueReturnController> {
                             ),
                           ],
                         ),
-                        child: Center(child: Text('Sam', style: TextStyle(fontSize: 16))),
+                        child: ClipOval(
+                          child: controller.memberDetailsModel?.value.data?.memberList?.image != null
+                              ? Image.network(
+                            baseUrlFromPref+controller.memberDetailsModel!.value.data!.memberList!.image!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Icon(
+                              Icons.error,
+                              color: Colors.red,
+                            ),
+                          )
+                              : Icon(
+                            Icons.person,
+                            size: 40,
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
                     ),
+
                     SizedBox(height: 20),
-                    _buildInfoRow('Member ID', '1'),
-                    _buildInfoRow('Library Card No.', '123'),
-                    _buildInfoRow('Admission No', '1'),
+                    _buildInfoRow('Member Name', controller.memberDetailsModel!.value.data!.memberList!.firstname!.capitalizeFirst!,),
+                    _buildInfoRow('Member ID', controller.memberDetailsModel!.value.data!.memberList!.id!),
+                    _buildInfoRow('Library Card No.', controller.memberDetailsModel!.value.data!.memberList!.libraryCardNo!),
+                    _buildInfoRow('Admission No', controller.memberDetailsModel!.value.data!.memberList!.admissionNo!),
+
                   ],
                 ),
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: books.length,
+              child: controller.memberDetailsModel?.value.data?.issuedBooks?.isNotEmpty ?? false
+                  ? ListView.builder(
+                itemCount: controller.memberDetailsModel!.value.data!.issuedBooks!.length,
                 itemBuilder: (context, index) {
-                  var book = books[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Card(
@@ -73,23 +92,44 @@ class LibraryManagementPage extends GetView<IssueReturnController> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Book Title: ${book['title']}',
-                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                            Text(
+                              'Book Title: ${controller.memberDetailsModel!.value.data!.issuedBooks![index].bookTitle!.capitalizeFirst}',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                            ),
                             SizedBox(height: 8),
-                            Text('Book Number: ${book['bookNumber']}',style:theme.textTheme.bodySmall,),
+                            Text(
+                              'Book Number: ${controller.memberDetailsModel!.value.data!.issuedBooks![index].bookNo}',
+                              style: theme.textTheme.bodySmall,
+                            ),
                             SizedBox(height: 8),
-                            Text('Issue Date: ${book['issueDate']}',style:theme.textTheme.bodySmall,),
+                            Text(
+                              'Issue Date: ${controller.memberDetailsModel!.value.data!.issuedBooks![index].issueDate}',
+                              style: theme.textTheme.bodySmall,
+                            ),
                             SizedBox(height: 8),
-                            Text('Due Return Date: ${book['dueDate']}',style:theme.textTheme.bodySmall,),
+                            Text(
+                              'Due Return Date: ${controller.memberDetailsModel!.value.data!.issuedBooks![index].duereturnDate}',
+                              style: theme.textTheme.bodySmall,
+                            ),
                             SizedBox(height: 8),
-                            Text('Return Date: ${book['returnDate']}',style:theme.textTheme.bodySmall,),
+                            Text(
+                              'Return Date: ${controller.memberDetailsModel!.value.data!.issuedBooks![index].returnDate}',
+                              style: theme.textTheme.bodySmall,
+                            ),
                           ],
                         ),
                       ),
                     ),
                   );
                 },
+              )
+                  : Center(
+                child: Text(
+                  'No issued books available',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
+                ),
               ),
+
             ),
           ],
         ),
@@ -121,8 +161,8 @@ class LibraryManagementPage extends GetView<IssueReturnController> {
               borderColor: Colors.grey,
               listToSearch: [],
               valFrom: "className",
-              label: 'Class',
-              labelText: 'Class',
+              label: 'Books',
+              labelText: 'Books',
               onChanged: (val) {
 
 
@@ -131,7 +171,7 @@ class LibraryManagementPage extends GetView<IssueReturnController> {
             const SizedBox(height: 8),
             DatePickerTextField(
                 controller: controller.attendanceDate.value,
-                title: 'Attendace date',
+                title: 'Due Return Date',
                 onDateSelected: (date) async {
                   controller.attendanceDate.value.text =
                   await GlobalData().ConvertToSchoolDateTimeFormat(date);
@@ -185,34 +225,4 @@ class LibraryManagementPage extends GetView<IssueReturnController> {
       ),
     );
   }
-
-  final List<Map<String, String>> books = [
-    {
-      'title': 'War And Peace',
-      'bookNumber': '1214',
-      'issueDate': '21/10/2024',
-      'dueDate': '22/10/2024',
-      'returnDate': '-',
-    },
-    {
-      'title': 'War And Peace',
-      'bookNumber': '1214',
-      'issueDate': '13/04/2024',
-      'dueDate': '15/04/2024',
-      'returnDate': '21/10/2024',
-    }, {
-      'title': 'War And Peace',
-      'bookNumber': '1214',
-      'issueDate': '21/10/2024',
-      'dueDate': '22/10/2024',
-      'returnDate': '-',
-    },
-    {
-      'title': 'War And Peace',
-      'bookNumber': '1214',
-      'issueDate': '13/04/2024',
-      'dueDate': '15/04/2024',
-      'returnDate': '21/10/2024',
-    },
-  ];
 }

@@ -114,6 +114,9 @@ class Constants {
   static const String getMemberListUrl = 'member/membersList';
   static const String getMemberDetailsUrl = '/member/getMemberDetails';
 
+/// section api
+
+  static const String getSectionList = '/sections/getSectionList';
 
 
 }
