@@ -1,88 +1,122 @@
-class  IssueReturn {
-  String? status;
+class LibraryMemberList {
+  int? status;
   String? error;
-  String? message;
-  List<Data>? data;
+  Data? data;
 
-  IssueReturn({this.status, this.error, this.message, this.data});
+  LibraryMemberList({this.status, this.error, this.data});
 
-  IssueReturn.fromJson(Map<String, dynamic> json) {
+  LibraryMemberList.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     error = json['error'];
-    message = json['message'];
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
     data['error'] = this.error;
-    data['message'] = this.message;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
 class Data {
-  String? id;
-  String? sendTo;
-  String? title;
-  String? shareDate;
-  String? validUpto;
-  String? description;
-  String? createdBy;
-  String? createdAt;
-  String? name;
-  String? surname;
-  String? employeeId;
+  List<MemberList>? memberList;
 
-  Data(
-      {this.id,
-        this.sendTo,
-        this.title,
-        this.shareDate,
-        this.validUpto,
-        this.description,
-        this.createdBy,
-        this.createdAt,
-        this.name,
-        this.surname,
-        this.employeeId});
+  Data({this.memberList});
 
   Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    sendTo = json['send_to'];
-    title = json['title'];
-    shareDate = json['share_date'];
-    validUpto = json['valid_upto'];
-    description = json['description'];
-    createdBy = json['created_by'];
-    createdAt = json['created_at'];
-    name = json['name'];
-    surname = json['surname'];
-    employeeId = json['employee_id'];
+    if (json['memberList'] != null) {
+      memberList = <MemberList>[];
+      json['memberList'].forEach((v) {
+        memberList!.add(new MemberList.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['send_to'] = this.sendTo;
-    data['title'] = this.title;
-    data['share_date'] = this.shareDate;
-    data['valid_upto'] = this.validUpto;
-    data['description'] = this.description;
-    data['created_by'] = this.createdBy;
-    data['created_at'] = this.createdAt;
-    data['name'] = this.name;
-    data['surname'] = this.surname;
-    data['employee_id'] = this.employeeId;
+    if (this.memberList != null) {
+      data['memberList'] = this.memberList!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
+
+class MemberList {
+  String? libMemberId;
+  String? libraryCardNo;
+  String? memberType;
+  String? admissionNo;
+  String? firstname;
+  String? lastname;
+  String? guardianPhone;
+  String? teacherName;
+  String? teacherEmail;
+  String? teacherSex;
+  String? teacherPhone;
+  String? middlename;
+  String? staffId;
+  String? stuId;
+  String? empId;
+
+  MemberList(
+      {this.libMemberId,
+        this.libraryCardNo,
+        this.memberType,
+        this.admissionNo,
+        this.firstname,
+        this.lastname,
+        this.guardianPhone,
+        this.teacherName,
+        this.teacherEmail,
+        this.teacherSex,
+        this.teacherPhone,
+        this.middlename,
+        this.staffId,
+        this.stuId,
+        this.empId});
+
+  MemberList.fromJson(Map<String, dynamic> json) {
+    libMemberId = json['lib_member_id'];
+    libraryCardNo = json['library_card_no'];
+    memberType = json['member_type'];
+    admissionNo = json['admission_no'];
+    firstname = json['firstname'];
+    lastname = json['lastname'];
+    guardianPhone = json['guardian_phone'];
+    teacherName = json['teacher_name'];
+    teacherEmail = json['teacher_email'];
+    teacherSex = json['teacher_sex'];
+    teacherPhone = json['teacher_phone'];
+    middlename = json['middlename'];
+    staffId = json['staff_id'];
+    stuId = json['stu_id'];
+    empId = json['emp_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['lib_member_id'] = this.libMemberId;
+    data['library_card_no'] = this.libraryCardNo;
+    data['member_type'] = this.memberType;
+    data['admission_no'] = this.admissionNo;
+    data['firstname'] = this.firstname;
+    data['lastname'] = this.lastname;
+    data['guardian_phone'] = this.guardianPhone;
+    data['teacher_name'] = this.teacherName;
+    data['teacher_email'] = this.teacherEmail;
+    data['teacher_sex'] = this.teacherSex;
+    data['teacher_phone'] = this.teacherPhone;
+    data['middlename'] = this.middlename;
+    data['staff_id'] = this.staffId;
+    data['stu_id'] = this.stuId;
+    data['emp_id'] = this.empId;
+    return data;
+  }
+}
+
+
+

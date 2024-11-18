@@ -32,7 +32,9 @@ class  IssueReturnView extends GetView< IssueReturnController> {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return CustomLoader();
                   }
-                  return SingleChildScrollView(
+                  return controller.filteredContentTypeList.value
+                      .data != null && controller.filteredContentTypeList.value
+                      .data!.memberList!.length > 0 ?    SingleChildScrollView(
                     child: Column(
                       children: [
                         Padding(
@@ -50,7 +52,7 @@ class  IssueReturnView extends GetView< IssueReturnController> {
                         SizedBox(height: 8),
                         Column(
                           children: controller.filteredContentTypeList.value
-                              .data!.map((entry) {
+                              .data!.memberList!.map((entry) {
                             return Card(
                               elevation: 1, // Higher elevation for a more prominent shadow
                               margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -64,22 +66,22 @@ class  IssueReturnView extends GetView< IssueReturnController> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Member id: ${"entry.bookType"}',
+                                    Text('Member id: ${entry!.libMemberId}',
                                         style: theme.textTheme.bodySmall),
                                     SizedBox(height: 8),
-                                    Text('Library Card No.: ${"entry.bookTitle"}',
+                                    Text('Library Card No.: ${entry.libraryCardNo}',
                                         style: theme.textTheme.bodySmall),
                                     SizedBox(height: 8),
-                                    Text('Admission No: ${entry.description}',
+                                    Text('Admission No: ${entry.admissionNo}',
                                         style: theme.textTheme.bodySmall),
                                     SizedBox(height: 8),
-                                    Text('Name: ${"entry.bookNumbe"}',
+                                    Text('Name: ${entry.firstname}',
                                         style: theme.textTheme.bodySmall),
                                     SizedBox(height: 8),
-                                    Text('Member Type: ${"entry.isbnNumber"}',
+                                    Text('Member Type: ${entry.memberType}',
                                         style: theme.textTheme.bodySmall),
                                     SizedBox(height: 8),
-                                    Text('Phone: ${"entry.publisher"}',
+                                    Text('Phone: ${entry.guardianPhone}',
                                         style: theme.textTheme.bodySmall),
                                     SizedBox(height: 12),
                                     Row(
@@ -107,7 +109,9 @@ class  IssueReturnView extends GetView< IssueReturnController> {
 
                       ],
                     ),
-                  );
+                  )
+                  : Text("No Data Found")
+                  ;
                 }
             );
           }

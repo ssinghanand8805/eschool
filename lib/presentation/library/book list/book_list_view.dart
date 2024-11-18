@@ -74,16 +74,47 @@ class BookListView extends GetView<BookListController> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         GestureDetector(
-                                          onTap: (){
+                                          onTap: () async {
+                                           await  controller.getEditData(entry.id!);
                                             addEditContents(context);
                                           },
                                             child: Padding(
                                               padding: const EdgeInsets.all(8.0),
                                               child: Icon(Icons.edit, size: 18),
                                             )),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Icon(Icons.delete, size: 18),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text('Confirm Delete'),
+                                                  content: Text('Are you sure you want to delete this item?'),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        // If the user cancels the deletion
+                                                        Navigator.of(context).pop(); // Close the dialog
+                                                      },
+                                                      child: Text('Cancel'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        // If the user confirms the deletion
+                                                        controller.deleteBookDetails(context, int.parse(entry.id!));
+                                                        Navigator.of(context).pop(); // Close the dialog
+                                                      },
+                                                      child: Text('Delete'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                        },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Icon(Icons.delete, size: 18),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -274,10 +305,10 @@ class BookListView extends GetView<BookListController> {
                 label: 'Book Type',
                 labelText: 'Book Type',
                 initialValue: [
-                  // {
-                  //   'parameter': 'id',
-                  //   'value': controller.filteredContentTypeList.value.data!.listbooktype
-                  // }
+                  {
+                    'parameter': 'id',
+                    'value': controller.bookTypeController.text
+                  }
                 ],
                 onChanged: (val) {
                   if (controller.filteredContentTypeList.value.data!.listbooktype!
@@ -392,7 +423,11 @@ class BookListView extends GetView<BookListController> {
                   onPressed: () {
                     controller.createBook(Get.context);
                   },
-                  child: const Text(
+                  child: controller.selectedId.value != "" ? const Text(
+                    'Update',
+                    style: TextStyle(color: Colors.white),
+                  ):
+                  const Text(
                     'Save',
                     style: TextStyle(color: Colors.white),
                   ),

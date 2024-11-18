@@ -107,7 +107,12 @@ class Constants {
 
   /// Library Apis
   static const String getAllBookUrl = 'book/getall';
+  static const String getBookByIdUrl = 'book/getBookById';
   static const String crateBookUrl = 'book/create';
+  static const String updateBookByIdUrl = 'book/updateBookById';
+  static const String deleteBookByIdUrl = 'book/delete';
+  static const String getMemberListUrl = 'member/membersList';
+  static const String getMemberDetailsUrl = '/member/getMemberDetails';
 
 
 

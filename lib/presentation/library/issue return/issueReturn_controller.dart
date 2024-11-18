@@ -4,15 +4,17 @@ import 'package:get/get.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import 'issueReturn_modal.dart';
+import 'member_details.dart' as meberdetails;
 
 class IssueReturnController extends GetxController{
 
   TextEditingController searchC = TextEditingController();
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
-  Rx< IssueReturn> filteredContentTypeList =  IssueReturn().obs;
+  Rx< LibraryMemberList> filteredContentTypeList =  LibraryMemberList().obs;
+  Rx< meberdetails.LibraryMemberDetails> memberDetailsModel =  meberdetails.LibraryMemberDetails().obs;
   Rx<TextEditingController> attendanceDate = TextEditingController().obs;
   late Future<void> fetchDataFuture;
-  List<Data> originalContentTypeList = [];
+  List<MemberList> originalContentTypeList = [];
   RxBool isLoading = false.obs;
   @override
   void onInit() async {
@@ -20,25 +22,25 @@ class IssueReturnController extends GetxController{
     fetchDataFuture = initializeData();
   }
   void initializeOriginalList() {
-    originalContentTypeList = List.from(filteredContentTypeList.value.data!);  // Make a copy of the original data
+    originalContentTypeList = List.from(filteredContentTypeList.value.data!.memberList!);  // Make a copy of the original data
   }
   Future<void> searchContentType(String searchKey) async {
     // Check if the searchKey is empty or not
     if (searchKey.isEmpty) {
       // Reset to the original list when searchKey is cleared
       filteredContentTypeList.update((val) {
-        val?.data = originalContentTypeList;  // Reset to original list
+        val?.data!.memberList = originalContentTypeList;  // Reset to original list
       });
     } else {
       // Filter the list based on the searchKey
-      List<Data> filteredList = originalContentTypeList
-          .where((element) => element.name != null &&
-          element.name!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
+      List<MemberList> filteredList = originalContentTypeList
+          .where((element) => element.firstname != null &&
+          element.firstname!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
           .toList();
 
       // Update the filtered list
       filteredContentTypeList.update((val) {
-        val?.data = filteredList;
+        val?.data!.memberList = filteredList;
       });
     }
   }
@@ -47,9 +49,9 @@ class IssueReturnController extends GetxController{
     try
     {
       var body = {};
-      var data = await apiRespository.postApiCallByJson(Constants.contentShareListUrl, body);
+      var data = await apiRespository.postApiCallByJson(Constants.getMemberListUrl, body);
 
-      filteredContentTypeList.value =  IssueReturn.fromJson(data.body);
+      filteredContentTypeList.value =  LibraryMemberList.fromJson(data.body);
       print(filteredContentTypeList.value.toJson());
       initializeOriginalList();
       update();
@@ -60,7 +62,26 @@ class IssueReturnController extends GetxController{
       update();
     }
 
-    // Initialize fetchDataFuture here
+
+  }
+  Future<void> getMemberDetails(id) async  {
+    //isLoading.value = true;
+    try
+    {
+      var body = {"id":id};
+      var data = await apiRespository.postApiCallByFormData(Constants.getMemberDetailsUrl, body);
+
+      memberDetailsModel.value =  meberdetails.LibraryMemberDetails.fromJson(data.body);
+
+      update();
+    }
+    catch(e)
+    {
+      print("EEEEEEEEEEEEEEEEEEEE${e}");
+      update();
+    }
+
+
   }
   // List<Map<String, dynamic>> data = [
   //   {
