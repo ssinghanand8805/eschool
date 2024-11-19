@@ -121,5 +121,25 @@ class Constants {
   static const String editSectionList = '/sections/edit';
   static const String addSectionList = '/sections/add';
 
+  /// subject
+  static const String getSubjectList = '/subject/getSubjectList';
+  static const String addSubjectList = '/subject/add';
+  static const String editSubjectList = '/subject/edit';
+  static const String deleteSubjectList = '/subject/delete';
+  static const String viewSubject = '/subject/view';
 
+  /// class
+  static const String getClassList = '/classes/classList';
+  static const String addClass = '/classes/add';
+  static const String deleteClass = '/classes/delete';
+  static const String viewClass = '/classes/view';
+  static const String editClass = '/classes/edit';
+
+
+  /// subjectGroup
+  static const String getSubjectGroupList = '/subjectgroup/getSubjectGroupList';
+  static const String addSubjectGroupList = '/subjectgroup/add';
+  static const String editSubjectGroupList = '/subjectgroup/edit';
+  static const String deleteSubjectGroupList  = '/subjectgroup/delete';
+  static const String viewSubjectGroup = '/subjectgroup/view';
 }

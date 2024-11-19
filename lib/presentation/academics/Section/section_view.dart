@@ -28,19 +28,19 @@ class SectionView extends GetView<SectionController> {
               title: '',
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 8.0,right: 30,top: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Section",
-                    style: theme.textTheme.bodyMedium!
+                    style: theme.textTheme.bodySmall!
                         .copyWith(fontWeight: FontWeight.w600),
                   ),
                   Text(
                     "Action",
-                    style: theme.textTheme.bodyMedium!
+                    style: theme.textTheme.bodySmall!
                         .copyWith(fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -60,36 +60,75 @@ class SectionView extends GetView<SectionController> {
                     itemBuilder: (BuildContext context, int index) {
                       final section = controller
                           .sectionList.value.data!.sectionlist![index];
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 10.0,right: 8),
-                        child: Row(
-                          children: [
-                            Text(
-                              section.section!.capitalizeFirst ?? "",
-                              style: theme.textTheme.bodyMedium!
-                                  .copyWith(fontWeight: FontWeight.w600),
-                            ),
-                            Spacer(),
-                            IconButton(
-                              onPressed: () {
-                                _showEditDialog(
-                                    context, section.id!, section.section!);
-                              },
-                              icon: Icon(
-                                Icons.edit,
-                                color: Colors.green,
+                      return Card(
+                        elevation: 2.0,
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0,right: 8),
+                          child: Row(
+                            children: [
+                              Text(
+                                section.section!.capitalizeFirst ?? "",
+                                style: theme.textTheme.bodySmall!
+                                    .copyWith(fontWeight: FontWeight.w600),
                               ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                              controller.deleteSection(context,section.id);
-                              },
-                              icon: Icon(
-                                Icons.delete,
-                                color: Colors.red,
+                              Spacer(),
+                              IconButton(
+                                onPressed: () {
+                                  _showEditDialog(
+                                      context, section.id!, section.section!);
+                                },
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: Colors.green,
+                                ),
                               ),
-                            ),
-                          ],
+                              IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text("Confirm Delete",style: theme.textTheme.bodyLarge,),
+                                        content: Text(
+                                          "Are you sure you want to delete this subject? This action cannot be undone.",
+                                          style: theme.textTheme.bodySmall,
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); // Close the dialog
+                                            },
+                                            child: Text("Cancel"),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              controller.deleteSection(context,section.id); // Perform delete
+                                              Navigator.of(context)
+                                                  .pop(); // Close the dialog
+                                            },
+                                            child: Text(
+                                              "Delete",
+                                              style: TextStyle(
+                                                  color: Colors.red),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -125,7 +164,7 @@ class SectionView extends GetView<SectionController> {
             CustomTextField(
               controller: controller.sectionC.value,
               hint: 'Section Name',
-              title: 'Section Name',
+              title: 'Edit Section Name',
             ),
             const SizedBox(height: 16),
 

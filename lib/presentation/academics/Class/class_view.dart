@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:learnladderfaculity/presentation/academics/Class/class_controller.dart';
@@ -17,126 +18,248 @@ class ClassView extends GetView<ClassController>{
           'Class List',
           style: theme.textTheme.titleLarge,
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: MyButton(
-              width: 120,
-              prefixIcon: Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-              title: 'Add',
-              textStyle: TextStyle(fontSize: 18, color: Colors.white),
-              color: theme.hintColor,
-              onPress: () {
-                addClass(context);
-              },
-            ),
-          ),
-        ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("Class List",style: theme.textTheme.labelLarge,),
-          ),
-
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columnSpacing: Get.width*0.2,
-              dataRowHeight: 100,
-              columns: const [
-                DataColumn(label: Text('Class')),
-                DataColumn(label: Text('Section')),
-                DataColumn(label: Text('Action')),
-              ],
-              rows: controller.data.asMap().entries.map((entry) {
-                int index = entry.key;
-                return DataRow(
-                  cells: [
-                    DataCell(Text(entry.value['class'],
-                        style: theme.textTheme.bodySmall!)),
-                    DataCell(
-                        SizedBox(
-                          height: 60,width: 60,
-                          child: ListView.builder(
-                            itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (BuildContext context, int index){
-                                                return Text("A");
-                                              }),
-                        )),
-                    DataCell(
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.edit, size: 15),
-                            onPressed: () {
-                              //editHomework(index);
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete, size: 15),
-                            onPressed: () {
-                              print("Delete leave");
-                            },
-                          ),
-                        ],
-                      ),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomTextField(
+              controller: controller.searchC.value,
+              hint: 'Search.... ',
+              title: '',
+            ),
+            Padding(
+              padding:
+              const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      "Class",
+                      style: theme.textTheme.bodySmall!
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
-                  ],
-                );
-              }).toList(),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      "Section",
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodySmall!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      "Action",
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodySmall!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+
+            // Data List Section
+            Expanded(
+              child: GetBuilder<ClassController>(
+                builder: (controller) {
+                  if (controller
+                      .classList.value.data!.classlist!.isEmpty) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  return ListView.builder(
+                    itemCount:controller
+                        .classList.value.data!.classlist!.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      final data = controller
+                          .classList.value.data!.classlist![index];
+
+                      return Card(
+                        elevation: 4.0,
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Subject Name
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  data.classN!.capitalizeFirst ?? "",
+                                  style: theme.textTheme.bodySmall!
+                                      .copyWith(fontWeight: FontWeight.w600),
+                                ),
+                              ),
+
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  data.id ?? "",
+                                  textAlign: TextAlign.center,
+                                  style: theme.textTheme.bodySmall!
+                                      .copyWith(fontWeight: FontWeight.w600),
+                                ),
+                              ),
+
+                              // Actions
+                              Expanded(
+                                flex: 2,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () async {
+                                        await controller.viewData(data.id);
+                                        addClass(context);
+                                      },
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text("Confirm Delete",style: theme.textTheme.bodyLarge,),
+                                              content: Text(
+                                                "Are you sure you want to delete this subject? This action cannot be undone.",
+                                                style: theme.textTheme.bodySmall,
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(); // Close the dialog
+                                                  },
+                                                  child: Text("Cancel"),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    controller.deleteSubject(
+                                                        context,
+                                                        data.id); // Perform delete
+                                                    Navigator.of(context)
+                                                        .pop(); // Close the dialog
+                                                  },
+                                                  child: Text(
+                                                    "Delete",
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            controller.resetData();
+            addClass(context);
+          },
+          tooltip: 'Add Item',
+          shape: CircleBorder(),
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+          child: Icon(Icons.add),
+        )
     );
   }
 
-
   addClass(context) {
-    AlertDialogue().show(
-      context,
-      newWidget: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    showCustomBottomSheet(
+        context: context,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            controller.selectedId.value == ''
+                ? Text(
               "Add Class",
-              style: theme.textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium!
+                  .copyWith(fontWeight: FontWeight.w600),
+            )
+                : Text(
+              "Update Class",
+              style: theme.textTheme.bodyMedium!
+                  .copyWith(fontWeight: FontWeight.w600),
             ),
             CustomTextField(
               controller: controller.classC.value,
-              hint: "Class Name....",
-              title: "",
+              hint: 'Class',
+              title: 'Class',
             ),
             SizedBox(height: 10,),
-            Text("Sections:",style: theme.textTheme.labelLarge,),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: 10,
-                itemBuilder: (BuildContext context, int index){
-              return Obx(() {
-                return Row(
-                  children: [
-                    Checkbox(
-                        checkColor: Colors.white,
-                        //fillColor: MaterialStateProperty.resolveWith(Colors.red),
-                        value: controller.isChecked.value,
-                        onChanged: (value) {
-                          controller.isChecked.value = value!;
-                          print(value);
-                        }),
-                    Text("Theory")
-                  ],
+            Obx(() {
+              if (controller.sectionListClass.value.data == null ||
+                  controller.sectionListClass.value.data!.sectionlist!.isEmpty) {
+                return Center(
+                  child: Text("No sections available."),
                 );
-              });
+              }
+              return SizedBox(
+                height:200,
+                child: ListView.builder(
+                  itemCount: controller.sectionListClass.value.data!.sectionlist!.length,
+                  itemBuilder: (context, index) {
+                    final item = controller.sectionListClass.value.data!.sectionlist![index];
+                    return CheckboxListTile(
+                      title: Text(item.section!),
+                      value: controller.selectedSections.contains(item.id),
+                      onChanged: (bool? value) {
+
+                        if (value == true) {
+                          controller.selectedSections.add(item.id!);
+                          controller.update();
+                        } else {
+                          controller.selectedSections.remove(item.id);
+                          controller.update();
+                        }
+                        controller.update();
+                      },
+                    );
+                  },
+                ),
+              );
             }),
+
+
             SizedBox(
               height: 15,
             ),
@@ -144,17 +267,22 @@ class ClassView extends GetView<ClassController>{
               alignment: Alignment.bottomRight,
               child: MyButton(
                 width: 120,
-                title: 'Save',
+                title: controller.selectedId.value == ''
+                    ? 'Save'
+                    : "Update",
                 textStyle: TextStyle(
                   color: Colors.black,
                 ),
                 color: Colors.green.shade100,
-                onPress: () {},
+                onPress: () async {
+                  await controller.addSubject();
+                  Navigator.pop(context);
+                },
               ),
             ),
           ],
-        )
-      ],
-    );
+        ));
   }
+
+
 }

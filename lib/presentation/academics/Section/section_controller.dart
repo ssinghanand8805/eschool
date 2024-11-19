@@ -69,7 +69,7 @@ class SectionController extends GetxController {
       if (data.body['status'] == 1) {
         Get.showSnackbar(
             Ui.SuccessSnackBar(message: data.body['msg'].toString()));
-        sectionList.refresh();
+        sectionListData();
       } else {
         Get.showSnackbar(
             Ui.ErrorSnackBar(message: data.body['msg'].toString()));
@@ -92,7 +92,7 @@ class SectionController extends GetxController {
       if (data.body['status'] == 1) {
         Get.showSnackbar(
             Ui.SuccessSnackBar(message: data.body['msg'].toString()));
-        sectionList.refresh();
+        sectionListData();
       } else {
         Get.showSnackbar(
             Ui.ErrorSnackBar(message: data.body['msg'].toString()));
@@ -112,7 +112,7 @@ class SectionController extends GetxController {
       if (data.body['status'] == 1) {
         Get.showSnackbar(
             Ui.SuccessSnackBar(message: data.body['msg'].toString()));
-        sectionList.refresh();
+        sectionListData();
       } else {
         Get.showSnackbar(
             Ui.ErrorSnackBar(message: data.body['msg'].toString()));

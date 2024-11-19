@@ -58,13 +58,11 @@ class BookListView extends GetView<BookListController> {
                           children: controller.filteredContentTypeList.value.data!
                               .listbook!.map((entry) {
                             return Card(
-                                elevation: 1, // Higher elevation for a more prominent shadow
+                                elevation: 4,
                                 margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20), // Smoother corners
                                 ),
-                                color: Colors.white,
-                                shadowColor: Colors.green,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
                                 child: Column(
