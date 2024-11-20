@@ -337,7 +337,7 @@ class MessageItem extends StatelessWidget {
             ? SizedBox()
             : Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    const EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
                 child: Align(
                   alignment:
                       isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
@@ -651,6 +651,7 @@ class _MessageInputFieldState extends State<MessageInputField> {
           if (_showEmoji) SizedBox(
             height: 300,
             child: EmojiPicker(
+              onEmojiSelected: _onEmojiSelected,
               textEditingController: _controller,
 
               config: Config(
