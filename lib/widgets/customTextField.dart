@@ -28,7 +28,10 @@ class CustomTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
+        title == ''?Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: SizedBox(),
+        ):Padding(
           padding: const EdgeInsets.only(left: 4.0, bottom: 4, top: 3),
           child: Text(
             title,

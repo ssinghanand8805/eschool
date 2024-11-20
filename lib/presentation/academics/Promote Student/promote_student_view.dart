@@ -8,12 +8,15 @@ import 'package:learnladderfaculity/widgets/custom_button.dart';
 import 'package:learnladderfaculity/widgets/myCustomsd.dart';
 
 import '../../../theme/theme_helper.dart';
+import '../../common_widgets/controller/CommonApiController.dart';
 
 class PromoteStudentView extends GetView<PromoteStudentController> {
   PromoteStudentView({Key? key})
       : super(
           key: key,
         );
+
+  CommonApiController controller3 = Get.put(CommonApiController());
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -25,287 +28,328 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
           style: theme.textTheme.titleLarge,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: MyCustomSD(
-                      listToSearch: controller.demo,
-                      valFrom: 'name',
-                      label: 'Select class',
-                      borderColor: Colors.grey,
-                      onChanged: (val) {}),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: MyCustomSD(
-                      borderColor: Colors.grey,
-                      listToSearch: controller.demo,
-                      label: 'Select section',
-                      valFrom: 'name',
-                      onChanged: (val) {}),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Promote Students In Next Session",
-              style: theme.textTheme.titleMedium,
-            ),
-            MyCustomSD(
-                borderColor: Colors.grey,
-                listToSearch: controller.demo,
-                label: 'Select Promote In Session',
-                valFrom: 'name',
-                onChanged: (val) {}),
-            Row(
-              children: [
-                Expanded(
-                  child: MyCustomSD(
-                      borderColor: Colors.grey,
-                      listToSearch: controller.demo,
-                      label: 'Select class',
-                      valFrom: 'name',
-                      onChanged: (val) {}),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: MyCustomSD(
-                      borderColor: Colors.grey,
-                      listToSearch: controller.demo,
-                      label: 'Select section',
-                      valFrom: 'name',
-                      onChanged: (val) {}),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: MyButton(
-                width: 80,
-                color: Colors.green.shade400,
-                title: 'Search',
-                onPress: () {
-                  print("object");
-                },
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              "Student List",
-              style: theme.textTheme.labelLarge,
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columnSpacing: Get.width * 0.07,
-                columns: const [
-                  DataColumn(label: Icon(Icons.check_box_outline_blank)),
-                  DataColumn(label: Text('Admission No')),
-                  DataColumn(label: Text('Student Name')),
-                  DataColumn(label: Text('Father Name')),
-                  DataColumn(label: Text('Date of Birth')),
-                  DataColumn(label: Text('Current Result')),
-                  DataColumn(label: Text('Next Session Status')),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Obx(() => MyCustomSD(
+                          hideSearch: true,
+                          borderColor: Colors.grey,
+                          listToSearch: controller3.classListModelMap.value,
+                          valFrom: "className",
+                          label: 'Class',
+                          labelText: 'Class',
+                          onChanged: (val) {
+                            if (controller3.classListModelMap.value.length >
+                                0) {
+                              print("5555555555555");
+
+                              controller3.selectedClassId.value =
+                                  val['id'].toString();
+                              controller3.selectedClassName.value =
+                                  val['className'].toString();
+                              controller3.update();
+                              controller3.getSectionList();
+                            }
+                          },
+                        )),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Obx(() => MyCustomSD(
+                          hideSearch: true,
+                          borderColor: Colors.grey,
+                          listToSearch: controller3.sectionListModelMap.value,
+                          valFrom: "section",
+                          label: 'Section',
+                          labelText: 'Section',
+                          onChanged: (val) {
+                            print(val);
+                            if (controller3.sectionListModelMap.value.length >
+                                0) {
+                              controller3.selectedSectionId.value =
+                                  val['id'].toString();
+                              controller3.selectedSectionName.value =
+                                  val['section'].toString();
+                              controller3.update();
+                            }
+                          },
+                        )),
+                  )
                 ],
-                rows: controller.data.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  return DataRow(
-                    cells: [
-                      DataCell(Obx(() {
-                        return Checkbox(
-                            checkColor: Colors.white,
-                            //fillColor: MaterialStateProperty.resolveWith(Colors.red),
-                            value: controller.isChecked.value,
-                            onChanged: (value) {
-                              controller.isChecked.value = value!;
-                              print(value);
-                            });
-                      })),
-                      DataCell(Text(entry.value['class'],
-                          style: theme.textTheme.bodySmall!)),
-                      DataCell(Center(
-                        child: Text(entry.value['section'],
-                            style: theme.textTheme.bodySmall!),
-                      )),
-                      DataCell(Center(
-                        child: Text(entry.value['subjectGroup'],
-                            style: theme.textTheme.bodySmall!),
-                      )),
-                      DataCell(Center(
-                        child: Text(entry.value['subjectGroup'],
-                            style: theme.textTheme.bodySmall!),
-                      )),
-                      DataCell(Obx(() {
-                        return Row(
-                          children: [
-                            Row(
+              ),
+              SizedBox(
+                height: 10,
+              ),
+
+              Obx(() => MyCustomSD(
+                hideSearch: true,
+                borderColor: Colors.grey,
+                listToSearch: controller.SessionlistModelMap.value,
+                valFrom: "session",
+                label: 'Promote Students In Next Session',
+                labelText: 'Promote Students In Next Session',
+                onChanged: (val) {
+                  print(val);
+                  if (controller.SessionlistModelMap.value.length >
+                      0) {
+                    controller.selectedSessionId.value =
+                        val['id'].toString();
+                    controller.selectedSessionName.value =
+                        val['session'].toString();
+                    controller.update();
+                  }
+                },
+              )),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Obx(() => MyCustomSD(
+                      hideSearch: true,
+                      borderColor: Colors.grey,
+                      listToSearch: controller3.classListModelMap.value,
+                      valFrom: "className",
+                      label: 'Class',
+                      labelText: 'Class',
+                      onChanged: (val) {
+                        if (controller3.classListModelMap.value.length >
+                            0) {
+                          print("5555555555555");
+
+                          controller3.selectedClassId.value =
+                              val['id'].toString();
+                          controller3.selectedClassName.value =
+                              val['className'].toString();
+                          controller3.update();
+                          controller3.getSectionList();
+                        }
+                      },
+                    )),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Obx(() => MyCustomSD(
+                      hideSearch: true,
+                      borderColor: Colors.grey,
+                      listToSearch: controller3.sectionListModelMap.value,
+                      valFrom: "section",
+                      label: 'Section',
+                      labelText: 'Section',
+                      onChanged: (val) {
+                        print(val);
+                        if (controller3.sectionListModelMap.value.length >
+                            0) {
+                          controller3.selectedSectionId.value =
+                              val['id'].toString();
+                          controller3.selectedSectionName.value =
+                              val['section'].toString();
+                          controller3.update();
+                        }
+                      },
+                    )),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: MyButton(
+                  width: 80,
+                  color: Colors.green,
+                  textStyle: TextStyle(color: Colors.white),
+                  title: 'Search',
+                  onPress: () {
+                    print("object");
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Student List",
+                style: theme.textTheme.titleMedium!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: controller.data.length,
+                      itemBuilder: (context, index) {
+                        final student = controller.data[index];
+                        return Card(
+                          margin: EdgeInsets.symmetric(vertical: 8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          elevation: 4,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                InkWell(
-                                  onTap: () {
-                                    controller.isChecked.value = true;
-                                  },
-                                  child: Container(
-                                    height: 20,
-                                    width: 20,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      color: Colors.white,
-                                      shape: BoxShape.circle,
+                                Row(
+                                  children: [
+                                    Checkbox(
+                                      value: controller.isChecked.value,
+                                      onChanged: (value) {
+                                        controller.isChecked.value = value!;
+                                      },
                                     ),
-                                    child: Container(
-                                      height: 20,
-                                      width: 20,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(),
-                                        color: controller.isChecked == true
-                                            ? Colors.black
-                                            : Colors.transparent,
-                                        shape: BoxShape.circle,
+                                    Expanded(
+                                      child: Text(
+                                        "Admission No: ${student['admissionNo']}",
+                                        style: theme.textTheme.bodyMedium,
                                       ),
-                                      child: Icon(Icons.circle,color: Colors.red,size: 13),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 10,
+                                SizedBox(height: 10),
+                                Text(
+                                  "Student Name: ${student['studentName']}",
+                                  style: theme.textTheme.bodySmall,
                                 ),
-                                Text('Pass')
+                                SizedBox(height: 5),
+                                Text(
+                                  "Father Name: ${student['fatherName']}",
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  "Date of Birth: ${student['dob']}",
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  "Current Result: ${student['currentResult']}",
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                                SizedBox(height: 5),
+                                Obx(() {
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      _customRadioButton(
+                                        title: "Pass",
+                                        isSelected: controller.isChecked.value,
+                                        onTap: () {
+                                          controller.isChecked.value = true;
+                                        },
+                                      ),
+                                      _customRadioButton(
+                                        title: "Fail",
+                                        isSelected: !controller.isChecked.value,
+                                        onTap: () {
+                                          controller.isChecked.value = false;
+                                        },
+                                      ),
+                                      _customRadioButton(
+                                        title: "Continue",
+                                        isSelected: controller.isChecked.value,
+                                        onTap: () {
+                                          controller.isChecked.value = true;
+                                        },
+                                      ),
+                                      _customRadioButton(
+                                        title: "Leave",
+                                        isSelected: !controller.isChecked.value,
+                                        onTap: () {
+                                          controller.isChecked.value = false;
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                }),
                               ],
                             ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    controller.isChecked.value = true;
-                                  },
-                                  child: Container(
-                                    height: 12,
-                                    width: 12,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Container(
-                                      height: 15,
-                                      width: 15,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(),
-                                        color: controller.isChecked == true
-                                            ? Colors.black
-                                            : Colors.transparent,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text('Pass')
-                              ],
-                            ),
-                          ],
+                          ),
                         );
-                      })),
-                      DataCell(Obx(() {
-                        return Row(
-                          children: [
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    controller.isChecked.value = true;
-                                  },
-                                  child: Container(
-                                    height: 12,
-                                    width: 12,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Container(
-                                      height: 15,
-                                      width: 15,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(),
-                                        color: controller.isChecked == true
-                                            ? Colors.black
-                                            : Colors.transparent,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text('Continue')
-                              ],
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    controller.isChecked.value = true;
-                                  },
-                                  child: Container(
-                                    height: 12,
-                                    width: 12,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Container(
-                                      height: 15,
-                                      width: 15,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(),
-                                        color: controller.isChecked == true
-                                            ? Colors.black
-                                            : Colors.transparent,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text('Leave')
-                              ],
-                            ),
-                          ],
-                        );
-                      })),
-                    ],
-                  );
-                }).toList(),
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 18.0),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: MyButton(
+                    width: 80,
+                    color: Colors.green,
+                    textStyle: TextStyle(color: Colors.white),
+                    title: 'Promote',
+                    onPress: () {
+                      print("Promote");
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _customRadioButton({
+    required String title,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Container(
+            height: 17,
+            width: 17,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.black,
+                width: 1.5,
               ),
             ),
-          ],
-        ),
+            child: isSelected
+                ? Center(
+                    child: Container(
+                      height: 12,
+                      width: 12,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.green,
+                      ),
+                    ),
+                  )
+                : null,
+          ),
+          SizedBox(width: 8),
+          Text(
+            title,
+            style: theme.textTheme.bodySmall,
+          ),
+        ],
       ),
     );
   }

@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
+import 'issueBook_view.dart';
 import 'issueReturn_modal.dart';
 import 'member_details.dart' as meberdetails;
 
@@ -64,16 +66,20 @@ class IssueReturnController extends GetxController{
 
 
   }
-  Future<void> getMemberDetails(id) async  {
+  Future<void> getMemberDetails(id,context) async  {
     //isLoading.value = true;
     try
     {
-      var body = {"id":id};
+      var body = {"id":id.toString()};
       var data = await apiRespository.postApiCallByFormData(Constants.getMemberDetailsUrl, body);
-
+print("hfhfhfhfh$body");
       memberDetailsModel.value =  meberdetails.LibraryMemberDetails.fromJson(data.body);
 
       update();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LibraryManagementPage()),
+      );
     }
     catch(e)
     {

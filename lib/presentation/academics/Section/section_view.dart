@@ -6,7 +6,7 @@ import '../../../theme/theme_helper.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/custom_button.dart';
 
-class SectionView extends GetView<SectionController>{
+class SectionView extends GetView<SectionController> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -17,24 +17,6 @@ class SectionView extends GetView<SectionController>{
           'Section List',
           style: theme.textTheme.titleLarge,
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: MyButton(
-              width: 120,
-              prefixIcon: Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-              title: 'Add',
-              textStyle: TextStyle(fontSize: 18, color: Colors.white),
-              color: theme.hintColor,
-              onPress: () {
-                addSection(context);
-              },
-            ),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -42,62 +24,169 @@ class SectionView extends GetView<SectionController>{
           children: [
             CustomTextField(
               controller: controller.searchC.value,
-              hint: 'Search.... ', title: '',),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-               Padding(
-                 padding: const EdgeInsets.only(bottom: 12.0),
-                 child: Text("Section"),
-               ),
-                Text("Action"),
-              ],
-
+              hint: 'Search.... ',
+              title: '',
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: 5,
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index){
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("Faheem"),
-                        );
-                      }),
-                ),
-                Expanded(
-                    child: ListView.builder(
-                      itemCount: 5,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index){
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0,right: 30,top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Section",
+                    style: theme.textTheme.bodySmall!
+                        .copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    "Action",
+                    style: theme.textTheme.bodySmall!
+                        .copyWith(fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: GetBuilder<SectionController>(
+                builder: (controller) {
+                  if (controller.sectionList.value.data!.sectionlist!.isEmpty) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  return ListView.builder(
+                    itemCount:
+                        controller.sectionList.value.data!.sectionlist!.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      final section = controller
+                          .sectionList.value.data!.sectionlist![index];
+                      return Card(
+                        elevation: 2.0,
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0,right: 8),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              InkWell(
-                                onTap:(){
-
-                          },
-                                  child: Icon(Icons.edit)),
-                              SizedBox(width: 10,),
-                              InkWell(
-                                onTap:(){
-
-                            },
-                                  child: Icon(Icons.delete)),
+                              Text(
+                                section.section!.capitalizeFirst ?? "",
+                                style: theme.textTheme.bodySmall!
+                                    .copyWith(fontWeight: FontWeight.w600),
+                              ),
+                              Spacer(),
+                              IconButton(
+                                onPressed: () {
+                                  _showEditDialog(
+                                      context, section.id!, section.section!);
+                                },
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: Colors.green,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text("Confirm Delete",style: theme.textTheme.bodyLarge,),
+                                        content: Text(
+                                          "Are you sure you want to delete this subject? This action cannot be undone.",
+                                          style: theme.textTheme.bodySmall,
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); // Close the dialog
+                                            },
+                                            child: Text("Cancel"),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              controller.deleteSection(context,section.id); // Perform delete
+                                              Navigator.of(context)
+                                                  .pop(); // Close the dialog
+                                            },
+                                            child: Text(
+                                              "Delete",
+                                              style: TextStyle(
+                                                  color: Colors.red),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                              ),
                             ],
                           ),
-                        );
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          addSection(context);
+        },
+        tooltip: 'Add Item',
+        shape: CircleBorder() ,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        child: Icon(Icons.add),
+      ),
 
-                    }))
-              ],
-            )
+    );
+  }
+
+  void _showEditDialog(BuildContext context, String id, String currentName) {
+    showCustomBottomSheet(
+      context: context,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CustomTextField(
+              controller: controller.sectionC.value,
+              hint: 'Section Name',
+              title: 'Edit Section Name',
+            ),
+            const SizedBox(height: 16),
+
+            // Save Button
+            SizedBox(
+              width: double.infinity,
+              height: 40,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: Colors.green,
+                ),
+                onPressed: () {
+                  final newName = controller.sectionC.value.text.trim();
+                  if (newName.isNotEmpty) {
+                    controller.editSection(id, newName);
+                    Navigator.pop(context);
+                  }
+                },
+                child: Text("Save"),
+              ),
+            ),
           ],
         ),
       ),
@@ -105,10 +194,9 @@ class SectionView extends GetView<SectionController>{
   }
 
   addSection(context) {
-    AlertDialogue().show(
-      context,
-      newWidget: [
-        Column(
+    showCustomBottomSheet(
+        context: context,
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -116,7 +204,7 @@ class SectionView extends GetView<SectionController>{
               style: theme.textTheme.bodyMedium,
             ),
             CustomTextField(
-              controller: controller.sectionC.value,
+              controller: controller.newSectionC.value,
               hint: "Section Name....",
               title: "",
             ),
@@ -132,13 +220,14 @@ class SectionView extends GetView<SectionController>{
                   color: Colors.black,
                 ),
                 color: Colors.green.shade100,
-                onPress: () {},
+                onPress: () {
+
+                  controller.addSection();
+
+                },
               ),
             ),
           ],
-        )
-      ],
-    );
+        ));
   }
-
 }

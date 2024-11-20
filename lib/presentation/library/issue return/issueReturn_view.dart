@@ -84,20 +84,32 @@ class  IssueReturnView extends GetView< IssueReturnController> {
                                     Text('Phone: ${entry.guardianPhone}',
                                         style: theme.textTheme.bodySmall),
                                     SizedBox(height: 12),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text("Issue Return",style:  theme.textTheme.bodySmall!.copyWith(color: Colors.green),),
-                                        IconButton(
-                                          icon: Icon(Icons.logout, size: 15,color: Colors.blue,),
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(builder: (context) => LibraryManagementPage()),
-                                            );
-                                          },
+                                    InkWell(
+                                      onTap: (){
+
+                                        controller.getMemberDetails(entry.libMemberId,context);
+
+                                      },
+                                      child: SizedBox(
+                                        width: Get.width,
+                                        height: 40,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            Text("Issue Return",style:  theme.textTheme.bodySmall!.copyWith(color: Colors.green),),
+SizedBox(width: 10,),
+                                            Icon(Icons.logout, size: 15,color: Colors.blue,),
+                                            // IconButton(
+                                            //   icon: Icon(Icons.close, size: 15,color: Colors.blue,),
+                                            //   // onPressed: () {
+                                            //   //   print("object");
+                                            //   //    controller.getMemberDetails(entry.libMemberId,context);
+                                            //   //
+                                            //   // },
+                                            // ),
+                                          ],
                                         ),
-                                      ],
+                                      ),
                                     ),
                                   ],
                                 ),
