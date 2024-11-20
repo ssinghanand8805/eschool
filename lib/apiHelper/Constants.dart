@@ -142,4 +142,10 @@ class Constants {
   static const String editSubjectGroupList = '/subjectgroup/edit';
   static const String deleteSubjectGroupList  = '/subjectgroup/delete';
   static const String viewSubjectGroup = '/subjectgroup/view';
+
+
+  /// promote student
+  static const String getAllSessionList = '/stdtransfer/getAllSession';
+
+
 }
