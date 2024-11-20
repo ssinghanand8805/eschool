@@ -2,10 +2,14 @@
 import 'package:get_storage/get_storage.dart';
 import 'package:learnladderfaculity/apiHelper/popular_product_repo.dart';
 import 'package:get/get.dart';
+import 'package:learnladderfaculity/apiHelper/userData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
 
+import '../presentation/login_screen/models/ChatUser.dart';
+import 'ChatNotificationService.dart';
+import 'SocketService.dart';
 import 'api.dart';
 import 'chatApi.dart';
 import 'chat_api_repo.dart';
@@ -43,6 +47,9 @@ Future<void> init()async {
   Get.lazyPut(()=>ApiClient(appBaseUrl: "${baseUrl}api/"),fenix: true);
   //repose
   Get.lazyPut(()=>ApiRespository(apiClient: Get.find()));
+
+
+
 
 
 

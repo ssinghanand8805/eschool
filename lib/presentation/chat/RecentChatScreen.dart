@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
 
+import '../../apiHelper/SocketService.dart';
 import '../common_widgets/custom_loader.dart';
 import 'ChatScreen.dart';
 
@@ -33,6 +34,7 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
       appBar: AppBar(
         backgroundColor: theme.primaryColorLight,
         title: const Text('Recent Chats'),
+        actions: [IconButton(onPressed : () {sendEvent();}, icon: Icon(Icons.add))],
       ),
       body: GetBuilder(
         init: controller,
@@ -43,7 +45,7 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
               if (snapshot.connectionState != ConnectionState.done) {
                 return CustomLoader(); // CustomLoader();
               }
-              return ListView.builder(
+              return controller.recentChatModelObj.value.data != null ? ListView.builder(
                 itemCount: controller.recentChatModelObj.value.data!.conversations!.length,
                 itemBuilder: (context, index) {
                   final chat = controller.recentChatModelObj.value.data!.conversations![index];
@@ -73,7 +75,7 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
 
 
                 },
-              );
+              ) : Text("No Data Found");
             }
           );
         }
@@ -129,7 +131,7 @@ Widget chatItem(chat)
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                chat.createdAt!,
+                controller.formatChatDateString( chat.createdAt!),
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 12,
@@ -184,7 +186,7 @@ Widget chatItem(chat)
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                chat.createdAt!,
+                controller.formatChatDateString(chat.createdAt!),
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 12,
@@ -202,6 +204,12 @@ Widget chatItem(chat)
         ],
       ),
     );
+  }
+
+  sendEvent() {
+    print("sending..");
+    final EchoService echoService = Get.put(EchoService());
+    echoService.startTypingPersonal(2,'sam',3);
   }
 }
 

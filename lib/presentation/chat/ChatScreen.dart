@@ -2,10 +2,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
 import 'package:learnladderfaculity/presentation/chat/userDetails.dart';
+import '../../apiHelper/userData.dart';
 import '../common_widgets/custom_loader.dart';
+import '../login_screen/models/ChatUser.dart';
 import 'controller/ChatController.dart';
 import 'groupdetails.dart';
 import 'model/Chat.dart';
@@ -110,47 +113,76 @@ class ChatScreen extends GetView<ChatController> {
       body: GetBuilder(
           init: controller,
           builder: (context) {
+            UserData usersData = UserData();
+            ChatUser? myDetail = usersData.getChatUser();
             return FutureBuilder(
                 future: controller.fetchDataFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return CustomLoader();
                   }
+                  var i = 0;
+                  // final groupedMessages = controller.groupMessagesByDate(controller.ChatModelObj.value.data!.conversations!);
+                  // final flattenedMessages = controller.flattenGroupedMessages(groupedMessages);
                   return Column(
                     children: [
                       Expanded(
                         child: ListView.builder(
-                          itemCount: controller
-                              .ChatModelObj.value.data!.conversations!.length,
+                          // reverse: true,
+                          controller: controller.scrollController,
+                          itemCount: controller.flattenedMessages.length,
                           itemBuilder: (context, index) {
-                            final message = controller
-                                .ChatModelObj.value.data!.conversations![index];
-                            print(message.sender);
-                            String senderUserId = message!.sender == null
-                                ? ""
-                                : message!.sender!.id!.toString();
-                            String msgSenderName = message!.sender == null
-                                ? ""
-                                : message!.sender!.name!.toString();
-                            bool isSentByMe =
-                                senderUserId == controller.chatUserId
-                                    ? true
-                                    : false;
-                            return MessageItem(
-                              controller: controller,
-                              message: message,
-                              isGroupChat:
-                                  controller.isGroup == 1 ? true : false,
-                              isSentByMe: isSentByMe,
-                              msgSenderName: msgSenderName,
-                              previousMessageDate: controller.chat.createdAt!,
-                            );
+                            final item = controller.flattenedMessages[index];
+
+                            if (item is String) {
+                              // This is a date header
+                              DateTime date = DateTime.parse(item);
+                              String formattedDate = _formatDate(date);
+
+                              return Center(
+                                child: Chip(
+                                  label: Text(
+                                    formattedDate,
+                                    style: TextStyle(
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
+                                  ),
+                                  backgroundColor: Colors.blue[50],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    side: BorderSide(color: Colors.blue, width: 1),
+                                  ),
+                                ),
+                              );
+                            } else if (item is Conversations) {
+
+                              // This is a message
+                              final message = item;
+                              String senderUserId = message.fromId == null ? "" : message.fromId.toString();
+                              print(senderUserId);
+                              print(myDetail!.data!.user!.id);
+                              String msgSenderName = message.sender == null ? "" : message.sender!.name!.toString();
+                              bool isSentByMe = senderUserId.toString() == myDetail!.data!.user!.id.toString();
+
+                              return MessageItem(
+                                controller: controller,
+                                message: message,
+                                isGroupChat: controller.isGroup == 1,
+                                isSentByMe: isSentByMe,
+                                msgSenderName: msgSenderName,
+                                previousMessageDate: message.createdAt!,
+                              );
+                            }
+
+                            return SizedBox.shrink(); // Fallback in case of unexpected data
                           },
                         ),
                       ),
                       MessageInputField(
                         onSendMessage: (String message) {
                           print('Sending message: $message');
+                          controller.sendMessage(message);
                         },
                       ),
                     ],
@@ -160,6 +192,44 @@ class ChatScreen extends GetView<ChatController> {
     );
   }
 }
+String _formatDate(DateTime messageDate) {
+  final DateTime now = DateTime.now();
+  final DateTime today = DateTime(now.year, now.month, now.day); // Remove time
+  final DateTime yesterday = today.subtract(const Duration(days: 1)); // Remove time from yesterday
+
+  // Truncate time from messageDate
+  final DateTime messageDateOnly = DateTime(messageDate.year, messageDate.month, messageDate.day);
+
+  if (messageDateOnly == today) {
+    return "Today";
+  } else if (messageDateOnly == yesterday) {
+    return "Yesterday";
+  } else {
+    return DateFormat('MMM dd, yyyy').format(messageDateOnly);
+  }
+}
+
+
+// List<GroupedMessage> buildGroupedMessages(List<ChatMessage> messages) {
+//   List<GroupedMessage> groupedMessages = [];
+//   // Group messages by date
+//   var groupedByDate = groupBy<ChatMessage, DateTime>(messages, (msg) {
+//   DateTime date = DateTime.fromMillisecondsSinceEpoch(msg.msgTime!);
+//   return DateTime(date.year, date.month, date.day);  });
+//   // Sort dates in ascending order
+//    var sortedKeys = groupedByDate.keys.toList()..sort();
+//    // Add grouped messages to the list
+//  for (var date in sortedKeys) {
+//    String formattedDate =        "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+//    groupedMessages.add(GroupedMessage(date: formattedDate));
+//    // Sort messages within the date by msgTime in ascending order
+//   var messagesForDate = groupedByDate[date]!..sort((a, b) => a.msgTime!.compareTo(b.msgTime!));
+//   // Add each message to the grouped list
+//   messagesForDate.forEach((msg) {
+//     groupedMessages.add(GroupedMessage(message: msg));    });  }
+//  return groupedMessages.reversed.toList();
+//  // Return in descending date order
+//   }
 
 class MessageItem extends StatelessWidget {
   final ChatController controller;
@@ -174,7 +244,7 @@ class MessageItem extends StatelessWidget {
     required this.controller,
     required this.message,
     this.isGroupChat = false,
-    this.isSentByMe = false,
+    required this.isSentByMe,
     required this.msgSenderName,
     required this.previousMessageDate,
   }) : super(key: key);
@@ -212,33 +282,35 @@ class MessageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final isSentByMe = this.isSentByMe;
+    print("hhhhhhh${isSentByMe}");
     DateTime messageDate = DateTime.parse(message.createdAt!);
     String formattedTime = _formatTime(message.createdAt);
     String formattedDate = _formatDate(messageDate);
 
-    bool isFileMessage = message.urlDetails != null;
+    bool isFileMessage = message!.messageType == 1;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Date Chip
-        Center(
-          child: Chip(
-            label: Text(
-              formattedDate,
-              style: TextStyle(
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14),
-            ),
-            backgroundColor: Colors.blue[50],
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              side: BorderSide(color: Colors.blue, width: 1),
-            ),
-          ),
-        ),
+        // Center(
+        //   child: Chip(
+        //     label: Text(
+        //       formattedDate,
+        //       style: TextStyle(
+        //           color: Colors.black54,
+        //           fontWeight: FontWeight.w400,
+        //           fontSize: 14),
+        //     ),
+        //     backgroundColor: Colors.blue[50],
+        //     shape: RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(20),
+        //       side: BorderSide(color: Colors.blue, width: 1),
+        //     ),
+        //   ),
+        // ),
         // Message bubble
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -286,41 +358,89 @@ class MessageItem extends StatelessWidget {
                     ],
                   ),
                   child: isFileMessage
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              message.fileName!,
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+    ?Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Display the file name
+                      Text(
+                        message.fileName!,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      // Display the image from the network
+                      Image.network(
+                        message.message!,
+                        fit: BoxFit.cover,
+                        width: double.infinity, // Adjust the width as needed
+                        height: 200, // Adjust the height as needed
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child; // Show the image when loaded
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                  (loadingProgress.expectedTotalBytes ?? 1)
+                                  : null,
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              "Size: ${message.urlDetails!}",
-                              style: TextStyle(
-                                  fontSize: 14, color: Colors.grey[600]),
-                            ),
-                            const SizedBox(height: 4),
-                            isSentByMe
-                                ? Text(
-                                    formattedTime,
-                                    style: TextStyle(
-                                        fontSize: 10, color: Colors.grey[600]),
-                                  )
-                                : ElevatedButton.icon(
-                                    icon: const Icon(Icons.download),
-                                    label: const Text("Download"),
-                                    onPressed: () {
-                                      _downloadFile(message.urlDetails!,
-                                          message.fileName!);
-                                    },
-                                  ),
-                          ],
-                        )
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return  Image.asset('assets/projectImages/no_data.png',height: 100,);
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      // Show the time if sent by the user
+                      if (isSentByMe)
+                        Text(
+                          formattedTime,
+                          style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                        ),
+                    ],
+                  )
+
+                  // ? Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       Text(
+                      //         message.fileName!,
+                      //         style: const TextStyle(
+                      //             fontSize: 16, fontWeight: FontWeight.bold),
+                      //       ),
+                      //       const SizedBox(height: 4),
+                      //       Text(
+                      //         "Size: ${message.fileName!}",
+                      //         style: TextStyle(
+                      //             fontSize: 14, color: Colors.grey[600]),
+                      //       ),
+                      //       const SizedBox(height: 4),
+                      //       isSentByMe
+                      //           ? Text(
+                      //               formattedTime,
+                      //               style: TextStyle(
+                      //                   fontSize: 10, color: Colors.grey[600]),
+                      //             )
+                      //           : ElevatedButton.icon(
+                      //               icon: const Icon(Icons.download),
+                      //               label: const Text("Download",style: TextStyle(color: Colors.white),),
+                      //               onPressed: () {
+                      //                 _downloadFile(message.urlDetails!,
+                      //                     message.fileName!);
+                      //               },
+                      //             ),
+                      //     ],
+                      //   )
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            controller.isHtml(message.message!) ? Html(
+                              data: message.message!,
+
+                            ) : Text(
                               message.message!,
                               style: const TextStyle(fontSize: 16),
                             ),

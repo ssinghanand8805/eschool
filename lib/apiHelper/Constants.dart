@@ -80,6 +80,7 @@ class Constants {
   //chat
   static const String getRecentChatUrl = 'conversations';
   static const String getChatUrl = 'users/';
+  static const String sendTextMessageUrl = 'send-message';
   static const String getNoticeBoardUrl = 'notification/notificationList';
 
 

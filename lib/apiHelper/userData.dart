@@ -10,11 +10,17 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../presentation/login_screen/models/ChatUser.dart';
+import '../presentation/login_screen/models/ChatUser.dart';
 import '../presentation/login_screen/models/Faculity.dart';
+import '../presentation/login_screen/models/ChatUser.dart' as ChatUser;
 import '../routes/app_routes.dart';
+import 'ChatNotificationService.dart';
 import 'Constants.dart';
 import 'GlobalData.dart';
+import 'package:http/http.dart' as http;
 
+import 'SocketService.dart';
 
 
 class UserData extends GetxController {
@@ -43,6 +49,7 @@ class UserData extends GetxController {
   String get getLastUserId => userData.read('lastUserId') ?? "";
   String get getLastUserPwd => userData.read('lastUserPwd') ?? "";
   Faculity? cachedFaculity;
+  ChatUser.ChatUser? cachedChatUser;
 
 
   Future<void> initializeFaculity() async {
@@ -51,6 +58,12 @@ class UserData extends GetxController {
 
     if (jsonString != null) {
       cachedFaculity = Faculity.fromJson(json.decode(jsonString));
+    }
+    final jsonString2 = prefs.getString("chatUserData");
+
+    if (jsonString2 != null) {
+      cachedChatUser = ChatUser.ChatUser.fromJson(json.decode(jsonString2));
+      print("_--------${cachedChatUser!.data!.token}");
     }
   }
       void saveFaculity(Faculity user) async {
@@ -62,6 +75,38 @@ class UserData extends GetxController {
     prefs.setString("faculityData", json.encode(user.toJson()));
     await prefs.setBool('isLoggegIn', true);
     initializeFaculity();
+  }
+
+  Future<void> saveChatUserDetails(ChatUser.ChatUser user)
+  async {
+    print("....Saving Chat User Details");
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("chatUserData", json.encode(user.toJson()));
+    userData.write('chatUserData', user.toJson());
+    cachedChatUser = user;
+    await prefs.setBool('isChatFound', true);
+    ChatUser.ChatUser? chatUser = user;
+    if(chatUser != null)
+    {
+      final EchoService echoService = Get.put(EchoService());
+      echoService.initialize(chatUser!.data!.token!);
+      final ChatNotificationService notificationService = Get.put(ChatNotificationService(Get.find()));
+      notificationService.listenToUserChannel(chatUser!.data!.user!.id!.toString());
+
+    }
+  }
+  ChatUser.ChatUser? getChatUser() {
+    final json = userData.read('chatUserData');
+    print("....Getting chat user details$json");
+    if (json != null) {
+
+      var d = json;
+
+      print("CCCCCCCCCCCCCCCCCCCCCHHHHHHHHHHHHHHH@1#${d.runtimeType}");
+      return ChatUser.ChatUser.fromJson(d); // Reading the user model from JSON
+    }
+    print("CCCCCCCCCCCCCCCCCCCCCHHHHHHHHHHHHHHH@2${cachedChatUser!.data!.token}");
+    return cachedChatUser;
   }
   Faculity? getFaculity() {
     final json = userData.read('faculityData');
@@ -185,6 +230,7 @@ class UserData extends GetxController {
     else
       {
         Faculity fac = Faculity.fromJson(data.body);
+        getChatDetail('sam@sam.com','12345678');
         // UserData usersData = UserData();
         saveFaculity(fac);
         if(fac.roles!.roleId.toString() == '7')
@@ -206,7 +252,29 @@ class UserData extends GetxController {
 
   }
 
+  getChatDetail(email,pwd)
+  async {
+    var request = http.MultipartRequest('POST', Uri.parse('http://13.234.137.77/api/login'));
+    request.fields.addAll({
+      'email': email,
+      'password': pwd
+    });
 
+    // request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200 ) {
+      var res = await response.stream.bytesToString();
+      var data = jsonDecode(res) as Map<String, dynamic>;
+      ChatUser.ChatUser chatUser = ChatUser.ChatUser.fromJson(data);
+      saveChatUserDetails(chatUser);
+      print(data);
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+  }
   // loginApi()async{
   //   ApiRespository apiRespository = await ApiRespository(apiClient:Get.find());
   //   final prefs = await SharedPreferences.getInstance();

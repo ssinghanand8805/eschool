@@ -48,7 +48,7 @@ class Data {
 
 class Conversations {
   int? latestId;
-  String? userId;
+  int? userId;
   String? groupId;
   String? unreadCount;
   int? id;
@@ -91,30 +91,169 @@ class Conversations {
         this.replyMessage,
         this.group,
         this.user});
-
   Conversations.fromJson(Map<String, dynamic> json) {
-    latestId = json['latest_id'];
-    userId = json['user_id'];
-    groupId = json['group_id'];
-    unreadCount = json['unread_count'];
-    id = json['id'];
-    fromId = json['from_id'];
-    toId = json['to_id'];
-    toType = json['to_type'];
-    message = json['message'];
-    status = json['status'];
-    messageType = json['message_type'];
-    fileName = json['file_name'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    replyTo = json['reply_to'];
-    urlDetails = json['url_details'];
-    timeFromNowInMin = json['time_from_now_in_min'];
-    isGroup = json['is_group'];
-    replyMessage = json['reply_message'];
-    group = json['group'] != null ? new Group.fromJson(json['group']) : null;
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    try {
+      // Wrap each assignment in its own try-catch block for detailed logging
+      try {
+        latestId = json['latest_id'];
+      } catch (e) {
+        print("❌ Error parsing 'latest_id': $e");
+      }
+
+      try {
+        userId = json['user_id'];
+      } catch (e) {
+        print("❌ Error parsing 'user_id': $e");
+      }
+
+      try {
+        groupId = json['group_id'];
+      } catch (e) {
+        print("❌ Error parsing 'group_id': $e");
+      }
+
+      try {
+        unreadCount = json['unread_count'];
+      } catch (e) {
+        print("❌ Error parsing 'unread_count': $e");
+      }
+
+      try {
+        id = json['id'];
+      } catch (e) {
+        print("❌ Error parsing 'id': $e");
+      }
+
+      try {
+        fromId = json['from_id'];
+      } catch (e) {
+        print("❌ Error parsing 'from_id': $e");
+      }
+
+      try {
+        toId = json['to_id'];
+      } catch (e) {
+        print("❌ Error parsing 'to_id': $e");
+      }
+
+      try {
+        toType = json['to_type'];
+      } catch (e) {
+        print("❌ Error parsing 'to_type': $e");
+      }
+
+      try {
+        message = json['message'];
+      } catch (e) {
+        print("❌ Error parsing 'message': $e");
+      }
+
+      try {
+        status = json['status'];
+      } catch (e) {
+        print("❌ Error parsing 'status': $e");
+      }
+
+      try {
+        messageType = json['message_type'];
+      } catch (e) {
+        print("❌ Error parsing 'message_type': $e");
+      }
+
+      try {
+        fileName = json['file_name'];
+      } catch (e) {
+        print("❌ Error parsing 'file_name': $e");
+      }
+
+      try {
+        createdAt = json['created_at'];
+      } catch (e) {
+        print("❌ Error parsing 'created_at': $e");
+      }
+
+      try {
+        updatedAt = json['updated_at'];
+      } catch (e) {
+        print("❌ Error parsing 'updated_at': $e");
+      }
+
+      try {
+        replyTo = json['reply_to'];
+      } catch (e) {
+        print("❌ Error parsing 'reply_to': $e");
+      }
+
+      try {
+        urlDetails = json['url_details'];
+      } catch (e) {
+        print("❌ Error parsing 'url_details': $e");
+      }
+
+      try {
+        timeFromNowInMin = json['time_from_now_in_min'];
+      } catch (e) {
+        print("❌ Error parsing 'time_from_now_in_min': $e");
+      }
+
+      try {
+        isGroup = json['is_group'];
+      } catch (e) {
+        print("❌ Error parsing 'is_group': $e");
+      }
+
+      try {
+        replyMessage = json['reply_message'];
+      } catch (e) {
+        print("❌ Error parsing 'reply_message': $e");
+      }
+
+      try {
+        group = json['group'] != null ? Group.fromJson(json['group']) : null;
+      } catch (e) {
+        print("❌ Error parsing 'group': $e");
+      }
+
+      try {
+        user = json['user'] != null ? User.fromJson(json['user']) : null;
+      } catch (e) {
+        print("❌ Error parsing 'user': $e");
+      }
+    } catch (e) {
+      print("❌ General Error: $e");
+    }
   }
+
+  // Conversations.fromJson(Map<String, dynamic> json) {
+  //   try{
+  //     latestId = json['latest_id'];
+  //     userId = json['user_id'];
+  //     groupId = json['group_id'];
+  //     unreadCount = json['unread_count'];
+  //     id = json['id'];
+  //     fromId = json['from_id'];
+  //     toId = json['to_id'];
+  //     toType = json['to_type'];
+  //     message = json['message'];
+  //     status = json['status'];
+  //     messageType = json['message_type'];
+  //     fileName = json['file_name'];
+  //     createdAt = json['created_at'];
+  //     updatedAt = json['updated_at'];
+  //     replyTo = json['reply_to'];
+  //     urlDetails = json['url_details'];
+  //     timeFromNowInMin = json['time_from_now_in_min'];
+  //     isGroup = json['is_group'];
+  //     replyMessage = json['reply_message'];
+  //     group = json['group'] != null ? new Group.fromJson(json['group']) : null;
+  //     user = json['user'] != null ? new User.fromJson(json['user']) : null;
+  //   }
+  //   catch(e)
+  //   {
+  //     print("❌ DATA: ${e}");
+  //   }
+  //
+  // }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -161,7 +300,7 @@ class Group {
   bool? removedFromGroup;
   List<Users>? users;
   List<Users>? usersWithTrashed;
-  List<String>? lastConversations;
+  List<Conversations>? lastConversations;
 
   Group(
       {this.id,
@@ -204,9 +343,9 @@ class Group {
       });
     }
     if (json['last_conversations'] != null) {
-      lastConversations = <String>[];
+      lastConversations = <Conversations>[];
       json['last_conversations'].forEach((v) {
-        lastConversations!.add(v.toString());
+        lastConversations!.add(new Conversations.fromJson(v));
       });
     }
   }
@@ -233,7 +372,7 @@ class Group {
     }
     if (this.lastConversations != null) {
       data['last_conversations'] =
-          this.lastConversations!.map((v) => v).toList();
+          this.lastConversations!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -292,6 +431,7 @@ class Users {
         this.roles});
 
   Users.fromJson(Map<String, dynamic> json) {
+    try{
     id = json['id'];
     name = json['name'];
     email = json['email'];
@@ -320,6 +460,11 @@ class Users {
       json['roles'].forEach((v) {
         roles!.add(new Roles.fromJson(v));
       });
+    }
+    }
+    catch(e)
+    {
+      print("❌ USER: ${e}");
     }
   }
 
@@ -429,6 +574,7 @@ class Roles {
 }
 
 
+
 class User {
   int? id;
   String? name;
@@ -445,9 +591,9 @@ class User {
   String? updatedAt;
   bool? isSystem;
   String? playerId;
-  bool? isSubscribed;
+  String? isSubscribed;
   int? privacy;
-  int? gender;
+  String? gender;
   String? deletedAt;
   String? language;
   bool? isSuperAdmin;
@@ -480,38 +626,192 @@ class User {
         this.roleName,
         this.roles,
         this.userStatus});
-
   User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    email = json['email'];
-    emailVerifiedAt = json['email_verified_at'];
-    phone = json['phone'];
-    lastSeen = json['last_seen'];
-    isOnline = json['is_online'];
-    isActive = json['is_active'];
-    about = json['about'];
-    photoUrl = json['photo_url'];
-    activationCode = json['activation_code'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    isSystem = json['is_system'];
-    playerId = json['player_id'];
-    isSubscribed = json['is_subscribed'];
-    privacy = json['privacy'];
-    gender = json['gender'];
-    deletedAt = json['deleted_at'];
-    language = json['language'];
-    isSuperAdmin = json['is_super_admin'];
-    roleName = json['role_name'];
-    if (json['roles'] != null) {
-      roles = <Roles>[];
-      json['roles'].forEach((v) {
-        roles!.add(new Roles.fromJson(v));
-      });
+    try {
+      try {
+        id = json['id'];
+      } catch (e) {
+        print("❌ Error parsing 'id': $e");
+      }
+
+      try {
+        name = json['name'];
+      } catch (e) {
+        print("❌ Error parsing 'name': $e");
+      }
+
+      try {
+        email = json['email'];
+      } catch (e) {
+        print("❌ Error parsing 'email': $e");
+      }
+
+      try {
+        emailVerifiedAt = json['email_verified_at'];
+      } catch (e) {
+        print("❌ Error parsing 'email_verified_at': $e");
+      }
+
+      try {
+        phone = json['phone'];
+      } catch (e) {
+        print("❌ Error parsing 'phone': $e");
+      }
+
+      try {
+        lastSeen = json['last_seen'];
+      } catch (e) {
+        print("❌ Error parsing 'last_seen': $e");
+      }
+
+      try {
+        isOnline = json['is_online'];
+      } catch (e) {
+        print("❌ Error parsing 'is_online': $e");
+      }
+
+      try {
+        isActive = json['is_active'];
+      } catch (e) {
+        print("❌ Error parsing 'is_active': $e");
+      }
+
+      try {
+        about = json['about'];
+      } catch (e) {
+        print("❌ Error parsing 'about': $e");
+      }
+
+      try {
+        photoUrl = json['photo_url'];
+      } catch (e) {
+        print("❌ Error parsing 'photo_url': $e");
+      }
+
+      try {
+        activationCode = json['activation_code'];
+      } catch (e) {
+        print("❌ Error parsing 'activation_code': $e");
+      }
+
+      try {
+        createdAt = json['created_at'];
+      } catch (e) {
+        print("❌ Error parsing 'created_at': $e");
+      }
+
+      try {
+        updatedAt = json['updated_at'];
+      } catch (e) {
+        print("❌ Error parsing 'updated_at': $e");
+      }
+
+      try {
+        isSystem = json['is_system'];
+      } catch (e) {
+        print("❌ Error parsing 'is_system': $e");
+      }
+
+      try {
+        playerId = json['player_id'];
+      } catch (e) {
+        print("❌ Error parsing 'player_id': $e");
+      }
+
+      try {
+        isSubscribed = json['is_subscribed']?.toString();
+      } catch (e) {
+        print("❌ Error parsing 'is_subscribed': $e");
+      }
+
+      try {
+        privacy = json['privacy'];
+      } catch (e) {
+        print("❌ Error parsing 'privacy': $e");
+      }
+
+      try {
+        gender = json['gender'].toString();
+      } catch (e) {
+        print("❌ Error parsing 'gender': $e");
+      }
+
+      try {
+        deletedAt = json['deleted_at'];
+      } catch (e) {
+        print("❌ Error parsing 'deleted_at': $e");
+      }
+
+      try {
+        language = json['language'];
+      } catch (e) {
+        print("❌ Error parsing 'language': $e");
+      }
+
+      try {
+        isSuperAdmin = json['is_super_admin'];
+      } catch (e) {
+        print("❌ Error parsing 'is_super_admin': $e");
+      }
+
+      try {
+        roleName = json['role_name'];
+      } catch (e) {
+        print("❌ Error parsing 'role_name': $e");
+      }
+
+      try {
+        if (json['roles'] != null) {
+          roles = <Roles>[];
+          json['roles'].forEach((v) {
+            roles!.add(Roles.fromJson(v));
+          });
+        }
+      } catch (e) {
+        print("❌ Error parsing 'roles': $e");
+      }
+
+      try {
+        userStatus = json['user_status'];
+      } catch (e) {
+        print("❌ Error parsing 'user_status': $e");
+      }
+    } catch (e) {
+      print("❌ General Error in User.fromJson: $e");
     }
-    userStatus = json['user_status'];
   }
+
+  // User.fromJson(Map<String, dynamic> json) {
+  //   id = json['id'];
+  //   name = json['name'];
+  //   email = json['email'];
+  //   emailVerifiedAt = json['email_verified_at'];
+  //   phone = json['phone'];
+  //   lastSeen = json['last_seen'];
+  //   isOnline = json['is_online'];
+  //   isActive = json['is_active'];
+  //   about = json['about'];
+  //   photoUrl = json['photo_url'];
+  //   activationCode = json['activation_code'];
+  //   createdAt = json['created_at'];
+  //   updatedAt = json['updated_at'];
+  //   isSystem = json['is_system'];
+  //   playerId = json['player_id'];
+  //   isSubscribed = json['is_subscribed'].toString();
+  //   privacy = json['privacy'];
+  //   gender = json['gender'];
+  //   deletedAt = json['deleted_at'];
+  //   language = json['language'];
+  //   isSuperAdmin = json['is_super_admin'];
+  //   roleName = json['role_name'];
+  //   if (json['roles'] != null) {
+  //     roles = <Roles>[];
+  //     json['roles'].forEach((v) {
+  //       roles!.add(new Roles.fromJson(v));
+  //     });
+  //   }
+  //   userStatus = json['user_status'];
+  // }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

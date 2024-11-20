@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../apiHelper/ChatNotificationService.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/GlobalData.dart';
+import '../../../apiHelper/SocketService.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/userData.dart';
 import '../../../core/app_export.dart';
+import '../../login_screen/models/ChatUser.dart';
 import '../../login_screen/models/Faculity.dart';
 import '../models/Menus.dart';
 
@@ -454,13 +457,17 @@ class DashboardController extends GetxController {
 
   }
 
+
   eLearningapi() async {
-    getSchoolDetails();
+    getSchoolDetails();  //check for school details change
+
     UserData usersData = UserData();
     Faculity? f = await usersData.getFaculity();
     Map<String, dynamic> body = {
       "roleId": f!.roles!.roleId.toString(),
     };
+
+
     print("))))))))))))))${f.chatAccessToken}");
     var data = await apiRespository.postApiCallByJson(
         Constants.findPermissionsUrl, body);
