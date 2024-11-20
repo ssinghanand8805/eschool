@@ -32,33 +32,33 @@ class EchoService {
 // socket.connect();
 
 // Create echo instance
-    try
-    {
-      echo = new Echo(
-        broadcaster: EchoBroadcasterType.SocketIO,
-        client: socket,
-        options: {
-          'auth': {
-            'headers': {
-              'Authorization': 'Bearer $token',
-            }
-          },
-        },
-      );
-      // socket.connect();
-      print(socket.connected);
-
-      _setupDebugListeners();
-
-      // Connect and verify connection
-      socket.connect();
-      _verifyConnection();
-    }
-    catch(e) {
-      print("eeeeeeeee");
-    print(e);
-
-    }
+//     try
+//     {
+//       echo = new Echo(
+//         broadcaster: EchoBroadcasterType.SocketIO,
+//         client: socket,
+//         options: {
+//           'auth': {
+//             'headers': {
+//               'Authorization': 'Bearer $token',
+//             }
+//           },
+//         },
+//       );
+//       // socket.connect();
+//       print(socket.connected);
+//
+//       _setupDebugListeners();
+//
+//       // Connect and verify connection
+//       socket.connect();
+//       _verifyConnection();
+//     }
+//     catch(e) {
+//       print("eeeeeeeee");
+//     print(e);
+//
+//     }
 
     // echo.connector.socket.onConnect((_) => print('connected'));
     // echo.connector.socket.onDisconnect((_) => print('disconnected'));
