@@ -241,14 +241,14 @@ class ClassView extends GetView<ClassController>{
                     final item = controller.sectionListClass.value.data!.sectionlist![index];
                     return CheckboxListTile(
                       title: Text(item.section!),
-                      value: controller.selectedSections.contains(item.id),
+                      value: controller.selectedSections.value.contains(item.id),
                       onChanged: (bool? value) {
 
                         if (value == true) {
-                          controller.selectedSections.add(item.id!);
+                          controller.selectedSections.value.add(item.id!);
                           controller.update();
                         } else {
-                          controller.selectedSections.remove(item.id);
+                          controller.selectedSections.value.remove(item.id);
                           controller.update();
                         }
                         controller.update();

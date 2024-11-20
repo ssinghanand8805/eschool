@@ -82,7 +82,7 @@ class Sections {
   String? section;
   String? isActive;
   String? createdAt;
-  Null? updatedAt;
+  String? updatedAt;
 
   Sections(
       {this.classSectionId,

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:learnladderfaculity/presentation/academics/Section/section_modal.dart';
 
 import '../../../apiHelper/Constants.dart';
@@ -17,7 +18,7 @@ class ClassController extends GetxController {
   Rx<ClassModal> classList = ClassModal().obs;
 
   RxString selectedId = ''.obs;
-  final List<String> selectedSections = [];
+  final RxList<String> selectedSections = <String>[].obs;
 
   late Future<void> fetchDataFuture;
   void onInit() {
@@ -69,10 +70,14 @@ class ClassController extends GetxController {
           await apiRespository.postApiCallByFormData(Constants.viewClass, body);
       print("Subject viewSubject : ${data.body}");
       if (data.body['status'] == 1) {
-        ClassList subject = ClassList.fromJson(data.body['data']['subject']);
+        print("ggggggggg${data.body['data']['classlist']}");
+        ClassList subject = ClassList.fromJson(data.body['data']['classlist'][0]);
         print(subject.toJson());
         classC.value.text = subject.classN!;
-
+        for(var section in subject.sections!)
+          {
+            selectedSections.value.add(section.id!);
+          }
         update();
       }
     } catch (e) {
@@ -82,6 +87,8 @@ class ClassController extends GetxController {
   }
 
   resetData() {
+    classC.value.clear();
+    selectedSections.clear();
     selectedId.value = '';
     update();
   }
@@ -94,7 +101,7 @@ class ClassController extends GetxController {
 
 
       var body = {
-        "name": classC.value.text,
+        "class": classC.value.text,
         "sections": selectedSections.join(','),
       };
 
