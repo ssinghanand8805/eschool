@@ -5,7 +5,7 @@ import 'package:learnladderfaculity/core/app_export.dart';
 import '../../apiHelper/SocketService.dart';
 import '../common_widgets/custom_loader.dart';
 import 'ChatScreen.dart';
-
+import 'package:badges/badges.dart' as badges;
 import 'controller/RecentChatController.dart';
 import 'model/RecentChat.dart';
 import 'newChat.dart';
