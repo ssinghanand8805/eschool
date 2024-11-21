@@ -17,7 +17,7 @@ class ContentTypeView extends GetView<ContentTypeController> {
         backgroundColor: Colors.green.shade100,
         title: Text(
           'Content Type List',
-          style: theme.textTheme.titleLarge,
+          style: theme.textTheme.bodyMedium,
         ),
         actions: [
           Padding(
@@ -27,117 +27,177 @@ class ContentTypeView extends GetView<ContentTypeController> {
               title:'Add Content',textStyle: TextStyle(color: Colors.white),
               color:theme.hintColor,
               onPress: () {
+                controller.nameC.clear();
+                controller.descriptionC.clear();
                 addContent(context);
               },
             ),
           ),
         ],
       ),
-      body: GetBuilder(
-        init: controller,
-        builder: (context) {
-          return FutureBuilder(
-            future: controller.fetchDataFuture,
-            builder: (context,snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return CustomLoader(); // CustomLoader();
-              }
-              return controller.filteredContentTypeList.value.data != null && controller.filteredContentTypeList.value.data!.length > 0 ? Column(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Search Bar
+            CustomTextField(
+              controller: controller.searchC.value,
+              hint: 'Search.... ',
+              title: '',
+            ),
+            SizedBox(height: 16.0),
+
+            // Header Row
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0,right: 8),
-                    child: CustomTextField(
-                      controller: controller.searchC.value,
-                      hint: 'Search.... ', title: '',
-                      onChanged: (val) {
-                        controller.searchContentType(val);
-                        controller.update();
-                      },
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      "Name",
+                      style: theme.textTheme.bodySmall!
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
-
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      columnSpacing: Get.width*0.2,
-                      columns: const [
-                        DataColumn(label: Text('Name')),
-                        DataColumn(label: Text('Description')),
-                        DataColumn(label: Text('Action')),
-                      ],
-                      rows: controller.filteredContentTypeList.value.data!.asMap().entries.map((entry) {
-                        int index = entry.key;
-                        return DataRow(
-                          cells: [
-                            DataCell(Text(entry.value.name!,
-                                style: theme.textTheme.bodySmall!)),
-                            DataCell(Center(
-                              child: Text(entry.value.description!,
-                                  style: theme.textTheme.bodySmall!),
-                            )),
-                            DataCell(
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.edit, size: 15),
-                                    onPressed: () {
-                                     //editHomework(index);
-                                      controller.getcontenttypebyId(context,int.parse(entry.value.id!));
-                                      // if(controller.contentTypeId == int.parse(entry.value.id!))
-                                      //   {
-                                          addContent(context);
-                                        // }
-                                    },
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.delete, size: 15),
-                                    onPressed: () {
-                                      // Show a confirmation dialog before deleting
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text('Confirm Delete'),
-                                            content: Text('Are you sure you want to delete this item?'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () {
-                                                  // If the user cancels the deletion
-                                                  Navigator.of(context).pop(); // Close the dialog
-                                                },
-                                                child: Text('Cancel'),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  // If the user confirms the deletion
-                                                  controller.deletecontenttypebyId(context, int.parse(entry.value.id!));
-                                                  Navigator.of(context).pop(); // Close the dialog
-                                                },
-                                                child: Text('Delete'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ),
-
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      }).toList(),
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      "Description",
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodySmall!
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
-
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      "Action",
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodySmall!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ],
-              ):
-              Center(child: Text("No Data")) ;
-            }
-          );
-        }
+              ),
+            ),
+            SizedBox(height: 8.0),
+
+            // Data List Section
+            Expanded(
+              child: GetBuilder<ContentTypeController>(
+                builder: (controller) {
+                  if (controller.filteredContentTypeList.value.data == null ||
+                      controller.filteredContentTypeList.value.data!.isEmpty) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  return ListView.builder(
+                    itemCount:
+                    controller.filteredContentTypeList.value.data!.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      final data =
+                      controller.filteredContentTypeList.value.data![index];
+
+                      return Card(
+                        elevation: 4.0,
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Name
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  data.name ?? "",
+                                  style: theme.textTheme.bodySmall!
+                                      .copyWith(fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              // Description
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  data.description ?? "",
+                                  textAlign: TextAlign.center,
+                                  style: theme.textTheme.bodySmall!
+                                      .copyWith(fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              // Actions
+                              Expanded(
+                                flex: 2,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.edit, color: Colors.green),
+                                      onPressed: () {
+                                        controller.getcontenttypebyId(
+                                            context, int.parse(data.id!));
+                                        addContent(context);
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.delete, color: Colors.red),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text("Confirm Delete"),
+                                              content: Text(
+                                                  "Are you sure you want to delete this item?"),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text("Cancel"),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    controller.deletecontenttypebyId(
+                                                        context,
+                                                        int.parse(data.id!));
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text(
+                                                    "Delete",
+                                                    style:
+                                                    TextStyle(color: Colors.red),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
+
 
     );
 
@@ -192,7 +252,7 @@ class ContentTypeView extends GetView<ContentTypeController> {
           ),
         )
     );
-      
+
 
   }
 

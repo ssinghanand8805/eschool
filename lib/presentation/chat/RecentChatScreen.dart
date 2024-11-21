@@ -8,11 +8,10 @@ import 'ChatScreen.dart';
 
 import 'controller/RecentChatController.dart';
 import 'model/RecentChat.dart';
-import 'package:badges/badges.dart' as badges;
+import 'newChat.dart';
+import 'newGroup.dart';
+
 class RecentChatScreen extends StatefulWidget {
-
-
-
   RecentChatScreen({Key? key})
       : super(
           key: key,
@@ -29,15 +28,32 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: theme.primaryColorLight,
+        backgroundColor: Colors.green.shade200,
         title:  Text('Recent Chats',style: theme.textTheme.bodyMedium!.copyWith(fontSize: 16),),
 
         actions: [
           IconButton(
-              onPressed: () {
-                sendEvent();
-              },
-              icon: Icon(Icons.add))
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return NewGroupPage();
+                  },
+                ),
+              );
+              sendEvent();
+            },
+            icon: Icon(
+              Icons.add,
+              size: 30,
+              color: Colors.black,
+            ),
+            padding: EdgeInsets.all(10),
+            splashColor: Colors.blueAccent,
+            highlightColor: Colors.green,
+            tooltip: "Create a New Group",
+          ),
         ],
       ),
       body: GetBuilder(
@@ -68,19 +84,7 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
                                   'isGroup': isGroupChat,
                                   "chatId": chatID
                                 });
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) {
-                                //
-                                //
-                                //
-                                //       return ChatScreen(
-                                //           chat:  chat
-                                //       );
-                                //     },
-                                //   ),
-                                // );
+
                               },
                               child: chatItem(chat),
                             );
@@ -89,6 +93,23 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
                       : Text("No Data Found");
                 });
           }),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return NewConversationsPage();
+                },
+              ),
+            );
+          },
+          tooltip: 'New Chat',
+          shape: CircleBorder(),
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+          child: Icon(Icons.chat),
+        )
     );
   }
 

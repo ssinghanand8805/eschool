@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/apiHelper/chat_api_repo.dart';
 import 'package:learnladderfaculity/apiHelper/userData.dart';
 import 'package:learnladderfaculity/presentation/profile/model/Profile.dart';
+import '../../../apiHelper/ChatNotificationService.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';
@@ -36,6 +37,16 @@ class RecentChatController extends GetxController {
     var data  = await apiRespository.getApiCallByJson(Constants.getRecentChatUrl,);
     print("DATA @@@@ ${data.body}");
     recentChatModelObj.value = RecentChat.fromJson(data.body);
+    final ChatNotificationService notificationService = Get.put(ChatNotificationService(Get.find()));
+    for(Conversations conversations in recentChatModelObj!.value!.data!.conversations!)
+      {
+        if(conversations.isGroup!.toString() != '0')
+          {
+            notificationService.listenForGroupUpdates(conversations.groupId!);
+          }
+
+      }
+    //listenForGroupUpdates
     log("111111111111111111111 ${recentChatModelObj.value.toJson()}");
     update();
   }
@@ -70,6 +81,59 @@ class RecentChatController extends GetxController {
       return "Invalid date";
     }
   }
+  void sortConversationsByDate() {
+    recentChatModelObj.value.data?.conversations!.sort((a, b) {
+      // Handle null dates gracefully
+      if (a.createdAt == null && b.createdAt == null) return 0;
+      if (a.createdAt == null) return 1; // Nulls at the end
+      if (b.createdAt == null) return -1; // Nulls at the end
+
+      // Parse `createdAt` into DateTime and compare
+      DateTime dateA = DateTime.parse(a.createdAt!);
+      DateTime dateB = DateTime.parse(b.createdAt!);
+      return dateB.compareTo(dateA); // Ascending order
+    });
+  }
+
+  void addUnreadCountRealTime(Map<String, dynamic> messageData)
+  {
+    print('✅ UNREAD COUNT : ${messageData}');
+    print("ddddd::${messageData['owner_type'].toString()}");
+    if(messageData['owner_type'].toString() == r'App\Models\Group') {
+      print('✅ FOUND TYPE IS : Group}');
+      int existingIndex = recentChatModelObj.value.data?.conversations
+          ?.indexWhere(
+            (conversation) =>
+        conversation.groupId == messageData['owner_id'].toString(),
+      ) ??
+          -1;
+
+      if (existingIndex != -1) {
+        // Update the existing conversation
+        recentChatModelObj.value.data?.conversations?[existingIndex]
+            .unreadCount = messageData['unread_count'].toString();
+        update();
+      }
+    }
+    else if(messageData['owner_type'].toString() == r'App\Models\User')
+      {
+        print("PPPPPPPPPPPP::${messageData['owner_id'].toString()}");
+        int existingIndex = recentChatModelObj.value.data?.conversations?.indexWhere(
+              (conversation) => conversation.userId.toString() == messageData['owner_id'].toString(),
+        ) ??
+            -1;
+        print("WWWWWWWWW::${existingIndex}");
+        if (existingIndex != -1) {
+          // Update the existing conversation
+          recentChatModelObj.value.data?.conversations?[existingIndex].unreadCount =
+          messageData['unread_count'].toString();
+          update();
+        }
+      }
+    sortConversationsByDate();
+   // recentChatModelObj.value.data?.conversations?[existingIndex].unreadCount = newMessage.createdAt;
+  }
+
 
   void addIncomingMessage(Map<String, dynamic> messageData) {
     try {
@@ -96,7 +160,7 @@ class RecentChatController extends GetxController {
       else
         {
           int existingIndex = recentChatModelObj.value.data?.conversations?.indexWhere(
-                (conversation) => conversation.groupId == newMessage.groupId,
+                (conversation) => conversation.groupId.toString() == newMessage.toId.toString(),
           ) ??
               -1;
 

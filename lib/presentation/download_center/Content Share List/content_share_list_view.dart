@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:learnladderfaculity/presentation/common_widgets/InfoRow.dart';
@@ -9,181 +10,347 @@ import '../../common_widgets/custom_loader.dart';
 import 'content_share_list_controller.dart';
 
 class ContentShareView extends GetView<ContentShareController> {
-  ContentShareView({Key? key}) : super(key: key,);
+  ContentShareView({Key? key})
+      : super(
+          key: key,
+        );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green.shade100,
-        title: Text(
-          'Content Share List',
-          style: theme.textTheme.titleLarge,
+        appBar: AppBar(
+          backgroundColor: Colors.green.shade100,
+          title: Text(
+            'Content Share List',
+            style: theme.textTheme.bodyMedium,
+          ),
+        ),
+        body: GetBuilder<ContentShareController>(
+            init: controller,
+            builder: (_) {
+              return FutureBuilder(
+                  future: controller.fetchDataFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return CustomLoader();
+                    }
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8),
+                          child: CustomTextField(
+                            controller: controller.searchC,
+                            hint: 'Search.... ',
+                            title: '',
+                            onChanged: (val) {
+                              controller.searchContentType(val);
+                              controller.update();
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Header Row
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      buildHeaderCell("Title"),
+                                      buildHeaderCell("Send To"),
+                                      buildHeaderCell("Share Date"),
+                                      buildHeaderCell("Valid Upto"),
+                                      // buildHeaderCell("Shared By"),
+                                      //buildHeaderCell("Description"),
+                                      buildHeaderCell("Action",
+                                          centerText: true),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 8.0),
+
+                                // Data List Section
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: GetBuilder<ContentShareController>(
+                                      builder: (controller) {
+                                        if (controller.filteredContentTypeList
+                                                    .value.data ==
+                                                null ||
+                                            controller.filteredContentTypeList
+                                                .value.data!.isEmpty) {
+                                          return Center(
+                                              child:
+                                                  Text("No data available."));
+                                        }
+
+                                        return ListView.builder(
+                                          itemCount: controller
+                                              .filteredContentTypeList
+                                              .value
+                                              .data!
+                                              .length,
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            final data = controller
+                                                .filteredContentTypeList
+                                                .value
+                                                .data![index];
+
+                                            return Card(
+                                              elevation: 4.0,
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    buildDataCell(
+                                                        data.title ?? ""),
+                                                    buildDataCell(
+                                                        data.sendTo ?? ""),
+                                                    buildDataCell(
+                                                        data.shareDate ?? ""),
+                                                    buildDataCell(
+                                                        data.validUpto ?? "-"),
+                                                    //buildDataCell(data.name ?? ""),
+                                                    // buildDataCell(data.description ?? ""),
+                                                    buildActionCell(context,controller),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+            }));
+  }
+
+  Widget buildHeaderCell(String text, {bool centerText = false}) {
+    return Expanded(
+      flex: 2,
+      child: Text(
+        text,
+        textAlign: centerText ? TextAlign.center : TextAlign.start,
+        style: theme.textTheme.bodySmall!.copyWith(
+          fontWeight: FontWeight.bold,
         ),
       ),
-      body:  GetBuilder<ContentShareController>(
-          init: controller,
-        builder: (_) {
-          return FutureBuilder(
-            future:controller.fetchDataFuture ,
-            builder: (context,snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return CustomLoader();
-              }
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0,right: 8),
-                    child: CustomTextField(
-                      controller: controller.searchC,
-                      hint: 'Search.... ', title: '',
-                      onChanged: (val) {
-                        controller.searchContentType(val);
-                        controller.update();
-                      },
-                    ),
-
-                  ),
-
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      columnSpacing: Get.width*0.1,
-                      columns: const [
-                        DataColumn(label: Text('Title')),
-                        DataColumn(label: Text('Send To')),
-                        DataColumn(label: Text('Share Date')),
-                        DataColumn(label: Text('valid Upto')),
-                        DataColumn(label: Text('Shared By')),
-                        DataColumn(label: Text('Description')),
-                        DataColumn(label: Text('Action')),
-                      ],
-                      rows: controller.filteredContentTypeList.value.data!.asMap().entries.map((entry) {
-                        int index = entry.key;
-                        return DataRow(
-                          cells: [
-                            DataCell(Text(entry.value.title!,
-                                style: theme.textTheme.bodySmall!)),
-                            DataCell(Text(entry.value.sendTo!,
-                                style: theme.textTheme.bodySmall!)),
-                            DataCell(Text(entry.value.shareDate!,
-                                style: theme.textTheme.bodySmall!)),
-                            DataCell(Text(entry.value.validUpto ?? "-",
-                                style: theme.textTheme.bodySmall!)),
-                            DataCell(Text(
-                                '${entry.value.name!}',
-                                style: theme.textTheme.bodySmall!)),
-                            DataCell(Text(
-                                '${entry.value.description!}',
-                                style: theme.textTheme.bodySmall!)),
-                            DataCell(
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.remove_red_eye, size: 15),
-                                    onPressed: () {
-                                      showShareContents(context);
-                                    },
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.delete, size: 15),
-                                    onPressed: () {
-                                      print("Delete leave");
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ],
-              );
-            }
-          );
-        }
-      )
-
     );
   }
 
-  showShareContents(context){
-    showCustomBottomSheet(context:context,
-      child:Column(
-          //crossAxisAlignment: CrossAxisAlignment.start,
+  Widget buildDataCell(String text) {
+    return Expanded(
+      flex: 2,
+      child: Text(
+        text,
+        style: theme.textTheme.bodySmall,
+      ),
+    );
+  }
+
+  Widget buildActionCell(BuildContext context,ContentShareController controller) {
+    return Expanded(
+      flex: 0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: Icon(Icons.remove_red_eye, size: 15),
+            onPressed: () {
+              showShareContents(context,controller);
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.delete, size: 15),
+            onPressed: () {
+              print("Delete leave");
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void showShareContents(BuildContext context, ContentShareController controller) {
+    showCustomBottomSheet(
+      context: context,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Shared Content",style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
-            Padding(
-              padding: const EdgeInsets.only(top: 3.0,bottom: 3),
-              child: Container(
-                height: 2,width: Get.width,
-                color: Colors.grey,
+            // Title Section
+            Text(
+              "Shared Content",
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                fontSize: 18,
+                color: Colors.black,
               ),
             ),
-            Align(
-              alignment: Alignment.topLeft,
-                child: Text("Fees Structure",style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),)),
-            SizedBox(height: 20,),
+            Divider(color: Colors.grey, thickness: 1.5),
+            SizedBox(height: 8),
+
+            // Subtitle
+            Text(
+              "Fees Structure",
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: Colors.black87,
+              ),
+            ),
+            SizedBox(height: 16),
+
+            // Info Rows
             Row(
               children: [
-                Expanded(child: InfoRow(title: "Upload Date: ",
-                    style:TextStyle(fontWeight: FontWeight.w600,fontSize: 14) ,
-                    value: "04/05/2024")),
-                SizedBox(width: 10,),
-                Expanded(child: InfoRow(title: "Valid Upto: ",
-                    style:TextStyle(fontWeight: FontWeight.w600,fontSize: 14),
-                    value: "04/05/2024")),
+                Expanded(
+                  child: InfoRow(
+                    title: "Upload Date: ",
+                    value: "04/05/2024",
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: InfoRow(
+                    title: "Valid Upto: ",
+                    value: "04/05/2024",
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
               ],
             ),
-            SizedBox(height: 20,),
+            SizedBox(height: 16),
             Row(
               children: [
-                Expanded(child: InfoRow(title: "Share Date: ",
-                    style:TextStyle(fontWeight: FontWeight.w600,fontSize: 14),
-                    value: "04/05/2024")),
-                SizedBox(width: 10,),
-                Expanded(child: InfoRow(title: "Shared By: ",
-                    style:TextStyle(fontWeight: FontWeight.w600,fontSize: 14),
-                    value: "Mohd Faheem")),
+                Expanded(
+                  child: InfoRow(
+                    title: "Share Date: ",
+                    value: "04/05/2024",
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: InfoRow(
+                    title: "Shared By: ",
+                    value: "Mohd Faheem",
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
               ],
             ),
-            SizedBox(height: 20,),
+            SizedBox(height: 16),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(child: InfoRow(title: "Send To: ",
-                    style:TextStyle(fontWeight: FontWeight.w600,fontSize: 14),
-                    value: "Group")),
-                SizedBox(width: 10,),
-                Expanded(child: InfoRow(title: "Description: ",
-                    style:TextStyle(fontWeight: FontWeight.w600,fontSize: 14),
-                    value: "04/05/2024")),
+                Expanded(
+                  child: InfoRow(
+                    title: "Send To: ",
+                    value: "Group",
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: InfoRow(
+                    title: "Description: ",
+                    value: "Description text goes here",
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
               ],
             ),
-            SizedBox(height: 8,),
+            SizedBox(height: 16),
 
+            // Attachments Section
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Attachments: ",style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),),
-                SizedBox(width: 20),
+                Text(
+                  "Attachments: ",
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(width: 10),
                 customDownloadButton(
-                    onPressed: () {
-                      downloadFileFromAPI("${"baseUrlFromPref" + "data[index].dirPath! "+" data[index].imgName!"}",
-                          "fileName"!);
-                    })
+                  label: "Download",
+                  icon: Icons.download,
+                  onPressed: () {
+                    downloadFileFromAPI(
+                      "${"baseUrlFromPref"}data[index].dirPath!/${"data[index].imgName!"}",
+                      "fileName",
+                    );
+                  },
+                ),
               ],
             ),
-
-
-
           ],
-        )
-
-
+        ),
+      ),
     );
   }
-
+  Widget customDownloadButton({
+    required String label,
+    required IconData icon,
+    required VoidCallback onPressed,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon, size: 16),
+      label: Text(
+        label,
+        style: TextStyle(fontSize: 12),
+      ),
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8), backgroundColor: Colors.blue,
+      ),
+    );
+  }
 
 }

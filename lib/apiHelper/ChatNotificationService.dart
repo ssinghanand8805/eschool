@@ -15,9 +15,9 @@ class ChatNotificationService {
 
   void listenToUserChannel(String loggedInUserId) {
     echoService.echo.private('user.$loggedInUserId').listen('UserEvent', (data) {
-      log(jsonEncode(data));
+       log(jsonEncode(data));
       print('New private event received: ${data['type']}');
-      print('New private event received: ${data['owner_id']}');
+
       if(data['type'] == 1) // block-unblock user event
         {
 
@@ -42,6 +42,12 @@ class ChatNotificationService {
           {
 
           }
+      else if(data['type'] == 6) // readNotificationWhenChatWindowOpen also update unread count
+          {
+        final RecentChatController recentChatControllerService = Get.put(RecentChatController());
+        recentChatControllerService.addUnreadCountRealTime(data);
+      //  print('New private event received: ${data['owner_id']}');
+          }
 
       // Handle the event data (e.g., update UI or show a notification)
 
@@ -64,6 +70,59 @@ class ChatNotificationService {
     // echoService.echo('jj').whi
   }
 
+
+  void listenForGroupUpdates(String groupId)
+  {
+    echoService.echo.private('group.${groupId}').listen('GroupEvent', (data) {
+      print(data);
+      if(data['type'] == 7)
+        {
+          final RecentChatController recentChatControllerService = Get.put(RecentChatController());
+          final ChatGlobalController chatControllerService = Get.put(ChatGlobalController());
+          recentChatControllerService.addIncomingMessage(data);
+          chatControllerService.addIncomingMessage(data);
+        }
+    });
+    echoService.echo.private('group.${groupId}').listenForWhisper('group-message-typing', (data) {
+
+    print("Group Typing Start for : ${groupId}");
+    }).listenForWhisper('stop-group-message-typing',  (data) {
+
+    });
+
+  //   Echo.private(`group.${groupId}`).
+  //   listen('GroupEvent', (e) => {
+  //   let group = e;
+  //       let currentGroupId = $('.chat__person-box--active').data('id');
+  //
+  //   // Group details updated
+  //   if (e.type === 1) {
+  //     updateGroupDetails(e.group);
+  //   } else if (e.type === 2 && currentGroupId == e.group.id) { // Group member role changed
+  //     updateGroupMemberRole(e.group.id, e.user_id, e.is_admin,
+  //         e.userIds);
+  //   } else if (e.type === 3 && currentGroupId == e.group.id) { // member removed from group
+  //     removeMemberFromGroup(e.group.id, e.user_id);
+  //   } else if (e.type === 4 && currentGroupId == e.group.id) { // new members added into group
+  //     let data = e.group;
+  //     data.my_role = myRoleInGroup;
+  //     data.users = e.group.users;
+  //     addMembersToGroup(e.group.id, data);
+  //   } else if (e.type === 5 && currentGroupId == e.group.id) { // group deleted by owner
+  //     groupDeletedByOwner(e.group.id);
+  //   } else if (e.type === 6 && currentGroupId == e.group.id) { // message read by all group members
+  //     setTimeout(function () {
+  //     $('.message-' + e.conversation_id).
+  //     find('.chat-container__read-status').
+  //     addClass('chat-container__read-status--read');
+  //     }, 1000);
+  //   } else if (e.type === 7) { // new group message arrived
+  //     groupMessageArrived(e);
+  //   } else if (e.type === 8) { // group messages read by group member
+  //     updateReadByUsersOfGroupMessage(e);
+  //   }
+  // });
+  }
 
 
   blockUnblockUserEvent(loggedInUserId,e)

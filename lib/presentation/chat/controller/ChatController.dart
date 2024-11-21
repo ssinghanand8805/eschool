@@ -13,6 +13,7 @@ import '../../login_screen/models/Faculity.dart';
 import '../model/Chat.dart';
 import '../model/RecentChat.dart' as rec;
 import 'ChatGlobalController.dart';
+import 'RecentChatController.dart';
 
 
 
@@ -30,10 +31,13 @@ class ChatController extends GetxController {
   Rx<String> replyMessage = "".obs;
   // RxList<dynamic> flattenedMessages = RxList<dynamic>();
   ScrollController scrollController = ScrollController(); // Scroll controller
-
+  RxList<String> unreadMessagesId = <String>[].obs;
+  String topMessageId = "";
   @override
   void onClose() {
     super.onClose();
+    final RecentChatController recentChatController = Get.put(RecentChatController());
+    recentChatController.getData();
 
   }
   @override
@@ -52,6 +56,15 @@ class ChatController extends GetxController {
         scrollToBottom();
       });
     }); // Initialize the future when the controller is created
+    scrollController.addListener(_onScroll);
+  }
+  void _onScroll() {
+    if (scrollController.position.pixels <= 0) {
+      print("reached on first postion");
+      getData();
+      // Call your function when reaching the first position
+     // _loadMoreItems();
+    }
   }
   void scrollToBottom() {
     if (scrollController.hasClients) {
@@ -68,32 +81,135 @@ class ChatController extends GetxController {
     return htmlTagRegex.hasMatch(input);
   }
   void _updateFlattenedMessages() {
+    // Group and flatten the new messages
     final groupedMessages = groupMessagesByDate(chatGlobalControllerService.ChatModelObj.value.data!.conversations!);
-    chatGlobalControllerService.flattenedMessages.value = flattenGroupedMessages(groupedMessages);
+    var newMessages = flattenGroupedMessages(groupedMessages);
+
+    // Insert new messages in chronological order
+    final existingMessages = chatGlobalControllerService.flattenedMessages.value;
+
+    // Merge the new and existing messages
+    List<dynamic> mergedMessages = [];
+    int i = 0, j = 0;
+
+    while (i < newMessages.length && j < existingMessages.length) {
+      var newMessageDate = newMessages[i] is String
+          ? DateTime.parse(newMessages[i])
+          : DateTime.parse((newMessages[i] as Conversations).createdAt!);
+      var existingMessageDate = existingMessages[j] is String
+          ? DateTime.parse(existingMessages[j])
+          : DateTime.parse((existingMessages[j] as Conversations).createdAt!);
+
+      if (newMessageDate.isBefore(existingMessageDate)) {
+        mergedMessages.add(newMessages[i]);
+        i++;
+      } else {
+        mergedMessages.add(existingMessages[j]);
+        j++;
+      }
+    }
+
+    // Add remaining messages
+    while (i < newMessages.length) {
+      mergedMessages.add(newMessages[i]);
+      i++;
+    }
+    while (j < existingMessages.length) {
+      mergedMessages.add(existingMessages[j]);
+      j++;
+    }
+
+    // Update the flattenedMessages list
+    chatGlobalControllerService.flattenedMessages.value = mergedMessages;
+
+    // Notify listeners
+    update();
   }
+
   Future<void> getData() async
   {
 
     String userId = "";
     print(Constants.getChatUrl+chatId+'/conversation?is_group=${isGroup.toString()}');
-    var data  = await apiRespository.getApiCallByJson(Constants.getChatUrl+chatId+'/conversation?is_group=${isGroup.toString()}',);
+    String url = '';
+    if(topMessageId == '')
+      {
+        url = Constants.getChatUrl+chatId+'/conversation?is_group=${isGroup.toString()}';
+      }
+    else
+      {
+        url = Constants.getChatUrl+chatId+'/conversation?before=${topMessageId}is_group=${isGroup.toString()}';
+      }
+
+    var data  = await apiRespository.getApiCallByJson(url,);
     log("DATA @@@@ ${data.body}");
     // var tt = getBoolVariables(data.body['data']['user']);
     // print(tt);
     chatGlobalControllerService.ChatModelObj.value = Chat.fromJson(data.body);
+    int conLength = chatGlobalControllerService.ChatModelObj.value.data!.conversations!.length;
+    Conversations topMsg = chatGlobalControllerService.ChatModelObj.value.data!.conversations![conLength - 1];
+
+    topMessageId = topMsg.id.toString();
+    print("LLLLAAAASSSTTT${topMessageId}");
+    getUnreadMessagesId();
     _updateFlattenedMessages();
-
-  //   try{
-  //
-  //   }
-  //   catch(e)
-  // {
-  //   print("fffffffff");
-  //   print(e);
-  // }
-
-    log("111111111111111111111 ${chatGlobalControllerService.ChatModelObj.value.toJson()}");
     update();
+  }
+
+
+  updateReadByMeInApi(msgIds)
+  async {
+    if(msgIds.length > 0)
+      {
+        FormData mainBody = FormData({'ids[]':msgIds,'is_group':isGroup,'group_id':chatId});
+        var data  = await apiRespository.postApiCallByFormData(Constants.sendReadMessageUrl,mainBody);
+        print("PPPPPPPPP${data.body}");
+      }
+
+
+  }
+
+  getUnreadMessagesId()
+  {
+    String localUserId = "2";
+    if(isGroup.toString() == '1')
+      {
+        chatGlobalControllerService.ChatModelObj.value.data!.conversations!.forEach((element) {
+          if(element.fromId != null)
+            {
+              print("PPPPPP${element.toJson()}");
+              List<ReadBy> list = element.readBy!;
+              bool isInclude = list!.any((item) => item.userId!.toString() == localUserId && item.readAt != null);
+              if(element.fromId! != localUserId && !isInclude) {
+                unreadMessagesId.value.add(element.id!.toString());
+
+              }
+            }
+
+
+
+        });
+      }
+    else
+      {
+
+        chatGlobalControllerService.ChatModelObj.value.data!.conversations!.forEach((element) {
+
+          if(element.toId! == localUserId && element.status == 0 && element.messageType! != 9)
+          {
+            print("***111!${element.toId!}");
+            print("***222222!!!${localUserId!}");
+            print("***33333!!!${element.status!}");
+            unreadMessagesId.value.add(element.id!.toString());
+
+          }
+        });
+
+        update();
+      }
+    updateReadByMeInApi(unreadMessagesId.value);
+    print("UUUUUUNNNNRRRREEEEAAAADDD${unreadMessagesId.value}");
+
   }
   List<dynamic> flattenGroupedMessages(Map<String, List<Conversations>> groupedMessages) {
     List<dynamic> flatList = [];
