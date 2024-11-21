@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:learnladderfaculity/presentation/common_widgets/custom_loader.dart';
 import 'package:learnladderfaculity/presentation/download_center/Upload%20Content/upload_share_content_controller.dart';
 import 'package:learnladderfaculity/presentation/download_center/Upload%20Content/upload_share_content_modal.dart';
 import 'package:learnladderfaculity/theme/theme_helper.dart';
@@ -35,7 +36,7 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green.shade100,
-        title: Text('Content List', style: theme.textTheme.titleLarge),
+        title: Text('Content List', style: theme.textTheme.bodyMedium),
         actions: [
           Obx(
             () => Padding(
@@ -92,7 +93,7 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
                     itemBuilder: (BuildContext context, int index) {
                       if (index == controller.dataList.length) {
                         return controller.isLoading.value
-                            ? Center(child: CircularProgressIndicator())
+                            ? Center(child: CustomLoader())
                             : Container(); // Show loader while more data is being fetched
                       }
 
