@@ -1,186 +1,225 @@
-// import 'package:flutter/material.dart';
-//
-// class UserProfileModal extends StatelessWidget {
-//   final String email;
-//   final List<Map<String, String>> groups;
-//
-//   const UserProfileModal({
-//     Key? key,
-//     required this.email,
-//     required this.groups,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('User Profile'),
-//         actions: [
-//           IconButton(
-//             icon: Icon(Icons.close),
-//             onPressed: () => Navigator.of(context).pop(),
-//           ),
-//         ],
-//       ),
-//       body: SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.all(16.0),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               _buildProfileHeader(),
-//               SizedBox(height: 24),
-//               _buildInfoSection('Bio', 'No bio added yet...'),
-//               _buildInfoSection('Phone', 'No phone added yet...'),
-//               _buildInfoSection('Email', email),
-//               _buildInfoSection('Media', 'No media shared yet...'),
-//               SizedBox(height: 24),
-//               _buildGroupsSection(),
-//               SizedBox(height: 24),
-//               _buildBlockToggle(),
-//               SizedBox(height: 24),
-//               _buildReportButton(context),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   Widget _buildProfileHeader() {
-//     return Row(
-//       children: [
-//         CircleAvatar(
-//           radius: 40,
-//           backgroundImage: AssetImage('assets/profile_placeholder.png'),
-//         ),
-//         SizedBox(width: 16),
-//         Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(
-//               'John Doe',
-//               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-//             ),
-//             SizedBox(height: 4),
-//             Row(
-//               children: [
-//                 Container(
-//                   width: 8,
-//                   height: 8,
-//                   decoration: BoxDecoration(
-//                     color: Colors.green,
-//                     shape: BoxShape.circle,
-//                   ),
-//                 ),
-//                 SizedBox(width: 4),
-//                 Text('Online', style: TextStyle(color: Colors.grey[600])),
-//               ],
-//             ),
-//           ],
-//         ),
-//       ],
-//     );
-//   }
-//
-//   Widget _buildInfoSection(String title, String content) {
-//     return Padding(
-//       padding: EdgeInsets.symmetric(vertical: 8),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(title, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
-//           SizedBox(height: 4),
-//           Text(content, style: TextStyle(fontSize: 16)),
-//           Divider(),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   Widget _buildGroupsSection() {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text('Groups in common', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-//         SizedBox(height: 8),
-//         Text('2 groups', style: TextStyle(color: Colors.grey[600])),
-//         SizedBox(height: 16),
-//         ...groups.map((group) => _buildGroupItem(group['name']!, group['members']!)).toList(),
-//       ],
-//     );
-//   }
-//
-//   Widget _buildGroupItem(String name, String members) {
-//     return Padding(
-//       padding: EdgeInsets.symmetric(vertical: 8),
-//       child: Row(
-//         children: [
-//           CircleAvatar(
-//             backgroundColor: Colors.blue[100],
-//             radius: 24,
-//             child: Icon(Icons.group, color: Colors.blue, size: 24),
-//           ),
-//           SizedBox(width: 16),
-//           Expanded(
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Text(name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-//                 SizedBox(height: 4),
-//                 Text(members, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   Widget _buildBlockToggle() {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//       children: [
-//         Text('Block User', style: TextStyle(fontSize: 16)),
-//         Switch(value: false, onChanged: (value) {}),
-//       ],
-//     );
-//   }
-//
-//   Widget _buildReportButton(BuildContext context) {
-//     return SizedBox(
-//       width: double.infinity,
-//       child: ElevatedButton(
-//         child: Text('Report User'),
-//         onPressed: () {},
-//         style: ElevatedButton.styleFrom(
-//           backgroundColor: Colors.red,
-//           padding: EdgeInsets.symmetric(vertical: 16),
-//         ),
-//       ),
-//     );
-//   }
-// }
-//
-// // Usage example
-// void showUserProfileModal(BuildContext context) {
-//   showModalBottomSheet(
-//     context: context,
-//     isScrollControlled: true,
-//     shape: RoundedRectangleBorder(
-//       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-//     ),
-//     builder: (BuildContext context) {
-//       return FractionallySizedBox(
-//         heightFactor: 0.9,
-//         child: UserProfileModal(
-//           email: 'sam2@sam2.com',
-//           groups: [
-//             {'name': 'Test', 'members': 'You, Anand Singh, San...'},
-//             {'name': 'test2', 'members': 'You, Anand Singh, San...'},
-//           ],
-//         ),
-//       );
-//     },
-//   );
-// }
+import 'package:flutter/material.dart';
+import 'package:learnladderfaculity/core/app_export.dart';
+import 'controller/ChatController.dart';
+
+class GroupDetailsPage extends GetView<ChatController> {
+  GroupDetailsPage({Key? key})
+      : super(
+          key: key,
+        );
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green.shade200,
+        title: Text(
+          'About',
+          style: theme.textTheme.bodyMedium,
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.edit,size: 18,),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Column(
+                children: [
+                  controller.chat.group!.photoUrl!.isNotEmpty
+                      ? CircleAvatar(
+                          radius: 50,
+                          backgroundImage:
+                              NetworkImage(controller.chat.group!.photoUrl!))
+                      : CircleAvatar(
+                          radius: 50,
+                          backgroundImage:
+                              AssetImage("assets/projectImages/user.jpg")),
+                  SizedBox(height: 10),
+                  Text(
+                    controller.chat.group!.name.toString().capitalizeFirst!,
+                    style: theme.textTheme.bodyMedium!
+                        .copyWith(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    controller.chat.group!.createdBy.toString(),
+                    style: theme.textTheme.bodyMedium!
+                        .copyWith(fontSize: 13, color: theme.unselectedWidgetColor),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+
+            // Description Section
+            Text(
+              'Description',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 5),
+            Text(
+              controller.chat.group!.description != null
+                  ? controller.chat.group!.description
+                      .toString()
+                      .capitalizeFirst!
+                  : 'No description added yet...',
+              style: theme.textTheme.titleMedium!.copyWith(color: Colors.grey),
+            ),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    child: Text('Members 3'),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    child: Text('Media'),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Members',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 5),
+            MemberTile(
+              name: 'Super Admin',
+              isOwner: true,
+            ),
+            MemberTile(
+              name: 'user1',
+            ),
+            MemberTile(
+              name: 'user2',
+            ),
+            MemberTile(
+              name: 'user3',
+            ),
+            MemberTile(
+              name: 'user4',
+            ),
+
+            SizedBox(height: 30),
+            Padding(
+              padding: EdgeInsets.all(3),
+              child: SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    backgroundColor: Colors.green,
+                  ),
+                  child: Text(
+                    'Add Members',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(3),
+              child: SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    backgroundColor: Colors.red,
+                  ),
+                  child: Text(
+                    'Delete Group',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MemberTile extends StatelessWidget {
+  final String name;
+  final bool isOwner;
+  final ChatController? controller;
+
+  const MemberTile({required this.name, this.isOwner = false, this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundColor: Colors.blue,
+        child: Text(
+          name[0].toUpperCase(),
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      title: Row(
+        children: [
+          Text(name.capitalizeFirst!),
+          if (isOwner)
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: SizedBox(
+                height: 35,
+                child: Chip(
+                  label: Text(
+                    'Owner',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: Colors.blue,
+                ),
+              ),
+            ),
+        ],
+      ),
+    trailing:  PopupMenuButton<String>(
+        onSelected: (value) {
+          // Handle menu actions
+        },
+        itemBuilder: (context) => [
+          PopupMenuItem(
+            value: 'remove',
+            child: Text('Remove Member'),
+          ),
+          PopupMenuItem(
+            value: 'make_admin',
+            child: Text('Make Admin'),
+          ),
+        ],
+      ),
+    );
+  }
+}

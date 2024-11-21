@@ -12,6 +12,7 @@ import '../../apiHelper/userData.dart';
 import '../common_widgets/custom_loader.dart';
 import '../login_screen/models/ChatUser.dart';
 import 'controller/ChatController.dart';
+import 'groupdetails.dart';
 import 'model/Chat.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:flutter/foundation.dart' as foundation;
@@ -44,15 +45,14 @@ class ChatScreen extends GetView<ChatController> {
         title: InkWell(
           onTap: () {
             if (controller.chat.isGroup == 1) {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => GroupDetails(email: controller.chat.group!., groups: [],
-              //
-              //     ),
-              //   ),
-              // );
-              //
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GroupDetailsPage(
+                  ),
+                ),
+              );
+
             } else {
               Navigator.push(
                 context,
