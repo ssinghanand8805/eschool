@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/apiHelper/chat_api_repo.dart';
 import 'package:learnladderfaculity/apiHelper/userData.dart';
@@ -34,13 +36,20 @@ class RecentChatController extends GetxController {
     var data  = await apiRespository.getApiCallByJson(Constants.getRecentChatUrl,);
     print("DATA @@@@ ${data.body}");
     recentChatModelObj.value = RecentChat.fromJson(data.body);
-    print("111111111111111111111 ${recentChatModelObj.value.toJson()}");
+    log("111111111111111111111 ${recentChatModelObj.value.toJson()}");
     update();
+  }
+  DateTime utcToLocal(String dateTime) {
+    // Parse the input UTC datetime string
+    DateTime utcDateTime = DateTime.parse(dateTime).toUtc();
+
+    // Convert UTC datetime to local datetime
+    return utcDateTime.toLocal();
   }
   String formatChatDateString(String dateTimeString) {
     try {
       // Parse the input string into a DateTime object
-      DateTime dateTime = DateTime.parse(dateTimeString);
+      DateTime dateTime = utcToLocal(dateTimeString);//DateTime.parse(dateTimeString);
 
       final now = DateTime.now();
       final today = DateTime(now.year, now.month, now.day);
@@ -59,6 +68,53 @@ class RecentChatController extends GetxController {
     } catch (e) {
       // Handle invalid date strings gracefully
       return "Invalid date";
+    }
+  }
+
+  void addIncomingMessage(Map<String, dynamic> messageData) {
+    try {
+      // Convert the incoming data to a Conversations object
+      Conversations newMessage = Conversations.fromJson(messageData);
+
+      // Check if the conversation already exists
+      if(newMessage.isGroup == 0)
+        {
+          int existingIndex = recentChatModelObj.value.data?.conversations?.indexWhere(
+                (conversation) => conversation.userId == newMessage.fromId,
+          ) ??
+              -1;
+
+          if (existingIndex != -1) {
+            // Update the existing conversation
+            recentChatModelObj.value.data?.conversations?[existingIndex].message = newMessage.message;
+            recentChatModelObj.value.data?.conversations?[existingIndex].createdAt = newMessage.createdAt;
+          } else {
+            // Add the new conversation to the list
+            recentChatModelObj.value.data?.conversations?.add(newMessage);
+          }
+        }
+      else
+        {
+          int existingIndex = recentChatModelObj.value.data?.conversations?.indexWhere(
+                (conversation) => conversation.groupId == newMessage.groupId,
+          ) ??
+              -1;
+
+          if (existingIndex != -1) {
+            // Update the existing conversation
+            recentChatModelObj.value.data?.conversations?[existingIndex].message = newMessage.message;
+            recentChatModelObj.value.data?.conversations?[existingIndex].createdAt = newMessage.createdAt;
+          } else {
+            // Add the new conversation to the list
+            recentChatModelObj.value.data?.conversations?.add(newMessage);
+          }
+        }
+
+
+      // Notify listeners of the update
+      update();
+    } catch (e) {
+      print("❌ Error adding incoming message: $e");
     }
   }
 }

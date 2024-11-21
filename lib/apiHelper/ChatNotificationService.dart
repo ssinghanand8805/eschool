@@ -1,3 +1,11 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:get/get.dart';
+
+import '../presentation/chat/controller/ChatController.dart';
+import '../presentation/chat/controller/ChatGlobalController.dart';
+import '../presentation/chat/controller/RecentChatController.dart';
 import 'SocketService.dart';
 
 class ChatNotificationService {
@@ -7,7 +15,9 @@ class ChatNotificationService {
 
   void listenToUserChannel(String loggedInUserId) {
     echoService.echo.private('user.$loggedInUserId').listen('UserEvent', (data) {
-      print('New private event received: $data');
+      log(jsonEncode(data));
+      print('New private event received: ${data['type']}');
+      print('New private event received: ${data['owner_id']}');
       if(data['type'] == 1) // block-unblock user event
         {
 
@@ -15,6 +25,10 @@ class ChatNotificationService {
       else if(data['type'] == 2) // new user-to-user message arrived
           {
 
+       final RecentChatController recentChatControllerService = Get.put(RecentChatController());
+       final ChatGlobalController chatControllerService = Get.put(ChatGlobalController());
+       recentChatControllerService.addIncomingMessage(data);
+       chatControllerService.addIncomingMessage(data);
           }
       else if(data['type'] == 3) // added to group
           {
@@ -28,6 +42,7 @@ class ChatNotificationService {
           {
 
           }
+
       // Handle the event data (e.g., update UI or show a notification)
 
     });

@@ -79,10 +79,11 @@ class SubjectView extends GetView<SubjectController> {
               Expanded(
                 child: GetBuilder<SubjectController>(
                   builder: (controller) {
-                    if (controller
+                    if ( controller
                         .subjectList.value.data!.subjectlist!.isEmpty) {
                       return Center(child: CircularProgressIndicator());
                     }
+
 
                     return ListView.builder(
                       itemCount: controller

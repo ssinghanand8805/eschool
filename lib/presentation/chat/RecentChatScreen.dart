@@ -8,8 +8,11 @@ import 'ChatScreen.dart';
 
 import 'controller/RecentChatController.dart';
 import 'model/RecentChat.dart';
-
+import 'package:badges/badges.dart' as badges;
 class RecentChatScreen extends StatefulWidget {
+
+
+
   RecentChatScreen({Key? key})
       : super(
           key: key,
@@ -143,6 +146,13 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
                   color: Colors.grey[600],
                 ),
               ),
+
+                  chat.unreadCount != null && chat.unreadCount! != '0' ?  badges.Badge(
+                  badgeContent: Text(chat.unreadCount!,style: theme.textTheme.bodySmall!.copyWith(
+                    color: Colors.white,
+                  ),),
+
+                ) : SizedBox(),
               const SizedBox(height: 8),
             ],
           ),
@@ -193,12 +203,25 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
                   color: Colors.grey[600],
                 ),
               ),
+
               const SizedBox(height: 8),
+
               if (chat.isGroup! == 1)
-                const Icon(
-                  Icons.group,
-                  color: Colors.blueGrey,
-                  size: 16,
+                Row(
+                  children: [
+                    chat.unreadCount != null && chat.unreadCount! != '0' ? badges.Badge(
+                      badgeContent: Text(chat.unreadCount!,style: theme.textTheme.bodySmall!.copyWith(
+                        color: Colors.white,
+                      ),),
+
+                    ) : SizedBox(),
+                    SizedBox(width: 10,),
+                    const Icon(
+                      Icons.group,
+                      color: Colors.blueGrey,
+                      size: 16,
+                    ),
+                  ],
                 )
             ],
           ),
@@ -213,3 +236,4 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
     echoService.startTypingPersonal(2, 'sam', 3);
   }
 }
+

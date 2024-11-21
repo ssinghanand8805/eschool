@@ -19,8 +19,8 @@ import 'package:flutter/foundation.dart' as foundation;
 class ChatScreen extends GetView<ChatController> {
   ChatScreen({Key? key})
       : super(
-          key: key,
-        );
+    key: key,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -131,9 +131,9 @@ class ChatScreen extends GetView<ChatController> {
                         child: ListView.builder(
                           // reverse: true,
                           controller: controller.scrollController,
-                          itemCount: controller.flattenedMessages.length,
+                          itemCount: controller.chatGlobalControllerService.flattenedMessages.length,
                           itemBuilder: (context, index) {
-                            final item = controller.flattenedMessages[index];
+                            final item = controller.chatGlobalControllerService.flattenedMessages[index];
 
                             if (item is String) {
                               // This is a date header
@@ -186,23 +186,23 @@ class ChatScreen extends GetView<ChatController> {
                         ),
                       ),
                       controller.chat.group != null &&
-                              controller.chat.group!.groupType == 2
+                          controller.chat.group!.groupType == 2
                           ? Padding(
-                              padding: const EdgeInsets.only(bottom: 18.0),
-                              child: Text(
-                                "Only Admin can send messages",
-                                style: theme.textTheme.bodySmall!.copyWith(
-                                  fontSize: 12,
-                                  color: theme.primaryColorDark,
-                                ),
-                              ),
-                            )
+                        padding: const EdgeInsets.only(bottom: 18.0),
+                        child: Text(
+                          "Only Admin can send messages",
+                          style: theme.textTheme.bodySmall!.copyWith(
+                            fontSize: 12,
+                            color: theme.primaryColorDark,
+                          ),
+                        ),
+                      )
                           : MessageInputField(
-                              onSendMessage: (String message) {
-                                print('Sending message: $message');
-                                controller.sendMessage(message);
-                              },
-                            ),
+                        onSendMessage: (String message) {
+                          print('Sending message: $message');
+                          controller.sendMessage(message);
+                        },
+                      ),
                     ],
                   );
                 });
@@ -215,11 +215,11 @@ String _formatDate(DateTime messageDate) {
   final DateTime now = DateTime.now();
   final DateTime today = DateTime(now.year, now.month, now.day); // Remove time
   final DateTime yesterday =
-      today.subtract(const Duration(days: 1)); // Remove time from yesterday
+  today.subtract(const Duration(days: 1)); // Remove time from yesterday
 
   // Truncate time from messageDate
   final DateTime messageDateOnly =
-      DateTime(messageDate.year, messageDate.month, messageDate.day);
+  DateTime(messageDate.year, messageDate.month, messageDate.day);
 
   if (messageDateOnly == today) {
     return "Today";
@@ -268,9 +268,15 @@ class MessageItem extends StatelessWidget {
     required this.msgSenderName,
     required this.previousMessageDate,
   }) : super(key: key);
+  DateTime utcToLocal(String dateTime) {
+    // Parse the input UTC datetime string
+    DateTime utcDateTime = DateTime.parse(dateTime).toUtc();
 
+    // Convert UTC datetime to local datetime
+    return utcDateTime.toLocal();
+  }
   String _formatTime(String? dateTime) {
-    DateTime parsedDate = DateTime.parse(dateTime!);
+    DateTime parsedDate = utcToLocal(dateTime!);//DateTime.parse(dateTime!);
     return DateFormat('h:mm a').format(parsedDate);
   }
 
@@ -316,179 +322,179 @@ class MessageItem extends StatelessWidget {
         // Date Chip
         message.messageType == 9
             ? Center(
-                child: Chip(
-                  label: Text(
-                    message.message!,
-                    style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14),
-                  ),
-                  backgroundColor: Colors.yellow[50],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    side: BorderSide(color: Colors.yellow, width: 1),
-                  ),
-                ),
-              )
+          child: Chip(
+            label: Text(
+              message.message!,
+              style: TextStyle(
+                  color: Colors.black54,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14),
+            ),
+            backgroundColor: Colors.yellow[50],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: BorderSide(color: Colors.yellow, width: 1),
+            ),
+          ),
+        )
             : SizedBox(),
         // Message bubble
         message.messageType == 9
             ? SizedBox()
             : Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: Align(
-                  alignment:
-                      isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: isSentByMe
-                        ? CrossAxisAlignment.end
-                        : CrossAxisAlignment.start,
-                    children: [
-                      // Sender name in group chat
-                      if (isGroupChat && !isSentByMe)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 4.0),
-                          child: Text(
-                            msgSenderName,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ),
-                      // Message content
-                      ChatMessageBubble(
-                        message: message.message!,
-                        isSentByMe: isSentByMe,
-                        fileName: message.fileName,
-                        imageUrl: message.message!,
-                        formattedTime: formattedTime,
-                        isFileMessage: isFileMessage,
+          padding:
+          const EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
+          child: Align(
+            alignment:
+            isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
+            child: Column(
+              crossAxisAlignment: isSentByMe
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
+              children: [
+                // Sender name in group chat
+                if (isGroupChat && !isSentByMe)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: Text(
+                      msgSenderName,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: Theme.of(context).primaryColor,
                       ),
-                      //             Container(
-                      //               constraints: BoxConstraints(
-                      //                   maxWidth: MediaQuery.of(context).size.width * 0.7),
-                      //               padding: const EdgeInsets.symmetric(
-                      //                   vertical: 10.0, horizontal: 14.0),
-                      //               decoration: BoxDecoration(
-                      //                 color: isSentByMe
-                      //                     ? Theme.of(context).primaryColor.withOpacity(0.2)
-                      //                     : Colors.grey[300],
-                      //                 borderRadius: BorderRadius.circular(20).copyWith(
-                      //                   bottomRight: isSentByMe ? Radius.zero : null,
-                      //                   bottomLeft: !isSentByMe ? Radius.zero : null,
-                      //                 ),
-                      //                 boxShadow: [
-                      //                   BoxShadow(
-                      //                     color: Colors.black.withOpacity(0.05),
-                      //                     blurRadius: 5,
-                      //                     offset: const Offset(0, 2),
-                      //                   ),
-                      //                 ],
-                      //               ),
-                      //               child: isFileMessage
-                      // ?Column(
-                      //                 crossAxisAlignment: CrossAxisAlignment.start,
-                      //                 children: [
-                      //                   // Display the file name
-                      //                   Text(
-                      //                     message.fileName!,
-                      //                     style: const TextStyle(
-                      //                       fontSize: 16,
-                      //                       fontWeight: FontWeight.bold,
-                      //                     ),
-                      //                   ),
-                      //                   const SizedBox(height: 8),
-                      //                   // Display the image from the network
-                      //                   Image.network(
-                      //                     message.message!,
-                      //                     fit: BoxFit.cover,
-                      //                     width: double.infinity, // Adjust the width as needed
-                      //                     height: 200, // Adjust the height as needed
-                      //                     loadingBuilder: (context, child, loadingProgress) {
-                      //                       if (loadingProgress == null) {
-                      //                         return child; // Show the image when loaded
-                      //                       }
-                      //                       return Center(
-                      //                         child: CircularProgressIndicator(
-                      //                           value: loadingProgress.expectedTotalBytes != null
-                      //                               ? loadingProgress.cumulativeBytesLoaded /
-                      //                               (loadingProgress.expectedTotalBytes ?? 1)
-                      //                               : null,
-                      //                         ),
-                      //                       );
-                      //                     },
-                      //                     errorBuilder: (context, error, stackTrace) {
-                      //                       return  Image.asset('assets/projectImages/no_data.png',height: 100,);
-                      //                     },
-                      //                   ),
-                      //                   const SizedBox(height: 8),
-                      //                   // Show the time if sent by the user
-                      //                   if (isSentByMe)
-                      //                     Text(
-                      //                       formattedTime,
-                      //                       style: TextStyle(fontSize: 10, color: Colors.grey[600]),
-                      //                     ),
-                      //                 ],
-                      //               )
-                      //
-                      //               // ? Column(
-                      //                   //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //                   //     children: [
-                      //                   //       Text(
-                      //                   //         message.fileName!,
-                      //                   //         style: const TextStyle(
-                      //                   //             fontSize: 16, fontWeight: FontWeight.bold),
-                      //                   //       ),
-                      //                   //       const SizedBox(height: 4),
-                      //                   //       Text(
-                      //                   //         "Size: ${message.fileName!}",
-                      //                   //         style: TextStyle(
-                      //                   //             fontSize: 14, color: Colors.grey[600]),
-                      //                   //       ),
-                      //                   //       const SizedBox(height: 4),
-                      //                   //       isSentByMe
-                      //                   //           ? Text(
-                      //                   //               formattedTime,
-                      //                   //               style: TextStyle(
-                      //                   //                   fontSize: 10, color: Colors.grey[600]),
-                      //                   //             )
-                      //                   //           : ElevatedButton.icon(
-                      //                   //               icon: const Icon(Icons.download),
-                      //                   //               label: const Text("Download",style: TextStyle(color: Colors.white),),
-                      //                   //               onPressed: () {
-                      //                   //                 _downloadFile(message.urlDetails!,
-                      //                   //                     message.fileName!);
-                      //                   //               },
-                      //                   //             ),
-                      //                   //     ],
-                      //                   //   )
-                      //                   : Column(
-                      //                       crossAxisAlignment: CrossAxisAlignment.start,
-                      //                       children: [
-                      //                         controller.isHtml(message.message!) ? Html(
-                      //                           data: message.message!,
-                      //
-                      //                         ) : Text(
-                      //                           message.message!,
-                      //                           style: const TextStyle(fontSize: 16),
-                      //                         ),
-                      //                         const SizedBox(height: 4),
-                      //                         Text(
-                      //                           formattedTime,
-                      //                           style: TextStyle(
-                      //                               fontSize: 10, color: Colors.grey[600]),
-                      //                         ),
-                      //                       ],
-                      //                     ),
-                      //             ),
-                    ],
+                    ),
                   ),
+                // Message content
+                ChatMessageBubble(
+                  message: message.message!,
+                  isSentByMe: isSentByMe,
+                  fileName: message.fileName,
+                  imageUrl: message.message!,
+                  formattedTime: formattedTime,
+                  isFileMessage: isFileMessage,
                 ),
-              ),
+                //             Container(
+                //               constraints: BoxConstraints(
+                //                   maxWidth: MediaQuery.of(context).size.width * 0.7),
+                //               padding: const EdgeInsets.symmetric(
+                //                   vertical: 10.0, horizontal: 14.0),
+                //               decoration: BoxDecoration(
+                //                 color: isSentByMe
+                //                     ? Theme.of(context).primaryColor.withOpacity(0.2)
+                //                     : Colors.grey[300],
+                //                 borderRadius: BorderRadius.circular(20).copyWith(
+                //                   bottomRight: isSentByMe ? Radius.zero : null,
+                //                   bottomLeft: !isSentByMe ? Radius.zero : null,
+                //                 ),
+                //                 boxShadow: [
+                //                   BoxShadow(
+                //                     color: Colors.black.withOpacity(0.05),
+                //                     blurRadius: 5,
+                //                     offset: const Offset(0, 2),
+                //                   ),
+                //                 ],
+                //               ),
+                //               child: isFileMessage
+                // ?Column(
+                //                 crossAxisAlignment: CrossAxisAlignment.start,
+                //                 children: [
+                //                   // Display the file name
+                //                   Text(
+                //                     message.fileName!,
+                //                     style: const TextStyle(
+                //                       fontSize: 16,
+                //                       fontWeight: FontWeight.bold,
+                //                     ),
+                //                   ),
+                //                   const SizedBox(height: 8),
+                //                   // Display the image from the network
+                //                   Image.network(
+                //                     message.message!,
+                //                     fit: BoxFit.cover,
+                //                     width: double.infinity, // Adjust the width as needed
+                //                     height: 200, // Adjust the height as needed
+                //                     loadingBuilder: (context, child, loadingProgress) {
+                //                       if (loadingProgress == null) {
+                //                         return child; // Show the image when loaded
+                //                       }
+                //                       return Center(
+                //                         child: CircularProgressIndicator(
+                //                           value: loadingProgress.expectedTotalBytes != null
+                //                               ? loadingProgress.cumulativeBytesLoaded /
+                //                               (loadingProgress.expectedTotalBytes ?? 1)
+                //                               : null,
+                //                         ),
+                //                       );
+                //                     },
+                //                     errorBuilder: (context, error, stackTrace) {
+                //                       return  Image.asset('assets/projectImages/no_data.png',height: 100,);
+                //                     },
+                //                   ),
+                //                   const SizedBox(height: 8),
+                //                   // Show the time if sent by the user
+                //                   if (isSentByMe)
+                //                     Text(
+                //                       formattedTime,
+                //                       style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                //                     ),
+                //                 ],
+                //               )
+                //
+                //               // ? Column(
+                //                   //     crossAxisAlignment: CrossAxisAlignment.start,
+                //                   //     children: [
+                //                   //       Text(
+                //                   //         message.fileName!,
+                //                   //         style: const TextStyle(
+                //                   //             fontSize: 16, fontWeight: FontWeight.bold),
+                //                   //       ),
+                //                   //       const SizedBox(height: 4),
+                //                   //       Text(
+                //                   //         "Size: ${message.fileName!}",
+                //                   //         style: TextStyle(
+                //                   //             fontSize: 14, color: Colors.grey[600]),
+                //                   //       ),
+                //                   //       const SizedBox(height: 4),
+                //                   //       isSentByMe
+                //                   //           ? Text(
+                //                   //               formattedTime,
+                //                   //               style: TextStyle(
+                //                   //                   fontSize: 10, color: Colors.grey[600]),
+                //                   //             )
+                //                   //           : ElevatedButton.icon(
+                //                   //               icon: const Icon(Icons.download),
+                //                   //               label: const Text("Download",style: TextStyle(color: Colors.white),),
+                //                   //               onPressed: () {
+                //                   //                 _downloadFile(message.urlDetails!,
+                //                   //                     message.fileName!);
+                //                   //               },
+                //                   //             ),
+                //                   //     ],
+                //                   //   )
+                //                   : Column(
+                //                       crossAxisAlignment: CrossAxisAlignment.start,
+                //                       children: [
+                //                         controller.isHtml(message.message!) ? Html(
+                //                           data: message.message!,
+                //
+                //                         ) : Text(
+                //                           message.message!,
+                //                           style: const TextStyle(fontSize: 16),
+                //                         ),
+                //                         const SizedBox(height: 4),
+                //                         Text(
+                //                           formattedTime,
+                //                           style: TextStyle(
+                //                               fontSize: 10, color: Colors.grey[600]),
+                //                         ),
+                //                       ],
+                //                     ),
+                //             ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -651,6 +657,7 @@ class _MessageInputFieldState extends State<MessageInputField> {
           if (_showEmoji) SizedBox(
             height: 300,
             child: EmojiPicker(
+              onEmojiSelected: _onEmojiSelected,
               textEditingController: _controller,
 
               config: Config(
@@ -761,7 +768,7 @@ class _MessageInputFieldState extends State<MessageInputField> {
                         onTap: () async {
                           Navigator.pop(context);
                           final FilePickerResult? result =
-                              await FilePicker.platform.pickFiles(
+                          await FilePicker.platform.pickFiles(
                             type: FileType.any,
                             allowMultiple: false,
                           );
@@ -971,7 +978,7 @@ class ChatMessageBubble extends StatelessWidget {
                   child: CircularProgressIndicator(
                     value: loadingProgress.expectedTotalBytes != null
                         ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
+                        loadingProgress.expectedTotalBytes!
                         : null,
                     color: isSentByMe
                         ? Colors.white
@@ -1004,26 +1011,26 @@ class ChatMessageBubble extends StatelessWidget {
       ),
       child: isHtml(message)
           ? Html(
-              data: message,
-              style: {
-                "body": Style(
-                  color: isSentByMe ? Colors.white : Colors.black87,
-                  fontSize: FontSize(14),
-                  margin: Margins.zero,
-                  padding: HtmlPaddings.zero,
-                  whiteSpace: WhiteSpace.normal, // Ensures text wraps
-                ),
-              },
-            )
+        data: message,
+        style: {
+          "body": Style(
+            color: isSentByMe ? Colors.white : Colors.black87,
+            fontSize: FontSize(14),
+            margin: Margins.zero,
+            padding: HtmlPaddings.zero,
+            whiteSpace: WhiteSpace.normal, // Ensures text wraps
+          ),
+        },
+      )
           : Text(
-              message,
-              style: theme.textTheme.bodySmall!.copyWith(
-                fontSize: 13,
-                color: isSentByMe ? Colors.white : Colors.black87,
-              ),
-              softWrap: true, // Ensures wrapping for long messages
-              overflow: TextOverflow.visible,
-            ),
+        message,
+        style: theme.textTheme.bodySmall!.copyWith(
+          fontSize: 13,
+          color: isSentByMe ? Colors.white : Colors.black87,
+        ),
+        softWrap: true, // Ensures wrapping for long messages
+        overflow: TextOverflow.visible,
+      ),
     );
   }
 

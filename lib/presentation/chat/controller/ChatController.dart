@@ -12,13 +12,15 @@ import '../../login_screen/models/ChatUser.dart';
 import '../../login_screen/models/Faculity.dart';
 import '../model/Chat.dart';
 import '../model/RecentChat.dart' as rec;
+import 'ChatGlobalController.dart';
 
 
 
 class ChatController extends GetxController {
   UserData userData = Get.put(UserData());
   ChatApiRespository apiRespository = ChatApiRespository(apiClient:Get.find(tag: 'chatApi'));
-  Rx<Chat> ChatModelObj = Chat().obs;
+  final ChatGlobalController chatGlobalControllerService = Get.put(ChatGlobalController());
+  // late Rx<Chat> ChatModelObj;
   late String chatId ;
   late rec.Conversations chat ;
   late int isGroup ;
@@ -26,7 +28,7 @@ class ChatController extends GetxController {
   Future<void> fetchDataFuture = Future.value(); // Initialize fetchDataFuture
   Rx<String> replyMessageId = "".obs;
   Rx<String> replyMessage = "".obs;
-  RxList<dynamic> flattenedMessages = RxList<dynamic>();
+  // RxList<dynamic> flattenedMessages = RxList<dynamic>();
   ScrollController scrollController = ScrollController(); // Scroll controller
 
   @override
@@ -37,6 +39,7 @@ class ChatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // ChatModelObj = chatGlobalControllerService.ChatModelObj.value.obs;
     UserData usersData = UserData();
     Faculity? f =  usersData.getFaculity();
     chatUserId = f!.chatUserId.toString() ?? "";
@@ -65,8 +68,8 @@ class ChatController extends GetxController {
     return htmlTagRegex.hasMatch(input);
   }
   void _updateFlattenedMessages() {
-    final groupedMessages = groupMessagesByDate(ChatModelObj.value.data!.conversations!);
-    flattenedMessages.value = flattenGroupedMessages(groupedMessages);
+    final groupedMessages = groupMessagesByDate(chatGlobalControllerService.ChatModelObj.value.data!.conversations!);
+    chatGlobalControllerService.flattenedMessages.value = flattenGroupedMessages(groupedMessages);
   }
   Future<void> getData() async
   {
@@ -77,7 +80,7 @@ class ChatController extends GetxController {
     log("DATA @@@@ ${data.body}");
     // var tt = getBoolVariables(data.body['data']['user']);
     // print(tt);
-    ChatModelObj.value = Chat.fromJson(data.body);
+    chatGlobalControllerService.ChatModelObj.value = Chat.fromJson(data.body);
     _updateFlattenedMessages();
 
   //   try{
@@ -89,7 +92,7 @@ class ChatController extends GetxController {
   //   print(e);
   // }
 
-    log("111111111111111111111 ${ChatModelObj.value.toJson()}");
+    log("111111111111111111111 ${chatGlobalControllerService.ChatModelObj.value.toJson()}");
     update();
   }
   List<dynamic> flattenGroupedMessages(Map<String, List<Conversations>> groupedMessages) {
@@ -191,7 +194,7 @@ class ChatController extends GetxController {
         String dateKey = DateFormat('yyyy-MM-dd').format(DateTime.parse(newMessage.createdAt!));
 
         Map<String, List<Conversations>> groupedMessages =
-        groupMessagesByDate(ChatModelObj.value.data!.conversations!);
+        groupMessagesByDate(chatGlobalControllerService.ChatModelObj.value.data!.conversations!);
 
         if (!groupedMessages.containsKey(dateKey)) {
           groupedMessages[dateKey] = [];
@@ -204,14 +207,15 @@ class ChatController extends GetxController {
             DateTime.parse(a.createdAt!).compareTo(DateTime.parse(b.createdAt!)));
 
         // Re-flatten messages after updating
-        flattenedMessages.value = flattenGroupedMessages(groupedMessages);
+        chatGlobalControllerService.flattenedMessages.value = flattenGroupedMessages(groupedMessages);
 
         // Update the original conversations list
-        ChatModelObj.value.data!.conversations = groupedMessages.values.expand((e) => e).toList();
+        chatGlobalControllerService.ChatModelObj.value.data!.conversations = groupedMessages.values.expand((e) => e).toList();
         WidgetsBinding.instance.addPostFrameCallback((_) {
           scrollToBottom();
         });
         update();
       }
   }
+
 }
