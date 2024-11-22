@@ -142,6 +142,10 @@ import '../presentation/download_center/Content Type/content_type_view.dart';
 import '../presentation/download_center/Upload Content/upload_share_content_view.dart';
 import '../presentation/download_center/Video Tutorial/Binding/video_tutorial_binding.dart';
 import '../presentation/download_center/Video Tutorial/video_tutorial_view.dart';
+import '../presentation/fees/balancefees/balance_fees_binding.dart';
+import '../presentation/fees/balancefees/balance_fees_view.dart';
+import '../presentation/fees/daily_collection/daily_collection_binding.dart';
+import '../presentation/fees/daily_collection/daily_collection_view.dart';
 import '../presentation/library/add student/add_student_binding.dart';
 import '../presentation/login_screen/binding/login_binding.dart';
 import '../presentation/login_screen/login_screen.dart';
@@ -269,6 +273,11 @@ class AppRoutes {
   static const String staff = '/staff';
   static const String approve_leave_request = '/approve_leave_request';
   static const String apply_leave = '/apply_leave';
+
+  /// Fees
+  static const String search_fees_payment = '/search_fees_payment';
+  static const String balance_fees_report = '/balance_fees_report';
+  static const String daily_collection_report = '/daily_collection_report';
 
 
   static List<GetPage> pages = [
@@ -728,10 +737,28 @@ class AppRoutes {
       name: approve_leave_request,
       page: () => ApproveLeaveRequestView(),
       bindings: [ ApproveLeaveRequestBinding()],
-    ),  GetPage(
+    ),
+    GetPage(
       name: apply_leave,
       page: () => ApplyLeaveView(),
       bindings: [ApplyLeaveBinding()],
+    ),
+
+    /// Fees
+    GetPage(
+      name: search_fees_payment,
+      page: () => StaffView(),
+      bindings: [StaffBinding()],
+    ),
+    GetPage(
+      name: balance_fees_report,
+      page: () => BalanceFeeView(),
+      bindings: [ BalanceFeesBinding()],
+    ),
+    GetPage(
+      name: daily_collection_report,
+      page: () => DailyCollectionView(),
+      bindings: [DailyCollectionBinding()],
     ),
   ];
 }

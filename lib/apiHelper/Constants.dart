@@ -150,4 +150,9 @@ class Constants {
   static const String getAllSessionList = '/stdtransfer/getAllSession';
 
 
+  ///fees
+  static const String balanceFeeListUrl = 'webservice/studentbalancefeereport';
+  static const String dailycollectionreportUrl = 'webservice/dailycollectionreport';
+
+
 }
