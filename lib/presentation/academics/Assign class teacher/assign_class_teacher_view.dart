@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:learnladderfaculity/presentation/academics/Assign%20class%20teacher/assign_class_teacher_controller.dart';
@@ -20,170 +21,211 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
         backgroundColor: Colors.green.shade100,
         title: Text(
           'Assign Class Teacher',
-          style: theme.textTheme.titleLarge,
+          style: theme.textTheme.bodyMedium,
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: MyButton(
-              width: 120,
-              prefixIcon: Icon(Icons.add,color: Colors.white,),
-              title: 'Add',
-              textStyle: TextStyle(fontSize:18,color: Colors.white),
-              color: theme.hintColor,
-              onPress: () {
-                addAssignClassTeacher(context);
-              },
-            ),
-          ),
-        ],
       ),
       body: GetBuilder(
-        init: controller,
-        builder: (_) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 8.0,right: 8),
-            child: Column(
-              children: [
-            Padding(
-            padding: const EdgeInsets.only(left: 8.0,right: 8),
-            child: CustomTextField(
-              controller: controller.searchC.value,
-              hint: 'Search.... ', title: '',),
-          ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    columnSpacing: Get.width*0.2,
-                    columns: const [
-                      DataColumn(label: Text('Class')),
-                      DataColumn(label: Text('Section')),
-                      DataColumn(label: Text('Class Teacher')),
-                      DataColumn(label: Text('Action')),
-                    ],
-                    rows: controller.data.asMap().entries.map((entry) {
-                      int index = entry.key;
-                      return DataRow(
-                        cells: [
-                          DataCell(Text(entry.value['class'],
-                              style: theme.textTheme.bodySmall!)),
-                          DataCell(Center(
-                            child: Text(entry.value['section'],
-                                style: theme.textTheme.bodySmall!),
-                          )),
-                          DataCell(Center(
-                            child: Text(entry.value['subjectGroup'],
-                                style: theme.textTheme.bodySmall!),
-                          )),
-                          DataCell(
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.edit, size: 15),
-                                  onPressed: () {
-                                    //editHomework(index);
-                                  },
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.delete, size: 15),
-                                  onPressed: () {
-                                    print("Delete leave");
-                                  },
+          init: controller,
+          builder: (_) {
+            return Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                child: Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8),
+                    child: CustomTextField(
+                      controller: controller.searchC.value,
+                      hint: 'Search.... ',
+                      title: '',
+                    ),
+                  ),
+                  SizedBox(height: 15,),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: controller.data.length,
+                      itemBuilder: (context, index) {
+                        final entry = controller.data[index];
+                        return Card(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 5),
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.green.shade100,
+                                  Colors.green.shade50,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade200,
+                                  blurRadius: 10,
+                                  offset: Offset(0, 4),
                                 ),
                               ],
                             ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Class Info
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Class: ${entry['class']}',
+                                        style:
+                                            theme.textTheme.titleMedium!.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Section: ${entry['section']}',
+                                        style: theme.textTheme.bodySmall,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  // Class Teacher
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Class Teacher:',
+                                        style:
+                                            theme.textTheme.bodySmall!.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          entry['subjectGroup'],
+                                          overflow: TextOverflow.ellipsis,
+                                          style: theme.textTheme.bodySmall,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 12),
+                                  // Action Buttons
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.edit,
+                                            color: Colors.blue, size: 18),
+                                        onPressed: () {
+                                          // Edit action
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.delete,
+                                            color: Colors.red, size: 18),
+                                        onPressed: () {
+                                          // Delete action
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ],
-                      );
-                    }).toList(),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ]
-          )
-          );
-        }
-      )
+                ]));
+          }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          addAssignClassTeacher(context);
+        },
+        tooltip: 'Add Item',
+        shape: CircleBorder(),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        child: Icon(Icons.add),
+      ),
     );
   }
 
-
-
-  addAssignClassTeacher(context){
-    AlertDialogue().show(context,
-      newWidget: [
+  addAssignClassTeacher(context) {
+    showCustomBottomSheet(
+      context: context,
+      child:
         Column(
           children: [
-            Text("Add Content Type",style: theme.textTheme.bodyMedium,),
+            Text(
+              "Add Content Type",
+              style: theme.textTheme.bodyMedium,
+            ),
             MyCustomSD(
                 borderColor: Colors.grey,
                 label: "Select Class",
                 listToSearch: controller.demo,
                 valFrom: 'name',
-                onChanged: (val){
-                }
+                onChanged: (val) {}),
+            SizedBox(
+              height: 20,
             ),
-            SizedBox(height: 20,),
-
             MyCustomSD(
                 borderColor: Colors.grey,
                 label: "Select Section",
                 listToSearch: controller.demo,
                 valFrom: 'name',
-                onChanged: (val){
-                }
+                onChanged: (val) {}),
+            SizedBox(
+              height: 20,
             ),
-
-            SizedBox(height: 20,),
-
-    Align(
-      alignment: Alignment.topLeft,
-        child: Text("Class Teachers",style: TextStyle(fontWeight: FontWeight.bold))),
-    
-    ListView.builder(
-      shrinkWrap: true,
-      itemCount: 5,
-        itemBuilder: (BuildContext context, int index){
-      return  Obx(() {
-        return Row(
-          children: [
-            Checkbox(
-                checkColor: Colors.white,
-                //fillColor: MaterialStateProperty.resolveWith(Colors.red),
-                value: controller.isChecked.value,
-                onChanged: (value) {
-                  controller.isChecked.value = value!;
-                  print(value);
-
+            Align(
+                alignment: Alignment.topLeft,
+                child: Text("Class Teachers",
+                    style: TextStyle(fontWeight: FontWeight.bold))),
+            ListView.builder(
+                shrinkWrap: true,
+                itemCount: 5,
+                itemBuilder: (BuildContext context, int index) {
+                  return Obx(() {
+                    return Row(
+                      children: [
+                        Checkbox(
+                            checkColor: Colors.white,
+                            //fillColor: MaterialStateProperty.resolveWith(Colors.red),
+                            value: controller.isChecked.value,
+                            onChanged: (value) {
+                              controller.isChecked.value = value!;
+                              print(value);
+                            }),
+                        Text("Faheem")
+                      ],
+                    );
+                  });
                 }),
-
-            Text("Faheem")
-          ],
-        );
-      });
-    }),
-
-
-
-
             Align(
               alignment: Alignment.bottomRight,
               child: MyButton(
                 width: 120,
-                title:'Save',textStyle: TextStyle(color: Colors.black,),
-                color:Colors.green.shade100,
-                onPress: () {
-
-                },
+                title: 'Save',
+                textStyle: TextStyle(
+                  color: Colors.black,
+                ),
+                color: Colors.green.shade100,
+                onPress: () {},
               ),
             ),
-
           ],
         )
-      ],
 
     );
   }
-
-
-
 }

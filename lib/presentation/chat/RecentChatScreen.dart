@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
-
 import '../../apiHelper/SocketService.dart';
 import '../common_widgets/custom_loader.dart';
-import 'ChatScreen.dart';
 import 'package:badges/badges.dart' as badges;
 import 'controller/RecentChatController.dart';
 import 'model/RecentChat.dart';
@@ -22,6 +19,7 @@ class RecentChatScreen extends StatefulWidget {
 }
 
 class _RecentChatScreenState extends State<RecentChatScreen> {
+
   RecentChatController controller = Get.put(RecentChatController());
 
   @override
@@ -29,9 +27,12 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green.shade200,
-        title:  Text('Recent Chats',style: theme.textTheme.bodyMedium!.copyWith(fontSize: 16),),
+        title:  Text(
+          'Recent Chats',style: theme.textTheme.bodyMedium!.copyWith(fontSize: 16),
+        ),
 
         actions: [
+
           IconButton(
             onPressed: () {
               Navigator.push(
@@ -54,6 +55,7 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
             highlightColor: Colors.green,
             tooltip: "Create a New Group",
           ),
+
         ],
       ),
       body: GetBuilder(

@@ -146,8 +146,8 @@ class StudentCard extends StatelessWidget {
             : Colors.red;
 
     return Card(
-      elevation: 6,
-      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      elevation: 4,
+      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
@@ -170,7 +170,7 @@ class StudentCard extends StatelessWidget {
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
-                padding: EdgeInsets.all(12.0),
+                padding: EdgeInsets.all(10.0),
                 child: Icon(
                   Icons.school,
                   size: 32.0,
@@ -185,7 +185,7 @@ class StudentCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      classAndSectionName,
+                      classAndSectionName.capitalizeFirst!,
                       style: TextStyle(
                         fontSize: 17.0,
                         fontWeight: FontWeight.bold,
@@ -197,7 +197,7 @@ class StudentCard extends StatelessWidget {
                       'Attendance Status: ${_getStatusText(status)}',
                       style: TextStyle(
                         fontSize: 14.0,
-                        color: Colors.white70,
+                        color: Colors.white,
                       ),
                     ),
                     // SizedBox(height: 8.0),
@@ -243,7 +243,7 @@ class StudentCard extends StatelessWidget {
       case 3:
         return 'Poor';
       default:
-        return 'Unknown';
+        return 'Not found';
     }
   }
 }

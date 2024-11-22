@@ -49,7 +49,7 @@ class _ApproveLeaveScreenState extends State<ApproveLeaveScreen> {
         backgroundColor: Colors.green.shade100,
         title: Text(
           'Approve Leave',
-          style: theme.textTheme.titleLarge,
+          style: theme.textTheme.bodyMedium,
         ),
       ),
       body: GetBuilder(

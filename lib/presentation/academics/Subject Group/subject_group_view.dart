@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:learnladderfaculity/presentation/academics/Subject%20Group/subject_group_controller.dart';
+import 'package:learnladderfaculity/presentation/common_widgets/custom_loader.dart';
 import 'package:learnladderfaculity/theme/theme_helper.dart';
 import 'package:learnladderfaculity/widgets/myCustomsd.dart';
 import '../../../widgets/alert_dialogue.dart';
@@ -16,7 +17,7 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
           backgroundColor: Colors.green.shade100,
           title: Text(
             'Subject List',
-            style: theme.textTheme.titleLarge,
+            style: theme.textTheme.bodyMedium,
           ),
         ),
         body: Padding(
@@ -80,8 +81,9 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
                 child: GetBuilder<SubjectGroupController>(
                   builder: (controller) {
                     if (controller
+                        .subjectGroupList.value.data == null||controller
                         .subjectGroupList.value.data!.subjectgroupList!.isEmpty) {
-                      return Center(child: CircularProgressIndicator());
+                      return Center(child: CustomLoader());
                     }
 
                     return ListView.builder(
@@ -94,109 +96,129 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
 
                         return Card(
                           elevation: 4.0,
-                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          margin: const EdgeInsets.symmetric(vertical: 6.0),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(20.0),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                // Subject Name
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    subject.name!.capitalizeFirst ?? "",
-                                    style: theme.textTheme.bodySmall!
-                                        .copyWith(fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-
-                                // Subject Code
-                                Expanded(
-                                  flex:2,
-                                  child: ListView.builder(
-                                      itemCount: subject.sections!.length,
-                                      shrinkWrap: true,
-                                      itemBuilder: (BuildContext context, int index) {
-                                      return Text(
-                                      " ${subject.sections![index].classN} (${subject.sections![index].section})",
-                                        textAlign: TextAlign.center,
-                                        style: theme.textTheme.bodySmall!
-                                            .copyWith(fontWeight: FontWeight.w600),
-                                      );
-                                    }
-                                  ),
-                                ),
-
-                                // Subject Type
-                                Expanded(
-                                  flex:2,
-                                  child: ListView.builder(
-                                      itemCount: subject.groupSubject!.length,
-                                      shrinkWrap: true,
-                                      itemBuilder: (BuildContext context, int index) {
-                                        return Text(
-                                          " ${subject.groupSubject![index].name} (${subject.sections![index].section})",
-                                          textAlign: TextAlign.center,
-                                          style: theme.textTheme.bodySmall!
-                                              .copyWith(fontWeight: FontWeight.w600),
-                                        );
-                                      }
-                                  ),
-                                ),
-
-                                // Actions
-                                Expanded(
-                                  flex: 1,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text("Confirm Delete",style: theme.textTheme.bodyLarge,),
-                                            content: Text(
-                                              "Are you sure you want to delete this subject? This action cannot be undone.",
-                                              style: theme.textTheme.bodySmall,
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(); // Close the dialog
-                                                },
-                                                child: Text("Cancel"),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  controller.deleteSubject(
-                                                      context,
-                                                      subject
-                                                          .id); // Perform delete
-                                                  Navigator.of(context)
-                                                      .pop(); // Close the dialog
-                                                },
-                                                child: Text(
-                                                  "Delete",
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ),
-                                  ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.green.shade100,
+                                  Colors.green.shade50,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade200,
+                                  blurRadius: 10,
+                                  offset: Offset(0, 4),
                                 ),
                               ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  // Subject Name
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      subject.name!.capitalizeFirst ?? "",
+                                      style: theme.textTheme.bodySmall!
+                                          .copyWith(),
+                                    ),
+                                  ),
+
+                                  // Subject Code
+                                  Expanded(
+                                    flex:2,
+                                    child: ListView.builder(
+                                        itemCount: subject.sections!.length,
+                                        shrinkWrap: true,
+                                        itemBuilder: (BuildContext context, int index) {
+                                        return Text(
+                                        " ${subject.sections![index].classN} (${subject.sections![index].section})",
+                                          textAlign: TextAlign.center,
+                                          style: theme.textTheme.bodySmall!
+                                              .copyWith(),
+                                        );
+                                      }
+                                    ),
+                                  ),
+
+                                  // Subject Type
+                                  Expanded(
+                                    flex:2,
+                                    child: ListView.builder(
+                                        itemCount: subject.groupSubject!.length,
+                                        shrinkWrap: true,
+                                        itemBuilder: (BuildContext context, int index) {
+                                          return Text(
+                                            " ${subject.groupSubject![index].name} (${subject.sections![index].section})",
+                                            textAlign: TextAlign.center,
+                                            style: theme.textTheme.bodySmall!
+                                                .copyWith(),
+                                          );
+                                        }
+                                    ),
+                                  ),
+
+                                  // Actions
+                                  Expanded(
+                                    flex: 1,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text("Confirm Delete",style: theme.textTheme.bodyLarge,),
+                                              content: Text(
+                                                "Are you sure you want to delete this subject? This action cannot be undone.",
+                                                style: theme.textTheme.bodySmall,
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(); // Close the dialog
+                                                  },
+                                                  child: Text("Cancel"),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    controller.deleteSubject(
+                                                        context,
+                                                        subject
+                                                            .id); // Perform delete
+                                                    Navigator.of(context)
+                                                        .pop(); // Close the dialog
+                                                  },
+                                                  child: Text(
+                                                    "Delete",
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         );

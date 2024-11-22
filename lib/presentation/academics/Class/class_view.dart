@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:learnladderfaculity/presentation/academics/Class/class_controller.dart';
+import 'package:learnladderfaculity/presentation/common_widgets/custom_loader.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/customTextField.dart';
@@ -13,10 +14,10 @@ class ClassView extends GetView<ClassController>{
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green.shade100,
+        backgroundColor: Colors.green.shade200,
         title: Text(
           'Class List',
-          style: theme.textTheme.titleLarge,
+          style: theme.textTheme.bodyMedium,
         ),
       ),
       body: Padding(
@@ -71,8 +72,9 @@ class ClassView extends GetView<ClassController>{
               child: GetBuilder<ClassController>(
                 builder: (controller) {
                   if (controller
+                      .classList.value.data == null || controller
                       .classList.value.data!.classlist!.isEmpty) {
-                    return Center(child: CircularProgressIndicator());
+                    return Center(child: CustomLoader());
                   }
 
                   return ListView.builder(
@@ -87,97 +89,117 @@ class ClassView extends GetView<ClassController>{
                         elevation: 4.0,
                         margin: const EdgeInsets.symmetric(vertical: 8.0),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(20.0),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              // Subject Name
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  data.classN!.capitalizeFirst ?? "",
-                                  style: theme.textTheme.bodySmall!
-                                      .copyWith(fontWeight: FontWeight.w600),
-                                ),
-                              ),
-
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  data.id ?? "",
-                                  textAlign: TextAlign.center,
-                                  style: theme.textTheme.bodySmall!
-                                      .copyWith(fontWeight: FontWeight.w600),
-                                ),
-                              ),
-
-                              // Actions
-                              Expanded(
-                                flex: 2,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () async {
-                                        await controller.viewData(data.id);
-                                        addClass(context);
-                                      },
-                                      icon: Icon(
-                                        Icons.edit,
-                                        color: Colors.green,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text("Confirm Delete",style: theme.textTheme.bodyLarge,),
-                                              content: Text(
-                                                "Are you sure you want to delete this subject? This action cannot be undone.",
-                                                style: theme.textTheme.bodySmall,
-                                              ),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pop(); // Close the dialog
-                                                  },
-                                                  child: Text("Cancel"),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    controller.deleteSubject(
-                                                        context,
-                                                        data.id); // Perform delete
-                                                    Navigator.of(context)
-                                                        .pop(); // Close the dialog
-                                                  },
-                                                  child: Text(
-                                                    "Delete",
-                                                    style: TextStyle(
-                                                        color: Colors.red),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                      icon: Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.green.shade100,
+                                Colors.green.shade50,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade200,
+                                blurRadius: 10,
+                                offset: Offset(0, 4),
                               ),
                             ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // Subject Name
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    data.classN!.capitalizeFirst ?? "",
+                                    style: theme.textTheme.bodySmall!
+                                        .copyWith(fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    data.id ?? "",
+                                    textAlign: TextAlign.center,
+                                    style: theme.textTheme.bodySmall!
+                                        .copyWith(fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+
+                                // Actions
+                                Expanded(
+                                  flex: 2,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () async {
+                                          await controller.viewData(data.id);
+                                          addClass(context);
+                                        },
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text("Confirm Delete",style: theme.textTheme.bodyLarge,),
+                                                content: Text(
+                                                  "Are you sure you want to delete this subject? This action cannot be undone.",
+                                                  style: theme.textTheme.bodySmall,
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop(); // Close the dialog
+                                                    },
+                                                    child: Text("Cancel"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      controller.deleteSubject(
+                                                          context,
+                                                          data.id); // Perform delete
+                                                      Navigator.of(context)
+                                                          .pop(); // Close the dialog
+                                                    },
+                                                    child: Text(
+                                                      "Delete",
+                                                      style: TextStyle(
+                                                          color: Colors.red),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );

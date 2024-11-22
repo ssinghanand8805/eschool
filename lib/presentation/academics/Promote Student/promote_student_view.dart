@@ -200,88 +200,108 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                         return Card(
                           margin: EdgeInsets.symmetric(vertical: 8),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           elevation: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Checkbox(
-                                      value: controller.isChecked.value,
-                                      onChanged: (value) {
-                                        controller.isChecked.value = value!;
-                                      },
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        "Admission No: ${student['admissionNo']}",
-                                        style: theme.textTheme.bodyMedium,
-                                      ),
-                                    ),
-                                  ],
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.green.shade100,
+                                  Colors.green.shade50,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade200,
+                                  blurRadius: 10,
+                                  offset: Offset(0, 4),
                                 ),
-                                SizedBox(height: 10),
-                                Text(
-                                  "Student Name: ${student['studentName']}",
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  "Father Name: ${student['fatherName']}",
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  "Date of Birth: ${student['dob']}",
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  "Current Result: ${student['currentResult']}",
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                                SizedBox(height: 5),
-                                Obx(() {
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                              ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
                                     children: [
-                                      _customRadioButton(
-                                        title: "Pass",
-                                        isSelected: controller.isChecked.value,
-                                        onTap: () {
-                                          controller.isChecked.value = true;
+                                      Checkbox(
+                                        value: controller.isChecked.value,
+                                        onChanged: (value) {
+                                          controller.isChecked.value = value!;
                                         },
                                       ),
-                                      _customRadioButton(
-                                        title: "Fail",
-                                        isSelected: !controller.isChecked.value,
-                                        onTap: () {
-                                          controller.isChecked.value = false;
-                                        },
-                                      ),
-                                      _customRadioButton(
-                                        title: "Continue",
-                                        isSelected: controller.isChecked.value,
-                                        onTap: () {
-                                          controller.isChecked.value = true;
-                                        },
-                                      ),
-                                      _customRadioButton(
-                                        title: "Leave",
-                                        isSelected: !controller.isChecked.value,
-                                        onTap: () {
-                                          controller.isChecked.value = false;
-                                        },
+                                      Expanded(
+                                        child: Text(
+                                          "Admission No: ${student['admissionNo']}",
+                                          style: theme.textTheme.bodyMedium,
+                                        ),
                                       ),
                                     ],
-                                  );
-                                }),
-                              ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    "Student Name: ${student['studentName']}",
+                                    style: theme.textTheme.bodySmall,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    "Father Name: ${student['fatherName']}",
+                                    style: theme.textTheme.bodySmall,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    "Date of Birth: ${student['dob']}",
+                                    style: theme.textTheme.bodySmall,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    "Current Result: ${student['currentResult']}",
+                                    style: theme.textTheme.bodySmall,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Obx(() {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        _customRadioButton(
+                                          title: "Pass",
+                                          isSelected: controller.isChecked.value,
+                                          onTap: () {
+                                            controller.isChecked.value = true;
+                                          },
+                                        ),
+                                        _customRadioButton(
+                                          title: "Fail",
+                                          isSelected: !controller.isChecked.value,
+                                          onTap: () {
+                                            controller.isChecked.value = false;
+                                          },
+                                        ),
+                                        _customRadioButton(
+                                          title: "Continue",
+                                          isSelected: controller.isChecked.value,
+                                          onTap: () {
+                                            controller.isChecked.value = true;
+                                          },
+                                        ),
+                                        _customRadioButton(
+                                          title: "Leave",
+                                          isSelected: !controller.isChecked.value,
+                                          onTap: () {
+                                            controller.isChecked.value = false;
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                                ],
+                              ),
                             ),
                           ),
                         );

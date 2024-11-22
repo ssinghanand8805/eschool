@@ -51,14 +51,14 @@ class ContentShareView extends GetView<ContentShareController> {
                         Expanded(
                           child: Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // Header Row
                                 Padding(
                                   padding:
-                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                      const EdgeInsets.symmetric(vertical: 5.0,horizontal: 10),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
@@ -66,8 +66,6 @@ class ContentShareView extends GetView<ContentShareController> {
                                       buildHeaderCell("Send To"),
                                       buildHeaderCell("Share Date"),
                                       buildHeaderCell("Valid Upto"),
-                                      // buildHeaderCell("Shared By"),
-                                      //buildHeaderCell("Description"),
                                       buildHeaderCell("Action",
                                           centerText: true),
                                     ],
@@ -130,8 +128,6 @@ class ContentShareView extends GetView<ContentShareController> {
                                                         data.shareDate ?? ""),
                                                     buildDataCell(
                                                         data.validUpto ?? "-"),
-                                                    //buildDataCell(data.name ?? ""),
-                                                    // buildDataCell(data.description ?? ""),
                                                     buildActionCell(context,controller),
                                                   ],
                                                 ),
@@ -183,13 +179,13 @@ class ContentShareView extends GetView<ContentShareController> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
-            icon: Icon(Icons.remove_red_eye, size: 15),
+            icon: Icon(Icons.remove_red_eye, size: 16,color: Colors.green,),
             onPressed: () {
               showShareContents(context,controller);
             },
           ),
           IconButton(
-            icon: Icon(Icons.delete, size: 15),
+            icon: Icon(Icons.delete, size: 16,color: Colors.red,),
             onPressed: () {
               print("Delete leave");
             },
@@ -210,114 +206,102 @@ class ContentShareView extends GetView<ContentShareController> {
             // Title Section
             Text(
               "Shared Content",
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
                 color: Colors.black,
               ),
             ),
-            Divider(color: Colors.grey, thickness: 1.5),
-            SizedBox(height: 8),
+            const Divider(color: Colors.grey, thickness: 1.5),
+            const SizedBox(height: 12),
 
             // Subtitle
             Text(
               "Fees Structure",
-              style: theme.textTheme.bodyMedium?.copyWith(
+              style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
-                fontSize: 16,
+                fontSize: 18,
                 color: Colors.black87,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Info Rows
             Row(
               children: [
                 Expanded(
                   child: InfoRow(
-                    title: "Upload Date: ",
+                    title: "Upload Date:",
                     value: "04/05/2024",
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.black54,
-                    ),
+                 
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 12),
                 Expanded(
                   child: InfoRow(
-                    title: "Valid Upto: ",
+                    title: "Valid Upto:",
                     value: "04/05/2024",
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.black54,
-                    ),
+
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
                   child: InfoRow(
-                    title: "Share Date: ",
+                    title: "Share Date:",
                     value: "04/05/2024",
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.black54,
-                    ),
+
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 12),
                 Expanded(
                   child: InfoRow(
-                    title: "Shared By: ",
+                    title: "Shared By:",
                     value: "Mohd Faheem",
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.black54,
-                    ),
+
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: InfoRow(
-                    title: "Send To: ",
+                    title: "Send To:",
                     value: "Group",
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.black54,
-                    ),
+
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 12),
                 Expanded(
                   child: InfoRow(
-                    title: "Description: ",
+                    title: "Description:",
                     value: "Description text goes here",
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.black54,
-                    ),
+
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Attachments Section
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "Attachments: ",
+                  "Attachments:",
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                     color: Colors.black87,
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 12),
                 customDownloadButton(
                   label: "Download",
                   icon: Icons.download,
@@ -335,6 +319,7 @@ class ContentShareView extends GetView<ContentShareController> {
       ),
     );
   }
+
   Widget customDownloadButton({
     required String label,
     required IconData icon,
@@ -342,13 +327,17 @@ class ContentShareView extends GetView<ContentShareController> {
   }) {
     return ElevatedButton.icon(
       onPressed: onPressed,
-      icon: Icon(icon, size: 16),
+      icon: Icon(icon, size: 18, color: Colors.white),
       label: Text(
         label,
-        style: TextStyle(fontSize: 12),
+        style: const TextStyle(fontSize: 14, color: Colors.white),
       ),
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8), backgroundColor: Colors.blue,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        backgroundColor: Colors.blueAccent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
     );
   }

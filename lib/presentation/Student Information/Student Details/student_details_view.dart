@@ -54,246 +54,223 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
                                           controller
                                               .getStudentDetailsList[index];
                                       return Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.only(top: 8.0),
                                         child:
                                             controller.getStudentDetailsList
                                                     .isEmpty
                                                 ? Text("No data found!")
-                                                : Container(
+                                                : Card(
 
-                                                    width: Get.width,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        border: Border.all(
-                                                            color: Colors.grey
-                                                                .shade200)),
-                                                    child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                              boxShadow: [
-                                                                BoxShadow(
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .shade400,
-                                                                  blurRadius: 2,
-                                                                  offset: Offset(
-                                                                      0,
-                                                                      1), // Shadow position
-                                                                ),
-                                                              ],
-                                                              color:
-                                                                  Colors.white,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .fromLTRB(0,
-                                                                    5, 10, 5),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
+                                                   elevation: 4,
+                                              margin: const EdgeInsets.symmetric(vertical: 6.0),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(20.0),
+                                              ),
+                                                    child: Container(
+                                                        decoration: BoxDecoration(
+                                                          gradient: LinearGradient(
+                                                            colors: [
+                                                              Colors.green.shade100,
+                                                              Colors.green.shade50,
+                                                            ],
+                                                            begin: Alignment.topLeft,
+                                                            end: Alignment.bottomRight,
+                                                          ),
+                                                          borderRadius: BorderRadius.circular(20),
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              color: Colors.grey.shade200,
+                                                              blurRadius: 10,
+                                                              offset: Offset(0, 4),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Container(
+                                                            height: 150,
+                                                                                                                        width: 4,
+                                                                                                                        decoration: BoxDecoration(
+                                                            color: Colors
+                                                                .green.shade200,
+                                                            borderRadius:
+                                                                BorderRadius.circular(5.0)),
+                                                                                                                      ),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Expanded(
+                                                            child:
                                                                 Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .only(
-                                                                          top:
-                                                                              10,
-                                                                          bottom:
-                                                                              10),
-                                                                  child:
-                                                                      Container(
-                                                                        height: 150,
-                                                                    width: 4,
-                                                                    decoration: BoxDecoration(
-                                                                        color: Colors
-                                                                            .green.shade200,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5.0)),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(
+                                                                      10.0),
+                                                              child:
+                                                                  Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment.start,
+                                                                    children: [
+                                                                      SizedBox(
+                                                                          height: 25,
+                                                                          width: 25,
+                                                                          child: Icon(Icons.person)),
+                                                                      const SizedBox(width: 5),
+                                                                      Expanded(
+                                                                          child: Text(
+                                                                        studentData.firstname.toString() + " (${studentData.gender})",
+                                                                        maxLines: 1,
+                                                                        style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w800),
+                                                                      )),
+                                                                      InkWell(
+                                                                          onTap: () {},
+                                                                          child: Row(
+                                                                            children: [
+                                                                              Text(
+                                                                                "Admission No.: ",
+                                                                                style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                              ),
+                                                                              Text(
+                                                                                studentData.admissionNo.toString(),
+                                                                                style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                              ),
+                                                                            ],
+                                                                          )),
+                                                                    ],
                                                                   ),
-                                                                ),
-                                                                const SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                Expanded(
-                                                                  child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            8.0),
-                                                                    child:
-                                                                        Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.start,
-                                                                          children: [
-                                                                            SizedBox(
-                                                                                height: 25,
-                                                                                width: 25,
-                                                                                child: Icon(Icons.person)),
-                                                                            const SizedBox(width: 5),
-                                                                            Expanded(
-                                                                                child: Text(
-                                                                              studentData.firstname.toString() + " (${studentData.gender})",
-                                                                              maxLines: 1,
-                                                                              style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w800),
-                                                                            )),
-                                                                            InkWell(
-                                                                                onTap: () {},
-                                                                                child: Row(
-                                                                                  children: [
-                                                                                    Text(
-                                                                                      "Admission No.: ",
-                                                                                      style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                    ),
-                                                                                    Text(
-                                                                                      studentData.admissionNo.toString(),
-                                                                                      style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                    ),
-                                                                                  ],
-                                                                                )),
-                                                                          ],
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height:
-                                                                              8,
-                                                                        ),
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceBetween,
-                                                                          children: [
-                                                                            Row(
-                                                                              children: [
-                                                                                Text(
-                                                                                  "Class: ",
-                                                                                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                ),
-                                                                                Text(
-                                                                                  studentData.classname.toString() + " (${studentData.section})",
-                                                                                  maxLines: 3,
-                                                                                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                            Row(
-                                                                              children: [
-                                                                                Text(
-                                                                                  "Roll No.: ",
-                                                                                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                ),
-                                                                                Text(
-                                                                                  studentData.rollNo.toString(),
-                                                                                  maxLines: 3,
-                                                                                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height:
-                                                                              8,
-                                                                        ),
-                                                                        Column(
-                                                                          children: [
-                                                                            Row(
-                                                                              children: [
-                                                                                Text(
-                                                                                  "DOB: ",
-                                                                                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                ),
-                                                                                Text(
-                                                                                  studentData.dob.toString(),
-                                                                                  maxLines: 3,
-                                                                                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                            SizedBox(
-                                                                              height:
-                                                                              8,
-                                                                            ),
-                                                                            Row(
-                                                                              children: [
+                                                                  SizedBox(
+                                                                    height:
+                                                                        8,
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment.spaceBetween,
+                                                                    children: [
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            "Class: ",
+                                                                            style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                          ),
+                                                                          Text(
+                                                                            studentData.classname.toString() + " (${studentData.section})",
+                                                                            maxLines: 3,
+                                                                            style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            "Roll No.: ",
+                                                                            style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                          ),
+                                                                          Text(
+                                                                            studentData.rollNo.toString(),
+                                                                            maxLines: 3,
+                                                                            style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height:
+                                                                        8,
+                                                                  ),
+                                                                  Column(
+                                                                    children: [
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            "DOB: ",
+                                                                            style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                          ),
+                                                                          Text(
+                                                                            studentData.dob.toString(),
+                                                                            maxLines: 3,
+                                                                            style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                        8,
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
 
+                                                                          Expanded(
+                                                                            child: Row(
+                                                                              children: [
+                                                                                Text(
+                                                                                  "Father Name: ",
+                                                                                  style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                                ),
                                                                                 Expanded(
-                                                                                  child: Row(
-                                                                                    children: [
-                                                                                      Text(
-                                                                                        "Father Name: ",
-                                                                                        style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                      ),
-                                                                                      Expanded(
-                                                                                        child: Text(
-                                                                                          studentData.fatherName.toString(),
-                                                                                          maxLines: 3,
-                                                                                          style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
+                                                                                  child: Text(
+                                                                                    studentData.fatherName.toString(),
+                                                                                    maxLines: 3,
+                                                                                    style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
                                                                                   ),
                                                                                 ),
                                                                               ],
                                                                             ),
-                                                                            SizedBox(
-                                                                              height: 8,
-                                                                            ),
-                                                                            Column(
-                                                                              children: [
-                                                                                Row(
-                                                                                  children: [
-                                                                                    Text(
-                                                                                      "Guardian Name: ",
-                                                                                      style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                    ),
-                                                                                    Text(
-                                                                                      studentData.guardianName.toString(),
-                                                                                      maxLines: 3,
-                                                                                      style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                                SizedBox(
-                                                                                  height: 8,
-                                                                                ),
-                                                                                Row(
-                                                                                  children: [
-                                                                                    Text(
-                                                                                      "Guardian Mob.: ",
-                                                                                      style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                    ),
-                                                                                    Text(
-                                                                                      studentData.guardianPhone.toString(),
-                                                                                      style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height: 8,
+                                                                      ),
+                                                                      Column(
+                                                                        children: [
+                                                                          Row(
+                                                                            children: [
+                                                                              Text(
+                                                                                "Guardian Name: ",
+                                                                                style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                              ),
+                                                                              Text(
+                                                                                studentData.guardianName.toString(),
+                                                                                maxLines: 3,
+                                                                                style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height: 8,
+                                                                          ),
+                                                                          Row(
+                                                                            children: [
+                                                                              Text(
+                                                                                "Guardian Mob.: ",
+                                                                                style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                              ),
+                                                                              Text(
+                                                                                studentData.guardianPhone.toString(),
+                                                                                style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
                                                                   ),
-                                                                )
-                                                              ],
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
-                                                        )),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ),
                                       );
                                     },

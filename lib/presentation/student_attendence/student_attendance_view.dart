@@ -43,8 +43,8 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green.shade100,
-        title: Text('Attendance'),
+        backgroundColor: Colors.green.shade200,
+        title: Text('Attendance',style: theme.textTheme.bodyMedium,),
       ),
       body: GetBuilder(
           init: controller,
@@ -583,9 +583,9 @@ class _AttendancePageState extends State<AttendancePage> {
                   ),
                   title: Text(
                     '${student.firstname} ${student.middlename ?? ""} ${student
-                        .lastname ?? ""}' + "( ${student.admissionNo} )", style: theme.textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w500),),
+                        .lastname ?? ""}' + "( ${student.admissionNo} )", style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),),
                   subtitle: Text('Roll No. ${student.rollNo}',
-                    style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),),
+                    style: theme.textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w500),),
                   trailing: Column(
 
                     children: [
