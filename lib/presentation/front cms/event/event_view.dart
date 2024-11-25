@@ -22,10 +22,10 @@ class  EventView extends GetView< EventController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green.shade100,
+        backgroundColor: Colors.green.shade200,
         title: Text(
           'Event',
-          style: theme.textTheme.titleLarge,
+          style: theme.textTheme.bodyMedium,
         ),
       ),
       body: GetBuilder<EventController>(
@@ -56,46 +56,67 @@ class  EventView extends GetView< EventController> {
                         Column(
                           children: controller.filteredContentTypeList.value
                               .data!.map((entry) {
-                            return Card(
-                              elevation: 1,
-                              margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20), // Smoother corners
-                              ),
-                              color: Colors.white,
-                              shadowColor: Colors.green,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Title: ${"entry.bookType"}',
-                                        style: theme.textTheme.bodySmall),
-                                    SizedBox(height: 8),
-                                    Text('Date: ${"entry.bookTitle"}',
-                                        style: theme.textTheme.bodySmall),
-                                    SizedBox(height: 8),
-                                    Text('Venue: ${"entry.description"}',
-                                        style: theme.textTheme.bodySmall),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 10.0,right: 10),
+                              child: Card(
+                                elevation: 2.0,
+                                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.green.shade100,
+                                        Colors.green.shade50,
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.shade200,
+                                        blurRadius: 10,
+                                        offset: Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        IconButton(
-                                          icon: Icon(
-                                              Icons.edit, size: 15),
-                                          onPressed: () {
-                                           // addEditContents(context);
-                                          },
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.close, size: 15),
-                                          onPressed: () {
+                                        Text('Title: ${"entry.bookType"}',
+                                            style: theme.textTheme.bodySmall),
+                                        SizedBox(height: 8),
+                                        Text('Date: ${"entry.bookTitle"}',
+                                            style: theme.textTheme.bodySmall),
+                                        SizedBox(height: 8),
+                                        Text('Venue: ${"entry.description"}',
+                                            style: theme.textTheme.bodySmall),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(
+                                                  Icons.edit, size: 15),
+                                              onPressed: () {
+                                               // addEditContents(context);
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.close, size: 15),
+                                              onPressed: () {
 
-                                          },
+                                              },
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             );
