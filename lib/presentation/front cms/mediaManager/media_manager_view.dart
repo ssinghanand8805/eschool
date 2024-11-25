@@ -1,15 +1,18 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
+import 'package:learnladderfaculity/widgets/custom_button.dart';
 import '../../../apiHelper/GlobalData.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
 import '../../../widgets/datePickerTextField.dart';
+import '../../../widgets/myCustomsd.dart';
 import '../../common_widgets/custom_loader.dart';
 
 import 'media_manager_controller.dart';
@@ -38,18 +41,46 @@ class  MediaManagerView extends GetView< MediaManagerController> {
                   }
                   return Column(
                     children: [
+
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8,top: 5),
+                        child: MyCustomSD(
+                          hideSearch: true,
+                          borderColor: Colors.grey,
+                          listToSearch:controller.listToSearch,
+                          valFrom: "value",
+                          label: 'Filter By File Type',
+                          labelText: 'Filter By File Type',
+                          onChanged: (val) {
+
+                          },
+                        ),
+                      ),
+
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0, right: 8),
                         child: CustomTextField(
                           controller: controller.searchC,
-                          hint: 'Search.... ', title: '',
+                          hint: 'Search.... ', title: 'Search',
                           onChanged: (val) {
-                            // controller.searchContentType(val);
-                            // controller.update();
+
                           },
                         ),
-
                       ),
+                      SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 12.0),
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: MyButton(
+                            onPress: (){},
+                              color: Colors.green,
+                              textStyle: theme.textTheme.titleMedium,
+                              width: 80,
+                              title: "Search"),
+                        ),
+                      ),
+
                       SizedBox(height: 8),
 
                       Expanded(
@@ -130,7 +161,7 @@ class  MediaManagerView extends GetView< MediaManagerController> {
                                               children: [
                                                 // Image Name
                                                 Text(
-                                                  'Title: ${media.imgName}',
+                                                  'Title: ${media.image}',
                                                   style: theme.textTheme.bodyLarge?.copyWith(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 14,
@@ -242,118 +273,67 @@ class  MediaManagerView extends GetView< MediaManagerController> {
 
   void addEvents(BuildContext context) {
     showCustomBottomSheet(context: context,
-      child: Container(
-        height: Get.height-150,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
 
-              // Book Title
-              CustomTextField(
-                controller: controller.titleC,
-                hint: 'Title',
-                title: 'Title',
-              ),
-              const SizedBox(height: 5),
+            // Book Title
+            CustomTextField(
+              controller: controller.titleC,
+              hint: 'Upload Youtube Video Link ',
+              title: 'Upload Youtube Video Link',
+            ),
+            const SizedBox(height: 10),
 
-              CustomTextField(
-                controller: controller.venueC,
-                hint: 'Venue',
-                title: 'Venue',
-              ),
-              const SizedBox(height: 5),
-              DatePickerTextField(
-                  controller: controller.eventStartDate.value,
-                  title: 'Event Start',
-                  onDateSelected: (date) async {
-                    controller.eventStartDate.value.text =
-                    await GlobalData().ConvertToSchoolDateTimeFormat(date);
-                  }),
-              const SizedBox(height: 5),
-              DatePickerTextField(
-                  controller: controller.eventEndDate.value,
-                  title: 'Event End',
-                  onDateSelected: (date) async {
-                    controller.eventEndDate.value.text =
-                    await GlobalData().ConvertToSchoolDateTimeFormat(date);
-                  }),
-              const SizedBox(height: 12),
-              InkWell(
-                onTap: (){
-                  _showImagePicker(context);
-                },
-                child: Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                          color: Colors.green.shade200
-                      )
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.upload_file,color: Colors.green),
-                      Text("Drag and drop a file here or click",style: TextStyle(color: Colors.green),),
-                    ],
-                  ),
 
-                ),
-              ),
-              const SizedBox(height: 5),
-
-              SizedBox(
-                height: 150,
-                child: HtmlEditor(
-                  htmlToolbarOptions: HtmlToolbarOptions(
-                      toolbarItemHeight: 35,
-                      toolbarType: ToolbarType.nativeGrid,
-                      textStyle: theme.textTheme.titleMedium,
-                      defaultToolbarButtons: [
-                        const StyleButtons(),
-                        const FontButtons(
-                            clearAll: true,
-                            strikethrough: false,
-                            subscript: false,
-                            superscript: false)
-                      ]),
-                  controller: controller.HtmlController.value,
-                  //required
-                  htmlEditorOptions: const HtmlEditorOptions(
-                    hint: "Please enter ...",
-                    shouldEnsureVisible: true,
-                    autoAdjustHeight: true,
-                    adjustHeightForKeyboard: true,
-                  ),
-                  otherOptions: const OtherOptions(),
-                ),
-              ),
-            //  const SizedBox(height: 24),
-
-              // Save Button
-              SizedBox(
-                width: double.infinity,
+            InkWell(
+              onTap: (){
+                _showImagePicker(context);
+              },
+              child: Container(
                 height: 40,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Colors.green,
-                  ),
-                  onPressed: () {
-                    // Implement save functionality
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    'Save',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                        color: Colors.green.shade200
+                    )
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.upload_file,color: Colors.green),
+                    Text("Drag and drop a file here or click",style: TextStyle(color: Colors.green),),
+                  ],
+                ),
+
+              ),
+            ),
+            const SizedBox(height: 20),
+
+
+            // Save Button
+            SizedBox(
+              width: double.infinity,
+              height: 40,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: Colors.green,
+                ),
+                onPressed: () {
+                  // Implement save functionality
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Save',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-             // const SizedBox(height: 16),
-            ],
-          ),
+            ),
+           // const SizedBox(height: 16),
+          ],
         ),
       ),
     );

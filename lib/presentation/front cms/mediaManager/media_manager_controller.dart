@@ -8,16 +8,14 @@ import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
 import 'media_manager_modal.dart';
 
-class MediaManagerController extends GetxController{
-
+class MediaManagerController extends GetxController {
   TextEditingController searchC = TextEditingController();
   TextEditingController titleC = TextEditingController();
-  Rx<TextEditingController> eventStartDate = TextEditingController().obs;
-  Rx<TextEditingController> eventEndDate = TextEditingController().obs;
-  Rx<HtmlEditorController> HtmlController = HtmlEditorController().obs;
-  TextEditingController venueC = TextEditingController();
+
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
-  Rx< MediaManagerModal> mediaManagerList = MediaManagerModal().obs;
+  Rx<MediaManagerModal> mediaManagerList = MediaManagerModal().obs;
+  Rx<MediaTypeListModal> mediaType = MediaTypeListModal().obs;
+  List<dynamic> listToSearch = [];
   Rx<TextEditingController> attendanceDate = TextEditingController().obs;
   Rx<File?> pickedFile = Rx<File?>(null);
   late Future<void> fetchDataFuture;
@@ -27,6 +25,7 @@ class MediaManagerController extends GetxController{
   void onInit() async {
     super.onInit();
     fetchDataFuture = initializeData();
+    getMediaType();
   }
   // void initializeOriginalList() {
   //   originalContentTypeList = List.from(filteredContentTypeList.value.data!);  // Make a copy of the original data
@@ -52,25 +51,45 @@ class MediaManagerController extends GetxController{
   //   }
   // }
 
-  Future<void> initializeData() async  {
-    //isLoading.value = true;
-    try
-    {
+  Future<void> initializeData() async {
+    try {
       var body = {};
-      var data = await apiRespository.postApiCallByJson(Constants.getAllMediaList, body);
+      var data = await apiRespository.postApiCallByJson(
+          Constants.getAllMediaList, body);
 
       mediaManagerList.value = MediaManagerModal.fromJson(data.body);
       print(mediaManagerList.value.toJson());
       update();
-    }
-    catch(e)
-    {
+    } catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");
       update();
     }
-
   }
 
+
+
+  Future<void> getMediaType() async {
+    try {
+      var body = {};
+      var data = await apiRespository.postApiCallByJson(
+          Constants.getMediaTypeList, body);
+
+      mediaType.value = MediaTypeListModal.fromJson(data.body);
+
+       listToSearch = data.body['data']['mediaTypes']?.entries
+          .map((entry) => {"key": entry.key, "value": entry.value})
+          .toList() ??
+          [];
+
+print("LIST TO SEARCH ${listToSearch}");
+
+      print(mediaType.value.data!.mediaTypes);
+      update();
+    } catch (e) {
+      print("EEEEEEEEEEEEEEEEEEEE${e}");
+      update();
+    }
+  }
 
   deleteEvent(context, recordId) async {
     try {
@@ -91,5 +110,4 @@ class MediaManagerController extends GetxController{
       update();
     }
   }
-
 }
