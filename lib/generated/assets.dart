@@ -7,6 +7,8 @@ class Assets {
   static const String fontsOpenSansExtrabold = 'assets/fonts/OpenSansExtrabold.ttf';
   static const String fontsOpenSansLight = 'assets/fonts/OpenSansLight.ttf';
   static const String fontsRobotoRegular = 'assets/fonts/RobotoRegular.ttf';
+  static const String imagesComingsoon = 'assets/images/comingsoon.json';
+  static const String imagesImg = 'assets/images/img.png';
   static const String imagesImgArrowLeft = 'assets/images/img_arrow_left.svg';
   static const String imagesImgEye = 'assets/images/img_eye.svg';
   static const String imagesImgPlus = 'assets/images/img_plus.svg';
