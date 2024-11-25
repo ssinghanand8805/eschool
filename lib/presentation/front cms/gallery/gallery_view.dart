@@ -33,93 +33,143 @@ class  GalleryView extends GetView< GalleryController> {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return CustomLoader();
                   }
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8),
-                          child: CustomTextField(
-                            controller: controller.searchC,
-                            hint: 'Search.... ', title: '',
-                            onChanged: (val) {
-                              controller.searchContentType(val);
-                              controller.update();
-                            },
-                          ),
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8),
+                        child: CustomTextField(
+                          controller: controller.searchC,
+                          hint: 'Search.... ', title: '',
+                          onChanged: (val) {
 
+                          },
                         ),
-                        SizedBox(height: 8),
-                        Column(
-                          children: controller.filteredContentTypeList.value
-                              .data!.map((entry) {
-                            return Padding(
-                              padding: const EdgeInsets.only(left: 10,right: 10),
-                              child: Card(
-                                elevation: 2.0,
-                                margin: const EdgeInsets.symmetric(vertical: 8.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Colors.green.shade100,
-                                        Colors.green.shade50,
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.shade200,
-                                        blurRadius: 10,
-                                        offset: Offset(0, 4),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Title: ${"entry.bookType"}',
-                                            style: theme.textTheme.bodySmall),
-                                        SizedBox(height: 8),
-                                        Text('URL: ${"entry.bookTitle"}',
-                                            style: theme.textTheme.bodySmall),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            IconButton(
-                                              icon: Icon(
-                                                  Icons.edit, size: 15),
-                                              onPressed: () {
-                                               // addEditContents(context);
-                                              },
-                                            ),
-                                            IconButton(
-                                              icon: Icon(Icons.close, size: 15),
-                                              onPressed: () {
 
-                                              },
+                      ),
+                      SizedBox(height: 8),
+                      Expanded(
+                        child: GetBuilder<GalleryController>(
+                          builder: (controller) {
+                            if (controller.galleryList.value.data == null ||
+                                controller.galleryList.value.data!.listResult!.isEmpty) {
+                              return Center(child: CustomLoader());
+                            }
+
+                            return ListView.builder(
+                              itemCount:
+                              controller.galleryList.value.data!.listResult!.length,
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                final gallery = controller
+                                    .galleryList.value.data!.listResult![index];
+                                return    Padding(
+                                  padding: const EdgeInsets.only(left: 10,right: 10),
+                                  child: Card(
+                                    elevation: 2.0,
+                                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.green.shade100,
+                                            Colors.green.shade50,
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.shade200,
+                                            blurRadius: 10,
+                                            offset: Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text('Title: ${gallery.title}',
+                                                style: theme.textTheme.bodySmall),
+                                            SizedBox(height: 8),
+                                            Text('URL: ${gallery.featureImage}',
+                                                style: theme.textTheme.bodySmall),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                IconButton(
+                                                  icon: Icon(
+                                                      Icons.edit, color: Colors.green ),
+                                                  onPressed: () {
+                                                    addImages(context);
+                                                  },
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(Icons.delete, color: Colors.red,),
+                                                  onPressed: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) {
+                                                        return AlertDialog(
+                                                          title: Text(
+                                                            "Confirm Delete",
+                                                            style: theme.textTheme.bodyLarge,
+                                                          ),
+                                                          content: Text(
+                                                            "Are you sure you want to delete this Gallery Image? This action cannot be undone.",
+                                                            style: theme.textTheme.bodySmall,
+                                                          ),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.of(context)
+                                                                    .pop(); // Close the dialog
+                                                              },
+                                                              child: Text("Cancel"),
+                                                            ),
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                controller.deleteGallery(context,
+                                                                    gallery.id); // Perform delete
+                                                                Navigator.of(context)
+                                                                    .pop(); // Close the dialog
+                                                              },
+                                                              child: Text(
+                                                                "Delete",
+                                                                style:
+                                                                TextStyle(color: Colors.red),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+
+                                                  },
+                                                ),
+                                              ],
                                             ),
+
                                           ],
                                         ),
-
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
                             );
-                          }).toList(),
-                        )
+                          },
+                        ),
+                      ),
 
 
-                      ],
-                    ),
+
+                    ],
                   );
                 }
             );

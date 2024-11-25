@@ -137,7 +137,27 @@ class Constants {
   static const String viewClass = '/classes/view';
   static const String editClass = '/classes/edit';
 
+  ///  gallery
+  static const String getGalleryList = '/gallery/galleryList';
+  static const String deleteGalleryList = '/gallery/delete';
+  static const String createGalleryList = '/gallery/create';
+  static const String viewGalleryList = '/gallery/view';
+  static const String editGalleryList = '/gallery/edit';
 
+
+  ///  Event
+  static const String getEventList = '/events/eventList';
+  static const String deleteEventList = '/events/delete';
+  static const String createEventList = '/events/create';
+  static const String viewEventList = '/events/view';
+  static const String editEventList = '/events/edit';
+
+  ///  Notice
+  static const String getNoticeList = '/notice/noticeList';
+  static const String deleteNoticeList = '/notice/delete';
+  static const String createNoticeList = '/notice/create';
+  static const String viewNoticeList = '/notice/view';
+  static const String editNoticeList = '/notice/edit';
   /// subjectGroup
   static const String getSubjectGroupList = '/subjectgroup/getSubjectGroupList';
   static const String addSubjectGroupList = '/subjectgroup/add';

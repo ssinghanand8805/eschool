@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learnladderfaculity/presentation/common_widgets/InfoRow.dart';
+import 'package:learnladderfaculity/presentation/front%20cms/event/event_controller.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
 import 'package:learnladderfaculity/widgets/download_button.dart';
 import '../../../apiHelper/GlobalData.dart';
@@ -37,92 +38,146 @@ class  NewsView extends GetView< NewsController> {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return CustomLoader();
                   }
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8),
-                          child: CustomTextField(
-                            controller: controller.searchC,
-                            hint: 'Search.... ', title: '',
-                            onChanged: (val) {
-                              controller.searchContentType(val);
-                              controller.update();
-                            },
-                          ),
-
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8),
+                        child: CustomTextField(
+                          controller: controller.searchC,
+                          hint: 'Search.... ', title: '',
+                          onChanged: (val) {
+                            // controller.searchContentType(val);
+                            // controller.update();
+                          },
                         ),
-                        SizedBox(height: 8),
-                        Column(
-                          children: controller.filteredContentTypeList.value
-                              .data!.map((entry) {
-                            return Padding(
-                                padding: const EdgeInsets.only(left: 10.0,right: 10),
-                            child: Card(
-                            elevation: 2.0,
-                            margin: const EdgeInsets.symmetric(vertical: 8.0),
-                            shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: Container(
-                            decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                            colors: [
-                            Colors.green.shade100,
-                            Colors.green.shade50,
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                            BoxShadow(
-                            color: Colors.grey.shade200,
-                            blurRadius: 10,
-                            offset: Offset(0, 4),
-                            ),
-                            ],
-                            ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Title: ${"entry.bookType"}',
-                                          style: theme.textTheme.bodySmall),
-                                      SizedBox(height: 8),
-                                      Text('URL: ${"entry.bookTitle"}',
-                                          style: theme.textTheme.bodySmall),
 
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(
-                                                Icons.edit, size: 15),
-                                            onPressed: () {
-                                              //addEditContents(context);
-                                            },
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.close, size: 15),
-                                            onPressed: () {
+                      ),
+                      SizedBox(height: 8),
+                      Expanded(
+                        child: GetBuilder<NewsController>(
+                          builder: (controller) {
+                            if (controller.noticeModalList.value.data == null ||
+                                controller.noticeModalList.value.data!.listResult!.isEmpty) {
+                              return Center(child: CustomLoader());
+                            }
 
-                                            },
+                            return ListView.builder(
+                              itemCount:
+                              controller.noticeModalList.value.data!.listResult!.length,
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                final event = controller
+                                    .noticeModalList.value.data!.listResult![index];
+                                return    Padding(
+                                  padding: const EdgeInsets.only(left: 10,right: 10),
+                                  child: Card(
+                                    elevation: 2.0,
+                                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.green.shade100,
+                                            Colors.green.shade50,
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.shade200,
+                                            blurRadius: 10,
+                                            offset: Offset(0, 4),
                                           ),
                                         ],
                                       ),
-                                    ],
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text('Title: ${event.title}',
+                                                style: theme.textTheme.bodySmall),
+                                            SizedBox(height: 8),
+                                            Text('URL: ${event.url}',
+                                                style: theme.textTheme.bodySmall),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                IconButton(
+                                                  icon: Icon(
+                                                      Icons.edit, color: Colors.green ),
+                                                  onPressed: () {
+                                                    addNews(context);
+                                                  },
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(Icons.delete, color: Colors.red,),
+                                                  onPressed: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) {
+                                                        return AlertDialog(
+                                                          title: Text(
+                                                            "Confirm Delete",
+                                                            style: theme.textTheme.bodyLarge,
+                                                          ),
+                                                          content: Text(
+                                                            "Are you sure you want to delete this Gallery Image? This action cannot be undone.",
+                                                            style: theme.textTheme.bodySmall,
+                                                          ),
+                                                          actions: [
+                                                            IconButton(
+                                                              onPressed: () {
+                                                                Navigator.of(context)
+                                                                    .pop(); // Close the dialog
+                                                              },
+                                                              icon: Icon(
+                                                                Icons.edit,
+                                                                color: Colors.green,
+                                                              ),
+                                                            ),
+                                                            IconButton(
+                                                              onPressed: () {
+                                                                controller.deleteEvent(context,
+                                                                    event.id); // Perform delete
+                                                                Navigator.of(context)
+                                                                    .pop(); // Close the dialog
+                                                              },
+                                                              icon: Icon(
+                                                                Icons.delete,
+                                                                color: Colors.red,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ));
-                          }).toList(),
-                        )
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
 
 
-                      ],
-                    ),
+
+                    ],
                   );
                 }
             );
