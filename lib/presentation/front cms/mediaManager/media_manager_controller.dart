@@ -3,21 +3,22 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
-
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
-import 'news_modal.dart';
+import 'media_manager_modal.dart';
 
-class  NewsController extends GetxController{
+class MediaManagerController extends GetxController{
 
   TextEditingController searchC = TextEditingController();
-  ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
-  Rx< NoticeModal> noticeModalList =  NoticeModal().obs;
-  Rx<TextEditingController> dateC = TextEditingController().obs;
-
   TextEditingController titleC = TextEditingController();
+  Rx<TextEditingController> eventStartDate = TextEditingController().obs;
+  Rx<TextEditingController> eventEndDate = TextEditingController().obs;
   Rx<HtmlEditorController> HtmlController = HtmlEditorController().obs;
+  TextEditingController venueC = TextEditingController();
+  ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
+  Rx< MediaManagerModal> mediaManagerList = MediaManagerModal().obs;
+  Rx<TextEditingController> attendanceDate = TextEditingController().obs;
   Rx<File?> pickedFile = Rx<File?>(null);
   late Future<void> fetchDataFuture;
   List<Data> originalContentTypeList = [];
@@ -50,16 +51,16 @@ class  NewsController extends GetxController{
   //     });
   //   }
   // }
+
   Future<void> initializeData() async  {
     //isLoading.value = true;
     try
     {
       var body = {};
-      var data = await apiRespository.postApiCallByJson(Constants.getNoticeList, body);
+      var data = await apiRespository.postApiCallByJson(Constants.getAllMediaList, body);
 
-      noticeModalList.value =  NoticeModal.fromJson(data.body);
-      print(noticeModalList.value.toJson());
-      // initializeOriginalList();
+      mediaManagerList.value = MediaManagerModal.fromJson(data.body);
+      print(mediaManagerList.value.toJson());
       update();
     }
     catch(e)
@@ -67,13 +68,15 @@ class  NewsController extends GetxController{
       print("EEEEEEEEEEEEEEEEEEEE${e}");
       update();
     }
+
   }
 
-  deleteEvent(context, slug) async {
+
+  deleteEvent(context, recordId) async {
     try {
-      var body = {"slug": slug};
+      var body = {"record_id": recordId};
       var data = await apiRespository.postApiCallByFormData(
-          Constants.deleteNoticeList, body);
+          Constants.deleteMediaItem, body);
 
       if (data.body['status'] == 1) {
         Get.showSnackbar(

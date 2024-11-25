@@ -158,6 +158,7 @@ class Constants {
   static const String createNoticeList = '/notice/create';
   static const String viewNoticeList = '/notice/view';
   static const String editNoticeList = '/notice/edit';
+
   /// subjectGroup
   static const String getSubjectGroupList = '/subjectgroup/getSubjectGroupList';
   static const String addSubjectGroupList = '/subjectgroup/add';
@@ -174,5 +175,15 @@ class Constants {
   static const String balanceFeeListUrl = 'webservice/studentbalancefeereport';
   static const String dailycollectionreportUrl = 'webservice/dailycollectionreport';
 
+  /// HR  webservice/getStaffList
+  static const String getStaffList = 'webservice/getStaffList';
+
+
+  /// media Manager
+  static const String getAllMediaList = '/media/getAllMedia';
+  static const String getMediaTypeList = '/media/getMediaTypeList';
+  static const String deleteMediaItem = '/media/deleteItem';
+  static const String addMediaImage = '/media/addImage';
+  static const String addMediaVideo = '/media/addVideo';
 
 }

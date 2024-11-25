@@ -27,6 +27,8 @@ import 'package:learnladderfaculity/presentation/front%20cms/event/event_binding
 import 'package:learnladderfaculity/presentation/front%20cms/event/event_view.dart';
 import 'package:learnladderfaculity/presentation/front%20cms/gallery/gallery_binding.dart';
 import 'package:learnladderfaculity/presentation/front%20cms/gallery/gallery_view.dart';
+import 'package:learnladderfaculity/presentation/front%20cms/mediaManager/media_manager_binding.dart';
+import 'package:learnladderfaculity/presentation/front%20cms/mediaManager/media_manager_view.dart';
 import 'package:learnladderfaculity/presentation/front%20cms/news/news_binding.dart';
 import 'package:learnladderfaculity/presentation/front%20cms/news/news_view.dart';
 import 'package:learnladderfaculity/presentation/human%20resource/apply%20leave/apply_leave_binding.dart';
@@ -278,6 +280,7 @@ class AppRoutes {
   static const String search_fees_payment = '/search_fees_payment';
   static const String balance_fees_report = '/balance_fees_report';
   static const String daily_collection_report = '/daily_collection_report';
+  static const String media_manager = '/media_manager';
 
 
   static List<GetPage> pages = [
@@ -724,6 +727,10 @@ class AppRoutes {
       name: notice,
       page: () => NewsView(),
       bindings: [NewsBinding()],
+    ), GetPage(
+      name: media_manager,
+      page: () => MediaManagerView(),
+      bindings: [MediaManagerBinding()],
     ),
 
 
