@@ -105,6 +105,7 @@ import '../presentation/Examinitaion/Exam Group/exam_group_binding.dart';
 import '../presentation/Examinitaion/Exam Group/exam_group_view.dart';
 import '../presentation/Examinitaion/Marks Grade/marks_grade_binding.dart';
 import '../presentation/Examinitaion/Marks Grade/marks_grade_view.dart';
+import '../presentation/MainScreen/home_page.dart';
 import '../presentation/Student Information/Online Admission/import_student_binding.dart';
 import '../presentation/Student Information/Online Admission/import_student_view.dart';
 import '../presentation/Student Information/Student Categories/student_categories_binding.dart';
@@ -314,9 +315,14 @@ class AppRoutes {
       bindings: [LoginBinding()],
     ),
 
+    // GetPage(
+    //   name: formScreen,
+    //   page: () => DashboardScreen(),
+    //   bindings: [dashBordBinding()],
+    // ),
     GetPage(
       name: formScreen,
-      page: () => DashboardScreen(),
+      page: () => HomePage(),
       bindings: [dashBordBinding()],
     ),
 
