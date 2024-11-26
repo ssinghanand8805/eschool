@@ -17,16 +17,18 @@ class MediaManagerController extends GetxController {
   Rx<MediaTypeListModal> mediaType = MediaTypeListModal().obs;
   List<dynamic> listToSearch = [];
   Rx<TextEditingController> attendanceDate = TextEditingController().obs;
-  Rx<File?> pickedFile = Rx<File?>(null);
+  RxList<File> pickedFile = <File>[].obs;
   late Future<void> fetchDataFuture;
   List<Data> originalContentTypeList = [];
   RxBool isLoading = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
     fetchDataFuture = initializeData();
     getMediaType();
   }
+
   // void initializeOriginalList() {
   //   originalContentTypeList = List.from(filteredContentTypeList.value.data!);  // Make a copy of the original data
   // }
@@ -66,9 +68,64 @@ class MediaManagerController extends GetxController {
     }
   }
 
+  addImage(BuildContext context, RxList<File> files) async {
+    try {
+      if (files.isEmpty) {
+        Get.showSnackbar(
+          Ui.ErrorSnackBar(message: "No files selected for upload."),
+        );
+        return;
+      }
+      List<MultipartFile> ff =[];
+      for (int i = 0; i < files.length; i++)
+        {
+          ff.add(MultipartFile(
+            await files[i].readAsBytes(),
+            filename: files[i].path.split('/').last,
+          ));
+        }
+      print("FFFFFFF ${ff[0].filename}");
+    //     'files[]': MultipartFile(
+    // await files[i].readAsBytes(),
+    // filename: files[i].path.split('/').last,
+    // )
+    //   var formData = FormData({
+    //     for (int i = 0; i < files.length; i++)
+    //       'files[]': MultipartFile(
+    //         await files[i].readAsBytes(),
+    //         filename: files[i].path.split('/').last,
+    //       ),
+    //   });
+      var formData = FormData({
+        'files[]': ff,
+      });
+      var data = await apiRespository.postApiCallByFormData(
+        Constants.addMediaImage,
+        formData,
+      );
+print("DATA !@# ${data.body}");
+      if (data.body['status'] == 1) {
+        Get.showSnackbar(
+          Ui.SuccessSnackBar(message: data.body['msg'].toString()),
+        );
+        initializeData();
+      } else {
+        Get.showSnackbar(
+          Ui.ErrorSnackBar(message: data.body['msg'].toString()),
+        );
+      }
+    } catch (e) {
+      print("Error in addMedia: $e");
+      Get.showSnackbar(
+        Ui.ErrorSnackBar(message: "Failed to upload files. Please try again."),
+      );
+      update();
+    }
+  }
 
 
   Future<void> getMediaType() async {
+
     try {
       var body = {};
       var data = await apiRespository.postApiCallByJson(
@@ -80,18 +137,35 @@ class MediaManagerController extends GetxController {
           .map((entry) => {"key": entry.key, "value": entry.value})
           .toList() ??
           [];
-
-print("LIST TO SEARCH ${listToSearch}");
-
-      print(mediaType.value.data!.mediaTypes);
       update();
+    } catch (e) {
+      print("error${e}");
+      update();
+    }
+  }
+
+  addVideo(context, videoUrl) async {
+    try {
+      var body = {"video_url": videoUrl};
+      var data = await apiRespository.postApiCallByFormData(
+          Constants.addMediaVideo, body);
+
+      if (data.body['status'] == 1) {
+        Get.showSnackbar(
+            Ui.SuccessSnackBar(message: data.body['msg'].toString()));
+        initializeData();
+      } else {
+        Get.showSnackbar(
+            Ui.ErrorSnackBar(message: data.body['msg'].toString()));
+      }
     } catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");
       update();
     }
   }
 
-  deleteEvent(context, recordId) async {
+
+  deleteMedia(context, recordId) async {
     try {
       var body = {"record_id": recordId};
       var data = await apiRespository.postApiCallByFormData(
@@ -110,4 +184,6 @@ print("LIST TO SEARCH ${listToSearch}");
       update();
     }
   }
+
+
 }

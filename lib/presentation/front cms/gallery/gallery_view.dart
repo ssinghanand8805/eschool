@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
+import 'package:learnladderfaculity/widgets/custom_button.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
 import '../../common_widgets/custom_loader.dart';
@@ -225,125 +226,7 @@ class GalleryView extends GetView<GalleryController> {
                           },
                         ),
                       ),
-                      // Expanded(
-                      //   child: GetBuilder<GalleryController>(
-                      //     builder: (controller) {
-                      //       if (controller.galleryList.value.data == null ||
-                      //           controller.galleryList.value.data!.listResult!.isEmpty) {
-                      //         return Center(child: CustomLoader());
-                      //       }
-                      //
-                      //       return   ListView.builder(
-                      //         itemCount:
-                      //         controller.galleryList.value.data!.listResult!.length,
-                      //         shrinkWrap: true,
-                      //         itemBuilder: (BuildContext context, int index) {
-                      //           final gallery = controller
-                      //               .galleryList.value.data!.listResult![index];
-                      //           return    Padding(
-                      //             padding: const EdgeInsets.only(left: 10,right: 10),
-                      //             child: Card(
-                      //               elevation: 2.0,
-                      //               margin: const EdgeInsets.symmetric(vertical: 8.0),
-                      //               shape: RoundedRectangleBorder(
-                      //                 borderRadius: BorderRadius.circular(20.0),
-                      //               ),
-                      //               child: Container(
-                      //                 decoration: BoxDecoration(
-                      //                   gradient: LinearGradient(
-                      //                     colors: [
-                      //                       Colors.green.shade100,
-                      //                       Colors.green.shade50,
-                      //                     ],
-                      //                     begin: Alignment.topLeft,
-                      //                     end: Alignment.bottomRight,
-                      //                   ),
-                      //                   borderRadius: BorderRadius.circular(20),
-                      //                   boxShadow: [
-                      //                     BoxShadow(
-                      //                       color: Colors.grey.shade200,
-                      //                       blurRadius: 10,
-                      //                       offset: Offset(0, 4),
-                      //                     ),
-                      //                   ],
-                      //                 ),
-                      //                 child: Padding(
-                      //                   padding: const EdgeInsets.all(16.0),
-                      //                   child: Column(
-                      //                     crossAxisAlignment: CrossAxisAlignment.start,
-                      //                     children: [
-                      //                       Text('Title: ${gallery.title}',
-                      //                           style: theme.textTheme.bodySmall),
-                      //                       SizedBox(height: 8),
-                      //                       Text('URL: ${gallery.featureImage}',
-                      //                           style: theme.textTheme.bodySmall),
-                      //                       Row(
-                      //                         mainAxisAlignment: MainAxisAlignment.end,
-                      //                         children: [
-                      //                           IconButton(
-                      //                             icon: Icon(
-                      //                                 Icons.edit, color: Colors.green ),
-                      //                             onPressed: () {
-                      //                               addImages(context);
-                      //                             },
-                      //                           ),
-                      //                           IconButton(
-                      //                             icon: Icon(Icons.delete, color: Colors.red,),
-                      //                             onPressed: () {
-                      //                               showDialog(
-                      //                                 context: context,
-                      //                                 builder: (BuildContext context) {
-                      //                                   return AlertDialog(
-                      //                                     title: Text(
-                      //                                       "Confirm Delete",
-                      //                                       style: theme.textTheme.bodyLarge,
-                      //                                     ),
-                      //                                     content: Text(
-                      //                                       "Are you sure you want to delete this Gallery Image? This action cannot be undone.",
-                      //                                       style: theme.textTheme.bodySmall,
-                      //                                     ),
-                      //                                     actions: [
-                      //                                       TextButton(
-                      //                                         onPressed: () {
-                      //                                           Navigator.of(context)
-                      //                                               .pop(); // Close the dialog
-                      //                                         },
-                      //                                         child: Text("Cancel"),
-                      //                                       ),
-                      //                                       TextButton(
-                      //                                         onPressed: () {
-                      //                                           controller.deleteGallery(context,
-                      //                                               gallery.id); // Perform delete
-                      //                                           Navigator.of(context)
-                      //                                               .pop(); // Close the dialog
-                      //                                         },
-                      //                                         child: Text(
-                      //                                           "Delete",
-                      //                                           style:
-                      //                                           TextStyle(color: Colors.red),
-                      //                                         ),
-                      //                                       ),
-                      //                                     ],
-                      //                                   );
-                      //                                 },
-                      //                               );
-                      //
-                      //                             },
-                      //                           ),
-                      //                         ],
-                      //                       ),
-                      //
-                      //                     ],
-                      //                   ),
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           );
-                      //         },
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
+
                     ],
                   );
                 });
@@ -378,7 +261,14 @@ class GalleryView extends GetView<GalleryController> {
             const SizedBox(height: 10),
             InkWell(
               onTap: () {
-                _showImagePicker(context);
+                Get.toNamed('/media_manager', arguments: {
+                  'callback': (String result) {
+                    print('Callback executed with result: $result');
+                    controller.HtmlController.value.insertNetworkImage(result);
+                  }
+                });
+
+//controller.HtmlController.value.insertNetworkImage("http://172.16.19.96/school3/uploads/gallery/media/1732515064-744706031674414f85deb1!download.jpg");
               },
               child: Container(
                 height: 40,
@@ -388,9 +278,9 @@ class GalleryView extends GetView<GalleryController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.upload_file, color: Colors.green),
+                    Icon(Icons.drive_folder_upload_rounded, color: Colors.green),
                     Text(
-                      "Drag and drop a file here or click",
+                      "Add Media",
                       style: TextStyle(color: Colors.green),
                     ),
                   ],
@@ -400,9 +290,10 @@ class GalleryView extends GetView<GalleryController> {
             const SizedBox(height: 10),
 
             SizedBox(
-              height: 250,
+              height: 500,
               child: HtmlEditor(
                 htmlToolbarOptions: HtmlToolbarOptions(
+                  allowImagePicking: true,
                     toolbarItemHeight: 35,
                     toolbarType: ToolbarType.nativeGrid,
                     textStyle: theme.textTheme.titleMedium,
@@ -412,7 +303,8 @@ class GalleryView extends GetView<GalleryController> {
                           clearAll: true,
                           strikethrough: false,
                           subscript: false,
-                          superscript: false)
+                          superscript: false),
+
                     ]),
                 controller: controller.HtmlController.value,
                 //required
@@ -453,76 +345,4 @@ class GalleryView extends GetView<GalleryController> {
     );
   }
 
-  final ImagePicker _picker = ImagePicker();
-
-  Future<void> getImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
-
-    if (pickedFile != null) {
-      controller.pickedFile.value = File(pickedFile.path);
-      controller.update();
-    }
-  }
-
-  void _showImagePicker(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(16.0),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.5,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Select Image Source',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-                  ListTile(
-                    leading: Icon(
-                      Icons.photo_library,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    title: Text('Pick from Gallery'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.gallery);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.camera_alt,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    title: Text('Take a Picture'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.camera);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
 }

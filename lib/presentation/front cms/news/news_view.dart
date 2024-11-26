@@ -224,7 +224,12 @@ class  NewsView extends GetView< NewsController> {
             const SizedBox(height: 12),
             InkWell(
               onTap: (){
-                _showImagePicker(context);
+                Get.toNamed('/media_manager', arguments: {
+                  'callback': (String result) {
+                    print('Callback executed with result: $result');
+                    controller.HtmlController.value.insertNetworkImage(result);
+                  }
+                });
               },
               child: Container(
                 height: 40,
@@ -238,7 +243,7 @@ class  NewsView extends GetView< NewsController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.upload_file,color: Colors.green),
-                    Text("Drag and drop a file here or click",style: TextStyle(color: Colors.green),),
+                    Text("Add Media",style: TextStyle(color: Colors.green),),
                   ],
                 ),
 
@@ -247,7 +252,7 @@ class  NewsView extends GetView< NewsController> {
             const SizedBox(height: 5),
 
             SizedBox(
-              height: 250,
+              height: 400,
               child: HtmlEditor(
                 htmlToolbarOptions: HtmlToolbarOptions(
                     toolbarItemHeight: 35,
@@ -301,76 +306,4 @@ class  NewsView extends GetView< NewsController> {
   }
 
 
-  final ImagePicker _picker = ImagePicker();
-
-  Future<void> getImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
-
-    if (pickedFile != null) {
-      controller.pickedFile.value = File(pickedFile.path);
-      controller.update();
-    }
-  }
-
-  void _showImagePicker(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(16.0),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.5,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Select Image Source',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-                  ListTile(
-                    leading: Icon(
-                      Icons.photo_library,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    title: Text('Pick from Gallery'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.gallery);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.camera_alt,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    title: Text('Take a Picture'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.camera);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
 }

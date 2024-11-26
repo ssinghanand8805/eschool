@@ -17,9 +17,12 @@ import '../../common_widgets/custom_loader.dart';
 
 import 'media_manager_controller.dart';
 
-class  MediaManagerView extends GetView< MediaManagerController> {
-  MediaManagerView({Key? key}) : super(key: key,);
-
+class MediaManagerView extends GetView<MediaManagerController> {
+  MediaManagerView({Key? key})
+      : super(
+          key: key,
+        );
+  final callback = Get.arguments?['callback'] as Function?;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,30 +44,26 @@ class  MediaManagerView extends GetView< MediaManagerController> {
                   }
                   return Column(
                     children: [
-
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0, right: 8,top: 5),
+                        padding:
+                            const EdgeInsets.only(left: 8.0, right: 8, top: 5),
                         child: MyCustomSD(
                           hideSearch: true,
                           borderColor: Colors.grey,
-                          listToSearch:controller.listToSearch,
+                          listToSearch: controller.listToSearch,
                           valFrom: "value",
                           label: 'Filter By File Type',
                           labelText: 'Filter By File Type',
-                          onChanged: (val) {
-
-                          },
+                          onChanged: (val) {},
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0, right: 8),
                         child: CustomTextField(
                           controller: controller.searchC,
-                          hint: 'Search.... ', title: 'Search',
-                          onChanged: (val) {
-
-                          },
+                          hint: 'Search.... ',
+                          title: 'Search',
+                          onChanged: (val) {},
                         ),
                       ),
                       SizedBox(height: 8),
@@ -73,281 +72,417 @@ class  MediaManagerView extends GetView< MediaManagerController> {
                         child: Align(
                           alignment: Alignment.topRight,
                           child: MyButton(
-                            onPress: (){},
+                              onPress: () {},
                               color: Colors.green,
                               textStyle: theme.textTheme.titleMedium,
                               width: 80,
                               title: "Search"),
                         ),
                       ),
-
                       SizedBox(height: 8),
-
                       Expanded(
                         child: GetBuilder<MediaManagerController>(
                           builder: (controller) {
-                            if (controller.mediaManagerList.value.data == null ||
-                                controller.mediaManagerList.value.data!.isEmpty) {
+                            if (controller.mediaManagerList.value.data ==
+                                    null ||
+                                controller
+                                    .mediaManagerList.value.data!.isEmpty) {
                               return Center(child: CustomLoader());
                             }
 
-                            return ListView.builder(
-                              itemCount:
-                              controller.mediaManagerList.value.data!.length,
-                              shrinkWrap: true,
+                            return GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2, // Two items per row
+                                crossAxisSpacing: 10.0,
+                                mainAxisSpacing: 10.0,
+                                childAspectRatio: 0.8,
+                              ),
+                              itemCount: controller
+                                  .mediaManagerList.value.data!.length,
+                              padding: const EdgeInsets.all(20.0),
                               itemBuilder: (BuildContext context, int index) {
                                 final media = controller
                                     .mediaManagerList.value.data![index];
-                                final imageUrl = GlobalData().baseUrlValueFromPref+media.dirPath! + media.imgName!;
-                                return   Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-                                  child: Card(
-                                    elevation: 4.0,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Colors.green.shade100,
-                                            Colors.green.shade50,
-                                          ],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                        ),
-                                        borderRadius: BorderRadius.circular(20.0),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.shade300,
-                                            blurRadius: 10,
-                                            offset: Offset(0, 4),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          // Image Section
-                                          InkWell(
-                                            onTap: (){
+                                final imageUrl =
+                                    GlobalData().baseUrlValueFromPref +
+                                        media.dirPath! +
+                                        media.imgName!;
 
-                                              showResponsiveImageDialog(context,imageUrl);
-                                            }
-                                            ,
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-                                              child: Image.network(
-                                               imageUrl,
-                                                height: 200,
+                                return Card(
+                                  elevation: 4.0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.green.shade100,
+                                          Colors.green.shade50,
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.shade300,
+                                          blurRadius: 10,
+                                          offset: const Offset(0, 4),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // Image Section
+                                        InkWell(
+                                          onTap: () {
+                                            showResponsiveImageDialog(
+                                                context, imageUrl);
+                                          },
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.vertical(
+                                              top: Radius.circular(20.0),
+                                            ),
+                                            child: Image.network(
+                                              imageUrl,
+                                              height: 100,
+                                              width: double.infinity,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, error,
+                                                      stackTrace) =>
+                                                  Container(
+                                                height: 100,
                                                 width: double.infinity,
-                                                fit: BoxFit.cover,
-                                                errorBuilder: (context, error, stackTrace) => Container(
-                                                  height: 200,
-                                                  width: double.infinity,
-                                                  color: Colors.grey.shade200,
-                                                  child: Center(
-                                                    child: Icon(Icons.broken_image, color: Colors.grey, size: 50),
-                                                  ),
+                                                color: Colors.grey.shade200,
+                                                child: const Center(
+                                                  child: Icon(
+                                                      Icons.broken_image,
+                                                      color: Colors.grey,
+                                                      size: 50),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          // Content Section
-                                          Padding(
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                // Image Name
-                                                Text(
-                                                  'Title: ${media.image}',
-                                                  style: theme.textTheme.bodyLarge?.copyWith(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14,
-                                                    color: Colors.black87,
-                                                  ),
+                                        ),
+                                        // Content Section
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              // Image Name
+                                              Text(
+                                                'Title: ${media.image}',
+                                                maxLines: 2,
+                                                style: theme.textTheme.bodyLarge
+                                                    ?.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  color: Colors.black87,
                                                 ),
-                                                const SizedBox(height: 8),
+                                              ),
+                                              const SizedBox(height: 8),
 
-                                                // Action Buttons
-                                                // Row(
-                                                //   mainAxisAlignment: MainAxisAlignment.end,
-                                                //   children: [
-                                                //     IconButton(
-                                                //       icon: Icon(
-                                                //         Icons.edit,
-                                                //         color: Colors.blueAccent,
-                                                //       ),
-                                                //       onPressed: () {
-                                                //         // Handle edit action
-                                                //       },
-                                                //     ),
-                                                //     IconButton(
-                                                //       icon: Icon(
-                                                //         Icons.delete,
-                                                //         color: Colors.redAccent,
-                                                //       ),
-                                                //       onPressed: () {
-                                                //         // Delete confirmation dialog
-                                                //         showDialog(
-                                                //           context: context,
-                                                //           builder: (BuildContext context) {
-                                                //             return AlertDialog(
-                                                //               shape: RoundedRectangleBorder(
-                                                //                 borderRadius: BorderRadius.circular(15),
-                                                //               ),
-                                                //               title: Text(
-                                                //                 "Confirm Delete",
-                                                //                 style: theme.textTheme.titleMedium,
-                                                //               ),
-                                                //               content: Text(
-                                                //                 "Are you sure you want to delete this subject? This action cannot be undone.",
-                                                //                 style: theme.textTheme.bodyMedium,
-                                                //               ),
-                                                //               actions: [
-                                                //                 TextButton(
-                                                //                   onPressed: () {
-                                                //                     Navigator.of(context).pop(); // Close dialog
-                                                //                   },
-                                                //                   child: Text(
-                                                //                     "Cancel",
-                                                //                     style: TextStyle(color: Colors.black54),
-                                                //                   ),
-                                                //                 ),
-                                                //                 TextButton(
-                                                //                   onPressed: () {
-                                                //                     controller.deleteEvent(context, media.id);
-                                                //                     Navigator.of(context).pop(); // Close dialog
-                                                //                   },
-                                                //                   child: Text(
-                                                //                     "Delete",
-                                                //                     style: TextStyle(color: Colors.red),
-                                                //                   ),
-                                                //                 ),
-                                                //               ],
-                                                //             );
-                                                //           },
-                                                //         );
-                                                //       },
-                                                //     ),
-                                                //   ],
-                                                // ),
-                                              ],
-                                            ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  IconButton(
+                                                    icon: const Icon(
+                                                        Icons.delete,
+                                                        color: Colors.red),
+                                                    onPressed: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return AlertDialog(
+                                                            title: Text(
+                                                              "Confirm Delete",
+                                                              style: theme
+                                                                  .textTheme
+                                                                  .bodyLarge,
+                                                            ),
+                                                            content: Text(
+                                                              "Are you sure you want to delete this Gallery Image? This action cannot be undone.",
+                                                              style: theme
+                                                                  .textTheme
+                                                                  .bodySmall,
+                                                            ),
+                                                            actions: [
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                                child: const Text(
+                                                                    "Cancel"),
+                                                              ),
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  controller
+                                                                      .deleteMedia(
+                                                                          context,
+                                                                          media
+                                                                              .id);
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                  "Delete",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .red),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      );
+                                                    },
+                                                  ),
+                                                  callback != null
+                                                      ? Radio<String>(
+                                                          value: imageUrl,
+                                                          groupValue:
+                                                              "", // Current selected value
+                                                          onChanged:
+                                                              (String? value) {
+                                                            if (callback !=
+                                                                null) {
+                                                              callback!(value);
+                                                              Get.back();
+                                                            }
+                                                          },
+                                                        )
+                                                      : const SizedBox(),
+                                                ],
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 );
-
                               },
                             );
                           },
                         ),
                       ),
-
-
-
                     ],
                   );
-                }
-            );
-          }
-      ),
-
+                });
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          addEvents(context);
+          addMedia(context);
         },
         tooltip: 'Add Item',
-        shape:CircleBorder() ,
+        shape: CircleBorder(),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
         child: Icon(Icons.add),
       ),
-
     );
   }
 
-  void addEvents(BuildContext context) {
-    showCustomBottomSheet(context: context,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
+  void addMedia(BuildContext context) {
+    String selectedMediaType = "YouTube";
 
-            // Book Title
-            CustomTextField(
-              controller: controller.titleC,
-              hint: 'Upload Youtube Video Link ',
-              title: 'Upload Youtube Video Link',
+    showCustomBottomSheet(
+      context: context,
+      child: StatefulBuilder(
+        builder: (context, setState) {
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Media Type Selection
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Choose Media Type",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Radio<String>(
+                            value: "YouTube",
+                            groupValue: selectedMediaType,
+                            onChanged: (String? value) {
+                              setState(() {
+                                selectedMediaType = value!;
+                              });
+                            },
+                          ),
+                          const Text("YouTube Link"),
+                          Radio<String>(
+                            value: "Image/Video",
+                            groupValue: selectedMediaType,
+                            onChanged: (String? value) {
+                              setState(() {
+                                selectedMediaType = value!;
+                              });
+                            },
+                          ),
+                          const Text("Image/Video"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                // Conditional Rendering Based on Media Type
+                if (selectedMediaType == "YouTube") ...[
+                  CustomTextField(
+                    controller: controller.titleC,
+                    hint: 'Upload YouTube Video Link',
+                    title: 'YouTube Video Link',
+                  ),
+                ] else ...[
+                  InkWell(
+                    onTap: () {
+                      _showImagePicker(context);
+                    },
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: Colors.green.shade200),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.upload_file, color: Colors.green),
+                          const SizedBox(width: 8),
+                          const Text(
+                            "Drag and drop a file here or click",
+                            style: TextStyle(color: Colors.green),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  Obx(
+                        () => Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: files.map((file) {
+                        print("FILE PATH ${file.path}");
+                        return Stack(
+                          children: [
+                            Image.file(
+                              file,
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: IconButton(
+                                icon: Icon(Icons.cancel, color: Colors.white),
+                                onPressed: () {
+                                  files.remove(file);
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 20),
+
+                // Save Button
+                SizedBox(
+                  width: double.infinity,
+                  height: 40,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: Colors.green,
+                    ),
+                    onPressed: () {
+                      if (selectedMediaType == "YouTube") {
+                        controller.addVideo(context, controller.titleC.text);
+                        print("Saving YouTube Link: ${controller.titleC.text}");
+                      }
+                      else {
+                        print("ALL FILES ${files.map((element) => element.path)}");
+                        controller.addImage(
+                            context,files);
+                        print("Saving Image/Video");
+                      }
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Save',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-
-
-            InkWell(
-              onTap: (){
-                _showImagePicker(context);
-              },
-              child: Container(
-                height: 40,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                        color: Colors.green.shade200
-                    )
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.upload_file,color: Colors.green),
-                    Text("Drag and drop a file here or click",style: TextStyle(color: Colors.green),),
-                  ],
-                ),
-
-              ),
-            ),
-            const SizedBox(height: 20),
-
-
-            // Save Button
-            SizedBox(
-              width: double.infinity,
-              height: 40,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.green,
-                ),
-                onPressed: () {
-                  // Implement save functionality
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  'Save',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-           // const SizedBox(height: 16),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-
   final ImagePicker _picker = ImagePicker();
+  RxList<File> files = <File>[].obs;
 
-  Future<void> getImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
+  Future<void> getMultipleImagesFromGallery() async {
+    try {
+      final List<XFile>? pickedFiles = await _picker.pickMultiImage();
 
-    if (pickedFile != null) {
-      controller.pickedFile.value = File(pickedFile.path);
-      controller.update();
+      if (pickedFiles != null && pickedFiles.isNotEmpty) {
+        files.addAll(pickedFiles.map((file) => File(file.path)));
+        print("Picked files: ${files.length}");
+      } else {
+        print("No images selected.");
+      }
+    } catch (e) {
+      print("Error picking images: $e");
+    }
+  }
+
+  Future<void> getSingleImageFromCamera() async {
+    try {
+      final XFile? pickedFile =
+          await _picker.pickImage(source: ImageSource.camera);
+
+      if (pickedFile != null) {
+        files.add(File(pickedFile.path));
+        print("Camera image added.");
+      } else {
+        print("No image captured.");
+      }
+    } catch (e) {
+      print("Error capturing image: $e");
     }
   }
 
@@ -387,10 +522,10 @@ class  MediaManagerView extends GetView< MediaManagerController> {
                       Icons.photo_library,
                       color: Theme.of(context).primaryColor,
                     ),
-                    title: Text('Pick from Gallery'),
+                    title: Text('Pick Multiple from Gallery'),
                     onTap: () {
                       Navigator.pop(context);
-                      getImage(ImageSource.gallery);
+                      getMultipleImagesFromGallery();
                     },
                   ),
                   ListTile(
@@ -398,10 +533,10 @@ class  MediaManagerView extends GetView< MediaManagerController> {
                       Icons.camera_alt,
                       color: Theme.of(context).primaryColor,
                     ),
-                    title: Text('Take a Picture'),
+                    title: Text('Capture a Single Image'),
                     onTap: () {
                       Navigator.pop(context);
-                      getImage(ImageSource.camera);
+                      getSingleImageFromCamera();
                     },
                   ),
                 ],
@@ -412,6 +547,7 @@ class  MediaManagerView extends GetView< MediaManagerController> {
       },
     );
   }
+
   void showResponsiveImageDialog(BuildContext context, String mediaUrl) {
     showDialog(
       context: context,
