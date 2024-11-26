@@ -44,7 +44,7 @@ class ApiClient extends GetConnect implements GetxService {
     super.onInit();
   }
 loadHeader() async
-{
+ {
   UserData usersData = UserData();
   print("*************************************");
   Faculity? f = await usersData.getFaculity();

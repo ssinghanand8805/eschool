@@ -1,88 +1,135 @@
-class  IssueReturn {
-  String? status;
+class EventModal {
+  int? status;
   String? error;
-  String? message;
-  List<Data>? data;
+  Data? data;
 
-  IssueReturn({this.status, this.error, this.message, this.data});
+  EventModal({this.status, this.error, this.data});
 
-  IssueReturn.fromJson(Map<String, dynamic> json) {
+  EventModal.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     error = json['error'];
-    message = json['message'];
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
     data['error'] = this.error;
-    data['message'] = this.message;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
 class Data {
-  String? id;
-  String? sendTo;
-  String? title;
-  String? shareDate;
-  String? validUpto;
-  String? description;
-  String? createdBy;
-  String? createdAt;
-  String? name;
-  String? surname;
-  String? employeeId;
+  List<ListResult>? listResult;
 
-  Data(
-      {this.id,
-        this.sendTo,
-        this.title,
-        this.shareDate,
-        this.validUpto,
-        this.description,
-        this.createdBy,
-        this.createdAt,
-        this.name,
-        this.surname,
-        this.employeeId});
+  Data({this.listResult});
 
   Data.fromJson(Map<String, dynamic> json) {
+    if (json['listResult'] != null) {
+      listResult = <ListResult>[];
+      json['listResult'].forEach((v) {
+        listResult!.add(new ListResult.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.listResult != null) {
+      data['listResult'] = this.listResult!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class ListResult {
+  String? id;
+  String? type;
+  String? slug;
+  String? url;
+  String? title;
+  Null? date;
+  String? eventStart;
+  String? eventEnd;
+  String? eventVenue;
+  String? description;
+  String? isActive;
+  String? createdAt;
+  String? metaTitle;
+  String? metaDescription;
+  String? metaKeyword;
+  String? featureImage;
+  Null? publishDate;
+  String? publish;
+  String? sidebar;
+
+  ListResult(
+      {this.id,
+        this.type,
+        this.slug,
+        this.url,
+        this.title,
+        this.date,
+        this.eventStart,
+        this.eventEnd,
+        this.eventVenue,
+        this.description,
+        this.isActive,
+        this.createdAt,
+        this.metaTitle,
+        this.metaDescription,
+        this.metaKeyword,
+        this.featureImage,
+        this.publishDate,
+        this.publish,
+        this.sidebar});
+
+  ListResult.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    sendTo = json['send_to'];
+    type = json['type'];
+    slug = json['slug'];
+    url = json['url'];
     title = json['title'];
-    shareDate = json['share_date'];
-    validUpto = json['valid_upto'];
+    date = json['date'];
+    eventStart = json['event_start'];
+    eventEnd = json['event_end'];
+    eventVenue = json['event_venue'];
     description = json['description'];
-    createdBy = json['created_by'];
+    isActive = json['is_active'];
     createdAt = json['created_at'];
-    name = json['name'];
-    surname = json['surname'];
-    employeeId = json['employee_id'];
+    metaTitle = json['meta_title'];
+    metaDescription = json['meta_description'];
+    metaKeyword = json['meta_keyword'];
+    featureImage = json['feature_image'];
+    publishDate = json['publish_date'];
+    publish = json['publish'];
+    sidebar = json['sidebar'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['send_to'] = this.sendTo;
+    data['type'] = this.type;
+    data['slug'] = this.slug;
+    data['url'] = this.url;
     data['title'] = this.title;
-    data['share_date'] = this.shareDate;
-    data['valid_upto'] = this.validUpto;
+    data['date'] = this.date;
+    data['event_start'] = this.eventStart;
+    data['event_end'] = this.eventEnd;
+    data['event_venue'] = this.eventVenue;
     data['description'] = this.description;
-    data['created_by'] = this.createdBy;
+    data['is_active'] = this.isActive;
     data['created_at'] = this.createdAt;
-    data['name'] = this.name;
-    data['surname'] = this.surname;
-    data['employee_id'] = this.employeeId;
+    data['meta_title'] = this.metaTitle;
+    data['meta_description'] = this.metaDescription;
+    data['meta_keyword'] = this.metaKeyword;
+    data['feature_image'] = this.featureImage;
+    data['publish_date'] = this.publishDate;
+    data['publish'] = this.publish;
+    data['sidebar'] = this.sidebar;
     return data;
   }
 }

@@ -34,88 +34,125 @@ class StaffView extends GetView< StaffController> {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return CustomLoader();
                   }
-                  return SingleChildScrollView(
-                    child: Padding(
-                      padding: const  EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                      child: Column(
-                        children: [
-                          MyCustomSD(
-                            hideSearch: true,
-                            borderColor: Colors.grey,
-                            listToSearch:[],
-                            valFrom: "className",
-                            label: 'Class',
-                            labelText: 'Class',
-                            onChanged: (val) {
-                            },
-                          ),
-                          CustomTextField(
-                            controller: controller.searchC,
-                            hint: 'Search.... ', title: 'Search',
-                            onChanged: (val) {
-                              controller.searchContentType(val);
-                              controller.update();
-                            },
-                          ),
-                          SizedBox(height: 8),
-                          Column(
-                            children: controller.filteredContentTypeList.value
-                                .data!.map((entry) {
-                              return Card(
-                                elevation: 1,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20), // Smoother corners
-                                ),
-                                color: Colors.white,
-                                shadowColor: Colors.green,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Staff Id: ${"entry.bookType"}',
-                                          style: theme.textTheme.bodySmall),
-                                      SizedBox(height: 8),
-                                      Text('Name: ${"entry.bookTitle"}',
-                                          style: theme.textTheme.bodySmall),
-                                      SizedBox(height: 8),
-                                      Text('Role: ${"entry.bookTitle"}',
-                                          style: theme.textTheme.bodySmall),SizedBox(height: 8),
-                                      Text('Department: ${"entry.bookTitle"}',
-                                          style: theme.textTheme.bodySmall),SizedBox(height: 8),
-                                      Text('Designation: ${"entry.bookTitle"}',
-                                          style: theme.textTheme.bodySmall),SizedBox(height: 8),
-                                      Text('Mobile No.: ${"entry.bookTitle"}',
-                                          style: theme.textTheme.bodySmall),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(
-                                                Icons.view_list_outlined, size: 15),
-                                            onPressed: () {
-                                             // addEditContents(context);
-                                            },
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.edit, size: 15),
-                                            onPressed: () {
+                  return Padding(
+                    padding: const  EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                    child: Column(
+                      children: [
+                        MyCustomSD(
+                          hideSearch: true,
+                          borderColor: Colors.grey,
+                          listToSearch:[],
+                          valFrom: "className",
+                          label: 'Class',
+                          labelText: 'Class',
+                          onChanged: (val) {
+                          },
+                        ),
+                        CustomTextField(
+                          controller: controller.searchC,
+                          hint: 'Search.... ', title: 'Search',
+                          onChanged: (val) {
+                            // controller.searchContentType(val);
+                            // controller.update();
+                          },
+                        ),
+                        SizedBox(height: 8),
+                        Expanded(
+                          child: GetBuilder<StaffController>(
+                            builder: (controller) {
+                              if (controller.sttafListModal.value.data == null ||
+                                  controller.sttafListModal.value.data!.resultlist!.isEmpty) {
+                                return Center(child: CustomLoader());
+                              }
 
-                                            },
-                                          ),
-                                        ],
+                              return ListView.builder(
+                                itemCount:
+                                controller.sttafListModal.value.data!.resultlist!.length,
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final staff = controller
+                                      .sttafListModal.value.data!.resultlist![index];
+                                  return    Padding(
+                                    padding: const EdgeInsets.only(left: 10,right: 10),
+                                    child: Card(
+                                      elevation: 2.0,
+                                      margin: const EdgeInsets.symmetric(vertical: 8.0),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20.0),
                                       ),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Colors.green.shade100,
+                                              Colors.green.shade50,
+                                            ],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          ),
+                                          borderRadius: BorderRadius.circular(20),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.shade200,
+                                              blurRadius: 10,
+                                              offset: Offset(0, 4),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text('Staff Id: ${staff.id}',
+                                                  style: theme.textTheme.bodySmall),
+                                              SizedBox(height: 8),
+                                              Text('Name: ${staff.name}',
+                                                  style: theme.textTheme.bodySmall),
+                                              SizedBox(height: 8),
+                                              Text('Role: ${staff.roleId}',
+                                                  style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                              Text('Department: ${staff.department}',
+                                                  style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                              Text('Designation: ${staff.designation}',
+                                                  style: theme.textTheme.bodySmall),SizedBox(height: 8),
+                                              Text('Mobile No.: ${staff.contactNo}',
+                                                  style: theme.textTheme.bodySmall),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                children: [
+                                                  IconButton(
+                                                    icon: Icon(
+                                                        Icons.list, color: Colors.blue ),
+                                                    onPressed: () {
+                                                      addStaffs(context);
+                                                    },
+                                                  ), IconButton(
+                                                    icon: Icon(
+                                                        Icons.edit, color: Colors.green ),
+                                                    onPressed: () {
+                                                      addStaffs(context);
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
 
-                                    ],
-                                  ),
-                                ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
                               );
-                            }).toList(),
-                          )
+                            },
+                          ),
+                        ),
 
 
-                        ],
-                      ),
+
+
+                      ],
                     ),
                   );
                 }
