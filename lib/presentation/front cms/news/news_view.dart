@@ -16,8 +16,11 @@ import '../../common_widgets/custom_loader.dart';
 
 import 'news_controller.dart';
 
-class  NewsView extends GetView< NewsController> {
-  NewsView({Key? key}) : super(key: key,);
+class NewsView extends GetView<NewsController> {
+  NewsView({Key? key})
+      : super(
+          key: key,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class  NewsView extends GetView< NewsController> {
           style: theme.textTheme.bodyMedium,
         ),
       ),
-      body: GetBuilder< NewsController>(
+      body: GetBuilder<NewsController>(
           init: controller,
           builder: (_) {
             return FutureBuilder(
@@ -44,35 +47,38 @@ class  NewsView extends GetView< NewsController> {
                         padding: const EdgeInsets.only(left: 8.0, right: 8),
                         child: CustomTextField(
                           controller: controller.searchC,
-                          hint: 'Search.... ', title: '',
+                          hint: 'Search.... ',
+                          title: '',
                           onChanged: (val) {
                             // controller.searchContentType(val);
                             // controller.update();
                           },
                         ),
-
                       ),
                       SizedBox(height: 8),
                       Expanded(
                         child: GetBuilder<NewsController>(
                           builder: (controller) {
                             if (controller.noticeModalList.value.data == null ||
-                                controller.noticeModalList.value.data!.listResult!.isEmpty) {
+                                controller.noticeModalList.value.data!
+                                    .listResult!.isEmpty) {
                               return Center(child: CustomLoader());
                             }
 
                             return ListView.builder(
-                              itemCount:
-                              controller.noticeModalList.value.data!.listResult!.length,
+                              itemCount: controller.noticeModalList.value.data!
+                                  .listResult!.length,
                               shrinkWrap: true,
                               itemBuilder: (BuildContext context, int index) {
-                                final event = controller
-                                    .noticeModalList.value.data!.listResult![index];
-                                return    Padding(
-                                  padding: const EdgeInsets.only(left: 10,right: 10),
+                                final event = controller.noticeModalList.value
+                                    .data!.listResult![index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
                                   child: Card(
                                     elevation: 2.0,
-                                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20.0),
                                     ),
@@ -98,71 +104,88 @@ class  NewsView extends GetView< NewsController> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(16.0),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text('Title: ${event.title}',
-                                                style: theme.textTheme.bodySmall),
+                                                style:
+                                                    theme.textTheme.bodySmall),
                                             SizedBox(height: 8),
                                             Text('URL: ${event.url}',
-                                                style: theme.textTheme.bodySmall),
+                                                style:
+                                                    theme.textTheme.bodySmall),
                                             Row(
-                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
                                               children: [
                                                 IconButton(
-                                                  icon: Icon(
-                                                      Icons.edit, color: Colors.green ),
+                                                  icon: Icon(Icons.edit,
+                                                      color: Colors.green),
                                                   onPressed: () {
                                                     addNews(context);
                                                   },
                                                 ),
                                                 IconButton(
-                                                  icon: Icon(Icons.delete, color: Colors.red,),
+                                                  icon: Icon(
+                                                    Icons.delete,
+                                                    color: Colors.red,
+                                                  ),
                                                   onPressed: () {
                                                     showDialog(
                                                       context: context,
-                                                      builder: (BuildContext context) {
+                                                      builder: (BuildContext
+                                                          context) {
                                                         return AlertDialog(
                                                           title: Text(
                                                             "Confirm Delete",
-                                                            style: theme.textTheme.bodyLarge,
+                                                            style: theme
+                                                                .textTheme
+                                                                .bodyLarge,
                                                           ),
                                                           content: Text(
                                                             "Are you sure you want to delete this Gallery Image? This action cannot be undone.",
-                                                            style: theme.textTheme.bodySmall,
+                                                            style: theme
+                                                                .textTheme
+                                                                .bodySmall,
                                                           ),
                                                           actions: [
                                                             IconButton(
                                                               onPressed: () {
-                                                                Navigator.of(context)
+                                                                Navigator.of(
+                                                                        context)
                                                                     .pop(); // Close the dialog
                                                               },
                                                               icon: Icon(
                                                                 Icons.edit,
-                                                                color: Colors.green,
+                                                                color: Colors
+                                                                    .green,
                                                               ),
                                                             ),
                                                             IconButton(
                                                               onPressed: () {
-                                                                controller.deleteEvent(context,
-                                                                    event.id); // Perform delete
-                                                                Navigator.of(context)
+                                                                controller
+                                                                    .deleteEvent(
+                                                                        context,
+                                                                        event
+                                                                            .id); // Perform delete
+                                                                Navigator.of(
+                                                                        context)
                                                                     .pop(); // Close the dialog
                                                               },
                                                               icon: Icon(
                                                                 Icons.delete,
-                                                                color: Colors.red,
+                                                                color:
+                                                                    Colors.red,
                                                               ),
                                                             ),
                                                           ],
                                                         );
                                                       },
                                                     );
-
                                                   },
                                                 ),
                                               ],
                                             ),
-
                                           ],
                                         ),
                                       ),
@@ -174,38 +197,31 @@ class  NewsView extends GetView< NewsController> {
                           },
                         ),
                       ),
-
-
-
                     ],
                   );
-                }
-            );
-          }
-      ),
-
+                });
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-         addNews(context);
+          addNews(context);
         },
         tooltip: 'Add Item',
-        shape:CircleBorder() ,
+        shape: CircleBorder(),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
         child: Icon(Icons.add),
       ),
-
     );
   }
 
   void addNews(BuildContext context) {
-    showCustomBottomSheet(context: context,
+    showCustomBottomSheet(
+      context: context,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-
             // Book Title
             CustomTextField(
               controller: controller.titleC,
@@ -219,11 +235,11 @@ class  NewsView extends GetView< NewsController> {
                 title: 'Date',
                 onDateSelected: (date) async {
                   controller.dateC.value.text =
-                  await GlobalData().ConvertToSchoolDateTimeFormat(date);
+                      await GlobalData().ConvertToSchoolDateTimeFormat(date);
                 }),
             const SizedBox(height: 12),
             InkWell(
-              onTap: (){
+              onTap: () {
                 Get.toNamed('/media_manager', arguments: {
                   'callback': (String result) {
                     print('Callback executed with result: $result');
@@ -235,18 +251,17 @@ class  NewsView extends GetView< NewsController> {
                 height: 40,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                        color: Colors.green.shade200
-                    )
-                ),
+                    border: Border.all(color: Colors.green.shade200)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.upload_file,color: Colors.green),
-                    Text("Add Media",style: TextStyle(color: Colors.green),),
+                    Icon(Icons.upload_file, color: Colors.green),
+                    Text(
+                      "Add Media",
+                      style: TextStyle(color: Colors.green),
+                    ),
                   ],
                 ),
-
               ),
             ),
             const SizedBox(height: 5),
@@ -304,6 +319,4 @@ class  NewsView extends GetView< NewsController> {
       ),
     );
   }
-
-
 }

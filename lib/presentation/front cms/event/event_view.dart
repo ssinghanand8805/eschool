@@ -74,6 +74,7 @@ class  EventView extends GetView< EventController> {
                               itemBuilder: (BuildContext context, int index) {
                                 final event = controller
                                     .eventModalList.value.data!.listResult![index];
+                                print("wwwwwww${event.description}");
                                 return   Card(
                                   elevation: 2.0,
                                   margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -111,7 +112,8 @@ class  EventView extends GetView< EventController> {
                                               style: theme.textTheme.bodySmall),
                                           // SizedBox(height: 8),
                                           SizedBox(
-                                            width: double.infinity,
+                                            height: 120,
+                                            width:120,
                                             child: Html(data: 'Venue: ${event.description}',
                                               style: {
                                                 "html": Style(
@@ -126,13 +128,7 @@ class  EventView extends GetView< EventController> {
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.end,
                                             children: [
-                                              IconButton(
-                                                icon: Icon(
-                                                    Icons.edit, color: Colors.green,),
-                                                onPressed: () {
-                                                  // addEditContents(context);
-                                                },
-                                              ),
+
                                               IconButton(
                                                 icon: Icon(Icons.delete,color: Colors.red,),
                                                 onPressed: () {
@@ -159,7 +155,7 @@ class  EventView extends GetView< EventController> {
                                                           TextButton(
                                                             onPressed: () {
                                                               controller.deleteEvent(context,
-                                                                  event.id); // Perform delete
+                                                                  event.slug); // Perform delete
                                                               Navigator.of(context)
                                                                   .pop(); // Close the dialog
                                                             },
@@ -317,7 +313,7 @@ class  EventView extends GetView< EventController> {
                   backgroundColor: Colors.green,
                 ),
                 onPressed: () {
-                  // Implement save functionality
+                  controller.addEvent(context, controller.HtmlController);
                   Navigator.pop(context);
                 },
                 child: const Text(

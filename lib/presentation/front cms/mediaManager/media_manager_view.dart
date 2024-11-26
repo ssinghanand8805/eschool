@@ -344,7 +344,7 @@ class MediaManagerView extends GetView<MediaManagerController> {
                               });
                             },
                           ),
-                          const Text("Image/Video"),
+                          const Text("Image"),
                         ],
                       ),
                     ],

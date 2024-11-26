@@ -152,15 +152,9 @@ class GalleryView extends GetView<GalleryController> {
                                               horizontal: 8.0, vertical: 8.0),
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.end,
                                             children: [
-                                              IconButton(
-                                                icon: const Icon(Icons.edit,
-                                                    color: Colors.green),
-                                                onPressed: () {
-                                                  addImages(context);
-                                                },
-                                              ),
+
                                               IconButton(
                                                 icon: const Icon(Icons.delete,
                                                     color: Colors.red),
@@ -196,7 +190,7 @@ class GalleryView extends GetView<GalleryController> {
                                                                   .deleteGallery(
                                                                       context,
                                                                       gallery
-                                                                          .id);
+                                                                          .slug);
                                                               Navigator.of(
                                                                       context)
                                                                   .pop(); // Close the dialog
@@ -226,7 +220,6 @@ class GalleryView extends GetView<GalleryController> {
                           },
                         ),
                       ),
-
                     ],
                   );
                 });
@@ -278,7 +271,8 @@ class GalleryView extends GetView<GalleryController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.drive_folder_upload_rounded, color: Colors.green),
+                    Icon(Icons.drive_folder_upload_rounded,
+                        color: Colors.green),
                     Text(
                       "Add Media",
                       style: TextStyle(color: Colors.green),
@@ -290,10 +284,10 @@ class GalleryView extends GetView<GalleryController> {
             const SizedBox(height: 10),
 
             SizedBox(
-              height: 500,
+              height: 350,
               child: HtmlEditor(
                 htmlToolbarOptions: HtmlToolbarOptions(
-                  allowImagePicking: true,
+                    allowImagePicking: true,
                     toolbarItemHeight: 35,
                     toolbarType: ToolbarType.nativeGrid,
                     textStyle: theme.textTheme.titleMedium,
@@ -304,7 +298,6 @@ class GalleryView extends GetView<GalleryController> {
                           strikethrough: false,
                           subscript: false,
                           superscript: false),
-
                     ]),
                 controller: controller.HtmlController.value,
                 //required
@@ -317,8 +310,76 @@ class GalleryView extends GetView<GalleryController> {
                 otherOptions: const OtherOptions(),
               ),
             ),
-            //  const SizedBox(height: 24),
-
+            SizedBox(height: 24),
+            InkWell(
+              onTap: () {
+                Get.toNamed('/media_manager', arguments: {
+                  'callback': (String result) {
+                    print('Callback executed with result: $result');
+                    controller.addImage(result);
+                  }
+                });
+                },
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: Colors.green.shade200)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.drive_folder_upload_rounded,
+                        color: Colors.green),
+                    Text(
+                      "Add Images",
+                      style: TextStyle(color: Colors.green),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+              const SizedBox(height: 24),
+            Obx(() {
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: controller.imageList.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3, // Number of images per row
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
+                ),
+                itemBuilder: (context, index) {
+                  return Stack(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.green.shade200),
+                          borderRadius: BorderRadius.circular(8),
+                          image: DecorationImage(
+                            image: NetworkImage(controller.imageList[index]),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: InkWell(
+                          onTap: () {
+                            controller.imageList.removeAt(index); // Remove the image
+                          },
+                          child: Icon(Icons.close, color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            }),
+            const SizedBox(height: 24),
             // Save Button
             SizedBox(
               width: double.infinity,
@@ -329,7 +390,9 @@ class GalleryView extends GetView<GalleryController> {
                   backgroundColor: Colors.green,
                 ),
                 onPressed: () {
-                  // Implement save functionality
+
+                  controller.addGallery(context, controller.titleC.value.text,
+                      controller.HtmlController.value);
                   Navigator.pop(context);
                 },
                 child: const Text(
@@ -344,5 +407,4 @@ class GalleryView extends GetView<GalleryController> {
       ),
     );
   }
-
 }

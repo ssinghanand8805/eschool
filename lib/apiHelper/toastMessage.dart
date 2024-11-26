@@ -16,7 +16,7 @@ class Ui {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       borderRadius: 8,
       dismissDirection: DismissDirection.horizontal,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 2),
     );
   }
 
@@ -32,7 +32,7 @@ class Ui {
       icon: const Icon(Icons.error, size: 32,color:   Colors.white),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       borderRadius: 8,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 3),
     );
   }
 
@@ -48,7 +48,7 @@ class Ui {
       icon: const Icon(Icons.warning_amber_rounded, size: 32, color: Colors.white),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       borderRadius: 8,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 2),
     );
   }
 
@@ -67,7 +67,7 @@ class Ui {
       icon: const Icon(Icons.notifications_none, size: 32, color:Colors.white),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       borderRadius: 8,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 2),
     );
   }
 

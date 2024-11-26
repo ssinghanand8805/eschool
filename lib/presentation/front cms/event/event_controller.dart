@@ -9,8 +9,7 @@ import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
 import 'event_modal.dart';
 
-class EventController extends GetxController{
-
+class EventController extends GetxController {
   TextEditingController searchC = TextEditingController();
   TextEditingController titleC = TextEditingController();
   Rx<TextEditingController> eventStartDate = TextEditingController().obs;
@@ -18,7 +17,7 @@ class EventController extends GetxController{
   Rx<HtmlEditorController> HtmlController = HtmlEditorController().obs;
   TextEditingController venueC = TextEditingController();
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
-  Rx< EventModal> eventModalList =  EventModal().obs;
+  Rx<EventModal> eventModalList = EventModal().obs;
   Rx<TextEditingController> attendanceDate = TextEditingController().obs;
   Rx<File?> pickedFile = Rx<File?>(null);
   late Future<void> fetchDataFuture;
@@ -53,25 +52,58 @@ class EventController extends GetxController{
   //   }
   // }
 
-  Future<void> initializeData() async  {
+  Future<void> initializeData() async {
     //isLoading.value = true;
-    try
-    {
+    try {
       var body = {};
-      var data = await apiRespository.postApiCallByJson(Constants.getEventList, body);
+      var data =
+          await apiRespository.postApiCallByJson(Constants.getEventList, body);
 
-      eventModalList.value =  EventModal.fromJson(data.body);
+      eventModalList.value = EventModal.fromJson(data.body);
       print(eventModalList.value.toJson());
       update();
-    }
-    catch(e)
-    {
+    } catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");
       update();
     }
-
   }
 
+  addEvent(
+    context,
+    descriptionController,
+  ) async {
+    try {
+      var description = await descriptionController.getText();
+
+      var formData = {
+        "title": titleC.value,
+        "start_date": eventStartDate.value,
+        "end_date": eventEndDate.value,
+        "description": description,
+        "venue": venueC.value,
+      };
+
+      var data = await apiRespository.postApiCallByFormData(
+          Constants.createEventList, formData);
+
+      print("formData @${formData}");
+      print("data @${data.body}");
+
+      if (data.body['status'] == 1) {
+        Get.showSnackbar(
+            Ui.SuccessSnackBar(message: data.body['msg'].toString()));
+        initializeData();
+      } else {
+
+        Get.showSnackbar(
+            Ui.ErrorSnackBar(message: data.body['msg'].toString()));
+
+      }
+    } catch (e) {
+      print("error: ${e}");
+      update();
+    }
+  }
 
   deleteEvent(context, slug) async {
     try {
@@ -92,5 +124,4 @@ class EventController extends GetxController{
       update();
     }
   }
-
 }
