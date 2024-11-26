@@ -70,17 +70,16 @@ class EventController extends GetxController {
 
   addEvent(
     context,
-    descriptionController,
   ) async {
     try {
-      var description = await descriptionController.getText();
+      var description = await HtmlController.value.getText();
 
       var formData = {
-        "title": titleC.value,
-        "start_date": eventStartDate.value,
-        "end_date": eventEndDate.value,
+        "title": titleC.value.text,
+        "start_date": eventStartDate.value.text,
+        "end_date": eventEndDate.value.text,
         "description": description,
-        "venue": venueC.value,
+        "venue": venueC.value.text,
       };
 
       var data = await apiRespository.postApiCallByFormData(

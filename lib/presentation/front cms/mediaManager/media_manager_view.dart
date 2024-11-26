@@ -261,7 +261,7 @@ class MediaManagerView extends GetView<MediaManagerController> {
                                                               (String? value) {
                                                             if (callback !=
                                                                 null) {
-                                                              callback!(value);
+                                                              callback!({'image' : value,'id':media.id});
                                                               Get.back();
                                                             }
                                                           },

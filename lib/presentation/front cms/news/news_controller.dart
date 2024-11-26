@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
+import 'package:intl/intl.dart';
 
 import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
 import 'news_modal.dart';
@@ -18,6 +20,7 @@ class  NewsController extends GetxController{
 
   TextEditingController titleC = TextEditingController();
   Rx<HtmlEditorController> HtmlController = HtmlEditorController().obs;
+  RxString featureImage = "".obs;
   Rx<File?> pickedFile = Rx<File?>(null);
   late Future<void> fetchDataFuture;
   List<Data> originalContentTypeList = [];
@@ -50,6 +53,41 @@ class  NewsController extends GetxController{
   //     });
   //   }
   // }
+  addNews(
+      context,
+      ) async {
+    try {
+      var description = await HtmlController.value.getText();
+      DateTime parsedDate = DateFormat("dd/MM/yyyy").parse(dateC.value.text.toString());
+      String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(parsedDate);
+      var formData = {
+        "title": titleC.value.text,
+        "description": description,
+        "date":formattedDate,
+        "image":featureImage.value
+      };
+
+      var data = await apiRespository.postApiCallByFormData(
+          Constants.createNoticeList, formData);
+
+      print("formData @${formData}");
+      print("data @${data.body}");
+
+      if (data.body['status'] == 1) {
+        Get.showSnackbar(
+            Ui.SuccessSnackBar(message: data.body['msg'].toString()));
+        initializeData();
+      } else {
+
+        Get.showSnackbar(
+            Ui.ErrorSnackBar(message: data.body['msg'].toString()));
+
+      }
+    } catch (e) {
+      print("error: ${e}");
+      update();
+    }
+  }
   Future<void> initializeData() async  {
     //isLoading.value = true;
     try

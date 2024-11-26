@@ -238,30 +238,64 @@ class NewsView extends GetView<NewsController> {
                       await GlobalData().ConvertToSchoolDateTimeFormat(date);
                 }),
             const SizedBox(height: 12),
-            InkWell(
-              onTap: () {
-                Get.toNamed('/media_manager', arguments: {
-                  'callback': (String result) {
-                    print('Callback executed with result: $result');
-                    controller.HtmlController.value.insertNetworkImage(result);
-                  }
-                });
-              },
-              child: Container(
-                height: 40,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Colors.green.shade200)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.upload_file, color: Colors.green),
-                    Text(
-                      "Add Media",
-                      style: TextStyle(color: Colors.green),
+            Obx(
+               () =>  Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed('/media_manager', arguments: {
+                        'callback': (Map<String,dynamic> result) {
+                          print('Callback executed with result: $result');
+                          controller.featureImage.value = result['image'];
+                          controller.update();
+                        }
+                      });
+                    },
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Colors.green.shade200)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.upload_file, color: Colors.green),
+                          Text(
+                            "Add Media",
+                            style: TextStyle(color: Colors.green),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                  controller.featureImage.value  != "" ?  Stack(
+                    children: [
+                       Container(
+                        height: 100,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.green.shade200),
+                          borderRadius: BorderRadius.circular(8),
+                          image: DecorationImage(
+                            image: NetworkImage(controller.featureImage.value),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: InkWell(
+                          onTap: () {
+                            controller.featureImage.value = "";
+                            controller.update();// Remove the image
+                          },
+                          child: Icon(Icons.close, color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ) : SizedBox()
+                ],
               ),
             ),
             const SizedBox(height: 5),
@@ -305,6 +339,7 @@ class NewsView extends GetView<NewsController> {
                 ),
                 onPressed: () {
                   // Implement save functionality
+                  controller.addNews(context);
                   Navigator.pop(context);
                 },
                 child: const Text(

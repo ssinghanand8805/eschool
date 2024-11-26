@@ -255,9 +255,9 @@ class GalleryView extends GetView<GalleryController> {
             InkWell(
               onTap: () {
                 Get.toNamed('/media_manager', arguments: {
-                  'callback': (String result) {
+                  'callback': (Map<String,dynamic> result) {
                     print('Callback executed with result: $result');
-                    controller.HtmlController.value.insertNetworkImage(result);
+                    controller.HtmlController.value.insertNetworkImage(result['image']);
                   }
                 });
 
@@ -287,7 +287,7 @@ class GalleryView extends GetView<GalleryController> {
               height: 350,
               child: HtmlEditor(
                 htmlToolbarOptions: HtmlToolbarOptions(
-                    allowImagePicking: true,
+
                     toolbarItemHeight: 35,
                     toolbarType: ToolbarType.nativeGrid,
                     textStyle: theme.textTheme.titleMedium,
@@ -314,7 +314,8 @@ class GalleryView extends GetView<GalleryController> {
             InkWell(
               onTap: () {
                 Get.toNamed('/media_manager', arguments: {
-                  'callback': (String result) {
+
+                  'callback': (Map<String,dynamic> result) {
                     print('Callback executed with result: $result');
                     controller.addImage(result);
                   }
@@ -359,7 +360,7 @@ class GalleryView extends GetView<GalleryController> {
                           border: Border.all(color: Colors.green.shade200),
                           borderRadius: BorderRadius.circular(8),
                           image: DecorationImage(
-                            image: NetworkImage(controller.imageList[index]),
+                            image: NetworkImage(controller.imageList[index]['image']),
                             fit: BoxFit.cover,
                           ),
                         ),

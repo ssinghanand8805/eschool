@@ -22,9 +22,9 @@ class GalleryController extends GetxController {
   List<Data> originalContentTypeList = [];
   RxBool isLoading = false.obs;
 
-  var imageList = <String>[].obs;
+  var imageList = <Map<String,dynamic>>[].obs;
 
-  void addImage(String imageUrl) {
+  void addImage(Map<String,dynamic> imageUrl) {
     imageList.add(imageUrl);
   }
 
@@ -55,13 +55,16 @@ class GalleryController extends GetxController {
     try {
       var description = await descriptionController.getText();
 
-
-
+List<String> imageIds = [];
+for(var i =0;i< imageList.value.length;i++)
+  {
+    imageIds.add(imageList.value[i]['id']);
+  }
       var formData = {
 
         "title": titleC,
         "description": description,
-        'gallery_images': imageList.value,
+        'gallery_images[]': imageIds,
       };
 
 

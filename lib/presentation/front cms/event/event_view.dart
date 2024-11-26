@@ -249,9 +249,9 @@ class  EventView extends GetView< EventController> {
             InkWell(
               onTap: (){
                 Get.toNamed('/media_manager', arguments: {
-                  'callback': (String result) {
+                  'callback': (Map<String,dynamic> result) {
                     print('Callback executed with result: $result');
-                    controller.HtmlController.value.insertNetworkImage(result);
+                    controller.HtmlController.value.insertNetworkImage(result['image']);
                   }
                 });
               },
@@ -313,7 +313,7 @@ class  EventView extends GetView< EventController> {
                   backgroundColor: Colors.green,
                 ),
                 onPressed: () {
-                  controller.addEvent(context, controller.HtmlController);
+                  controller.addEvent(context);
                   Navigator.pop(context);
                 },
                 child: const Text(
