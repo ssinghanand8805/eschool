@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:learnladderfaculity/presentation/download_center/Video%20Tutorial/video_tutorial_modal.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
 import 'package:learnladderfaculity/widgets/customTextField.dart';
 import 'package:learnladderfaculity/widgets/custom_button.dart';
 import 'package:learnladderfaculity/widgets/myCustomsd.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../apiHelper/GlobalData.dart';
 import '../../../theme/theme_helper.dart';
+import '../../academics/Class Timetable/class_timetable_controller.dart';
+import '../../common_widgets/controller/CommonApiController.dart';
 import '../../common_widgets/custom_loader.dart';
 import 'video_tutorial_controller.dart';
 
 class VideoTutorialView extends GetView<VideoTutorialController> {
-  VideoTutorialView({Key? key}) : super(key: key,);
-
+  VideoTutorialView({Key? key})
+      : super(
+          key: key,
+        );
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -22,96 +28,90 @@ class VideoTutorialView extends GetView<VideoTutorialController> {
         backgroundColor: Colors.green.shade100,
         title: Text(
           'Content Type List',
-          style: theme.textTheme.titleLarge,
+          style: theme.textTheme.bodyMedium,
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: MyButton(
-              width: 120,
-              title:'Add Video',textStyle: TextStyle(color: Colors.white),
-              color:theme.hintColor,
-              onPress: () {
-                addVideo(context);
-              },
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 8.0,right: 8),
+          padding: const EdgeInsets.only(left: 8.0, right: 8),
           child: Column(
             children: [
-              Obx(() => controller.commonApiController.isClassLoading.value ?   CircularProgressIndicator() : MyCustomSD(
-                hideSearch: true,
-                borderColor: Colors.grey,
-                listToSearch:
-                controller.commonApiController.classListModelMap.value,
-                valFrom: "className",
-                label: 'Class',
-                labelText: 'Class',
-                initialValue: [
-                  {
-                    'parameter': 'id',
-                    'value': controller.commonApiController.selectedClassId!
-                  }
-                ],
-                onChanged: (val) {
-                  if (controller.commonApiController.classListModelMap.value
-                      .length >
-                      0) {
-                    print("5555555555555");
+              Obx(() => controller.commonApiController.isClassLoading.value
+                  ? CircularProgressIndicator()
+                  : MyCustomSD(
+                      hideSearch: true,
+                      borderColor: Colors.grey,
+                      listToSearch: controller
+                          .commonApiController.classListModelMap.value,
+                      valFrom: "className",
+                      label: 'Class',
+                      labelText: 'Class',
+                      initialValue: [
+                        {
+                          'parameter': 'id',
+                          'value':
+                              controller.commonApiController.selectedClassId!
+                        }
+                      ],
+                      onChanged: (val) {
+                        if (controller.commonApiController.classListModelMap
+                                .value.length >
+                            0) {
+                          print("5555555555555");
 
-                    controller.commonApiController.selectedClassId.value =
-                        val['id'].toString();
-                    controller.commonApiController.selectedClassName.value =
-                        val['className'].toString();
-                    controller.selectedClassName.value =
-                        val['className'].toString();
-                    controller.commonApiController.update();
-                    controller.commonApiController.getSectionList();
-                  }
-                },
-              )),
-
-              Obx(() => controller.commonApiController.isSectionLoading.value ? CircularProgressIndicator(): MyCustomSD(
-                hideSearch: true,
-                borderColor: Colors.grey,
-                listToSearch: controller
-                    .commonApiController.sectionListModelMap.value,
-                valFrom: "section",
-                label: 'Section',
-                labelText: 'Section',
-                initialValue: [
-                  {
-                    'parameter': 'id',
-                    'value':
-                    controller.commonApiController.selectedSectionId!
-                  }
-                ],
-                onChanged: (val) {
-                  print(val);
-                  if (controller.commonApiController.sectionListModelMap
-                      .value.length >
-                      0) {
-                    controller.commonApiController.selectedSectionId.value =
-                        val['section_id'].toString();
-                    controller.commonApiController.selectedSectionName
-                        .value = val['section'].toString();
-                    controller.selectedSectionName.value =
-                        val['section'].toString();
-                    controller.commonApiController.update();
-                  }
-                },
-              )),
-              SizedBox(height: 10,),
-        
+                          controller.commonApiController.selectedClassId.value =
+                              val['id'].toString();
+                          controller.commonApiController.selectedClassName
+                              .value = val['className'].toString();
+                          controller.selectedClassName.value =
+                              val['className'].toString();
+                          controller.commonApiController.update();
+                          controller.commonApiController.getSectionList();
+                        }
+                      },
+                    )),
+              Obx(() => controller.commonApiController.isSectionLoading.value
+                  ? CircularProgressIndicator()
+                  : MyCustomSD(
+                      hideSearch: true,
+                      borderColor: Colors.grey,
+                      listToSearch: controller
+                          .commonApiController.sectionListModelMap.value,
+                      valFrom: "section",
+                      label: 'Section',
+                      labelText: 'Section',
+                      initialValue: [
+                        {
+                          'parameter': 'id',
+                          'value':
+                              controller.commonApiController.selectedSectionId!
+                        }
+                      ],
+                      onChanged: (val) {
+                        print(val);
+                        if (controller.commonApiController.sectionListModelMap
+                                .value.length >
+                            0) {
+                          controller.commonApiController.selectedSectionId
+                              .value = val['section_id'].toString();
+                          controller.commonApiController.selectedSectionName
+                              .value = val['section'].toString();
+                          controller.selectedSectionName.value =
+                              val['section'].toString();
+                          controller.commonApiController.update();
+                        }
+                      },
+                    )),
+              SizedBox(
+                height: 10,
+              ),
               CustomTextField(
                   controller: controller.SearchByTitleC,
                   hint: "Search By Title",
                   title: 'Search By Title'),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Align(
                 alignment: Alignment.bottomRight,
                 child: MyButton(
@@ -129,147 +129,262 @@ class VideoTutorialView extends GetView<VideoTutorialController> {
               ),
               FutureBuilder(
                 future: controller.fetchDataFuture,
-                builder: (context,snapshot) {
+                builder: (context, snapshot) {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return CustomLoader();
                   }
-                  return controller.filteredContentTypeList.value.data != null && controller.filteredContentTypeList.value.data!.videoTutorialList!.length > 0 ? ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: controller.filteredContentTypeList.value.data!.videoTutorialList!.length,
-                      itemBuilder: (BuildContext context, int index){
-                        VideoTutorialList videoTutorial = controller.filteredContentTypeList.value.data!.videoTutorialList![index];
-                    return   Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 105,width: 100,
-                            decoration: BoxDecoration(
-                                border: Border.all(),
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(5),bottomLeft: Radius.circular(5))
+                  if (controller.filteredContentTypeList.value.data != null &&
+                      controller.filteredContentTypeList.value.data!.videoTutorialList!.isNotEmpty) {
+                    return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: controller.filteredContentTypeList.value.data!.videoTutorialList!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        VideoTutorialList videoTutorial = controller
+                            .filteredContentTypeList.value.data!.videoTutorialList![index];
+                        return GestureDetector(
+                          onTap: () {
+                            // Open YouTube video
+                            String videoUrl = videoTutorial.videoLink!;
+                            if (videoUrl.isNotEmpty) {
+                              launchUrl(Uri.parse(videoUrl));
+                            }
+                          },
+                          child: Card(
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Image.network(GlobalData().baseUrlValueFromPref + videoTutorial.thumbPath! + videoTutorial.thumbName!),
-                          ),
-                          Expanded(
-                            child: Container(
-                                height: 105,
-                                width: Get.width,
-                                decoration: BoxDecoration(
-                                    border: Border.all(),
-                                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(5),topRight: Radius.circular(5))
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 5,right: 5,top: 5,),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(videoTutorial.title!),
-                                          Icon(Icons.delete,color: Colors.red,)
-                                        ],
-                                      ),
-                                      Text(videoTutorial.description!),
-
-                                      SizedBox(height: 15,),
-                                      Row(
-                                        children: [
-                                          Text(videoTutorial.className!),
-                                          SizedBox(width: 10,),
-                                          Text(videoTutorial.section!,style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600),)
-                                        ],
-                                      ),
-                                      SizedBox(height: 5,),
-
-                                    ],
+                            child: Row(
+                              children: [
+                                // Thumbnail Section
+                                ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(12),
+                                    bottomLeft: Radius.circular(12),
                                   ),
-                                )
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    child: Image.network(
+                                      GlobalData().baseUrlValueFromPref +
+                                          videoTutorial.thumbPath! +
+                                          videoTutorial.thumbName!,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                // Details Section
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        // Title
+                                        Text(
+                                          videoTutorial.title!,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: theme.textTheme.titleMedium!.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        // Description
+                                        Text(
+                                          videoTutorial.description!,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: theme.textTheme.bodySmall!.copyWith(
+                                            color: Colors.grey.shade600,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 12),
+                                        // Class and Section
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Class: ${videoTutorial.className!}",
+                                              style: theme.textTheme.bodyMedium!.copyWith(
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              "Section: ${videoTutorial.section!}",
+                                              style: theme.textTheme.bodyMedium!.copyWith(
+                                                color: Colors.green.shade700,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                // Delete Button
+                                IconButton(
+                                  icon: const Icon(Icons.delete, color: Colors.red),
+                                  onPressed: () {
+                                    controller.deleteVideoId(context,videoTutorial.id!);
+                                  },
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        );
+                      },
+                    );
+                  } else {
+                    return Center(
+                      child: Text(
+                        "No Data Found",
+                        style: theme.textTheme.bodyLarge,
                       ),
                     );
-                  }) : Text("No Data found");
-                }
+                  }
+                },
               ),
-        SizedBox(height: 10,)
-        
-        
+
+              SizedBox(
+                height: 10,
+              )
             ],
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          addVideo(context);
+        },
+        tooltip: 'Add Item',
+        shape: CircleBorder(),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        child: Icon(Icons.add),
+      ),
     );
   }
 
-
-  addVideo(context){
-    showCustomBottomSheet(context:context,
+  addVideo(context) {
+    showCustomBottomSheet(
+        context: context,
         child: Column(
           children: [
-            Text("Add Video Tutorial",style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),),
-            MyCustomSD(
-                borderColor: Colors.grey,
-                labelText: "Class: ",
-                label: "Class",
-                listToSearch: [
-                  {
-                    'name':"Faheem"
-                  },
-                  {
-                    'name':"Faheem"
-                  },
-                  {
-                    'name':"Faheem"
-                  },
-                ],
-                valFrom: 'name',
-                onChanged: (val){
+            Text(
+              "Add Video Tutorial",
+              style: theme.textTheme.titleMedium!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+            Obx(() => controller.commonApiController.isClassLoading.value
+                ? CircularProgressIndicator()
+                : MyCustomSD(
+                    hideSearch: true,
+                    borderColor: Colors.grey,
+                    listToSearch:
+                        controller.commonApiController.classListModelMap.value,
+                    valFrom: "className",
+                    label: 'Class',
+                    labelText: 'Class',
+                    initialValue: [
+                      {
+                        'parameter': 'id',
+                        'value': controller.commonApiController.selectedClassId!
+                      }
+                    ],
+                    onChanged: (val) {
+                      if (controller.commonApiController.classListModelMap.value
+                              .length >
+                          0) {
+                        print("5555555555555");
 
-                }),
-            SizedBox(height: 20,),
-            CustomTextField(
-              controller: controller.SearchByTitleC,
-              hint: "Section",
-              title: "Section: ",),
-            SizedBox(height: 10,),
+                        controller.commonApiController.selectedClassId.value =
+                            val['id'].toString();
+                        controller.commonApiController.selectedClassName.value =
+                            val['className'].toString();
+                        controller.selectedClassName.value =
+                            val['className'].toString();
+                        controller.commonApiController.update();
+                        controller.commonApiController.getSectionList();
+                      }
+                    },
+                  )),
+            Obx(() => controller.commonApiController.isSectionLoading.value
+                ? CircularProgressIndicator()
+                : MyCustomSD(
+                    hideSearch: true,
+                    borderColor: Colors.grey,
+                    listToSearch: controller
+                        .commonApiController.sectionListModelMap.value,
+                    valFrom: "section",
+                    label: 'Section',
+                    labelText: 'Section',
+                    initialValue: [
+                      {
+                        'parameter': 'id',
+                        'value':
+                            controller.commonApiController.selectedSectionId!
+                      }
+                    ],
+                    onChanged: (val) {
+                      print(val);
+                      if (controller.commonApiController.sectionListModelMap
+                              .value.length >
+                          0) {
+                        controller.commonApiController.selectedSectionId.value =
+                            val['section_id'].toString();
+                        controller.commonApiController.selectedSectionName
+                            .value = val['section'].toString();
+                        controller.selectedSectionName.value =
+                            val['section'].toString();
+                        controller.commonApiController.update();
+                      }
+                    },
+                  )),
+            SizedBox(
+              height: 10,
+            ),
             CustomTextField(
               controller: controller.SearchByTitleC,
               hint: "Title",
-              title: "Title: ",),
-            SizedBox(height: 10,),
+              title: "Title: ",
+            ),
+            SizedBox(
+              height: 10,
+            ),
             CustomTextField(
               controller: controller.SearchByTitleC,
               hint: "Video Link",
-              title: "Video Link: ",),
-            SizedBox(height: 10,),
+              title: "Video Link: ",
+            ),
+            SizedBox(
+              height: 10,
+            ),
             CustomTextField(
               maxLine: 3,
               controller: controller.SearchByTitleC,
               hint: "Description",
-              title: "Description: ",),
-            SizedBox(height: 20,),
-
+              title: "Description: ",
+            ),
+            SizedBox(
+              height: 20,
+            ),
             Align(
               alignment: Alignment.bottomRight,
               child: MyButton(
                 width: 120,
-                title:'Save',textStyle: TextStyle(color: Colors.black,),
-                color:Colors.green.shade100,
-                onPress: () {
-
-                },
+                title: 'Save',
+                textStyle: TextStyle(
+                  color: Colors.black,
+                ),
+                color: Colors.green.shade100,
+                onPress: () {},
               ),
             ),
-
           ],
-        )
-
-
-    );
+        ));
   }
-
-
 }

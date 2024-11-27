@@ -19,21 +19,7 @@ class ContentTypeView extends GetView<ContentTypeController> {
           'Content Type List',
           style: theme.textTheme.bodyMedium,
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: MyButton(
-              width: 120,
-              title:'Add Content',textStyle: TextStyle(color: Colors.white),
-              color:theme.hintColor,
-              onPress: () {
-                controller.nameC.clear();
-                controller.descriptionC.clear();
-                addContent(context);
-              },
-            ),
-          ),
-        ],
+
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -197,7 +183,18 @@ class ContentTypeView extends GetView<ContentTypeController> {
           ],
         ),
       ),
-
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          controller.nameC.clear();
+          controller.descriptionC.clear();
+          addContent(context);
+        },
+        tooltip: 'Add Item',
+        shape: CircleBorder(),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        child: Icon(Icons.add),
+      ),
 
     );
 

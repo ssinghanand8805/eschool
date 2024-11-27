@@ -4,11 +4,10 @@ import 'package:learnladderfaculity/presentation/download_center/Video%20Tutoria
 
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
+import '../../../apiHelper/toastMessage.dart';
 import '../../common_widgets/controller/CommonApiController.dart';
 
-class VideoTutorialController extends GetxController{
-
-
+class VideoTutorialController extends GetxController {
   TextEditingController SearchByTitleC = TextEditingController();
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   CommonApiController commonApiController = Get.put(CommonApiController());
@@ -22,21 +21,28 @@ class VideoTutorialController extends GetxController{
     super.onInit();
     fetchDataFuture = initializeData();
   }
+
   void initializeOriginalList() {
-    originalContentTypeList = filteredContentTypeList.value!.data!.videoTutorialList!;//List.from(); // Make a copy of the original data
+    originalContentTypeList = filteredContentTypeList.value!.data!
+        .videoTutorialList!; //List.from(); // Make a copy of the original data
   }
+
   Future<void> searchContentType(String searchKey) async {
     // Check if the searchKey is empty or not
     if (searchKey.isEmpty) {
       // Reset to the original list when searchKey is cleared
       filteredContentTypeList.update((val) {
-        val?.data!.videoTutorialList = originalContentTypeList;  // Reset to original list
+        val?.data!.videoTutorialList =
+            originalContentTypeList; // Reset to original list
       });
     } else {
       // Filter the list based on the searchKey
       List<VideoTutorialList> filteredList = originalContentTypeList
-          .where((element) => element.title != null &&
-          element.title!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
+          .where((element) =>
+              element.title != null &&
+              element.title!.toLowerCase().contains(searchKey
+                  .toLowerCase()
+                  .trim())) // Perform case-insensitive search
           .toList();
 
       // Update the filtered list
@@ -45,44 +51,42 @@ class VideoTutorialController extends GetxController{
       });
     }
   }
-  Future<void> initializeData() async  {
+
+  Future<void> initializeData() async {
     //isLoading.value = true;
-    try
-    {
+    try {
       var body = {};
-      var data = await apiRespository.postApiCallByJson(Constants.getVideoTutorialListUrl, body);
+      var data = await apiRespository.postApiCallByJson(
+          Constants.getVideoTutorialListUrl, body);
 
       filteredContentTypeList.value = VideoTutorial.fromJson(data.body);
       print(filteredContentTypeList.value.toJson());
       initializeOriginalList();
       update();
-    }
-    catch(e)
-    {
+    } catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");
       update();
     }
 
     // Initialize fetchDataFuture here
   }
-  Future<void> searchApiData() async  {
+
+  Future<void> searchApiData() async {
     //isLoading.value = true;
-    try
-    {
+    try {
       Map<String, dynamic> body = {
-        "class_id" : commonApiController.selectedClassId.value ?? "",
-        "class_section_id":commonApiController.selectedSectionId.value ?? "",
+        "class_id": commonApiController.selectedClassId.value ?? "",
+        "class_section_id": commonApiController.selectedSectionId.value ?? "",
         "keyword": SearchByTitleC.value.text.trim()
       };
-      var data = await apiRespository.postApiCallByFormData(Constants.getVideoTutorialListBySearchUrl, body);
+      var data = await apiRespository.postApiCallByFormData(
+          Constants.getVideoTutorialListBySearchUrl, body);
 
       filteredContentTypeList.value = VideoTutorial.fromJson(data.body);
       print(filteredContentTypeList.value.toJson());
       initializeOriginalList();
       update();
-    }
-    catch(e)
-    {
+    } catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");
       update();
     }
@@ -90,4 +94,17 @@ class VideoTutorialController extends GetxController{
     // Initialize fetchDataFuture here
   }
 
+  void deleteVideoId(context, id) async {
+    var body = {"id": id};
+    var data = await apiRespository.postApiCallByFormData(
+        Constants.contenttypedeleteUrl, body);
+    String msgFor = "Delete";
+    if (data.body['status'] == 'success') {
+      Get.showSnackbar(Ui.SuccessSnackBar(message: '${msgFor}d Success'));
+      initializeData();
+    } else {
+      Get.showSnackbar(
+          Ui.ErrorSnackBar(message: 'Error Occurred while ${msgFor}'));
+    }
+  }
 }

@@ -178,12 +178,7 @@ class ContentShareView extends GetView<ContentShareController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          IconButton(
-            icon: Icon(Icons.remove_red_eye, size: 16,color: Colors.green,),
-            onPressed: () {
-              showShareContents(context,controller);
-            },
-          ),
+
           IconButton(
             icon: Icon(Icons.delete, size: 16,color: Colors.red,),
             onPressed: () {
