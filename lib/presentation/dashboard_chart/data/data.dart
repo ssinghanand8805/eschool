@@ -9,25 +9,25 @@ import '../models/referal_info_model.dart';
 
 List analyticData = [
   AnalyticInfo(
-    title: "Subscribers",
+    title: "Fees Awaiting Payment",
     count: 720,
     svgSrc: "assets/icons/Subscribers.svg",
     color: primaryColor,
   ),
   AnalyticInfo(
-    title: "Post",
+    title: " Converted Leads",
     count: 820,
     svgSrc: "assets/icons/Post.svg",
     color: purple,
   ),
   AnalyticInfo(
-    title: "Pages",
+    title: "Staff Present Today",
     count: 920,
     svgSrc: "assets/icons/Pages.svg",
     color: orange,
   ),
   AnalyticInfo(
-    title: "Comments",
+    title: "Student Present Today",
     count: 920,
     svgSrc: "assets/icons/Comments.svg",
     color: green,

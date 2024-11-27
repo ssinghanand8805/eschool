@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:learnladderfaculity/core/app_export.dart';
 
 import '../../constants/constants.dart';
 import '../../models/analytic_info_model.dart';
@@ -28,9 +29,9 @@ class AnalyticInfoCard extends StatelessWidget {
             children: [
               Text(
                 "${info.count}",
-                style: TextStyle(
+                style: theme.textTheme.titleMedium!.copyWith(
                   color: textColor,
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -52,10 +53,10 @@ class AnalyticInfoCard extends StatelessWidget {
             info.title!,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: theme.textTheme.titleMedium!.copyWith(
               color: textColor,
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
+              fontSize: 14,
+              fontWeight: FontWeight.w800,
             ),
           )
         ],

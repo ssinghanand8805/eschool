@@ -35,11 +35,13 @@ class StaffController extends GetxController{
   late Future<void> fetchDataFuture;
   List<Data> originalContentTypeList = [];
   RxBool isLoading = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
     fetchDataFuture = initializeData();
   }
+
   // void initializeOriginalList() {
   //   originalContentTypeList = List.from(filteredContentTypeList.value.data!);  // Make a copy of the original data
   // }
@@ -63,6 +65,7 @@ class StaffController extends GetxController{
   //     });
   //   }
   // }
+
   Future<void> initializeData() async  {
     //isLoading.value = true;
     try

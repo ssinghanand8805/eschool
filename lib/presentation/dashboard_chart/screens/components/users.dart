@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 
+import '../../../../theme/theme_helper.dart';
 import '../../constants/constants.dart';
 import 'bar_chart_users.dart';
 
@@ -21,8 +22,8 @@ class UsersWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Users",
-            style: TextStyle(
+            "Fees Collection & Expenses For November 2024",
+            style: theme.textTheme.titleMedium!.copyWith(
               fontWeight: FontWeight.w700,
               fontSize: 15,
               color: textColor,
