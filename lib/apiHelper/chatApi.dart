@@ -14,7 +14,7 @@ import '../presentation/login_screen/models/userDataModal.dart';
 
 class chatApiClient extends GetConnect implements GetxService {
   late String? token;
-  final String appBaseUrl;
+  final String? appBaseUrl;
 
   late  Map<String, String> _mainHeader;
 

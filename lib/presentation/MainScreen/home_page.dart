@@ -110,7 +110,7 @@ class _MyHomePageState extends State<HomePage> with TickerProviderStateMixin {
    // final colors = theme;//Theme.of(context).extension<ThemeHelper>()!;
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(
+      appBar: _bottomNavIndex != 2 ? AppBar(
         // leading: IconButton(  onPressed: () {  }, icon: Icon(Icons.),),
         centerTitle: true,
         title: Obx( () => controller.schoolImageUrl == "" ? Image.asset("assets/projectImages/online_logo.png", height: 30): Image.network(controller.schoolImageUrl.toString(), height: 30)),
@@ -164,7 +164,7 @@ class _MyHomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
           )
         ],
-      ),
+      ) : null,
       drawer: Drawer(
         child: SingleChildScrollView(
           child: Column(

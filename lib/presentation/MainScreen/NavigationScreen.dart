@@ -2,6 +2,8 @@ import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
 
+import '../chat/RecentChatScreen.dart';
+import '../chat/binding/recentchat.dart';
 import '../dashboard/binding/dashboard_binding.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../dashboard_chart/screens/dash_board_screen.dart';
@@ -69,15 +71,21 @@ class _NavigationScreenState extends State<NavigationScreen>
 
   getWidgetsByIndex(index)
   {
-    if(index == 1)
+     if(index == 0)
+    {
+    return DashBoardScreen();
+    }
+   else if(index == 1)
       {
         dashBordBinding().dependencies();
         return DashboardScreen();
       }
-    else if(index == 0)
+    else if(index == 2)
       {
-        return DashBoardScreen();
+        RecentChatBinding().dependencies();
+        return RecentChatScreen();
       }
+
 
   }
 

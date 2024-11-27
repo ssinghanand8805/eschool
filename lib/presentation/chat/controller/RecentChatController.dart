@@ -6,6 +6,7 @@ import 'package:learnladderfaculity/apiHelper/userData.dart';
 import 'package:learnladderfaculity/presentation/profile/model/Profile.dart';
 import '../../../apiHelper/ChatNotificationService.dart';
 import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/chatApi.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';
 import '../model/RecentChat.dart';
@@ -14,7 +15,21 @@ import '../model/RecentChat.dart';
 
 class RecentChatController extends GetxController {
   UserData userData = Get.put(UserData());
-  ChatApiRespository apiRespository = ChatApiRespository(apiClient:Get.find(tag: 'chatApi'));
+  chatApiClient checkAndCreateChatApi() {
+    // Check if ChatApi is already registered
+    if (Get.isRegistered<chatApiClient>(tag: 'chatApi') == false) {
+      // If not registered, create and register it
+      Get.put(chatApiClient(appBaseUrl: "http://13.234.137.77/api/"), tag: 'chatApi');
+      print("ChatApi created and registered.");
+    } else {
+      print("ChatApi is already registered.");
+    }
+    chatApiClient chatApi = Get.find<chatApiClient>(tag: 'chatApi');
+    return chatApi;
+
+  }
+
+   late ChatApiRespository apiRespository ;//= ChatApiRespository(apiClient:checkAndCreateChatApi());
   Rx<RecentChat> recentChatModelObj = RecentChat().obs;
   late Future<void> fetchDataFuture;
   @override
@@ -25,6 +40,7 @@ class RecentChatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    apiRespository = ChatApiRespository(apiClient:checkAndCreateChatApi());
     fetchDataFuture = getData(); // Initialize the future when the controller is created
   }
   Future<void> getData() async
