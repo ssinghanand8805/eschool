@@ -6,6 +6,7 @@ import 'package:html_editor_enhanced/html_editor.dart';
 
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
+import '../../../apiHelper/toastMessage.dart';
 import 'approve_leave_modal.dart';
 
 class ApproveLeaveController extends GetxController{
@@ -25,7 +26,7 @@ class ApproveLeaveController extends GetxController{
   Rx<HtmlEditorController> HtmlController = HtmlEditorController().obs;
   Rx<File?> pickedFile = Rx<File?>(null);
   late Future<void> fetchDataFuture;
-  List<Data> originalContentTypeList = [];
+  List<LeaveRequest> originalContentTypeList = [];
   RxBool isLoading = false.obs;
   @override
   void onInit() async {
@@ -33,34 +34,35 @@ class ApproveLeaveController extends GetxController{
     fetchDataFuture = initializeData();
   }
   void initializeOriginalList() {
-    originalContentTypeList = List.from(filteredContentTypeList.value.data!);  // Make a copy of the original data
+    originalContentTypeList = List.from(filteredContentTypeList.value.data!.leaveRequest!);  // Make a copy of the original data
   }
   Future<void> searchContentType(String searchKey) async {
     // Check if the searchKey is empty or not
     if (searchKey.isEmpty) {
       // Reset to the original list when searchKey is cleared
       filteredContentTypeList.update((val) {
-        val?.data = originalContentTypeList;  // Reset to original list
+        val?.data!.leaveRequest = originalContentTypeList;  // Reset to original list
       });
     } else {
       // Filter the list based on the searchKey
-      List<Data> filteredList = originalContentTypeList
+      List<LeaveRequest> filteredList = originalContentTypeList
           .where((element) => element.name != null &&
           element.name!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
           .toList();
 
       // Update the filtered list
       filteredContentTypeList.update((val) {
-        val?.data = filteredList;
+        val?.data!.leaveRequest = filteredList;
       });
     }
   }
+
+
   Future<void> initializeData() async  {
-    //isLoading.value = true;
     try
     {
       var body = {};
-      var data = await apiRespository.postApiCallByJson(Constants.contentShareListUrl, body);
+      var data = await apiRespository.postApiCallByJson(Constants.getLeaverequest, body);
 
       filteredContentTypeList.value =  ApproveLeaveModal.fromJson(data.body);
       print(filteredContentTypeList.value.toJson());
@@ -73,34 +75,33 @@ class ApproveLeaveController extends GetxController{
       update();
     }
 
-    // Initialize fetchDataFuture here
   }
-  // List<Map<String, dynamic>> data = [
-  //   {
-  //     'studentId': 18001,
-  //     'class': 'Class 4',
-  //     'section': 'A',
-  //     'subjectGroup': 'Class 1st Subject Group',
-  //     'subject': 'Hindi (230)',
-  //     'homeworkDate': DateTime(2024, 4, 5),
-  //     'submissionDate': DateTime(2024, 4, 9),
-  //     'evaluationDate': DateTime(2024, 4, 9),
-  //     'createdBy': 'Joe Black',
-  //     'approvedId': 9000,
-  //   },
-  //   {
-  //     'studentId': 18002,
-  //     'class': 'Class 4',
-  //     'section': 'A',
-  //     'subjectGroup': 'Class 1st Subject Group',
-  //     'subject': 'Hindi (230)',
-  //     'homeworkDate': DateTime(2024, 4, 5),
-  //     'submissionDate': DateTime(2024, 4, 9),
-  //     'evaluationDate': DateTime(2024, 4, 9),
-  //     'createdBy': 'Kirti Singh',
-  //     'approvedId': 9000,
-  //   },
-  //   // Add more data as needed
-  // ];
+
+
+  deleteLeave(context, staffId,id) async {
+    try {
+      var body = {
+
+        "id": id,
+        "staff_id": staffId,
+
+      };
+      var data = await apiRespository.postApiCallByFormData(
+          Constants.removeLeaverequest, body);
+
+      if (data.body['status'] == 1) {
+        Get.showSnackbar(
+            Ui.SuccessSnackBar(message: data.body['msg'].toString()));
+        initializeData();
+      } else {
+        Get.showSnackbar(
+            Ui.ErrorSnackBar(message: data.body['msg'].toString()));
+      }
+    } catch (e) {
+      print("EEEEEEEEEEEEEEEEEEEE${e}");
+      update();
+    }
+  }
+
 
 }

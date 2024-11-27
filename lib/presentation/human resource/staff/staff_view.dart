@@ -22,7 +22,7 @@ class StaffView extends GetView< StaffController> {
         backgroundColor: Colors.green.shade100,
         title: Text(
           'Staff',
-          style: theme.textTheme.titleLarge,
+          style: theme.textTheme.bodyMedium,
         ),
       ),
       body: GetBuilder<StaffController>(
@@ -43,8 +43,8 @@ class StaffView extends GetView< StaffController> {
                           borderColor: Colors.grey,
                           listToSearch:[],
                           valFrom: "className",
-                          label: 'Class',
-                          labelText: 'Class',
+                          label: 'Role',
+                          labelText: 'Role',
                           onChanged: (val) {
                           },
                         ),
@@ -52,26 +52,26 @@ class StaffView extends GetView< StaffController> {
                           controller: controller.searchC,
                           hint: 'Search.... ', title: 'Search',
                           onChanged: (val) {
-                            // controller.searchContentType(val);
-                            // controller.update();
+                            controller.searchContentType(val);
+                            controller.update();
                           },
                         ),
                         SizedBox(height: 8),
                         Expanded(
                           child: GetBuilder<StaffController>(
                             builder: (controller) {
-                              if (controller.sttafListModal.value.data == null ||
-                                  controller.sttafListModal.value.data!.resultlist!.isEmpty) {
+                              if (controller.filteredContentTypeList.value.data == null ||
+                                  controller.filteredContentTypeList.value.data!.resultlist!.isEmpty) {
                                 return Center(child: CustomLoader());
                               }
 
                               return ListView.builder(
                                 itemCount:
-                                controller.sttafListModal.value.data!.resultlist!.length,
+                                controller.filteredContentTypeList.value.data!.resultlist!.length,
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
                                   final staff = controller
-                                      .sttafListModal.value.data!.resultlist![index];
+                                      .filteredContentTypeList.value.data!.resultlist![index];
                                   return    Padding(
                                     padding: const EdgeInsets.only(left: 10,right: 10),
                                     child: Card(

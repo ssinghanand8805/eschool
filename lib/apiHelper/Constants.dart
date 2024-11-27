@@ -186,4 +186,14 @@ class Constants {
   static const String addMediaImage = '/media/addImage';
   static const String addMediaVideo = '/media/addVideo';
 
+
+  /// leave request
+  static const String getLeaverequest = '/leaverequest/leaverequest';
+  static const String removeLeaverequest = '/leaverequest/remove';
+
+
+  /// approve leave request
+  static const String getStaffleaverequest = '/leaverequest/staffleaverequest';
+
+
 }

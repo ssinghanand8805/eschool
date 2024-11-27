@@ -27,13 +27,13 @@ class StaffController extends GetxController{
   final workExperienceC = TextEditingController();
   final noteC = TextEditingController();
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
-  Rx< StaffListModal> sttafListModal =  StaffListModal().obs;
+  Rx< StaffListModal> filteredContentTypeList =  StaffListModal().obs;
   Rx<TextEditingController> attendanceDate = TextEditingController().obs;
   TextEditingController titleC = TextEditingController();
   Rx<HtmlEditorController> HtmlController = HtmlEditorController().obs;
   Rx<File?> pickedFile = Rx<File?>(null);
   late Future<void> fetchDataFuture;
-  List<Data> originalContentTypeList = [];
+  List<Resultlist> originalContentTypeList = [];
   RxBool isLoading = false.obs;
 
   @override
@@ -42,29 +42,29 @@ class StaffController extends GetxController{
     fetchDataFuture = initializeData();
   }
 
-  // void initializeOriginalList() {
-  //   originalContentTypeList = List.from(filteredContentTypeList.value.data!);  // Make a copy of the original data
-  // }
-  // Future<void> searchContentType(String searchKey) async {
-  //   // Check if the searchKey is empty or not
-  //   if (searchKey.isEmpty) {
-  //     // Reset to the original list when searchKey is cleared
-  //     filteredContentTypeList.update((val) {
-  //       val?.data = originalContentTypeList;  // Reset to original list
-  //     });
-  //   } else {
-  //     // Filter the list based on the searchKey
-  //     List<Data> filteredList = originalContentTypeList
-  //         .where((element) => element.name != null &&
-  //         element.name!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
-  //         .toList();
-  //
-  //     // Update the filtered list
-  //     filteredContentTypeList.update((val) {
-  //       val?.data = filteredList;
-  //     });
-  //   }
-  // }
+  void initializeOriginalList() {
+    originalContentTypeList = List.from(filteredContentTypeList.value.data!.resultlist!);  // Make a copy of the original data
+  }
+  Future<void> searchContentType(String searchKey) async {
+    // Check if the searchKey is empty or not
+    if (searchKey.isEmpty) {
+      // Reset to the original list when searchKey is cleared
+      filteredContentTypeList.update((val) {
+        val?.data!.resultlist = originalContentTypeList;  // Reset to original list
+      });
+    } else {
+      // Filter the list based on the searchKey
+      List<Resultlist> filteredList = originalContentTypeList
+          .where((element) => element.name != null &&
+          element.name!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
+          .toList();
+
+      // Update the filtered list
+      filteredContentTypeList.update((val) {
+        val?.data!.resultlist = filteredList;
+      });
+    }
+  }
 
   Future<void> initializeData() async  {
     //isLoading.value = true;
@@ -73,8 +73,9 @@ class StaffController extends GetxController{
       var body = {};
       var data = await apiRespository.postApiCallByJson(Constants.getStaffList, body);
 
-      sttafListModal.value =  StaffListModal.fromJson(data.body);
-      print(sttafListModal.value.toJson());
+      filteredContentTypeList.value =  StaffListModal.fromJson(data.body);
+      print(filteredContentTypeList.value.toJson());
+      initializeOriginalList();
       update();
     }
     catch(e)

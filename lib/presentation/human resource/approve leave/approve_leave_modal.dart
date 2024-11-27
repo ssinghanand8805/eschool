@@ -1,88 +1,128 @@
-class  ApproveLeaveModal {
-  String? status;
+class ApproveLeaveModal {
+  int? status;
   String? error;
-  String? message;
-  List<Data>? data;
+  Data? data;
 
-  ApproveLeaveModal({this.status, this.error, this.message, this.data});
+  ApproveLeaveModal({this.status, this.error, this.data});
 
   ApproveLeaveModal.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     error = json['error'];
-    message = json['message'];
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
     data['error'] = this.error;
-    data['message'] = this.message;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
 class Data {
-  String? id;
-  String? sendTo;
-  String? title;
-  String? shareDate;
-  String? validUpto;
-  String? description;
-  String? createdBy;
-  String? createdAt;
-  String? name;
-  String? surname;
-  String? employeeId;
+  List<LeaveRequest>? leaveRequest;
 
-  Data(
-      {this.id,
-        this.sendTo,
-        this.title,
-        this.shareDate,
-        this.validUpto,
-        this.description,
-        this.createdBy,
-        this.createdAt,
-        this.name,
-        this.surname,
-        this.employeeId});
+  Data({this.leaveRequest});
 
   Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    sendTo = json['send_to'];
-    title = json['title'];
-    shareDate = json['share_date'];
-    validUpto = json['valid_upto'];
-    description = json['description'];
-    createdBy = json['created_by'];
-    createdAt = json['created_at'];
-    name = json['name'];
-    surname = json['surname'];
-    employeeId = json['employee_id'];
+    if (json['leave_request'] != null) {
+      leaveRequest = <LeaveRequest>[];
+      json['leave_request'].forEach((v) {
+        leaveRequest!.add(new LeaveRequest.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['send_to'] = this.sendTo;
-    data['title'] = this.title;
-    data['share_date'] = this.shareDate;
-    data['valid_upto'] = this.validUpto;
-    data['description'] = this.description;
-    data['created_by'] = this.createdBy;
-    data['created_at'] = this.createdAt;
+    if (this.leaveRequest != null) {
+      data['leave_request'] =
+          this.leaveRequest!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class LeaveRequest {
+  String? name;
+  String? surname;
+  String? employeeId;
+  String? id;
+  String? staffId;
+  String? leaveTypeId;
+  String? leaveFrom;
+  String? leaveTo;
+  String? leaveDays;
+  String? employeeRemark;
+  String? adminRemark;
+  String? status;
+  String? appliedBy;
+  String? documentFile;
+  String? date;
+  String? createdAt;
+  String? type;
+
+  LeaveRequest(
+      {this.name,
+        this.surname,
+        this.employeeId,
+        this.id,
+        this.staffId,
+        this.leaveTypeId,
+        this.leaveFrom,
+        this.leaveTo,
+        this.leaveDays,
+        this.employeeRemark,
+        this.adminRemark,
+        this.status,
+        this.appliedBy,
+        this.documentFile,
+        this.date,
+        this.createdAt,
+        this.type});
+
+  LeaveRequest.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    surname = json['surname'];
+    employeeId = json['employee_id'];
+    id = json['id'];
+    staffId = json['staff_id'];
+    leaveTypeId = json['leave_type_id'];
+    leaveFrom = json['leave_from'];
+    leaveTo = json['leave_to'];
+    leaveDays = json['leave_days'];
+    employeeRemark = json['employee_remark'];
+    adminRemark = json['admin_remark'];
+    status = json['status'];
+    appliedBy = json['applied_by'];
+    documentFile = json['document_file'];
+    date = json['date'];
+    createdAt = json['created_at'];
+    type = json['type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['surname'] = this.surname;
     data['employee_id'] = this.employeeId;
+    data['id'] = this.id;
+    data['staff_id'] = this.staffId;
+    data['leave_type_id'] = this.leaveTypeId;
+    data['leave_from'] = this.leaveFrom;
+    data['leave_to'] = this.leaveTo;
+    data['leave_days'] = this.leaveDays;
+    data['employee_remark'] = this.employeeRemark;
+    data['admin_remark'] = this.adminRemark;
+    data['status'] = this.status;
+    data['applied_by'] = this.appliedBy;
+    data['document_file'] = this.documentFile;
+    data['date'] = this.date;
+    data['created_at'] = this.createdAt;
+    data['type'] = this.type;
     return data;
   }
 }
