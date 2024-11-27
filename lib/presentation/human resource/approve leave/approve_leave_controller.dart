@@ -9,11 +9,10 @@ import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
 import 'approve_leave_modal.dart';
 
-class ApproveLeaveController extends GetxController{
-
+class ApproveLeaveController extends GetxController {
   TextEditingController searchC = TextEditingController();
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
-  Rx< ApproveLeaveModal> filteredContentTypeList =  ApproveLeaveModal().obs;
+  Rx<ApproveLeaveModal> filteredContentTypeList = ApproveLeaveModal().obs;
   Rx<TextEditingController> attendanceDate = TextEditingController().obs;
   TextEditingController titleC = TextEditingController();
   final reasonC = TextEditingController();
@@ -33,21 +32,28 @@ class ApproveLeaveController extends GetxController{
     super.onInit();
     fetchDataFuture = initializeData();
   }
+
   void initializeOriginalList() {
-    originalContentTypeList = List.from(filteredContentTypeList.value.data!.leaveRequest!);  // Make a copy of the original data
+    originalContentTypeList = List.from(filteredContentTypeList
+        .value.data!.leaveRequest!); // Make a copy of the original data
   }
+
   Future<void> searchContentType(String searchKey) async {
     // Check if the searchKey is empty or not
     if (searchKey.isEmpty) {
       // Reset to the original list when searchKey is cleared
       filteredContentTypeList.update((val) {
-        val?.data!.leaveRequest = originalContentTypeList;  // Reset to original list
+        val?.data!.leaveRequest =
+            originalContentTypeList; // Reset to original list
       });
     } else {
       // Filter the list based on the searchKey
       List<LeaveRequest> filteredList = originalContentTypeList
-          .where((element) => element.name != null &&
-          element.name!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
+          .where((element) =>
+              element.name != null &&
+              element.name!.toLowerCase().contains(searchKey
+                  .toLowerCase()
+                  .trim())) // Perform case-insensitive search
           .toList();
 
       // Update the filtered list
@@ -57,34 +63,53 @@ class ApproveLeaveController extends GetxController{
     }
   }
 
-
-  Future<void> initializeData() async  {
-    try
-    {
+  Future<void> initializeData() async {
+    try {
       var body = {};
-      var data = await apiRespository.postApiCallByJson(Constants.getLeaverequest, body);
+      var data = await apiRespository.postApiCallByJson(
+          Constants.getLeaverequest, body);
 
-      filteredContentTypeList.value =  ApproveLeaveModal.fromJson(data.body);
+      filteredContentTypeList.value = ApproveLeaveModal.fromJson(data.body);
       print(filteredContentTypeList.value.toJson());
       initializeOriginalList();
       update();
-    }
-    catch(e)
-    {
+    } catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");
       update();
     }
-
   }
 
-
-  deleteLeave(context, staffId,id) async {
+  Future<void> updateLeaveStatus(BuildContext context, String leaveId, String status) async {
     try {
       var body = {
+        "leave_request_id":leaveId,
+        "status":status,
 
+
+
+      };
+      var data = await apiRespository.postApiCallByJson(
+          Constants.leaveStatus, body);
+      if (data.body['status'] == 1) {
+        Get.showSnackbar(
+            Ui.SuccessSnackBar(message: data.body['msg'].toString()));
+        initializeData();
+      } else {
+        Get.showSnackbar(
+            Ui.ErrorSnackBar(message: data.body['msg'].toString()));
+      } // Refresh the data
+    } catch (e) {
+      print("Error updating leave status: $e");
+      Get.showSnackbar(
+          Ui.ErrorSnackBar(message: "Failed to update leave status."));
+    }
+  }
+
+  deleteLeave(context, staffId, id) async {
+    try {
+      var body = {
         "id": id,
         "staff_id": staffId,
-
       };
       var data = await apiRespository.postApiCallByFormData(
           Constants.removeLeaverequest, body);
@@ -102,6 +127,4 @@ class ApproveLeaveController extends GetxController{
       update();
     }
   }
-
-
 }

@@ -190,6 +190,7 @@ class Constants {
   /// leave request
   static const String getLeaverequest = '/leaverequest/leaverequest';
   static const String removeLeaverequest = '/leaverequest/remove';
+  static const String leaveStatus = '/leaverequest/leaveStatus';
 
 
   /// approve leave request

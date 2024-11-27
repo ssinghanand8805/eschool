@@ -118,7 +118,7 @@ class ApproveLeaveRequestView extends GetView<ApproveLeaveController> {
                                     children: [
                                       // Staff Name
                                       Text(
-                                        'Staff : ${entry.name.toString().capitalizeFirst ?? "N/A"}',
+                                        "Staff: ${entry.name.toString().capitalizeFirst ?? "N/A"} ${entry.surname.toString().capitalizeFirst ?? "N/A"}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium
@@ -184,50 +184,118 @@ class ApproveLeaveRequestView extends GetView<ApproveLeaveController> {
                                           // Actions: Edit and Delete
                                           Row(
                                             children: [
+                                              // Approve Button
                                               IconButton(
-                                                icon: const Icon(Icons.delete,
-                                                    color: Colors.red),
+                                                icon: const Icon(Icons.check_circle, color: Colors.green),
                                                 onPressed: () {
                                                   showDialog(
                                                     context: context,
-                                                    builder:
-                                                        (BuildContext context) {
+                                                    builder: (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                          "Approve or Disapprove",
+                                                          style: theme.textTheme.bodyLarge,
+                                                        ),
+                                                        content: Column(
+                                                          mainAxisSize: MainAxisSize.min,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              "Staff: ${entry.name ?? "N/A"} ${entry.surname ?? "N/A"}",
+                                                              style: theme.textTheme.bodySmall,
+                                                            ),
+                                                            const SizedBox(height: 8),
+                                                            Text(
+                                                              "Leave Type: ${entry.type ?? "N/A"}",
+                                                              style: theme.textTheme.bodySmall,
+                                                            ),
+                                                            const SizedBox(height: 8),
+                                                            Text(
+                                                              'Leave Date: ${entry.leaveFrom ?? "N/A"} - ${entry.leaveTo ?? "N/A"}',
+                                                              style: theme.textTheme.bodySmall,
+                                                            ),
+                                                            const SizedBox(height: 8),
+                                                            Text(
+                                                              "Days: ${entry.date ?? "N/A"}",
+                                                              style: theme.textTheme.bodySmall,
+                                                            ),
+                                                            const SizedBox(height: 16),
+                                                            Text(
+                                                              "What action would you like to take on this leave request?",
+                                                              style: theme.textTheme.bodySmall,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        actions: [
+                                                          // Disapprove Button
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              controller.updateLeaveStatus(
+                                                                context,
+                                                                entry.leaveTypeId!,
+
+                                                                "Disapproved",
+                                                              );
+                                                              Navigator.of(context).pop(); // Close the dialog
+                                                            },
+                                                            child: const Text(
+                                                              "Disapprove",
+                                                              style: TextStyle(color: Colors.red),
+                                                            ),
+                                                          ),
+                                                          // Approve Button
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              controller.updateLeaveStatus(
+                                                                context,
+                                                                entry.leaveTypeId!,
+
+                                                                "Approved",
+                                                              );
+                                                              Navigator.of(context).pop(); // Close the dialog
+                                                            },
+                                                            child: const Text(
+                                                              "Approve",
+                                                              style: TextStyle(color: Colors.green),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                              // Delete Button
+                                              IconButton(
+                                                icon: const Icon(Icons.delete, color: Colors.red),
+                                                onPressed: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext context) {
                                                       return AlertDialog(
                                                         title: Text(
                                                           "Confirm Delete",
-                                                          style: theme.textTheme
-                                                              .bodyLarge,
+                                                          style: theme.textTheme.bodyLarge,
                                                         ),
                                                         content: Text(
                                                           "Are you sure you want to delete this Gallery Image? This action cannot be undone.",
-                                                          style: theme.textTheme
-                                                              .bodySmall,
+                                                          style: theme.textTheme.bodySmall,
                                                         ),
                                                         actions: [
                                                           TextButton(
                                                             onPressed: () {
-                                                              Navigator.of(
-                                                                  context)
-                                                                  .pop();
+                                                              Navigator.of(context).pop(); // Close the dialog
                                                             },
-                                                            child: const Text(
-                                                                "Cancel"),
+                                                            child: const Text("Cancel"),
                                                           ),
                                                           TextButton(
                                                             onPressed: () {
-                                                              controller
-                                                                  .deleteLeave(
-                                                                  context,entry.id,entry.staffId
-                                                                  );
-                                                              Navigator.of(
-                                                                  context)
-                                                                  .pop(); // Close the dialog
+                                                              controller.deleteLeave(context, entry.id, entry.staffId);
+                                                              Navigator.of(context).pop(); // Close the dialog
                                                             },
                                                             child: const Text(
                                                               "Delete",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .red),
+                                                              style: TextStyle(color: Colors.red),
                                                             ),
                                                           ),
                                                         ],
@@ -238,6 +306,7 @@ class ApproveLeaveRequestView extends GetView<ApproveLeaveController> {
                                               ),
                                             ],
                                           ),
+
                                         ],
                                       ),
                                     ],
@@ -252,20 +321,10 @@ class ApproveLeaveRequestView extends GetView<ApproveLeaveController> {
                   );
                 });
           }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          approveLeave(context);
-        },
-        tooltip: 'Add Item',
-        shape: CircleBorder(),
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.white,
-        child: Icon(Icons.add),
-      ),
     );
   }
 
-  void approveLeave(BuildContext context) {
+  void _approveLeave(BuildContext context) {
     showCustomBottomSheet(
       context: context,
       child: Container(
