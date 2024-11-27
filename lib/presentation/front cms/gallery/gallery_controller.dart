@@ -17,7 +17,7 @@ class GalleryController extends GetxController {
   Rx<TextEditingController> attendanceDate = TextEditingController().obs;
   TextEditingController titleC = TextEditingController();
   Rx<HtmlEditorController> HtmlController = HtmlEditorController().obs;
-
+  RxString featureImage = "".obs;
   late Future<void> fetchDataFuture;
   List<Data> originalContentTypeList = [];
   RxBool isLoading = false.obs;
@@ -65,6 +65,7 @@ for(var i =0;i< imageList.value.length;i++)
         "title": titleC,
         "description": description,
         'gallery_images[]': imageIds,
+         "image":featureImage.value
       };
 
 

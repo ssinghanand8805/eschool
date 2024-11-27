@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/widgets/customTextField.dart';
 import 'package:learnladderfaculity/widgets/myCustomsd.dart';
 import '../../../theme/theme_helper.dart';
+// import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/datePickerTextField.dart';
@@ -330,9 +331,10 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
 
 
   addFollowUp(context) {
-    AlertDialogue().show(
-      context,
-      newWidget: [
+    showCustomBottomSheet(
+        context: context,
+        child: Column(
+        children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -398,6 +400,7 @@ class FollowUpEnquiryView extends GetView<FollowUpEnquiryController>{
           ],
         )
       ],
+        )
     );
   }
 

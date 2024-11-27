@@ -30,200 +30,205 @@ class AlertDialogue {
     var canPressOk=true;
     return WidgetsBinding.instance.addPostFrameCallback((_){
 
-      showCupertinoModalBottomSheet(
-        // isDismissible: true,
-        shadow: BoxShadow(blurRadius: 0, color: newWidget==null? Colors.transparent:Colors.black12, spreadRadius: 0),
-        backgroundColor: Colors.transparent,
-        barrierColor: Colors.black38,
-        context: context,
-        builder: (context) => newWidget!=null? ListView(
-          shrinkWrap: true,
-          //  physics: const NeverScrollableScrollPhysics(),
-          children: [
-            Center(
-              child: Container(
-                width: 200,
-                height: 5,
-                margin: const EdgeInsets.fromLTRB(0,10,0,10),
-                decoration: const BoxDecoration(
-                    color: Colors.black26,
-                    borderRadius: BorderRadius.all(Radius.circular(20))
-                ),
-              ),
-            ),
-            Container(
-              decoration:  BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10)
-                  ),
-                  border: Border.all(color: theme.primaryColorLight)
-              ),
-              child: Padding(
-                padding:  EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Visibility(
-                      visible: title!=null,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(title.toString(),
-                                  style: theme.textTheme.labelLarge,),
-                                Visibility(
-                                    visible: subTitle!=null,
-                                    child: Text(subTitle.toString(),
-                                        style: theme.textTheme.titleMedium)
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(onPressed: (){
-                            if(canPressOk)
-                            {
-                              canPressOk=false;
-                              Navigator.pop(context);
-                            }
-                          }, icon: const Icon(Icons.clear,
-                            color: Colors.black,))
-                        ],
-                      ),
-                    ),
-
-
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: newWidget,
-                    ),
-                  ],
-                ),
-              ),
-            )
-          ],
-        ):
-        ListView(
-          shrinkWrap: true,
-          children: [
-            Container(
-                decoration:  BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10)
-                    ),
-                    border: Border.all(color: theme.primaryColorLight)
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Container(
-                    //     decoration: BoxDecoration(
-                    //         color: AppColor.primaryColorDark,
-                    //         borderRadius: BorderRadius.only(
-                    //           topLeft: Radius.circular(10),
-                    //           topRight: Radius.circular(10),
-                    //         )
-                    //     ),
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.all(8.0),
-                    //       child: Row(
-                    //         children: [
-                    //           Icon(
-                    //             checkIcon?? false? Icons.check:Icons.info_outline,
-                    //             color: Colors.white,
-                    //           ),
-                    //           SizedBox(width: 5,),
-                    //           Expanded(
-                    //             child: Text(alert.toString(),
-                    //               style: MyTextTheme().mediumWCB),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     )),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0,10,0,0),
-                      child: Column(
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(20,20,20,20),
-                              child: Text(msg.toString(),
-                                  textAlign: TextAlign.center,
-                                  style: theme.textTheme.titleMedium)
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(20,0,20,0),
-                            child: Row(
-                              children: [
-                                (showCancelButton?? false)?Expanded(
-                                  child: Visibility(
-                                    visible: showCancelButton?? false,
-                                    child:   MyButton(
-                                      color: theme.primaryColorLight,
-                                      title: 'Cancel',
-                                      onPress: (){
-                                        if(canPressOk)
-                                        {
-                                          canPressOk=false;
-                                          Navigator.pop(context);
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ):Container(),
-                                SizedBox(width: 20,),
-                                (firstButtonName!=null)? Expanded(
-                                  child: Visibility(
-                                    visible: firstButtonName!=null,
-                                    child: MyButton(
-                                      color: theme.primaryColorLight,
-                                      title: firstButtonName.toString(),
-                                      onPress: (){
-                                        if(canPressOk)
-                                        {
-                                          canPressOk=false;
-                                          firstButtonPressEvent!();
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ):Container(),
-
-                                (showOkButton?? false)? Expanded(
-                                  child: Visibility(
-                                    visible: showOkButton?? false,
-                                    child:   MyButton(
-                                      color: theme.primaryColor,
-                                      title: 'Ok',
-                                      onPress: (){
-                                        if(canPressOk)
-                                        {
-                                          canPressOk=false;
-                                          Navigator.pop(context);
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ):Container(),
-                              ],
-                            ),
-                          ),
-
-
-
-                          const SizedBox(height: 8,),
-                        ],
-                      ),
-                    ),
-                  ],
-                )),
-          ],
-        ),
+      showCustomBottomSheet(
+          context: context,
+          child:Column(children : newWidget!)
       );
+
+      //     (
+      //   // isDismissible: true,
+      //   shadow: BoxShadow(blurRadius: 0, color: newWidget==null? Colors.transparent:Colors.black12, spreadRadius: 0),
+      //   backgroundColor: Colors.transparent,
+      //   barrierColor: Colors.black38,
+      //   context: context,
+      //   builder: (context) => newWidget!=null? ListView(
+      //     shrinkWrap: true,
+      //     //  physics: const NeverScrollableScrollPhysics(),
+      //     children: [
+      //       Center(
+      //         child: Container(
+      //           width: 200,
+      //           height: 5,
+      //           margin: const EdgeInsets.fromLTRB(0,10,0,10),
+      //           decoration: const BoxDecoration(
+      //               color: Colors.black26,
+      //               borderRadius: BorderRadius.all(Radius.circular(20))
+      //           ),
+      //         ),
+      //       ),
+      //       Container(
+      //         decoration:  BoxDecoration(
+      //             color: Colors.white,
+      //             borderRadius: const BorderRadius.only(
+      //                 topLeft: Radius.circular(10),
+      //                 topRight: Radius.circular(10)
+      //             ),
+      //             border: Border.all(color: theme.primaryColorLight)
+      //         ),
+      //         child: Padding(
+      //           padding:  EdgeInsets.all(10.0),
+      //           child: Column(
+      //             crossAxisAlignment: CrossAxisAlignment.start,
+      //             children: [
+      //               Visibility(
+      //                 visible: title!=null,
+      //                 child: Row(
+      //                   children: [
+      //                     Expanded(
+      //                       child: Column(
+      //                         crossAxisAlignment: CrossAxisAlignment.start,
+      //                         children: [
+      //                           Text(title.toString(),
+      //                             style: theme.textTheme.labelLarge,),
+      //                           Visibility(
+      //                               visible: subTitle!=null,
+      //                               child: Text(subTitle.toString(),
+      //                                   style: theme.textTheme.titleMedium)
+      //                           ),
+      //                         ],
+      //                       ),
+      //                     ),
+      //                     IconButton(onPressed: (){
+      //                       if(canPressOk)
+      //                       {
+      //                         canPressOk=false;
+      //                         Navigator.pop(context);
+      //                       }
+      //                     }, icon: const Icon(Icons.clear,
+      //                       color: Colors.black,))
+      //                   ],
+      //                 ),
+      //               ),
+      //
+      //
+      //               Column(
+      //                 crossAxisAlignment: CrossAxisAlignment.start,
+      //                 children: newWidget,
+      //               ),
+      //             ],
+      //           ),
+      //         ),
+      //       )
+      //     ],
+      //   ):
+      //   ListView(
+      //     shrinkWrap: true,
+      //     children: [
+      //       Container(
+      //           decoration:  BoxDecoration(
+      //               color: Colors.white,
+      //               borderRadius: const BorderRadius.only(
+      //                   topLeft: Radius.circular(10),
+      //                   topRight: Radius.circular(10)
+      //               ),
+      //               border: Border.all(color: theme.primaryColorLight)
+      //           ),
+      //           child: Column(
+      //             mainAxisSize: MainAxisSize.min,
+      //             children: [
+      //               // Container(
+      //               //     decoration: BoxDecoration(
+      //               //         color: AppColor.primaryColorDark,
+      //               //         borderRadius: BorderRadius.only(
+      //               //           topLeft: Radius.circular(10),
+      //               //           topRight: Radius.circular(10),
+      //               //         )
+      //               //     ),
+      //               //     child: Padding(
+      //               //       padding: const EdgeInsets.all(8.0),
+      //               //       child: Row(
+      //               //         children: [
+      //               //           Icon(
+      //               //             checkIcon?? false? Icons.check:Icons.info_outline,
+      //               //             color: Colors.white,
+      //               //           ),
+      //               //           SizedBox(width: 5,),
+      //               //           Expanded(
+      //               //             child: Text(alert.toString(),
+      //               //               style: MyTextTheme().mediumWCB),
+      //               //           ),
+      //               //         ],
+      //               //       ),
+      //               //     )),
+      //               Padding(
+      //                 padding: const EdgeInsets.fromLTRB(0,10,0,0),
+      //                 child: Column(
+      //                   children: [
+      //                     Padding(
+      //                         padding: const EdgeInsets.fromLTRB(20,20,20,20),
+      //                         child: Text(msg.toString(),
+      //                             textAlign: TextAlign.center,
+      //                             style: theme.textTheme.titleMedium)
+      //                     ),
+      //                     Padding(
+      //                       padding: const EdgeInsets.fromLTRB(20,0,20,0),
+      //                       child: Row(
+      //                         children: [
+      //                           (showCancelButton?? false)?Expanded(
+      //                             child: Visibility(
+      //                               visible: showCancelButton?? false,
+      //                               child:   MyButton(
+      //                                 color: theme.primaryColorLight,
+      //                                 title: 'Cancel',
+      //                                 onPress: (){
+      //                                   if(canPressOk)
+      //                                   {
+      //                                     canPressOk=false;
+      //                                     Navigator.pop(context);
+      //                                   }
+      //                                 },
+      //                               ),
+      //                             ),
+      //                           ):Container(),
+      //                           SizedBox(width: 20,),
+      //                           (firstButtonName!=null)? Expanded(
+      //                             child: Visibility(
+      //                               visible: firstButtonName!=null,
+      //                               child: MyButton(
+      //                                 color: theme.primaryColorLight,
+      //                                 title: firstButtonName.toString(),
+      //                                 onPress: (){
+      //                                   if(canPressOk)
+      //                                   {
+      //                                     canPressOk=false;
+      //                                     firstButtonPressEvent!();
+      //                                   }
+      //                                 },
+      //                               ),
+      //                             ),
+      //                           ):Container(),
+      //
+      //                           (showOkButton?? false)? Expanded(
+      //                             child: Visibility(
+      //                               visible: showOkButton?? false,
+      //                               child:   MyButton(
+      //                                 color: theme.primaryColor,
+      //                                 title: 'Ok',
+      //                                 onPress: (){
+      //                                   if(canPressOk)
+      //                                   {
+      //                                     canPressOk=false;
+      //                                     Navigator.pop(context);
+      //                                   }
+      //                                 },
+      //                               ),
+      //                             ),
+      //                           ):Container(),
+      //                         ],
+      //                       ),
+      //                     ),
+      //
+      //
+      //
+      //                     const SizedBox(height: 8,),
+      //                   ],
+      //                 ),
+      //               ),
+      //             ],
+      //           )),
+      //     ],
+      //   ),
+      // );
 
     });
 

@@ -90,6 +90,9 @@ class  NewsController extends GetxController{
   }
   Future<void> initializeData() async  {
     //isLoading.value = true;
+    DateTime now = DateTime.now();
+    var d =  await GlobalData().ConvertToSchoolDateTimeFormat(now);
+    dateC.value.text = d;
     try
     {
       var body = {};

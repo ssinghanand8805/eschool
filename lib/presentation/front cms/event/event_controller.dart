@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 
 import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
 import 'event_modal.dart';
@@ -21,6 +22,7 @@ class EventController extends GetxController {
   Rx<TextEditingController> attendanceDate = TextEditingController().obs;
   Rx<File?> pickedFile = Rx<File?>(null);
   late Future<void> fetchDataFuture;
+  RxString featureImage = "".obs;
   List<Data> originalContentTypeList = [];
   RxBool isLoading = false.obs;
   @override
@@ -54,6 +56,11 @@ class EventController extends GetxController {
 
   Future<void> initializeData() async {
     //isLoading.value = true;
+    DateTime now = DateTime.now();
+    var d =  await GlobalData().ConvertToSchoolDateTimeFormat(now);
+    eventStartDate.value.text = d;
+    eventEndDate.value.text = d;
+
     try {
       var body = {};
       var data =
@@ -80,6 +87,7 @@ class EventController extends GetxController {
         "end_date": eventEndDate.value.text,
         "description": description,
         "venue": venueC.value.text,
+        "image":featureImage.value
       };
 
       var data = await apiRespository.postApiCallByFormData(
