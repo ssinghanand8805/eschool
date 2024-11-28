@@ -2,18 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:learnladderfaculity/presentation/academics/Assign%20class%20teacher/assign_class_teacher_controller.dart';
+import 'package:learnladderfaculity/presentation/common_widgets/custom_loader.dart';
 import 'package:learnladderfaculity/widgets/custom_button.dart';
 import 'package:learnladderfaculity/widgets/myCustomsd.dart';
 import 'package:lottie/lottie.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/customTextField.dart';
+import '../../common_widgets/controller/CommonApiController.dart';
 
 class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
   AssignClassTeacherView({Key? key})
       : super(
           key: key,
         );
+  CommonApiController controller3 = Get.put(CommonApiController());
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -46,7 +49,7 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
                 Expanded(
                   child: controller.isLoading.value
                       ? const Center(
-                          child: CircularProgressIndicator(),
+                          child: CustomLoader(),
                         )
                       : (controller.assignClassList.value.data
                                       ?.assignteacherlist ==
@@ -103,7 +106,7 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                'Class: ${entry.classN}',
+                                                'Class: ${entry.classN.toString().capitalizeFirst}',
                                                 style: theme
                                                     .textTheme.titleMedium!
                                                     .copyWith(
@@ -133,7 +136,7 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
                                               const SizedBox(width: 8),
                                               Expanded(
                                                 child: Text(
-                                                  entry.name!,
+                                                "${entry.name!}  (${entry.employeeId})",
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style:
@@ -161,6 +164,10 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
                                                     color: Colors.red,
                                                     size: 18),
                                                 onPressed: () {
+                                                  controller.deleteGallery(
+                                                      context,
+                                                      entry.classId,
+                                                      entry.sectionId);
                                                   // Delete action
                                                 },
                                               ),
@@ -201,28 +208,65 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
               "Add Content Type",
               style: theme.textTheme.bodyMedium,
             ),
-            MyCustomSD(
-                borderColor: Colors.grey,
-                label: "Select Class",
-                listToSearch: [],
-                valFrom: 'name',
-                onChanged: (val) {}),
-            SizedBox(
-              height: 20,
+            SizedBox(height: 10,),
+            Row(
+              children: [
+                Expanded(
+                  child: Obx(() => MyCustomSD(
+                    hideSearch: true,
+                    borderColor: Colors.grey,
+                    listToSearch: controller3.classListModelMap.value,
+                    valFrom: "className",
+                    label: 'Class',
+                    labelText: 'Class',
+                    onChanged: (val) {
+                      if (controller3.classListModelMap.value.length >
+                          0) {
+                        print("5555555555555");
+
+                        controller3.selectedClassId.value =
+                            val['id'].toString();
+                        controller3.selectedClassName.value =
+                            val['className'].toString();
+                        controller3.update();
+                        controller3.getSectionList();
+                      }
+                    },
+                  )),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Obx(() => MyCustomSD(
+                    hideSearch: true,
+                    borderColor: Colors.grey,
+                    listToSearch: controller3.sectionListModelMap.value,
+                    valFrom: "section",
+                    label: 'Section',
+                    labelText: 'Section',
+                    onChanged: (val) {
+                      print(val);
+                      if (controller3.sectionListModelMap.value.length >
+                          0) {
+                        controller3.selectedSectionId.value =
+                            val['id'].toString();
+                        controller3.selectedSectionName.value =
+                            val['section'].toString();
+                        controller3.update();
+                      }
+                    },
+                  )),
+                )
+              ],
             ),
-            MyCustomSD(
-                borderColor: Colors.grey,
-                label: "Select Section",
-                listToSearch: [],
-                valFrom: 'name',
-                onChanged: (val) {}),
             SizedBox(
               height: 20,
             ),
             Align(
                 alignment: Alignment.topLeft,
                 child: Text("Class Teachers",
-                    style: TextStyle(fontWeight: FontWeight.bold))),
+                    style: theme.textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
             ListView.builder(
                 shrinkWrap: true,
                 itemCount: 5,
@@ -232,13 +276,12 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
                       children: [
                         Checkbox(
                             checkColor: Colors.white,
-                            //fillColor: MaterialStateProperty.resolveWith(Colors.red),
                             value: controller.isChecked.value,
                             onChanged: (value) {
                               controller.isChecked.value = value!;
                               print(value);
                             }),
-                        Text("Faheem")
+                        Text(controller.getClassTeacherList.value.data![index].name!, style: theme.textTheme.bodyMedium)
                       ],
                     );
                   });
@@ -249,9 +292,9 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
                 width: 120,
                 title: 'Save',
                 textStyle: TextStyle(
-                  color: Colors.black,
+                  color: Colors.green,
                 ),
-                color: Colors.green.shade100,
+                color: Colors.green,
                 onPress: () {},
               ),
             ),
