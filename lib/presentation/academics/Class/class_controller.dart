@@ -10,6 +10,8 @@ import 'class_modal.dart';
 
 class ClassController extends GetxController {
   Rx<TextEditingController> classC = TextEditingController().obs;
+  String privousClass = "";
+  List<String> previousSectionList = [];
   Rx<TextEditingController> searchC = TextEditingController().obs;
 
   Rx<SectionListDataModal> sectionListClass = SectionListDataModal().obs;
@@ -71,12 +73,14 @@ class ClassController extends GetxController {
       print("Subject viewSubject : ${data.body}");
       if (data.body['status'] == 1) {
         print("ggggggggg${data.body['data']['classlist']}");
-        ClassList subject = ClassList.fromJson(data.body['data']['classlist'][0]);
-        print(subject.toJson());
-        classC.value.text = subject.classN!;
-        for(var section in subject.sections!)
+        ClassList class1 = ClassList.fromJson(data.body['data']['classlist'][0]);
+        print(class1.toJson());
+        classC.value.text = class1.classN!;
+        privousClass = class1.id!;
+        for(var section in class1.sections!)
           {
             selectedSections.value.add(section.id!);
+            previousSectionList.add(section.id!);
           }
         update();
       }
@@ -113,6 +117,8 @@ class ClassController extends GetxController {
       String url = Constants.addClass;
       if (selectedId.value == '') {
       } else {
+        body['pre_class_id'] = privousClass;
+        body['prev_sections'] =(previousSectionList!.length > 0 ?  previousSectionList!.join(',') : null) ?? "";
         body['id'] = selectedId.value;
         url = Constants.editClass;
       }

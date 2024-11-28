@@ -48,7 +48,7 @@ class ClassView extends GetView<ClassController>{
                   Expanded(
                     flex: 2,
                     child: Text(
-                      "Section",
+                      "Sections",
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodySmall!
                           .copyWith(fontWeight: FontWeight.bold),
@@ -129,7 +129,7 @@ class ClassView extends GetView<ClassController>{
                                 Expanded(
                                   flex: 2,
                                   child: Text(
-                                    data.id ?? "",
+                                    data.sections!.map((s) => s.section).join(', '),
                                     textAlign: TextAlign.center,
                                     style: theme.textTheme.bodySmall!
                                         .copyWith(fontWeight: FontWeight.w600),
@@ -228,81 +228,87 @@ class ClassView extends GetView<ClassController>{
   addClass(context) {
     showCustomBottomSheet(
         context: context,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            controller.selectedId.value == ''
-                ? Text(
-              "Add Class",
-              style: theme.textTheme.bodyMedium!
-                  .copyWith(fontWeight: FontWeight.w600),
-            )
-                : Text(
-              "Update Class",
-              style: theme.textTheme.bodyMedium!
-                  .copyWith(fontWeight: FontWeight.w600),
-            ),
-            CustomTextField(
-              controller: controller.classC.value,
-              hint: 'Class',
-              title: 'Class',
-            ),
-            SizedBox(height: 10,),
-            Obx(() {
-              if (controller.sectionListClass.value.data == null ||
-                  controller.sectionListClass.value.data!.sectionlist!.isEmpty) {
-                return Center(
-                  child: Text("No sections available."),
-                );
-              }
-              return SizedBox(
-                height:200,
-                child: ListView.builder(
-                  itemCount: controller.sectionListClass.value.data!.sectionlist!.length,
-                  itemBuilder: (context, index) {
-                    final item = controller.sectionListClass.value.data!.sectionlist![index];
-                    return CheckboxListTile(
-                      title: Text(item.section!),
-                      value: controller.selectedSections.value.contains(item.id),
-                      onChanged: (bool? value) {
-
-                        if (value == true) {
-                          controller.selectedSections.value.add(item.id!);
-                          controller.update();
-                        } else {
-                          controller.selectedSections.value.remove(item.id);
-                          controller.update();
-                        }
-                        controller.update();
-                      },
+        child: GetBuilder(
+          init: controller,
+          builder: (_) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                controller.selectedId.value == ''
+                    ? Text(
+                  "Add Class",
+                  style: theme.textTheme.bodyMedium!
+                      .copyWith(fontWeight: FontWeight.w600),
+                )
+                    : Text(
+                  "Update Class",
+                  style: theme.textTheme.bodyMedium!
+                      .copyWith(fontWeight: FontWeight.w600),
+                ),
+                CustomTextField(
+                  controller: controller.classC.value,
+                  hint: 'Class',
+                  title: 'Class',
+                ),
+                SizedBox(height: 10,),
+                Obx(() {
+                  if (controller.sectionListClass.value.data == null ||
+                      controller.sectionListClass.value.data!.sectionlist!.isEmpty) {
+                    return Center(
+                      child: Text("No sections available."),
                     );
-                  },
-                ),
-              );
-            }),
+                  }
+                  return SizedBox(
+                    height:200,
+                    child: Obx( () => ListView.builder(
+                        itemCount: controller.sectionListClass.value.data!.sectionlist!.length,
+                        itemBuilder: (context, index) {
+                          final item = controller.sectionListClass.value.data!.sectionlist![index];
+                          return CheckboxListTile(
+                            title: Text(item.section!),
+                            value: controller.selectedSections.value.contains(item.id),
+                            onChanged: (bool? value) {
+
+                              if (value == true) {
+                                controller.selectedSections.value.add(item.id!);
+                                controller.update();
+                              } else {
+                                controller.selectedSections.value.remove(item.id);
+                                controller.update();
+                              }
+                              controller.update();
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                }),
 
 
-            SizedBox(
-              height: 15,
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: MyButton(
-                width: 120,
-                title: controller.selectedId.value == ''
-                    ? 'Save'
-                    : "Update",
-                textStyle: TextStyle(
-                  color: Colors.black,
+                SizedBox(
+                  height: 15,
                 ),
-                color: Colors.green.shade100,
-                onPress: () async {
-                  await controller.addSubject();
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: MyButton(
+                    width: 120,
+                    title: controller.selectedId.value == ''
+                        ? 'Save'
+                        : "Update",
+                    textStyle: TextStyle(
+                      color: Colors.black,
+                    ),
+                    color: Colors.green.shade100,
+                    onPress: () async {
+                      await controller.addSubject();
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
+            );
+          }
         ));
   }
 
