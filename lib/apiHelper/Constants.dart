@@ -197,4 +197,8 @@ class Constants {
   static const String getStaffleaverequest = '/leaverequest/staffleaverequest';
 
 
+  static const String findStudentsrequest = '/stdtransfer/findStudents';
+  static const String promoteStudentsrequest = '/stdtransfer/promote';
+
+
 }

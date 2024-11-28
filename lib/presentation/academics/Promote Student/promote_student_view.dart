@@ -115,23 +115,22 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                 children: [
                   Expanded(
                     child: Obx(() => MyCustomSD(
-                      hideSearch: true,
+                      hideSearch: false,
                       borderColor: Colors.grey,
-                      listToSearch: controller3.classListModelMap.value,
+                      listToSearch: controller.pramotedClasslistModelMap.value,
                       valFrom: "className",
-                      label: 'Class',
-                      labelText: 'Class',
+                      label: 'Promote Class',
+                      labelText: 'Promote Class',
                       onChanged: (val) {
-                        if (controller3.classListModelMap.value.length >
+                        print("fffffff${controller.pramotedClasslistModelMap.value}");
+
+                        if (controller.pramotedClasslistModelMap.value.length >
                             0) {
                           print("5555555555555");
 
-                          controller3.selectedClassId.value =
+                          controller.pramotedSelectedClassId.value =
                               val['id'].toString();
-                          controller3.selectedClassName.value =
-                              val['className'].toString();
-                          controller3.update();
-                          controller3.getSectionList();
+                          controller.getSectionList();
                         }
                       },
                     )),
@@ -143,18 +142,16 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                     child: Obx(() => MyCustomSD(
                       hideSearch: true,
                       borderColor: Colors.grey,
-                      listToSearch: controller3.sectionListModelMap.value,
+                      listToSearch: controller.pramotedSectionListModelMap.value,
                       valFrom: "section",
                       label: 'Section',
                       labelText: 'Section',
                       onChanged: (val) {
                         print(val);
-                        if (controller3.sectionListModelMap.value.length >
+                        if (controller.pramotedSectionListModelMap.value.length >
                             0) {
-                          controller3.selectedSectionId.value =
+                          controller.pramotedSelectedSectionId.value =
                               val['id'].toString();
-                          controller3.selectedSectionName.value =
-                              val['section'].toString();
                           controller3.update();
                         }
                       },
@@ -173,7 +170,8 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                   textStyle: TextStyle(color: Colors.white),
                   title: 'Search',
                   onPress: () {
-                    print("object");
+                    controller.findStudentList();
+                   // print("object");
                   },
                 ),
               ),
@@ -186,6 +184,7 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              controller.studentList.value.data != null && controller.studentList.value.data!.resultlist!.length > 0 ?
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
@@ -194,9 +193,9 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                     ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: controller.data.length,
+                      itemCount: controller.studentList.value.data!.resultlist!.length,
                       itemBuilder: (context, index) {
-                        final student = controller.data[index];
+                        final student = controller.studentList.value.data!.resultlist![index];
                         return Card(
                           margin: EdgeInsets.symmetric(vertical: 8),
                           shape: RoundedRectangleBorder(
@@ -229,15 +228,17 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                                 children: [
                                   Row(
                                     children: [
-                                      Checkbox(
-                                        value: controller.isChecked.value,
-                                        onChanged: (value) {
-                                          controller.isChecked.value = value!;
-                                        },
+                                      Obx(() => Checkbox(
+                                          value: true == controller.selecetedStudents[student.id],
+                                          onChanged: (value) {
+                                            controller.selecetedStudents[student.id] = !controller.selecetedStudents[student.id];
+                                            controller.update();
+                                          },
+                                        ),
                                       ),
                                       Expanded(
                                         child: Text(
-                                          "Admission No: ${student['admissionNo']}",
+                                          "Admission No: ${student.admissionNo}",
                                           style: theme.textTheme.bodyMedium,
                                         ),
                                       ),
@@ -245,60 +246,75 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                                   ),
                                   SizedBox(height: 10),
                                   Text(
-                                    "Student Name: ${student['studentName']}",
+                                    "Student Name: ${student.firstname}",
                                     style: theme.textTheme.bodySmall,
                                   ),
                                   SizedBox(height: 5),
                                   Text(
-                                    "Father Name: ${student['fatherName']}",
+                                    "Father Name: ${student.fatherName}",
                                     style: theme.textTheme.bodySmall,
                                   ),
                                   SizedBox(height: 5),
                                   Text(
-                                    "Date of Birth: ${student['dob']}",
+                                    "Date of Birth: ${student.dob}",
                                     style: theme.textTheme.bodySmall,
                                   ),
-                                  SizedBox(height: 5),
-                                  Text(
-                                    "Current Result: ${student['currentResult']}",
-                                    style: theme.textTheme.bodySmall,
-                                  ),
+
                                   SizedBox(height: 5),
                                   Obx(() {
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                    return Column(
                                       children: [
-                                        _customRadioButton(
-                                          title: "Pass",
-                                          isSelected: controller.isChecked.value,
-                                          onTap: () {
-                                            controller.isChecked.value = true;
-                                          },
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Current Result",
+                                              style: theme.textTheme.bodySmall,
+                                            ),
+                                            _customRadioButton(
+                                              title: "Pass",
+                                              isSelected:  true == controller.isPassed[student.id],
+                                              onTap: () {
+                                                controller.isPassed[student.id] = true;
+                                              },
+                                            ),
+                                            _customRadioButton(
+                                              title: "Fail",
+                                              isSelected:  false == controller.isPassed[student.id],
+                                              onTap: () {
+                                                controller.isPassed[student.id] = false;
+                                              },
+                                            ),
+                                          ],
                                         ),
-                                        _customRadioButton(
-                                          title: "Fail",
-                                          isSelected: !controller.isChecked.value,
-                                          onTap: () {
-                                            controller.isChecked.value = false;
-                                          },
-                                        ),
-                                        _customRadioButton(
-                                          title: "Continue",
-                                          isSelected: controller.isChecked.value,
-                                          onTap: () {
-                                            controller.isChecked.value = true;
-                                          },
-                                        ),
-                                        _customRadioButton(
-                                          title: "Leave",
-                                          isSelected: !controller.isChecked.value,
-                                          onTap: () {
-                                            controller.isChecked.value = false;
-                                          },
-                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children:[
+                                            Text(
+                                              "Next Session Status",
+                                              style: theme.textTheme.bodySmall,
+                                            ),
+                                            _customRadioButton(
+                                              title: "Continue",
+                                              isSelected: true ==  controller.isContinue[student.id],
+                                              onTap: () {
+                                                controller.isContinue[student.id] = true;
+                                              },
+                                            ),
+                                            _customRadioButton(
+                                              title: "Leave",
+                                              isSelected:  false ==  controller.isContinue[student.id],
+                                              onTap: () {
+                                                controller.isContinue[student.id] = false;
+                                              },
+                                            ),
+                                          ],
+                                        )
                                       ],
                                     );
+
                                   }),
                                 ],
                               ),
@@ -309,7 +325,8 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                     ),
                   ],
                 ),
-              ),
+              ) :
+              Text("No data Found"),
               Padding(
                 padding: const EdgeInsets.only(bottom: 18.0),
                 child: Align(
@@ -321,6 +338,7 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                     title: 'Promote',
                     onPress: () {
                       print("Promote");
+                      controller.promoteStudent();
                     },
                   ),
                 ),
