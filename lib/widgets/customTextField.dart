@@ -45,7 +45,7 @@ class CustomTextField extends StatelessWidget {
               color: Colors.green.shade50, // Border color
               width: 0.5, // Border width
             ),
-            borderRadius: BorderRadius.circular(15.0), // Rounded corners
+            borderRadius: BorderRadius.circular(10.0), // Rounded corners
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.2), // Shadow color
@@ -69,12 +69,12 @@ class CustomTextField extends StatelessWidget {
               ),
               border: OutlineInputBorder(
                 borderRadius:
-                    BorderRadius.circular(15.0), // Rounded borders inside
+                    BorderRadius.circular(10.0), // Rounded borders inside
                 borderSide: BorderSide.none, // No border when not focused
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius:
-                    BorderRadius.circular(15.0), // Rounded borders when focused
+                    BorderRadius.circular(10.0), // Rounded borders when focused
                 borderSide: BorderSide(
                   color: Colors.green.shade400, // Focused border color
                   width: 2.0, // Border width when focused
@@ -82,7 +82,7 @@ class CustomTextField extends StatelessWidget {
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius:
-                    BorderRadius.circular(15.0), // Rounded borders when enabled
+                    BorderRadius.circular(10.0), // Rounded borders when enabled
                 borderSide: BorderSide(
                   color: Colors.green.shade200, // Border color when not focused
                 ),

@@ -21,6 +21,7 @@ class SendSmsController extends GetxController{
 
   Rx<TextEditingController> titleC = TextEditingController().obs;
   Rx<TextEditingController> messageC = TextEditingController().obs;
+  Rx<TextEditingController> messageToC = TextEditingController().obs;
   Rx<TextEditingController> templateId = TextEditingController().obs;
   Rx<TextEditingController> searchC = TextEditingController().obs;
 

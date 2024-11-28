@@ -81,9 +81,9 @@ class _MyCustomSDState extends State<MyCustomSD> {
             widget.onChanged(val);
           },
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(10),
               color: (widget.enable ?? true) ? Colors.white : Colors.grey.shade200,
-              border: Border.all(color: widget.borderColor ?? Colors.transparent)),
+              border: Border.all(color: Colors.green.shade400)),
         ),
       ],
     );

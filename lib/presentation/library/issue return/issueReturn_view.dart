@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:learnladderfaculity/presentation/common_widgets/InfoRow.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
 import 'package:learnladderfaculity/widgets/download_button.dart';
+import 'package:lottie/lottie.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
 import '../../common_widgets/custom_loader.dart';
@@ -10,8 +11,11 @@ import '../book list/book_list_controller.dart';
 import 'issueBook_view.dart';
 import 'issueReturn_controller.dart';
 
-class  IssueReturnView extends GetView< IssueReturnController> {
-  IssueReturnView({Key? key}) : super(key: key,);
+class IssueReturnView extends GetView<IssueReturnController> {
+  IssueReturnView({Key? key})
+      : super(
+          key: key,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ class  IssueReturnView extends GetView< IssueReturnController> {
         backgroundColor: Colors.green.shade100,
         title: Text(
           'Issue Return',
-          style: theme.textTheme.titleLarge,
+          style: theme.textTheme.bodyMedium,
         ),
       ),
       body: GetBuilder<IssueReturnController>(
@@ -32,107 +36,149 @@ class  IssueReturnView extends GetView< IssueReturnController> {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return CustomLoader();
                   }
-                  return controller.filteredContentTypeList.value
-                      .data != null && controller.filteredContentTypeList.value
-                      .data!.memberList!.length > 0 ?    SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8),
-                          child: CustomTextField(
-                            controller: controller.searchC,
-                            hint: 'Search.... ', title: '',
-                            onChanged: (val) {
-                              controller.searchContentType(val);
-                              controller.update();
-                            },
-                          ),
-
-                        ),
-                        SizedBox(height: 8),
-                        Column(
-                          children: controller.filteredContentTypeList.value
-                              .data!.memberList!.map((entry) {
-                            return Card(
-                              elevation: 1, // Higher elevation for a more prominent shadow
-                              margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20), // Smoother corners
+                  return controller.filteredContentTypeList.value.data !=
+                              null &&
+                          controller.filteredContentTypeList.value.data!
+                                  .memberList!.length >
+                              0
+                      ? SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 8.0, right: 8),
+                                child: CustomTextField(
+                                  controller: controller.searchC,
+                                  hint: 'Search.... ',
+                                  title: '',
+                                  onChanged: (val) {
+                                    controller.searchContentType(val);
+                                    controller.update();
+                                  },
+                                ),
                               ),
-                              color: Colors.white,
-                              shadowColor: Colors.green,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Member id: ${entry!.libMemberId}',
-                                        style: theme.textTheme.bodySmall),
-                                    SizedBox(height: 8),
-                                    Text('Library Card No.: ${entry.libraryCardNo}',
-                                        style: theme.textTheme.bodySmall),
-                                    SizedBox(height: 8),
-                                    Text('Admission No: ${entry.admissionNo}',
-                                        style: theme.textTheme.bodySmall),
-                                    SizedBox(height: 8),
-                                    Text('Name: ${entry.firstname}',
-                                        style: theme.textTheme.bodySmall),
-                                    SizedBox(height: 8),
-                                    Text('Member Type: ${entry.memberType}',
-                                        style: theme.textTheme.bodySmall),
-                                    SizedBox(height: 8),
-                                    Text('Phone: ${entry.guardianPhone}',
-                                        style: theme.textTheme.bodySmall),
-                                    SizedBox(height: 12),
-                                    InkWell(
-                                      onTap: (){
+                              SizedBox(height: 8),
+                              Column(
+                                children: controller.filteredContentTypeList
+                                    .value.data!.memberList!
+                                    .map((entry) {
+                                  return Card(
+                                    elevation:
+                                        1, // Higher elevation for a more prominent shadow
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 16),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          16), // Smoother corners
+                                    ),
+                                    color: Colors.white,
 
-                                        controller.getMemberDetails(entry.libMemberId,context);
+                                    child: Container(
 
-                                      },
-                                      child: SizedBox(
-                                        width: Get.width,
-                                        height: 40,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.green.shade100,
+                                            Colors.green.shade50,
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.shade200,
+                                            blurRadius: 10,
+                                            offset: Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Text("Issue Return",style:  theme.textTheme.bodySmall!.copyWith(color: Colors.green),),
-SizedBox(width: 10,),
-                                            Icon(Icons.logout, size: 15,color: Colors.blue,),
-                                            // IconButton(
-                                            //   icon: Icon(Icons.close, size: 15,color: Colors.blue,),
-                                            //   // onPressed: () {
-                                            //   //   print("object");
-                                            //   //    controller.getMemberDetails(entry.libMemberId,context);
-                                            //   //
-                                            //   // },
-                                            // ),
+                                            Text(
+                                                'Member id: ${entry!.libMemberId}',
+                                                style: theme.textTheme.bodySmall),
+                                            SizedBox(height: 8),
+                                            Text(
+                                                'Library Card No.: ${entry.libraryCardNo}',
+                                                style: theme.textTheme.bodySmall),
+                                            SizedBox(height: 8),
+                                            Text(
+                                                'Admission No: ${entry.admissionNo}',
+                                                style: theme.textTheme.bodySmall),
+                                            SizedBox(height: 8),
+                                            Text('Name: ${entry.firstname}',
+                                                style: theme.textTheme.bodySmall),
+                                            SizedBox(height: 8),
+                                            Text(
+                                                'Member Type: ${entry.memberType}',
+                                                style: theme.textTheme.bodySmall),
+                                            SizedBox(height: 8),
+                                            Text('Phone: ${entry.guardianPhone}',
+                                                style: theme.textTheme.bodySmall),
+                                            SizedBox(height: 12),
+                                            InkWell(
+                                              onTap: () {
+                                                controller.getMemberDetails(
+                                                    entry.libMemberId, context);
+                                              },
+                                              child: SizedBox(
+                                                width: Get.width,
+                                                height: 40,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      "Issue Return",
+                                                      style: theme
+                                                          .textTheme.titleMedium!
+                                                          .copyWith(
+
+                                                              color:
+                                                                  Colors.blue),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Icon(
+                                                      Icons.logout,
+                                                      size: 20,
+                                                      color: Colors.blue,
+                                                    ),
+                                                    // IconButton(
+                                                    //   icon: Icon(Icons.close, size: 15,color: Colors.blue,),
+                                                    //   // onPressed: () {
+                                                    //   //   print("object");
+                                                    //   //    controller.getMemberDetails(entry.libMemberId,context);
+                                                    //   //
+                                                    //   // },
+                                                    // ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }).toList(),
+                                  );
+                                }).toList(),
+                              )
+                            ],
+                          ),
                         )
-
-
-                      ],
-                    ),
-                  )
-                  : Text("No Data Found")
+                      : Container(
+                          child:
+                              Lottie.asset("assets/images/no_data_found.json"),
+                        );
                   ;
-                }
-            );
-          }
-      ),
-
-
-
+                });
+          }),
     );
   }
-
-
 }

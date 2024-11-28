@@ -26,7 +26,7 @@ class  AddStudentView extends GetView< AddStudentController> {
       filterFunction: filterControls,
 
       futureInitFunction: controller.fetchDataFuture,
-      aapBarTitle: 'Select Criteria',
+      aapBarTitle: 'Add Student',
       bodyWidget: GetBuilder(
           init: controller,
           builder: (context) {

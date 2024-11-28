@@ -41,7 +41,7 @@ class MyButton extends StatelessWidget {
               foregroundColor: Colors.black,
               backgroundColor: color ?? theme.primaryColor,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
             onPressed: () {
@@ -69,7 +69,7 @@ class MyButton extends StatelessWidget {
                         Text(
                           title,
                           textAlign: TextAlign.center,
-                          style: textStyle ?? theme.textTheme.bodySmall!,
+                          style:  theme.textTheme.titleSmall!.copyWith(color: Colors.white),
                         ),
                         Visibility(
                           visible: suffixIcon != null,

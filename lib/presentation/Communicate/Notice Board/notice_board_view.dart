@@ -16,26 +16,9 @@ class NoticeBoardView extends GetView<NoticeBoardController>{
         backgroundColor: Colors.green.shade100,
         title: Text(
           'Notice Board',
-          style: theme.textTheme.titleLarge,
+          style: theme.textTheme.bodyMedium,
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: MyButton(
-              width: 160,
-              prefixIcon: Icon(
-                Icons.add,size: 14,
-                color: Colors.white,
-              ),
-              title: 'Post New Message',
-              textStyle: TextStyle(fontSize: 14, color: Colors.white),
-              color: theme.hintColor,
-              onPress: () async {
-                await Get.toNamed(AppRoutes.new_messageRoute);
-              },
-            ),
-          ),
-        ],
+
       ),
       body: GetBuilder(
         init: controller,
@@ -68,42 +51,95 @@ class NoticeBoardView extends GetView<NoticeBoardController>{
                     {
                       visibleTo = visibleTo + "Student ,";
                     }
-                  return Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    elevation: 4,
+                    margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(Icons.email_outlined),
-                          ),
-                          Expanded(child: Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(notice.title!),
-                          )),
-                          Expanded(child: Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(notice.createdAt!),
-                          )),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 12.0,top: 8.0),
-                            child: Icon(Icons.edit),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Icon(Icons.delete),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Email Icon
+                              Container(
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.shade100,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                child: Icon(
+                                  Icons.email_outlined,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              const SizedBox(width: 12.0),
+                              // Notice Details
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      notice.title!,
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4.0),
+                                    Text(
+                                      notice.createdAt!,
+                                      style: TextStyle(
+                                        fontSize: 12.0,
+                                        color: Colors.grey.shade600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // Action Icons
+                              Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      // Handle edit action
+                                    },
+                                    icon: Icon(Icons.edit, color: Colors.green),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      // Handle delete action
+                                    },
+                                    icon: Icon(Icons.delete, color: Colors.red),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      Divider()
-                    ],
-                  );
+                    ),
+                  )
+                    ;
                 },),
               );
             }
           );
         }
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async{
+          await Get.toNamed(AppRoutes.new_messageRoute);
+        },
+        tooltip: 'Post New Message',
+        shape: CircleBorder(),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        child: Icon(Icons.add),
       ),
     );
   }

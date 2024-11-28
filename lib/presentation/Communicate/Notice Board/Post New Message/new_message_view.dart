@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,7 +9,7 @@ import '../../../../widgets/customTextField.dart';
 import '../../../../widgets/custom_button.dart';
 import 'new_message_controller.dart';
 
-class NewMessageView extends GetView<NewMessageController>{
+class NewMessageView extends GetView<NewMessageController> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -19,22 +18,8 @@ class NewMessageView extends GetView<NewMessageController>{
         backgroundColor: Colors.green.shade100,
         title: Text(
           'Compose New Message',
-          style: theme.textTheme.titleLarge,
+          style: theme.textTheme.bodyMedium,
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: MyButton(
-              width: 100,
-              title: 'Message To',
-              textStyle: TextStyle(fontSize: 14, color: Colors.white),
-              color: theme.hintColor,
-              onPress: () {
-                messageTo(context);
-              },
-            ),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -47,7 +32,9 @@ class NewMessageView extends GetView<NewMessageController>{
               title: "",
               hint: 'Title',
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
                 Expanded(
@@ -56,7 +43,9 @@ class NewMessageView extends GetView<NewMessageController>{
                     title: "Notice Date",
                   ),
                 ),
-                SizedBox(width: 10,),
+                SizedBox(
+                  width: 10,
+                ),
                 Expanded(
                   child: DatePickerTextField(
                     controller: controller.publishOnC.value,
@@ -65,93 +54,108 @@ class NewMessageView extends GetView<NewMessageController>{
                 ),
               ],
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
 
-            Text("Attachment",style: theme.textTheme.titleMedium,),
-            SizedBox(height: 5,),
+            Text(
+              "Attachment",
+              style: theme.textTheme.titleMedium,
+            ),
+            SizedBox(
+              height: 5,
+            ),
             InkWell(
-              onTap: (){
+              onTap: () {
                 _showImagePicker(context);
               },
               child: Container(
                 height: 40,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                        color: Colors.green.shade200
-                    )
-                ),
+                    border: Border.all(color: Colors.green.shade200)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.upload_file,color: Colors.green),
-                    Text("Drag and drop a file here or click",style: TextStyle(color: Colors.green),),
+                    Icon(Icons.upload_file, color: Colors.green),
+                    Text(
+                      "Drag and drop a file here or click",
+                      style: TextStyle(color: Colors.green),
+                    ),
                   ],
                 ),
-
               ),
             ),
 
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             CustomHtmlEditor(
               controller: controller.messageC.value,
               height: 200,
-              title: 'Message',)
+              title: 'Message',
+            )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          messageTo(context);
+        },
+        tooltip: 'Post New Message',
+        shape: CircleBorder(),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        child: Icon(Icons.send),
       ),
     );
   }
 
-  messageTo(context){
-    showCustomBottomSheet(context:context,
-        child:Column(
+  messageTo(context) {
+    showCustomBottomSheet(
+        context: context,
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Message To",style: theme.textTheme.bodyMedium,),
-
-    ListView.builder(
-      shrinkWrap: true,
-    itemCount: controller.roles.length,
-        itemBuilder: (context, index) {
-          return Obx(() =>
-              CheckboxListTile(
-                title: Text(controller.roles[index]),
-                value: controller.checkboxStates[index],
-                onChanged: (bool? value) {
-                  if (value != null) {
-                    controller.toggleCheckbox(index, value);
-                  }
-                },
-              ));
-        }
-          ),
-
-
+            Text(
+              "Message To",
+              style: theme.textTheme.titleMedium,
+            ),
+            ListView.builder(
+                shrinkWrap: true,
+                itemCount: controller.roles.length,
+                itemBuilder: (context, index) {
+                  return Obx(() => CheckboxListTile(
+                        title: Text(
+                          controller.roles[index],
+                          style: theme.textTheme.titleMedium,
+                        ),
+                        value: controller.checkboxStates[index],
+                        onChanged: (bool? value) {
+                          if (value != null) {
+                            controller.toggleCheckbox(index, value);
+                          }
+                        },
+                      ));
+                }),
             Align(
               alignment: Alignment.bottomRight,
               child: MyButton(
                 width: 120,
                 title: 'Save',
                 textStyle: TextStyle(
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
-                color: Colors.green.shade100,
-                onPress: () {},
+                color: Colors.green,
+                onPress: () {
+
+
+                },
               ),
             ),
           ],
-        )
-
-    );
+        ));
   }
-
-
-
-
-
-
-
 
   final ImagePicker _picker = ImagePicker();
 
@@ -224,5 +228,4 @@ class NewMessageView extends GetView<NewMessageController>{
       },
     );
   }
-
 }

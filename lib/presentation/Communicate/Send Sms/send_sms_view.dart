@@ -17,7 +17,7 @@ class SendSmsView extends GetView<SendSmsController> {
         backgroundColor: Colors.green.shade100,
         title: Text(
           'Send Sms',
-          style: theme.textTheme.titleLarge,
+          style: theme.textTheme.bodyMedium,
         ),
         actions: [
           Padding(
@@ -31,7 +31,7 @@ class SendSmsView extends GetView<SendSmsController> {
               ),
               title: 'Message To',
               textStyle: TextStyle(fontSize: 14, color: Colors.white),
-              color: theme.hintColor,
+              color: Colors.green,
               onPress: () async {
                 messageTo(context);
               },
@@ -60,7 +60,7 @@ class SendSmsView extends GetView<SendSmsController> {
             ),
             Text(
               "Send Through :",
-              style: theme.textTheme.bodyMedium,
+              style: theme.textTheme.titleMedium,
             ),
             ListView.builder(
               shrinkWrap: true,
@@ -92,14 +92,17 @@ class SendSmsView extends GetView<SendSmsController> {
                 hint: "Message",
                 title: ''),
             Spacer(),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: MyButton(
-                width: 100,
-                title: 'Send Email',
-                textStyle: TextStyle(fontSize: 14, color: Colors.white),
-                color: Colors.green.shade100,
-                onPress: () {},
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: MyButton(
+                  width: 100,
+                  title: 'Send Email',
+                  textStyle: TextStyle(fontSize: 14, color: Colors.white),
+                  color: Colors.green,
+                  onPress: () {},
+                ),
               ),
             ),
           ],
@@ -109,7 +112,8 @@ class SendSmsView extends GetView<SendSmsController> {
   }
 
   messageTo(context) {
-    showCustomBottomSheet(context:context,
+    showCustomBottomSheet(
+        context: context,
         child: GetBuilder(
             init: controller,
             builder: (_) {
@@ -120,7 +124,7 @@ class SendSmsView extends GetView<SendSmsController> {
                     Expanded(
                       child: SizedBox(
                         width: Get.width,
-                        height: 80,
+                        height: 60,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
@@ -128,34 +132,34 @@ class SendSmsView extends GetView<SendSmsController> {
                           itemBuilder: (context, index) {
                             var ddd = controller.groups[index];
                             return Obx(() => InkWell(
-                                  onTap: () {
-                                    controller.updateSelectedData =
-                                        ddd.toString();
-                                    print("hhhhhhh" +
-                                        controller.getSelectedData.toString());
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: controller.getSelectedData
-                                                    .toString() ==
-                                                controller.groups[index]
-                                                    .toString()
-                                            ? Colors.green.shade200
-                                            : Colors.black12,
-                                      ),
-                                      child: Center(
-                                          child: Padding(
+                              onTap: () {
+                                controller.updateSelectedData =
+                                    ddd.toString();
+                                print("hhhhhhh" +
+                                    controller.getSelectedData.toString());
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: controller.getSelectedData
+                                        .toString() ==
+                                        controller.groups[index]
+                                            .toString()
+                                        ? Colors.green.shade200
+                                        : Colors.black12,
+                                  ),
+                                  child: Center(
+                                      child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(controller.groups[index]
-                                            .toString()),
+                                            .toString(),style: theme.textTheme.titleMedium,),
                                       )),
-                                    ),
-                                  ),
-                                ));
+                                ),
+                              ),
+                            ));
                           },
                         ),
                       ),
@@ -163,167 +167,166 @@ class SendSmsView extends GetView<SendSmsController> {
                   ]),
                   Text(
                     "Message To",
-                    style: theme.textTheme.bodyMedium,
+                    style: theme.textTheme.titleMedium,
                   ),
                   controller.getSelectedData == "Group"
                       ? ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: controller.roles.length,
-                          itemBuilder: (context, index) {
-                            return Obx(() => CheckboxListTile(
-                                  title: Text(controller.roles[index]),
-                                  value: controller.checkboxStates[index],
-                                  onChanged: (bool? value) {
-                                    if (value != null) {
-                                      controller.toggleCheckbox(index, value);
-                                    }
-                                  },
-                                ));
-                          })
-                      : controller.getSelectedData == "individual"
-                          ? Column(
-                              children: [
-                                MyCustomSD(
-                                    listToSearch: [
-                                      {"name": "Faheem"},
-                                      {"name": "Amritash"},
-                                      {"name": "Anand"}
-                                    ],
-                                    valFrom: "name",
-                                    label: "Select",
-                                    borderColor: Colors.grey,
-                                    onChanged: (val) {}),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Expanded(
-                                      flex: 8,
-                                      child: CustomTextField(
-                                          controller: controller.searchC.value,
-                                          hint: "Search",
-                                          title: ''),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: MyButton(
-                                          width: 100,
-                                          title: 'Add',
-                                          textStyle: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.white),
-                                          color: Colors.green.shade100,
-                                          onPress: () {},
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                  height: 400,
-                                  width: Get.width,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.shade300,
-                                    border: Border.all(),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: ListView(
+                      shrinkWrap: true,
+                      itemCount: controller.roles.length,
+                      itemBuilder: (context, index) {
+                        return Obx(() => CheckboxListTile(
+                          title: Text(controller.roles[index],style: theme.textTheme.titleMedium,),
+                          value: controller.checkboxStates[index],
+                          onChanged: (bool? value) {
+                            if (value != null) {
+                              controller.toggleCheckbox(index, value);
+                            }
+                          },
+                        ));
+                      })
+                      : controller.getSelectedData == "Individual"
+                      ? Column(
+                    children: [
+                      MyCustomSD(
+                          listToSearch: [
+                            {"name": "Faheem"},
+                            {"name": "Amritash"},
+                            {"name": "Anand"}
+                          ],
+                          valFrom: "name",
+                          label: "Select",
+                          borderColor: Colors.grey,
+                          onChanged: (val) {}),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            flex: 8,
+                            child: CustomTextField(
+                                controller: controller.searchC.value,
+                                hint: "Search",
+                                title: ''),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: MyButton(
+                                width: 100,
+                                title: 'Add',
+                                textStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white),
+                                color: Colors.green.shade100,
+                                onPress: () {},
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 400,
+                        width: Get.width,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListView(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                    BorderRadius.circular(10)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Icon(Icons.person),
-                                                    Text(
-                                                      "Mohd Faheem(10123)",
-                                                      style: theme
-                                                          .textTheme.bodySmall,
-                                                    )
-                                                  ],
-                                                ),
-                                                Icon(
-                                                  Icons.delete,
-                                                  color: Colors.red,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.person),
+                                          Text(
+                                            "Mohd Faheem(10123)",
+                                            style: theme
+                                                .textTheme.bodySmall,
+                                          )
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
                                       )
                                     ],
                                   ),
-                                )
-                              ],
-                            )
-                          : controller.getSelectedData == "class"
-                              ? Column(
-                                  children: [
-                                    MyCustomSD(
-                                        listToSearch: [
-                                          {"name": "Faheem"},
-                                          {"name": "Amritash"},
-                                          {"name": "Anand"}
-                                        ],
-                                        valFrom: "name",
-                                        label: "Message To",
-                                        borderColor: Colors.grey,
-                                        onChanged: (val) {}),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: 4,
-                                      itemBuilder: (context, index) {
-                                        return Obx(
-                                          () => CheckboxListTile(
-                                            title:
-                                                Text(controller.section[index]),
-                                            value: controller
-                                                .checkBoxSectionState[index],
-                                            onChanged: (bool? value) {
-                                              if (value != null) {
-                                                controller
-                                                    .toggleSectionCheckbox(
-                                                        index, value);
-                                              }
-                                            },
-                                          ),
-                                        );
-                                      },
-                                    )
-                                  ],
-                                )
-                              : Container(
-                                  height: 400,
-                                  width: Get.width,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.shade300,
-                                    border: Border.all(),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
                                 ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                      : controller.getSelectedData == "Class"
+                      ? Column(
+                    children: [
+                      MyCustomSD(
+                          listToSearch: [
+                            {"name": "Faheem"},
+                            {"name": "Amritash"},
+                            {"name": "Anand"}
+                          ],
+                          valFrom: "name",
+                          label: "Message To",
+                          borderColor: Colors.grey,
+                          onChanged: (val) {}),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          return Obx(
+                                () => CheckboxListTile(
+                              title:
+                              Text(controller.section[index],style: theme.textTheme.titleMedium,),
+                              value: controller
+                                  .checkBoxSectionState[index],
+                              onChanged: (bool? value) {
+                                if (value != null) {
+                                  controller
+                                      .toggleSectionCheckbox(
+                                      index, value);
+                                }
+                              },
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  )
+                      : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CustomTextField(
+                          controller: controller.messageToC.value,
+                          hint: "Message.....",
+                          maxLine: 5,
+                          title: '')
+                  ),
                   Obx(
-                    () => Column(
+                        () => Column(
                       children: [
                         Row(
                           children: [
@@ -333,10 +336,10 @@ class SendSmsView extends GetView<SendSmsController> {
                               onChanged: (String? value) {
                                 controller.selectedOption.value = value!;
                                 controller.selectedTime =
-                                    null; // Reset selected time
+                                null; // Reset selected time
                               },
                             ),
-                            Text('Send Now'),
+                            Text('Send Now',style: theme.textTheme.titleMedium,),
                             Radio<String>(
                               value: 'Schedule',
                               groupValue: controller.selectedOption.value,
@@ -346,7 +349,7 @@ class SendSmsView extends GetView<SendSmsController> {
                                 print(controller.selectedOption.toString());
                               },
                             ),
-                            Text('Schedule'),
+                            Text('Schedule',style: theme.textTheme.titleMedium,),
                           ],
                         ),
                         if (controller.selectedOption.value == 'Schedule')
@@ -368,25 +371,20 @@ class SendSmsView extends GetView<SendSmsController> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: MyButton(
                       width: 120,
                       title: 'Submit',
                       textStyle: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
-                      color: Colors.green.shade100,
+                      color: Colors.green,
                       onPress: () {},
                     ),
                   ),
                 ],
               );
-            })
-
-    );
+            }));
   }
 }

@@ -82,6 +82,7 @@ class SendEmailController extends GetxController{
   }
 
   Rx<TextEditingController> searchC = TextEditingController().obs;
+  Rx<TextEditingController> messageToC = TextEditingController().obs;
 
 
 
