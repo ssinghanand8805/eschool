@@ -29,6 +29,10 @@ class SubjectView extends GetView<SubjectController> {
                 controller: controller.searchC.value,
                 hint: 'Search.... ',
                 title: '',
+                onChanged: (val){
+                  controller.searchContentType(val);
+                  controller.update();
+                },
               ),
               Padding(
                 padding:

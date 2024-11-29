@@ -136,7 +136,7 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
                                               const SizedBox(width: 8),
                                               Expanded(
                                                 child: Text(
-                                                "${entry.name!}  (${entry.employeeId})",
+                                                  "${entry.name!}  (${entry.employeeId})",
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style:
@@ -200,6 +200,7 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
   }
 
   addAssignClassTeacher(context) {
+
     showCustomBottomSheet(
         context: context,
         child: Column(
@@ -208,55 +209,56 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
               "Add Content Type",
               style: theme.textTheme.bodyMedium,
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
                 Expanded(
                   child: Obx(() => MyCustomSD(
-                    hideSearch: true,
-                    borderColor: Colors.grey,
-                    listToSearch: controller3.classListModelMap.value,
-                    valFrom: "className",
-                    label: 'Class',
-                    labelText: 'Class',
-                    onChanged: (val) {
-                      if (controller3.classListModelMap.value.length >
-                          0) {
-                        print("5555555555555");
+                        hideSearch: true,
+                        borderColor: Colors.grey,
+                        listToSearch: controller3.classListModelMap.value,
+                        valFrom: "className",
+                        label: 'Class',
+                        labelText: 'Class',
+                        onChanged: (val) {
+                          if (controller3.classListModelMap.value.length > 0) {
+                            print("5555555555555");
 
-                        controller3.selectedClassId.value =
-                            val['id'].toString();
-                        controller3.selectedClassName.value =
-                            val['className'].toString();
-                        controller3.update();
-                        controller3.getSectionList();
-                      }
-                    },
-                  )),
+                            controller3.selectedClassId.value =
+                                val['id'].toString();
+                            controller3.selectedClassName.value =
+                                val['className'].toString();
+                            controller3.update();
+                            controller3.getSectionList();
+                          }
+                        },
+                      )),
                 ),
                 SizedBox(
                   width: 10,
                 ),
                 Expanded(
                   child: Obx(() => MyCustomSD(
-                    hideSearch: true,
-                    borderColor: Colors.grey,
-                    listToSearch: controller3.sectionListModelMap.value,
-                    valFrom: "section",
-                    label: 'Section',
-                    labelText: 'Section',
-                    onChanged: (val) {
-                      print(val);
-                      if (controller3.sectionListModelMap.value.length >
-                          0) {
-                        controller3.selectedSectionId.value =
-                            val['id'].toString();
-                        controller3.selectedSectionName.value =
-                            val['section'].toString();
-                        controller3.update();
-                      }
-                    },
-                  )),
+                        hideSearch: true,
+                        borderColor: Colors.grey,
+                        listToSearch: controller3.sectionListModelMap.value,
+                        valFrom: "section",
+                        label: 'Section',
+                        labelText: 'Section',
+                        onChanged: (val) {
+                          print(val);
+                          if (controller3.sectionListModelMap.value.length >
+                              0) {
+                            controller3.selectedSectionId.value =
+                                val['id'].toString();
+                            controller3.selectedSectionName.value =
+                                val['section'].toString();
+                            controller3.update();
+                          }
+                        },
+                      )),
                 )
               ],
             ),
@@ -266,26 +268,40 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
             Align(
                 alignment: Alignment.topLeft,
                 child: Text("Class Teachers",
-                    style: theme.textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
+                    style: theme.textTheme.bodyMedium!
+                        .copyWith(fontWeight: FontWeight.bold))),
             ListView.builder(
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) {
-                  return Obx(() {
-                    return Row(
-                      children: [
-                        Checkbox(
-                            checkColor: Colors.white,
-                            value: controller.isChecked.value,
-                            onChanged: (value) {
-                              controller.isChecked.value = value!;
-                              print(value);
-                            }),
-                        Text(controller.getClassTeacherList.value.data![index].name!, style: theme.textTheme.bodyMedium)
-                      ],
-                    );
-                  });
-                }),
+              shrinkWrap: true,
+              itemCount: controller.getClassTeacherList.value.data!.length,
+              itemBuilder: (BuildContext context, int index) {
+                final teacher =
+                    controller.getClassTeacherList.value.data![index];
+                return Obx(() {
+                  bool isSelected =
+                      controller.selectedTeachers.contains(teacher.name);
+                  return Row(
+                    children: [
+                      Checkbox(
+                        checkColor: Colors.white,
+                        value: isSelected,
+                        onChanged: (value) {
+                          if (value == true) {
+                            controller.selectedTeachers.add(teacher.name!);
+                          } else {
+                            controller.selectedTeachers.remove(teacher.name!);
+                          }
+                          print(controller.selectedTeachers);
+                        },
+                      ),
+                      Text(
+                        teacher.name!,
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                    ],
+                  );
+                });
+              },
+            ),
             Align(
               alignment: Alignment.bottomRight,
               child: MyButton(
@@ -295,7 +311,13 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
                   color: Colors.green,
                 ),
                 color: Colors.green,
-                onPress: () {},
+                onPress: () {
+                  controller.assignClassTeacher(
+                      controller3.selectedClassId.value,
+                      controller3.selectedSectionId.value);
+                  Navigator.of(context)
+                      .pop();
+                },
               ),
             ),
           ],

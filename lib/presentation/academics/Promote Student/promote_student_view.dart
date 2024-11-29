@@ -24,8 +24,8 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
       appBar: AppBar(
         backgroundColor: Colors.green.shade100,
         title: Text(
-          'Assign Class Teacher',
-          style: theme.textTheme.titleLarge,
+          'Promote Student',
+          style: theme.textTheme.bodyMedium,
         ),
       ),
       body: SingleChildScrollView(

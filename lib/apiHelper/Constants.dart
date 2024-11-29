@@ -167,6 +167,8 @@ class Constants {
   static const String viewSubjectGroup = '/subjectgroup/view';
   static const String assignclassteacherlist = '/teacher/assign_class_teacher_list';
   static const String getTeacherList = '/teacher/getTeacherList';
+  static const String assignclassteacher = '/teacher/assign_class_teacher';
+  static const String classteacherdelete = '/teacher/classteacherdelete';
 
 
   /// promote student

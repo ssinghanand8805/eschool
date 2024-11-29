@@ -24,18 +24,57 @@ class AssignClassTeacherController extends GetxController{
     getClassTeacherData();
   }
 
+  RxList<String> selectedTeachers = <String>[].obs;
+
   RxBool isChecked = false.obs;
   RxBool isLoading = false.obs;
 
   Future<void> initializeData() async {
 
     try {
-      var body = {};
+      var body = {
+
+
+
+      };
       var data = await apiRespository.postApiCallByJson(
           Constants.assignclassteacherlist, body);
+
       print("data@@ ${data.body}");
+      print("data@@ ${data}");
       assignClassList.value = AssignClassTeacherModal.fromJson(data.body);
 
+      update();
+    } catch (e) {
+      print("EEEEEEEEEEEEEEEEEEEE${e}");
+      update();
+    }
+  }
+
+
+  Future<void> assignClassTeacher(cls,section) async {
+
+    try {
+      var body = {
+
+      "class" : cls,
+    "section" : section,
+    "teachers" : selectedTeachers.value.join(','),
+
+      };
+      var data = await apiRespository.postApiCallByFormData(
+          Constants.assignclassteacher, body);
+
+      print("Dataaaaa@${data.body}");
+      if (data.body['status'] == 1) {
+        Get.showSnackbar(
+            Ui.SuccessSnackBar(message: data.body['msg'].toString()));
+        initializeData();
+        update();
+      } else {
+        Get.showSnackbar(
+            Ui.ErrorSnackBar(message: data.body['msg'].toString()));
+      }
       update();
     } catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");
@@ -69,12 +108,13 @@ class AssignClassTeacherController extends GetxController{
 
       };
       var data = await apiRespository.postApiCallByFormData(
-          Constants.deleteGalleryList, body);
+          Constants.classteacherdelete, body);
 
       if (data.body['status'] == 1) {
         Get.showSnackbar(
             Ui.SuccessSnackBar(message: data.body['msg'].toString()));
         initializeData();
+        update();
       } else {
         Get.showSnackbar(
             Ui.ErrorSnackBar(message: data.body['msg'].toString()));

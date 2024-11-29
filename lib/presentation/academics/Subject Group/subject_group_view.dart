@@ -154,17 +154,19 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
                                 Expanded(
                                   flex: 2,
                                   child: ListView.builder(
-                                      itemCount: subject.groupSubject!.length,
-                                      shrinkWrap: true,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return Text(
-                                          " ${subject.groupSubject![index].name} (${subject.sections![index].section})",
-                                          textAlign: TextAlign.center,
-                                          style: theme.textTheme.bodySmall!
-                                              .copyWith(),
-                                        );
-                                      }),
+                                    itemCount: subject.groupSubject!.length,
+                                    shrinkWrap: true,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      String sectionText = index < subject.sections!.length
+                                          ? " (${subject.sections![index].section})"
+                                          : "";
+                                      return Text(
+                                        " ${subject.groupSubject![index].name}$sectionText",
+                                        textAlign: TextAlign.center,
+                                        style: theme.textTheme.bodySmall!.copyWith(),
+                                      );
+                                    },
+                                  ),
                                 ),
 
                                 // Actions

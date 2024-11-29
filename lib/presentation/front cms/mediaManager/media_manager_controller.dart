@@ -29,29 +29,29 @@ class MediaManagerController extends GetxController {
     getMediaType();
   }
 
-  // void initializeOriginalList() {
-  //   originalContentTypeList = List.from(filteredContentTypeList.value.data!);  // Make a copy of the original data
-  // }
-  // Future<void> searchContentType(String searchKey) async {
-  //   // Check if the searchKey is empty or not
-  //   if (searchKey.isEmpty) {
-  //     // Reset to the original list when searchKey is cleared
-  //     filteredContentTypeList.update((val) {
-  //       val?.data = originalContentTypeList;  // Reset to original list
-  //     });
-  //   } else {
-  //     // Filter the list based on the searchKey
-  //     List<Data> filteredList = originalContentTypeList
-  //         .where((element) => element.name != null &&
-  //         element.name!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
-  //         .toList();
-  //
-  //     // Update the filtered list
-  //     filteredContentTypeList.update((val) {
-  //       val?.data = filteredList;
-  //     });
-  //   }
-  // }
+  void initializeOriginalList() {
+    originalContentTypeList = List.from(mediaManagerList.value.data!);  // Make a copy of the original data
+  }
+  Future<void> searchContentType(String searchKey) async {
+    // Check if the searchKey is empty or not
+    if (searchKey.isEmpty) {
+      // Reset to the original list when searchKey is cleared
+      mediaManagerList.update((val) {
+        val?.data = originalContentTypeList;  // Reset to original list
+      });
+    } else {
+      // Filter the list based on the searchKey
+      List<Data> filteredList = originalContentTypeList
+          .where((element) => element.imgName != null &&
+          element.imgName!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
+          .toList();
+
+      // Update the filtered list
+      mediaManagerList.update((val) {
+        val?.data = filteredList;
+      });
+    }
+  }
 
   Future<void> initializeData() async {
     try {
@@ -61,6 +61,7 @@ class MediaManagerController extends GetxController {
 
       mediaManagerList.value = MediaManagerModal.fromJson(data.body);
       print(mediaManagerList.value.toJson());
+      initializeOriginalList();
       update();
     } catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");

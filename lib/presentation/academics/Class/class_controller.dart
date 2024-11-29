@@ -29,6 +29,32 @@ class ClassController extends GetxController {
     sectionListData();
   }
 
+  List<ClassList> originalContentTypeList = [];
+  void initializeOriginalList() {
+    originalContentTypeList = List.from(classList.value.data!.classlist!);  // Make a copy of the original data
+  }
+  Future<void> searchContentType(String searchKey) async {
+    // Check if the searchKey is empty or not
+    if (searchKey.isEmpty) {
+      // Reset to the original list when searchKey is cleared
+      classList.update((val) {
+        val?.data!.classlist = originalContentTypeList;  // Reset to original list
+      });
+    } else {
+      // Filter the list based on the searchKey
+      List<ClassList> filteredList = originalContentTypeList
+          .where((element) => element.classN != null &&
+          element.classN!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
+          .toList();
+
+      // Update the filtered list
+      classList.update((val) {
+        val?.data!.classlist = filteredList;
+      });
+    }
+  }
+
+
   sectionListData() async {
     try {
       var body = {};
@@ -38,6 +64,7 @@ class ClassController extends GetxController {
 
       sectionListClass.value = SectionListDataModal.fromJson(data.body);
       print(sectionListClass.value.toJson());
+      initializeOriginalList();
       update();
     } catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");
@@ -54,6 +81,7 @@ class ClassController extends GetxController {
 
       classList.value = ClassModal.fromJson(data.body);
       print(classList.value.toJson());
+      initializeOriginalList();
       update();
     } catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");

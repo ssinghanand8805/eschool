@@ -21,33 +21,7 @@ class SubjectController extends GetxController{
   RxBool isPractical = false.obs;
   RxString selectedSubjectId = ''.obs;
 
-  List<Map<String, dynamic>> data = [
-    {
-      'studentId': 18001,
-      'class': 'Class 4',
-      'section': 'A',
-      'subjectGroup': 'Class 1st Subject Group',
-      'subject': 'Hindi (230)',
-      'homeworkDate': DateTime(2024, 4, 5),
-      'submissionDate': DateTime(2024, 4, 9),
-      'evaluationDate': DateTime(2024, 4, 9),
-      'createdBy': 'Joe Black',
-      'approvedId': 9000,
-    },
-    {
-      'studentId': 18002,
-      'class': 'Class 4',
-      'section': 'A',
-      'subjectGroup': 'Class 1st Subject Group',
-      'subject': 'Hindi (230)',
-      'homeworkDate': DateTime(2024, 4, 5),
-      'submissionDate': DateTime(2024, 4, 9),
-      'evaluationDate': DateTime(2024, 4, 9),
-      'createdBy': 'Kirti Singh',
-      'approvedId': 9000,
-    },
-    // Add more data as needed
-  ];
+
 
 
   late Future<void> fetchDataFuture;
@@ -56,7 +30,30 @@ class SubjectController extends GetxController{
     fetchDataFuture = subjectListData();
   }
 
+  List<Subjectlist> originalContentTypeList = [];
+  void initializeOriginalList() {
+    originalContentTypeList = List.from(subjectList.value.data!.subjectlist!);  // Make a copy of the original data
+  }
+  Future<void> searchContentType(String searchKey) async {
+    // Check if the searchKey is empty or not
+    if (searchKey.isEmpty) {
+      // Reset to the original list when searchKey is cleared
+      subjectList.update((val) {
+        val?.data!.subjectlist = originalContentTypeList;  // Reset to original list
+      });
+    } else {
+      // Filter the list based on the searchKey
+      List<Subjectlist> filteredList = originalContentTypeList
+          .where((element) => element.name != null &&
+          element.name!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
+          .toList();
 
+      // Update the filtered list
+      subjectList.update((val) {
+        val?.data!.subjectlist = filteredList;
+      });
+    }
+  }
 
 
 subjectListData() async {
@@ -68,6 +65,7 @@ subjectListData() async {
 
       subjectList.value = SubjectListModal.fromJson(data.body);
       print(subjectList.value.toJson());
+      initializeOriginalList();
       update();
     } catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");
