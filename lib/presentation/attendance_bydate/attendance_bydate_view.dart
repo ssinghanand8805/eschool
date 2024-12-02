@@ -164,7 +164,7 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Attendance',
+          'Attendance By Date',
           style: theme.textTheme.bodyMedium,
         ),
         backgroundColor: Colors.green.shade100,
@@ -205,8 +205,10 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(right: 20.0),
                 child: Icon(
+
                   Icons.share,
                   size: 22,
+                  color: Colors.blue,
                 ),
               )),
         ],
@@ -349,7 +351,7 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
                         // ),
                         DatePickerTextField(
                             controller: controller.attendanceDate.value,
-                            title: 'Attendace date',
+                            title: 'Attendance date',
                             onDateSelected: (date) async {
                               controller.attendanceDate.value.text =
                                   await GlobalData()
@@ -410,7 +412,7 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
                             final currentRowData = controller
                                 .filteredStudentListModel.value[index];
                             return Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(5.0),
                               child: Container(
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
@@ -432,7 +434,7 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
                                   ),
                                 child: Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 10, 5),
+                                      const EdgeInsets.fromLTRB(0, 5, 5, 5),
                                   child: Row(
                                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
@@ -536,8 +538,7 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
                                                           ),
                                                           child: Text(
                                                             currentRowData
-                                                                .attType
-                                                                .toString(),
+                                                                .attType ?? "N/A",
                                                             style: theme
                                                                 .textTheme
                                                                 .titleSmall

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../theme/theme_helper.dart';
 import '../../widgets/button.dart';
+import '../../widgets/custom_button.dart';
 import 'controller/CommonController.dart';
 
 class CommonForm extends StatefulWidget {
@@ -26,36 +27,19 @@ class _CommonFormState extends State<CommonForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             controller2.isSearchExpand.isFalse?   widget.widgetFilterData : SizedBox(),
-            controller2.isSearchExpand.isFalse ?  GestureDetector(
-              onTap: () {
+            controller2.isSearchExpand.isFalse ?  Align(
+              alignment: Alignment.topRight,
+              child: MyButton(
+                width: 100,
+                title: 'Search',
 
-                widget.onTapAction();
-                controller2.isSearchExpand.value = true;
-                controller2.update();
-              },
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Container(
-                  height: 32,
-                  width: 110,
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade200,
-                    borderRadius: BorderRadius.circular(4.0),
-                  ),
-                  child: Center(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.search,
-                          color: Colors.black,
-                        ),
-                        SizedBox(width: 8.0),
-                        Text('Search', style: theme.textTheme.bodyMedium),
-                      ],
-                    ),
-                  ),
-                ),
+                color: Colors.green,
+                onPress: () {
+
+                  widget.onTapAction();
+                  controller2.isSearchExpand.value = true;
+                  controller2.update();
+                },
               ),
             )  : Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

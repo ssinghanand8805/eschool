@@ -24,7 +24,7 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
       filterFunction: filterControls,
 
       futureInitFunction: controller.fetchDataFuture,
-      aapBarTitle: 'Select Criteria',
+      aapBarTitle: 'Student Details',
       bodyWidget: GetBuilder(
           init: controller,
           builder: (context) {
@@ -389,9 +389,9 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
             width: 100,
             title: 'Search',
             textStyle: TextStyle(
-              color: Colors.black,
+              color: Colors.white,
             ),
-            color: Colors.green.shade100,
+            color: Colors.green,
             onPress: () {
               controller.studentByClassSection();
               Get.back();

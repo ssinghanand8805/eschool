@@ -60,7 +60,7 @@ Widget Button(
        width: 100,
         decoration: BoxDecoration(
           color: Colors.green.shade200,
-          borderRadius: BorderRadius.circular(4.0),
+          borderRadius: BorderRadius.circular(15.0),
         ),
         child: Center(
           child: Row(
@@ -68,7 +68,7 @@ Widget Button(
             children: [
               Icon(
                 icon,
-                color: Colors.black,
+                color: Colors.green,
                 size: 17,
               ),
               SizedBox(width: 8.0),

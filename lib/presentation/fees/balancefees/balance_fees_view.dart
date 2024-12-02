@@ -182,12 +182,12 @@ class BalanceFeeView extends GetView<BalanceFeeController> {
                         width: 100,
                         title: 'Search',
                         textStyle: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                         ),
-                        color: Colors.green.shade100,
+                        color: Colors.green,
                         onPress: () {
                           controller.initializeData();
-                          Get.back();
+                          //Get.back();
                         },
                       ),
                     ),

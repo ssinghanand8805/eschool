@@ -62,6 +62,7 @@ class ContentShareView extends GetView<ContentShareController> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
+
                                       buildHeaderCell("Title"),
                                       buildHeaderCell("Send To"),
                                       buildHeaderCell("Share Date"),
@@ -111,25 +112,45 @@ class ContentShareView extends GetView<ContentShareController> {
                                                       vertical: 8.0),
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(10.0),
+                                                    BorderRadius.circular(20.0),
                                               ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    buildDataCell(
-                                                        data.title ?? ""),
-                                                    buildDataCell(
-                                                        data.sendTo ?? ""),
-                                                    buildDataCell(
-                                                        data.shareDate ?? ""),
-                                                    buildDataCell(
-                                                        data.validUpto ?? "-"),
-                                                    buildActionCell(context,controller),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Colors.green.shade100,
+                                                      Colors.green.shade50,
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ),
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.grey.shade200,
+                                                      blurRadius: 10,
+                                                      offset: Offset(0, 4),
+                                                    ),
                                                   ],
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      buildDataCell(
+                                                          data.title.toString().capitalizeFirst ?? ""),
+                                                      buildDataCell(
+                                                          data.sendTo.toString().capitalizeFirst ?? ""),
+                                                      buildDataCell(
+                                                          data.shareDate ?? ""),
+                                                      buildDataCell(
+                                                          data.validUpto ?? "-"),
+                                                      buildActionCell(context,controller),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             );
@@ -167,7 +188,9 @@ class ContentShareView extends GetView<ContentShareController> {
       flex: 2,
       child: Text(
         text,
-        style: theme.textTheme.bodySmall,
+        style: theme.textTheme.bodySmall!.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
