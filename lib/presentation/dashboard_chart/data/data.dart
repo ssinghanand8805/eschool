@@ -71,7 +71,7 @@ List referalData = [
   ReferalInfoModel(
     title: "Facebook",
     count: 234,
-    svgSrc: "assets/icons/Facebook.svg",
+    svgSrc: "assets/icons/user.svg",
     color: primaryColor,
   ),
   ReferalInfoModel(
@@ -88,6 +88,21 @@ List referalData = [
   ),
 
   ReferalInfoModel(
+    title: "Dribble",
+    count: 234,
+    svgSrc: "assets/icons/Dribbble.svg",
+    color: red,
+  ),ReferalInfoModel(
+    title: "Dribble",
+    count: 234,
+    svgSrc: "assets/icons/Dribbble.svg",
+    color: red,
+  ),ReferalInfoModel(
+    title: "Dribble",
+    count: 234,
+    svgSrc: "assets/icons/Dribbble.svg",
+    color: red,
+  ),ReferalInfoModel(
     title: "Dribble",
     count: 234,
     svgSrc: "assets/icons/Dribbble.svg",

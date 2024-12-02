@@ -73,6 +73,7 @@ class _NavigationScreenState extends State<NavigationScreen>
   {
      if(index == 0)
     {
+      dashBordBinding().dependencies();
     return DashBoardScreen();
     }
    else if(index == 1)

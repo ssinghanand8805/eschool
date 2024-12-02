@@ -6,6 +6,7 @@ import '../../models/referal_info_model.dart';
 
 
 class ReferalInfoDetail extends StatelessWidget {
+
   const ReferalInfoDetail({Key? key, required this.info}) : super(key: key);
 
   final ReferalInfoModel info;

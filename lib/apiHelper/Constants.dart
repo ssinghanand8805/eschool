@@ -28,6 +28,8 @@ class Constants {
   static const String getCbseexamresultUrl = 'webservice/cbseexamresult';
   /////////////////////////
   static const String findPermissionsUrl = 'webservice/findPermissions';
+  static const String findStudentsrequest = 'stdtransfer/findStudents';
+  static const String promoteStudentsrequest = 'stdtransfer/promote';
 
   // static const String getNotificationsUrl = 'webservice/getNotifications';
 
@@ -37,6 +39,7 @@ class Constants {
   static const String getHostelListUrl = 'webservice/getHostelList';
   static const String getLibraryBookIssuedsUrl = 'webservice/getLibraryBookIssued';
   static const String getVisitorsUrl = 'webservice/getVisitors';
+  static const String dashboard_chartUrl = 'webservice/dashboard_chart';
   // static const int defaultAge = 30;
 
 

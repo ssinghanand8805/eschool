@@ -6,17 +6,17 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../constants/constants.dart';
 
 
-class BarChartMonthaly extends StatefulWidget {
+class BarChartYearly extends StatefulWidget {
   final List<String> xAxisFields;
   final List<String> yValues;
   final List<String> yValues1;
-  const BarChartMonthaly({Key? key, required this.xAxisFields,required this.yValues,required this.yValues1,}) : super(key: key);
+  const BarChartYearly({Key? key, required this.xAxisFields,required this.yValues,required this.yValues1,}) : super(key: key);
 
   @override
-  State<BarChartMonthaly> createState() => _BarChartMonthalyState();
+  State<BarChartYearly> createState() => _BarChartYearlyState();
 }
 
-class _BarChartMonthalyState extends State<BarChartMonthaly> {
+class _BarChartYearlyState extends State<BarChartYearly> {
    List<_ChartData> data = [];
    List<_ChartData> data2 = [];
   late TooltipBehavior _tooltip;
@@ -24,12 +24,15 @@ class _BarChartMonthalyState extends State<BarChartMonthaly> {
   void initState() {
     for(var i=0;i<widget.xAxisFields.length;i++)
       {
-        var ch = _ChartData(widget.xAxisFields[i].toString(),double.parse(widget.yValues[i]));
+        var ch = _ChartData(widget.xAxisFields[i].toString(),double.parse(widget.yValues[i].toString()));
         data.add(ch);
       }
     for(var i=0;i<widget.xAxisFields.length;i++)
     {
-      var ch = _ChartData(widget.xAxisFields[i].toString(),double.parse(widget.yValues1[i]));
+      print("wwwww${widget.yValues1}");
+      String val = widget.yValues1[i];
+      print(val);
+      var ch = _ChartData(widget.xAxisFields[i].toString(),double.parse(val));
       data2.add(ch);
     }
     // data = [

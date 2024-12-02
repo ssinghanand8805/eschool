@@ -1,4 +1,5 @@
 import '../../../core/app_export.dart';
+import '../../dashboard_chart/dashboard_chart_controller.dart';
 import '../controller/dashbord_controller.dart';
 
 /// A binding class for the FormScreen.
@@ -8,6 +9,7 @@ import '../controller/dashbord_controller.dart';
 class dashBordBinding extends Bindings {
   @override
   void dependencies() {
+    Get.lazyPut(() => DashboardChartController());
     Get.lazyPut(() => DashboardController());
   }
 }

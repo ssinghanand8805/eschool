@@ -1,0 +1,110 @@
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+
+import '../../apiHelper/Constants.dart';
+import '../../apiHelper/popular_product_repo.dart';
+import 'models/dashboard_chart_data.dart';
+
+class DashboardChartController extends GetxController{
+  ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
+  Rx<TextEditingController> searchC = TextEditingController().obs;
+  Rx<DashboardChartData> chartData =  DashboardChartData().obs;
+ var days_collection = [
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "50.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "20.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00"
+  ];
+  var days_expense = [
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "10.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00",
+  "0.00"
+  ];
+  late Future<void> fetchDataFuture;
+  @override
+  void onInit() async {
+    super.onInit();
+
+    fetchDataFuture = getData();
+  }
+  getData()
+  async {
+    var body = {
+      "session_id":20
+    };
+    var data = await apiRespository.postApiCallByFormData(Constants.dashboard_chartUrl, body);
+    try
+    {
+      chartData.value = DashboardChartData.fromJson(data.body);
+      update();
+      print("=======================");
+      print(chartData.value.toJson());
+      print("=======================");
+    }
+    catch(e)
+    {
+      print("Exception:::${e}");
+    }
+
+
+//dashboard_chartUrl
+  }
+
+  Rx<TextEditingController> nameC = TextEditingController().obs;
+  Rx<TextEditingController> descriptionC = TextEditingController().obs;
+}
