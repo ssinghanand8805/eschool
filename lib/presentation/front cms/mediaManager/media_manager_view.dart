@@ -44,42 +44,42 @@ class MediaManagerView extends GetView<MediaManagerController> {
                   }
                   return Column(
                     children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 8.0, right: 8, top: 5),
-                        child: MyCustomSD(
-                          hideSearch: true,
-                          borderColor: Colors.grey,
-                          listToSearch: controller.listToSearch,
-                          valFrom: "value",
-                          label: 'Filter By File Type',
-                          labelText: 'Filter By File Type',
-                          onChanged: (val) {},
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, right: 8),
-                        child: CustomTextField(
-                          controller: controller.searchC,
-                          hint: 'Search.... ',
-                          title: 'Search',
-                          onChanged: (val) {},
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 12.0),
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: MyButton(
-                              onPress: () {},
-                              color: Colors.green,
-                              textStyle: theme.textTheme.titleMedium,
-                              width: 80,
-                              title: "Search"),
-                        ),
-                      ),
-                      SizedBox(height: 8),
+                      // Padding(
+                      //   padding:
+                      //       const EdgeInsets.only(left: 8.0, right: 8, top: 5),
+                      //   child: MyCustomSD(
+                      //     hideSearch: true,
+                      //     borderColor: Colors.grey,
+                      //     listToSearch: controller.listToSearch,
+                      //     valFrom: "value",
+                      //     label: 'Filter By File Type',
+                      //     labelText: 'Filter By File Type',
+                      //     onChanged: (val) {},
+                      //   ),
+                      // ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 8.0, right: 8),
+                      //   child: CustomTextField(
+                      //     controller: controller.searchC,
+                      //     hint: 'Search.... ',
+                      //     title: 'Search',
+                      //     onChanged: (val) {},
+                      //   ),
+                      // ),
+                      // SizedBox(height: 8),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(right: 12.0),
+                      //   child: Align(
+                      //     alignment: Alignment.topRight,
+                      //     child: MyButton(
+                      //         onPress: () {},
+                      //         color: Colors.green,
+                      //         textStyle: theme.textTheme.titleMedium,
+                      //         width: 80,
+                      //         title: "Search"),
+                      //   ),
+                      // ),
+                      // SizedBox(height: 8),
                       Expanded(
                         child: GetBuilder<MediaManagerController>(
                           builder: (controller) {
@@ -100,7 +100,7 @@ class MediaManagerView extends GetView<MediaManagerController> {
                               ),
                               itemCount: controller
                                   .mediaManagerList.value.data!.length,
-                              padding: const EdgeInsets.all(20.0),
+                              padding: const EdgeInsets.all(10.0),
                               itemBuilder: (BuildContext context, int index) {
                                 final media = controller
                                     .mediaManagerList.value.data![index];
@@ -150,7 +150,7 @@ class MediaManagerView extends GetView<MediaManagerController> {
                                             ),
                                             child: Image.network(
                                               imageUrl,
-                                              height: 100,
+                                              height: 130,
                                               width: double.infinity,
                                               fit: BoxFit.cover,
                                               errorBuilder: (context, error,
@@ -171,7 +171,7 @@ class MediaManagerView extends GetView<MediaManagerController> {
                                         ),
                                         // Content Section
                                         Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding: const EdgeInsets.all(5.0),
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,

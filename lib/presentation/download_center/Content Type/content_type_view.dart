@@ -92,86 +92,106 @@ class ContentTypeView extends GetView<ContentTypeController> {
                         elevation: 4.0,
                         margin: const EdgeInsets.symmetric(vertical: 8.0),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(20.0),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // Name
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  data.name ?? "",
-                                  style: theme.textTheme.bodySmall!
-                                      .copyWith(fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              // Description
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  data.description ?? "",
-                                  textAlign: TextAlign.center,
-                                  style: theme.textTheme.bodySmall!
-                                      .copyWith(fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              // Actions
-                              Expanded(
-                                flex: 2,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(Icons.edit, color: Colors.green),
-                                      onPressed: () {
-                                        controller.getcontenttypebyId(
-                                            context, int.parse(data.id!));
-                                        addContent(context);
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.delete, color: Colors.red),
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text("Confirm Delete"),
-                                              content: Text(
-                                                  "Are you sure you want to delete this item?"),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: Text("Cancel"),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    controller.deletecontenttypebyId(
-                                                        context,
-                                                        int.parse(data.id!));
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: Text(
-                                                    "Delete",
-                                                    style:
-                                                    TextStyle(color: Colors.red),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.green.shade100,
+                                Colors.green.shade50,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade200,
+                                blurRadius: 10,
+                                offset: Offset(0, 4),
                               ),
                             ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Name
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    data.name ?? "",
+                                    style: theme.textTheme.bodySmall!
+                                        .copyWith(fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                                // Description
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    data.description ?? "",
+                                    textAlign: TextAlign.center,
+                                    style: theme.textTheme.bodySmall!
+                                        .copyWith(fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                                // Actions
+                                Expanded(
+                                  flex: 2,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.edit, color: Colors.green),
+                                        onPressed: () {
+                                          controller.getcontenttypebyId(
+                                              context, int.parse(data.id!));
+                                          addContent(context);
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.delete, color: Colors.red),
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text("Confirm Delete"),
+                                                content: Text(
+                                                    "Are you sure you want to delete this item?"),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    child: Text("Cancel"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      controller.deletecontenttypebyId(
+                                                          context,
+                                                          int.parse(data.id!));
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    child: Text(
+                                                      "Delete",
+                                                      style:
+                                                      TextStyle(color: Colors.red),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
@@ -234,8 +254,8 @@ class ContentTypeView extends GetView<ContentTypeController> {
                 alignment: Alignment.bottomRight,
                 child: MyButton(
                   width: 120,
-                  title:'Save',textStyle: TextStyle(color: Colors.black,),
-                  color:Colors.green.shade100,
+                  title:'Save',
+                  color:Colors.green,
                   onPress: () {
                     if(controller.formKey.value.currentState!.validate()){
                       controller.saveContentType(context);

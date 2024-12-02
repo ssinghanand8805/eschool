@@ -247,7 +247,7 @@ class  EventView extends GetView< EventController> {
                 }),
             const SizedBox(height: 12),
           Obx(
-                () => Row(
+                () => Column(
               children: [
                 InkWell(
                   onTap: () {
@@ -280,6 +280,7 @@ class  EventView extends GetView< EventController> {
                     ),
                   ),
                 ),
+                SizedBox(height: 10,),
                 controller.featureImage.value  != "" ?  Stack(
                   children: [
                     Container(

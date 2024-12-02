@@ -415,10 +415,8 @@ class  AddStudentView extends GetView< AddStudentController> {
           child: MyButton(
             width: 100,
             title: 'Search',
-            textStyle: TextStyle(
-              color: Colors.black,
-            ),
-            color: Colors.green.shade100,
+
+            color: Colors.green,
             onPress: () {
               controller.studentByClassSection();
               Get.back();

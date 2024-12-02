@@ -110,7 +110,7 @@ class GalleryView extends GetView<GalleryController> {
                                           child: Image.network(
                                             gallery.featureImage ?? '',
                                             fit: BoxFit.cover,
-                                            height: 120, // Adjust height
+                                            height: 130, // Adjust height
                                             width:
                                                 double.infinity, // Full width
                                             errorBuilder:
@@ -253,7 +253,7 @@ class GalleryView extends GetView<GalleryController> {
             ),
             const SizedBox(height: 10),
             Obx(
-                () => Row(
+                () => Column(
                 children: [
                   InkWell(
                     onTap: () {
@@ -286,6 +286,7 @@ class GalleryView extends GetView<GalleryController> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 10,),
                   controller.featureImage.value  != "" ?  Stack(
                     children: [
                       Container(

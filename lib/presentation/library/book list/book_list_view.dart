@@ -26,7 +26,7 @@ class BookListView extends GetView<BookListController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green.shade100,
+        backgroundColor: Colors.green.shade200,
         title: Text(
           'Book List',
           style: theme.textTheme.bodyMedium,
@@ -48,423 +48,57 @@ class BookListView extends GetView<BookListController> {
                                   .listbook!.length >
                               0
                       ? Column(
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 8.0, right: 8),
-                            child: CustomTextField(
-                              controller: controller.searchC,
-                              hint: 'Search.... ',
-                              title: '',
-                              onChanged: (val) {
-                                controller.searchContentType(val);
-                                controller.update();
-                              },
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 8.0, right: 8),
+                              child: CustomTextField(
+                                controller: controller.searchC,
+                                hint: 'Search.... ',
+                                title: '',
+                                onChanged: (val) {
+                                  controller.searchContentType(val);
+                                  controller.update();
+                                },
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 8),
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: controller.filteredContentTypeList
-                                  .value.data!.listbook!.length,
-                              itemBuilder: (context, index) {
-                                return BookListingCard(
-                                  entry: controller.filteredContentTypeList
-                                      .value.data!.listbook![index],
-                                  onEdit: () async {
-                                    await controller.getEditData(int.parse(
-                                        controller
+                            SizedBox(height: 8),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: controller.filteredContentTypeList
+                                    .value.data!.listbook!.length,
+                                itemBuilder: (context, index) {
+                                  return BookListingCard(
+                                    entry: controller.filteredContentTypeList
+                                        .value.data!.listbook![index],
+                                    onEdit: () async {
+                                      await controller.getEditData(int.parse(
+                                          controller
+                                              .filteredContentTypeList
+                                              .value
+                                              .data!
+                                              .listbook![index]
+                                              .id!));
+                                      addEditContents(context);
+                                    },
+                                    onDelete: () {
+                                      controller.deleteBookDetails(
+                                        context,
+                                        int.parse(controller
                                             .filteredContentTypeList
                                             .value
                                             .data!
                                             .listbook![index]
-                                            .id!));
-                                    addEditContents(context);
-                                  },
-                                  onDelete: () {
-                                    controller.deleteBookDetails(
-                                      context,
-                                      int.parse(controller
-                                          .filteredContentTypeList
-                                          .value
-                                          .data!
-                                          .listbook![index]
-                                          .id!),
-                                    );
-                                    Navigator.of(context).pop();
-                                  },
-                                );
-                              },
+                                            .id!),
+                                      );
+                                      Navigator.of(context);
+                                    },
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                          // Column(
-                          //   children: controller.filteredContentTypeList
-                          //       .value.data!.listbook!
-                          //       .map((entry) {
-                          //     return Card(
-                          //       color: Colors.grey
-                          //           .shade100, // Light neutral background for the card
-                          //       elevation: 4,
-                          //       margin: const EdgeInsets.symmetric(
-                          //           vertical: 12, horizontal: 16),
-                          //       shape: RoundedRectangleBorder(
-                          //         borderRadius: BorderRadius.circular(
-                          //             20), // Smooth rounded corners
-                          //       ),
-                          //       child: Padding(
-                          //         padding: const EdgeInsets.symmetric(
-                          //             vertical: 10, horizontal: 16),
-                          //         child: Column(
-                          //           crossAxisAlignment:
-                          //               CrossAxisAlignment.start,
-                          //           children: [
-                          //             // Title and Book Type
-                          //             Row(
-                          //               mainAxisAlignment:
-                          //                   MainAxisAlignment.spaceBetween,
-                          //               crossAxisAlignment:
-                          //                   CrossAxisAlignment.start,
-                          //               children: [
-                          //                 Expanded(
-                          //                   child: Text(
-                          //                     entry.bookTitle.toString(),
-                          //                     style: theme
-                          //                         .textTheme.headline6
-                          //                         ?.copyWith(
-                          //                       fontWeight: FontWeight.bold,
-                          //                       fontSize: 18,
-                          //                     ),
-                          //                   ),
-                          //                 ),
-                          //                 const SizedBox(width: 5),
-                          //                 Container(
-                          //                   decoration: BoxDecoration(
-                          //                     borderRadius:
-                          //                         BorderRadius.circular(5),
-                          //                     color: Colors.green.shade200,
-                          //                   ),
-                          //                   padding:
-                          //                       const EdgeInsets.symmetric(
-                          //                     vertical: 4.0,
-                          //                     horizontal: 8,
-                          //                   ),
-                          //                   child: Text(
-                          //                     "Book Type",
-                          //                     style: theme.textTheme.caption
-                          //                         ?.copyWith(fontSize: 12),
-                          //                   ),
-                          //                 ),
-                          //               ],
-                          //             ),
-                          //             const SizedBox(height: 8),
-                          //
-                          //             // Subject and Rack Number
-                          //             Row(
-                          //               mainAxisAlignment:
-                          //                   MainAxisAlignment.spaceBetween,
-                          //               children: [
-                          //                 Text(
-                          //                   entry.subject.toString(),
-                          //                   style: theme.textTheme.bodyText2
-                          //                       ?.copyWith(fontSize: 16),
-                          //                 ),
-                          //                 Row(
-                          //                   children: [
-                          //                     Text(
-                          //                       'Rack Number: ',
-                          //                       style: theme
-                          //                           .textTheme.caption
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                     Text(
-                          //                       entry.rackNo.toString(),
-                          //                       style: theme
-                          //                           .textTheme.bodyText2
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                   ],
-                          //                 ),
-                          //               ],
-                          //             ),
-                          //             const SizedBox(height: 8),
-                          //
-                          //             // Book and ISBN Numbers
-                          //             Row(
-                          //               mainAxisAlignment:
-                          //                   MainAxisAlignment.spaceBetween,
-                          //               children: [
-                          //                 Row(
-                          //                   children: [
-                          //                     Text(
-                          //                       'Book Number: ',
-                          //                       style: theme
-                          //                           .textTheme.caption
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                     Text(
-                          //                       entry.bookNo.toString(),
-                          //                       style: theme
-                          //                           .textTheme.bodyText2
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                   ],
-                          //                 ),
-                          //                 Row(
-                          //                   children: [
-                          //                     Text(
-                          //                       'ISBN Number: ',
-                          //                       style: theme
-                          //                           .textTheme.caption
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                     Text(
-                          //                       entry.isbnNo.toString(),
-                          //                       style: theme
-                          //                           .textTheme.bodyText2
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                   ],
-                          //                 ),
-                          //               ],
-                          //             ),
-                          //             const SizedBox(height: 8),
-                          //
-                          //             // Publisher and Author
-                          //             Row(
-                          //               mainAxisAlignment:
-                          //                   MainAxisAlignment.spaceBetween,
-                          //               children: [
-                          //                 Row(
-                          //                   children: [
-                          //                     Text(
-                          //                       'Publisher: ',
-                          //                       style: theme
-                          //                           .textTheme.caption
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                     Text(
-                          //                       entry.publish.toString(),
-                          //                       style: theme
-                          //                           .textTheme.bodyText2
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                   ],
-                          //                 ),
-                          //                 Row(
-                          //                   children: [
-                          //                     Text(
-                          //                       'Author: ',
-                          //                       style: theme
-                          //                           .textTheme.caption
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                     Text(
-                          //                       entry.author.toString(),
-                          //                       style: theme
-                          //                           .textTheme.bodyText2
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                   ],
-                          //                 ),
-                          //               ],
-                          //             ),
-                          //             const SizedBox(height: 8),
-                          //
-                          //             // Quantity and Availability
-                          //             Row(
-                          //               mainAxisAlignment:
-                          //                   MainAxisAlignment.spaceBetween,
-                          //               children: [
-                          //                 Row(
-                          //                   children: [
-                          //                     Text(
-                          //                       'Qty: ',
-                          //                       style: theme
-                          //                           .textTheme.caption
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                     Text(
-                          //                       entry.qty.toString(),
-                          //                       style: theme
-                          //                           .textTheme.bodyText2
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                   ],
-                          //                 ),
-                          //                 Row(
-                          //                   children: [
-                          //                     Text(
-                          //                       'Available: ',
-                          //                       style: theme
-                          //                           .textTheme.caption
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                     Text(
-                          //                       entry.available.toString(),
-                          //                       style: theme
-                          //                           .textTheme.bodyText2
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                   ],
-                          //                 ),
-                          //               ],
-                          //             ),
-                          //             const SizedBox(height: 8),
-                          //
-                          //             // Price and Post Date
-                          //             Row(
-                          //               mainAxisAlignment:
-                          //                   MainAxisAlignment.spaceBetween,
-                          //               children: [
-                          //                 Row(
-                          //                   children: [
-                          //                     Text(
-                          //                       'Book Price: ',
-                          //                       style: theme
-                          //                           .textTheme.caption
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                     Text(
-                          //                       entry.perunitcost
-                          //                           .toString(),
-                          //                       style: theme
-                          //                           .textTheme.bodyText2
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                   ],
-                          //                 ),
-                          //                 Row(
-                          //                   children: [
-                          //                     Text(
-                          //                       'Post Date: ',
-                          //                       style: theme
-                          //                           .textTheme.caption
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                     Text(
-                          //                       entry.postdate.toString(),
-                          //                       style: theme
-                          //                           .textTheme.bodyText2
-                          //                           ?.copyWith(
-                          //                               fontSize: 14),
-                          //                     ),
-                          //                   ],
-                          //                 ),
-                          //               ],
-                          //             ),
-                          //             const SizedBox(height: 8),
-                          //
-                          //             // Description
-                          //             Text(
-                          //               'Description: ${entry.description}',
-                          //               style: theme.textTheme.bodyText2
-                          //                   ?.copyWith(
-                          //                 fontSize: 14,
-                          //                 color: Colors.grey.shade700,
-                          //               ),
-                          //               textAlign: TextAlign.justify,
-                          //             ),
-                          //             const SizedBox(height: 8),
-                          //
-                          //             // Action Buttons
-                          //             Align(
-                          //               alignment: Alignment.centerRight,
-                          //               child: Row(
-                          //                 mainAxisSize: MainAxisSize.min,
-                          //                 children: [
-                          //                   IconButton(
-                          //                     onPressed: () async {
-                          //                       await controller
-                          //                           .getEditData(entry.id!);
-                          //                       addEditContents(context);
-                          //                     },
-                          //                     icon: const Icon(Icons.edit,
-                          //                         color: Colors.blue),
-                          //                   ),
-                          //                   IconButton(
-                          //                     onPressed: () {
-                          //                       showDialog(
-                          //                         context: context,
-                          //                         builder: (BuildContext
-                          //                             context) {
-                          //                           return AlertDialog(
-                          //                             title: Text(
-                          //                               "Confirm Delete",
-                          //                               style: theme
-                          //                                   .textTheme
-                          //                                   .headline6,
-                          //                             ),
-                          //                             content: Text(
-                          //                               "Are you sure you want to delete this Gallery Image? This action cannot be undone.",
-                          //                               style: theme
-                          //                                   .textTheme
-                          //                                   .bodyText2,
-                          //                             ),
-                          //                             actions: [
-                          //                               TextButton(
-                          //                                 onPressed: () =>
-                          //                                     Navigator.of(
-                          //                                             context)
-                          //                                         .pop(),
-                          //                                 child: const Text(
-                          //                                     "Cancel"),
-                          //                               ),
-                          //                               TextButton(
-                          //                                 onPressed: () {
-                          //                                   controller
-                          //                                       .deleteBookDetails(
-                          //                                     context,
-                          //                                     int.parse(
-                          //                                         entry
-                          //                                             .id!),
-                          //                                   );
-                          //                                   Navigator.of(
-                          //                                           context)
-                          //                                       .pop();
-                          //                                 },
-                          //                                 child: const Text(
-                          //                                   "Delete",
-                          //                                   style: TextStyle(
-                          //                                       color: Colors
-                          //                                           .red),
-                          //                                 ),
-                          //                               ),
-                          //                             ],
-                          //                           );
-                          //                         },
-                          //                       );
-                          //                     },
-                          //                     icon: const Icon(Icons.delete,
-                          //                         color: Colors.red),
-                          //                   ),
-                          //                 ],
-                          //               ),
-                          //             ),
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     );
-                          //   }).toList(),
-                          // ),
-                        ],
-                      )
+                          ],
+                        )
                       : Container(
                           child:
                               Lottie.asset("assets/images/no_data_found.json"),
@@ -686,7 +320,7 @@ class BookListingCard extends StatelessWidget {
                     colors: [Colors.green.shade500, Colors.green.shade600],
                   ),
                 ),
-               padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -710,7 +344,7 @@ class BookListingCard extends StatelessWidget {
                           horizontal: 10, vertical: 6),
                       child: Text(
                         entry.subject.toString(),
-                        style:  theme.textTheme.bodySmall!.copyWith(
+                        style: theme.textTheme.bodySmall!.copyWith(
                           color: Colors.white,
                           fontSize: 12,
                         ),
@@ -859,17 +493,15 @@ class BookListingCard extends StatelessWidget {
                 children: [
                   Text(
                     label,
-                    style:  theme.textTheme.bodySmall!.copyWith(
+                    style: theme.textTheme.bodySmall!.copyWith(
                       color: Colors.grey.shade600,
-
                     ),
                   ),
                   Text(
                     value,
-                    style:  theme.textTheme.bodySmall!.copyWith(
+                    style: theme.textTheme.bodySmall!.copyWith(
                       color: valueColor ?? Colors.black87,
                       fontWeight: FontWeight.w600,
-
                     ),
                   ),
                 ],
@@ -893,17 +525,15 @@ class BookListingCard extends StatelessWidget {
                 children: [
                   Text(
                     label,
-                    style:  theme.textTheme.bodySmall!.copyWith(
+                    style: theme.textTheme.bodySmall!.copyWith(
                       color: Colors.grey.shade600,
-
                     ),
                   ),
                   Text(
                     value,
-                    style:  theme.textTheme.bodySmall!.copyWith(
+                    style: theme.textTheme.bodySmall!.copyWith(
                       color: valueColor ?? Colors.black87,
                       fontWeight: FontWeight.w600,
-
                     ),
                   ),
                 ],

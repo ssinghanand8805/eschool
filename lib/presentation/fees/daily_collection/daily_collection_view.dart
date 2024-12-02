@@ -79,10 +79,8 @@ class DailyCollectionView extends GetView<DailyCollectionController> {
                       child: MyButton(
                         width: 100,
                         title: 'Search',
-                        textStyle: TextStyle(
-                          color: Colors.black,
-                        ),
-                        color: Colors.green.shade100,
+
+                        color: Colors.green,
                         onPress: () {
                           controller.initializeData();
                           //Get.back();

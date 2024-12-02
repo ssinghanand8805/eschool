@@ -49,7 +49,7 @@ class IssueReturnView extends GetView<IssueReturnController> {
                                     const EdgeInsets.only(left: 8.0, right: 8),
                                 child: CustomTextField(
                                   controller: controller.searchC,
-                                  hint: 'Search.... ',
+                                  hint: 'Search by name.... ',
                                   title: '',
                                   onChanged: (val) {
                                     controller.searchContentType(val);
