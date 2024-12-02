@@ -20,28 +20,30 @@ class SectionController extends GetxController {
   }
 
 
-  // Future<void> searchContentType(String searchKey) async {
-  //   // Check if the searchKey is empty or not
-  //   if (searchKey.isEmpty) {
-  //     // Reset to the original list when searchKey is cleared
-  //     sectionList.update((val) {
-  //       val?.data!.sectionlist = originalContentTypeList; // Reset to original list
-  //     });
-  //   } else {
-  //     // Filter the list based on the searchKey
-  //     List<SectionListDataModal> filteredList = originalContentTypeList
-  //         .where((element) =>
-  //     element.bookTitle != null &&
-  //         element.bookTitle!.toLowerCase().contains(searchKey.toLowerCase().trim())) // Perform case-insensitive search
-  //         .toList();
-  //
-  //     // Update the filtered list
-  //     sectionList.update((val) {
-  //       val!.data!.sectionlist = filteredList;
-  //     });
-  //   }
-  // }
+  List<Sectionlist> originalContentTypeList = [];
+  void initializeOriginalList() {
+    originalContentTypeList = List.from(sectionList.value.data!.sectionlist!);  // Make a copy of the original data
+  }
+  Future<void> searchContentType(String searchKey) async {
+    // Check if the searchKey is empty or not
+    if (searchKey.isEmpty) {
+      // Reset to the original list when searchKey is cleared
+      sectionList.update((val) {
+        val?.data!.sectionlist = originalContentTypeList;  // Reset to original list
+      });
+    } else {
+      // Filter the list based on the searchKey
+      List<Sectionlist> filteredList = originalContentTypeList
+          .where((element) => element.section != null &&
+          element.section!.toLowerCase().contains(searchKey.toLowerCase().trim()))  // Perform case-insensitive search
+          .toList();
 
+      // Update the filtered list
+      sectionList.update((val) {
+        val?.data!.sectionlist = filteredList;
+      });
+    }
+  }
   sectionListData() async {
     try {
       var body = {};
@@ -51,6 +53,7 @@ class SectionController extends GetxController {
 
       sectionList.value = SectionListDataModal.fromJson(data.body);
       print(sectionList.value.toJson());
+      initializeOriginalList();
       update();
     } catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");

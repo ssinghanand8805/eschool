@@ -49,6 +49,17 @@ class TeacherDailyAssignmentController extends GetxController {
       'status': 'Approved (04/05/2024)',
       'approvedBy': 'Joe Black',
       'approvedId': 9000,
+    },  {
+      'studentName': 'Edward Thomas',
+      'studentId': 18001,
+      'class': 'Class 4',
+      'section': 'A',
+      'applyDate': DateTime(2024, 4, 5),
+      'fromDate': DateTime(2024, 4, 9),
+      'toDate': DateTime(2024, 4, 9),
+      'status': 'Approved (04/05/2024)',
+      'approvedBy': 'Joe Black',
+      'approvedId': 9000,
     },
     {
       'studentName': 'Kriti Singh',

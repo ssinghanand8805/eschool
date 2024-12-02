@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:image_picker/image_picker.dart';
@@ -33,7 +34,6 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,17 +54,15 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
               // ),
               title: 'Add Homework',
               textStyle: TextStyle(fontSize: 14, color: Colors.white),
-              color: theme.hintColor,
+              color: Colors.green,
               onPress: () {
                 showAddHomeWork();
               },
             ),
           ),
         ],
-
       ),
-      body:
-      GetBuilder(
+      body: GetBuilder(
           init: controller,
           builder: (context) {
             return Padding(
@@ -76,29 +74,30 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: Obx(()=>MyCustomSD(
-                          hideSearch: true,
-                          borderColor: Colors.grey,
-                          listToSearch: commonApiController.classListModelMap
-                              .value,
-                          valFrom: "className",
-                          label: 'Class',
-                          labelText: 'Class',
-                          onChanged: (val) {
-                            print(val);
-                            if (commonApiController.classListModelMap.value
-                                .length > 0) {
-                              print("5555555555555");
+                        child: Obx(() => MyCustomSD(
+                              hideSearch: true,
+                              borderColor: Colors.grey,
+                              listToSearch:
+                                  commonApiController.classListModelMap.value,
+                              valFrom: "className",
+                              label: 'Class',
+                              labelText: 'Class',
+                              onChanged: (val) {
+                                print(val);
+                                if (commonApiController
+                                        .classListModelMap.value.length >
+                                    0) {
+                                  print("5555555555555");
 
-                              commonApiController.selectedClassId.value =
-                                  val['id'].toString();
-                              commonApiController.selectedClassName.value =
-                                  val['className'].toString();
-                              commonApiController.update();
-                              commonApiController.getSectionList();
-                            }
-                          },
-                        )),
+                                  commonApiController.selectedClassId.value =
+                                      val['id'].toString();
+                                  commonApiController.selectedClassName.value =
+                                      val['className'].toString();
+                                  commonApiController.update();
+                                  commonApiController.getSectionList();
+                                }
+                              },
+                            )),
                       ),
                       SizedBox(
                         width: 5,
@@ -108,16 +107,17 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                           return MyCustomSD(
                             hideSearch: true,
                             borderColor: Colors.grey,
-                            listToSearch: commonApiController
-                                .sectionListModelMap.value,
+                            listToSearch:
+                                commonApiController.sectionListModelMap.value,
                             valFrom: "section",
                             label: 'Section',
                             labelText: 'Section',
                             onChanged: (val) {
                               print(val);
                               if (val != null) {
-                                if (commonApiController.sectionListModelMap
-                                    .value.length > 0) {
+                                if (commonApiController
+                                        .sectionListModelMap.value.length >
+                                    0) {
                                   commonApiController.selectedSectionId.value =
                                       val['section_id'].toString();
                                   commonApiController.selectedSectionName
@@ -130,8 +130,6 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                           );
                         }),
                       ),
-
-
                     ],
                   ),
                   SizedBox(
@@ -140,52 +138,59 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(child: MyCustomSD(
-                        hideSearch: true,
-                        borderColor: Colors.grey,
-                        listToSearch: controller.getListGroupList.value,
-                        valFrom: "name",
-                        label: 'Subject Group',
-                        labelText: 'Subject Group',
-                        onChanged: (val) {
-                          print(val);
-                          if (val != null) {
-                            controller.updateSubjectGroupId = val['subject_group_id'];
-                            modal.subject();
-                          }
-                        },
-                      ),),
+                      Expanded(
+                        child: MyCustomSD(
+                          hideSearch: true,
+                          borderColor: Colors.grey,
+                          listToSearch: controller.getListGroupList.value,
+                          valFrom: "name",
+                          label: 'Subject Group',
+                          labelText: 'Subject Group',
+                          onChanged: (val) {
+                            print(val);
+                            if (val != null) {
+                              controller.updateSubjectGroupId =
+                                  val['subject_group_id'];
+                              modal.subject();
+                            }
+                          },
+                        ),
+                      ),
                       SizedBox(
                         width: 5,
                       ),
-
-                      Expanded(child: MyCustomSD(
-                        hideSearch: true,
-                        borderColor: Colors.grey,
-                        listToSearch: controller.getSubjectList.value,
-                        valFrom: "name",
-                        label: 'Subject',
-                        labelText: 'Subject',
-                        onChanged: (val) {
-                          print(val);
-                          if(val!=null){
-                            controller.updateSubjectId = val['id'];
-
-                          }
-                        },
-                      ),)
+                      Expanded(
+                        child: MyCustomSD(
+                          hideSearch: true,
+                          borderColor: Colors.grey,
+                          listToSearch: controller.getSubjectList.value,
+                          valFrom: "name",
+                          label: 'Subject',
+                          labelText: 'Subject',
+                          onChanged: (val) {
+                            print(val);
+                            if (val != null) {
+                              controller.updateSubjectId = val['id'];
+                            }
+                          },
+                        ),
+                      )
                     ],
                   ),
-
 
                   SizedBox(
                     height: 10,
                   ),
-                  Button(text: 'Search',
-                      onTap: () {
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: MyButton(
+                      color: Colors.green,
+                      width: 80,
+                      title: 'Search',
+                      onPress: () {
                         if (controller.getSubjectGroupId.value.isEmpty &&
-                            commonApiController.selectedSectionId.value
-                                .isEmpty &&
+                            commonApiController
+                                .selectedSectionId.value.isEmpty &&
                             commonApiController.selectedClassId.value.isEmpty) {
                           print("Select DropDown");
                         } else {
@@ -193,7 +198,8 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                           modal.closeHomework(context);
                         }
                       },
-                      icon: Icons.search),
+                    ),
+                  ),
                   SizedBox(
                     height: 10,
                   ),
@@ -205,7 +211,8 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                   //     icon: Icons.add),
                   Text(
                     'Homework List',
-                    style: theme.textTheme.titleMedium,
+                    style: theme.textTheme.titleMedium!
+                        .copyWith(fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
                     height: 10,
@@ -217,44 +224,58 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                       GestureDetector(
                         onTap: () {
                           modal.controller.isUpcomingHomeworkList.value =
-                          "Upcoming homework";
+                              "Upcoming homework";
                           modal.controller.update();
                         },
                         child: Container(
-                          height: 40, width: Get.width / 2.2,
+                          height: 40,
+                          width: Get.width / 2.2,
                           decoration: BoxDecoration(
-                            color: modal.controller.isUpcomingHomeworkList
-                                .value == "Upcoming homework" ? Colors.green
-                                .shade200 : Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(10),
+                            color:
+                                modal.controller.isUpcomingHomeworkList.value ==
+                                        "Upcoming homework"
+                                    ? Colors.green.shade200
+                                    : Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Center(child: Padding(
+                          child: Center(
+                              child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Text("Upcoming homework",
-                              style: theme.textTheme.titleMedium,),
+                            child: Text(
+                              "Upcoming homework",
+                              style: theme.textTheme.titleMedium,
+                            ),
                           )),
                         ),
                       ),
-                      SizedBox(width: 4,),
+                      SizedBox(
+                        width: 4,
+                      ),
                       GestureDetector(
                         onTap: () {
                           modal.controller.isUpcomingHomeworkList.value =
-                          "Close homework";
+                              "Close homework";
                           modal.controller.update();
                         },
                         child: Container(
-                          height: 40, width: Get.width / 2.2,
+                          height: 40,
+                          width: Get.width / 2.2,
                           decoration: BoxDecoration(
-                            color: modal.controller.isUpcomingHomeworkList
-                                .value == "Close homework" ? Colors.green
-                                .shade200 : Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(10),
+                            color:
+                                modal.controller.isUpcomingHomeworkList.value ==
+                                        "Close homework"
+                                    ? Colors.green.shade200
+                                    : Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Center(child: Padding(
+                          child: Center(
+                              child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Text("Close homework",
+                            child: Text(
+                              "Close homework",
                               style: theme.textTheme.titleMedium,
-                              textAlign: TextAlign.center,),
+                              textAlign: TextAlign.center,
+                            ),
                           )),
                         ),
                       ),
@@ -268,55 +289,67 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                       controller: modal.controller.searchC.value,
                       hint: "search....",
                       title: "",
-                      onChanged: (val){
+                      onChanged: (val) {
                         modal.controller.update();
                       },
                     ),
                   ),
 
-
                   Visibility(
                     visible: modal.controller.isUpcomingHomeworkList ==
                         "Close homework",
                     child: CustomTextField(
-                        controller: modal.controller.searchC.value,
-                        hint: "search....",
-                        title: "",
-                      onChanged: (val){
-                          modal.controller.update();
+                      controller: modal.controller.searchC.value,
+                      hint: "search....",
+                      title: "",
+                      onChanged: (val) {
+                        modal.controller.update();
                       },
                     ),
                   ),
-                  SizedBox(height: 10,),
-
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   Visibility(
                     visible: modal.controller.isUpcomingHomeworkList ==
                         "Upcoming homework",
                     child: Expanded(
-                      child: modal.controller.getHomeworkList.isEmpty?Center(child: Text("No data found!")):ListView.builder(
-                        itemCount:  modal.controller.getHomeworkList.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          CloseHomeworkDataModal upcomingHomeWorkData = modal.controller.getHomeworkList[index];
-                          return upcomingHomeWork(upcomingHomeWorkData);
-                        },),
+                      child: modal.controller.getHomeworkList.isEmpty
+                          ? Center(child: Text("No data found!"))
+                          : ListView.builder(
+                              itemCount:
+                                  modal.controller.getHomeworkList.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                CloseHomeworkDataModal upcomingHomeWorkData =
+                                    modal.controller.getHomeworkList[index];
+                                return upcomingHomeWork(upcomingHomeWorkData);
+                              },
+                            ),
                     ),
                   ),
                   Visibility(
                     visible: modal.controller.isUpcomingHomeworkList ==
                         "Close homework",
                     child: Expanded(
-                      child: modal.controller.getCloseHomeworkList.isEmpty?Center(child: Text("Data not found!",)):ListView.builder(
-                        itemCount: modal.controller.getCloseHomeworkList.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          CloseHomeworkDataModal closeHomeworkData = modal
-                              .controller.getCloseHomeworkList[index];
-                          return closeHomeWork(closeHomeworkData);
-                        },),
-                    ),)
-
+                      child: modal.controller.getCloseHomeworkList.isEmpty
+                          ? Center(
+                              child: Text(
+                              "Data not found!",
+                            ))
+                          : ListView.builder(
+                              itemCount:
+                                  modal.controller.getCloseHomeworkList.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                CloseHomeworkDataModal closeHomeworkData = modal
+                                    .controller.getCloseHomeworkList[index];
+                                return closeHomeWork(closeHomeworkData);
+                              },
+                            ),
+                    ),
+                  )
 
                   // Expanded(child: MyTable())
                 ],
@@ -338,9 +371,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
             init: modal.controller,
             builder: (_) {
               return Padding(
-                padding: MediaQuery
-                    .of(context)
-                    .viewInsets,
+                padding: MediaQuery.of(context).viewInsets,
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -361,55 +392,64 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(child: MyCustomSD(
-                              hideSearch: true,
-                              labelText: 'Class',
-                              borderColor: Colors.grey,
-                              listToSearch: commonApiController
-                                  .classListModelMap.value,
-                              valFrom: "className",
-                              label: 'Class',
-                              onChanged: (val) {
-                                if (commonApiController.classListModelMap.value
-                                    .length > 0) {
-                                  print("5555555555555");
+                            Expanded(
+                              child: MyCustomSD(
+                                hideSearch: true,
+                                labelText: 'Class',
+                                borderColor: Colors.grey,
+                                listToSearch:
+                                    commonApiController.classListModelMap.value,
+                                valFrom: "className",
+                                label: 'Class',
+                                onChanged: (val) {
+                                  if (commonApiController
+                                          .classListModelMap.value.length >
+                                      0) {
+                                    print("5555555555555");
 
-                                  commonApiController.selectedClassId.value =
-                                      val['id'].toString();
-                                  commonApiController.selectedClassName.value =
-                                      val['className'].toString();
-                                  commonApiController.update();
-                                  commonApiController.getSectionList();
-                                }
-                              },
-                            ),),
+                                    commonApiController.selectedClassId.value =
+                                        val['id'].toString();
+                                    commonApiController.selectedClassName
+                                        .value = val['className'].toString();
+                                    commonApiController.update();
+                                    commonApiController.getSectionList();
+                                  }
+                                },
+                              ),
+                            ),
                             SizedBox(
                               width: 5,
                             ),
-                            Expanded(child: Obx(() {
-                              return MyCustomSD(
-                                labelText: 'Section',
-                                hideSearch: true,
-                                borderColor: Colors.grey,
-                                listToSearch: commonApiController
-                                    .sectionListModelMap.value,
-                                valFrom: "section",
-                                label: 'Section',
-                                onChanged: (val) {
-                                  if (val != null) {
-                                    if (commonApiController.sectionListModelMap
-                                        .value.length > 0) {
-                                      commonApiController.selectedSectionId
-                                          .value = val['section_id'].toString();
-                                      commonApiController.selectedSectionName
-                                          .value = val['section'].toString();
-                                      commonApiController.update();
-                                      modal.subjectGroup();
+                            Expanded(
+                              child: Obx(() {
+                                return MyCustomSD(
+                                  labelText: 'Section',
+                                  hideSearch: true,
+                                  borderColor: Colors.grey,
+                                  listToSearch: commonApiController
+                                      .sectionListModelMap.value,
+                                  valFrom: "section",
+                                  label: 'Section',
+                                  onChanged: (val) {
+                                    if (val != null) {
+                                      if (commonApiController
+                                              .sectionListModelMap
+                                              .value
+                                              .length >
+                                          0) {
+                                        commonApiController
+                                                .selectedSectionId.value =
+                                            val['section_id'].toString();
+                                        commonApiController.selectedSectionName
+                                            .value = val['section'].toString();
+                                        commonApiController.update();
+                                        modal.subjectGroup();
+                                      }
                                     }
-                                  }
-                                },
-                              );
-                            }),)
+                                  },
+                                );
+                              }),
+                            )
                           ],
                         ),
                         SizedBox(
@@ -418,102 +458,111 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(child: MyCustomSD(
-                              labelText: 'Subject Group',
-                              hideSearch: true,
-                              borderColor: Colors.grey,
-                              listToSearch: controller.getListGroupList.value,
-                              valFrom: "name",
-                              label: 'Subject Group',
-                              onChanged: (val) {
-                                if (val != null) {
-                                  controller.updateSubjectGroupId =
-                                  val['subject_group_id'];
-                                  modal.subject();
-                                }
-                              },
-                            ),),
+                            Expanded(
+                              child: MyCustomSD(
+                                labelText: 'Subject Group',
+                                hideSearch: true,
+                                borderColor: Colors.grey,
+                                listToSearch: controller.getListGroupList.value,
+                                valFrom: "name",
+                                label: 'Subject Group',
+                                onChanged: (val) {
+                                  if (val != null) {
+                                    controller.updateSubjectGroupId =
+                                        val['subject_group_id'];
+                                    modal.subject();
+                                  }
+                                },
+                              ),
+                            ),
                             SizedBox(
                               width: 5,
                             ),
-                            Expanded(child: Obx(()=>MyCustomSD(
-                              labelText: 'Subject',
-                              hideSearch: true,
-                              borderColor: Colors.grey,
-                              listToSearch: controller.getSubjectList.value,
-                              valFrom: "name",
-                              label: 'Subject',
-                              onChanged: (val) {
-                                if(val!=null){
-                                  print("dddd" +val.toString());
-                                  controller.updateAddSubjectId = val['id'];
-                                }
+                            Expanded(
+                              child: Obx(() => MyCustomSD(
+                                    labelText: 'Subject',
+                                    hideSearch: true,
+                                    borderColor: Colors.grey,
+                                    listToSearch:
+                                        controller.getSubjectList.value,
+                                    valFrom: "name",
+                                    label: 'Subject',
+                                    onChanged: (val) {
+                                      if (val != null) {
+                                        print("dddd" + val.toString());
+                                        controller.updateAddSubjectId =
+                                            val['id'];
+                                      }
 
-
-                                // if(val!=null){
-                                //   controller.updateDutyFor = val['id'];
-                                //
-                                // }
-                                // else{
-                                //   controller.updateDutyFor=0;
-                                // }
-                              },
-                            )),),
-
-
+                                      // if(val!=null){
+                                      //   controller.updateDutyFor = val['id'];
+                                      //
+                                      // }
+                                      // else{
+                                      //   controller.updateDutyFor=0;
+                                      // }
+                                    },
+                                  )),
+                            ),
                           ],
                         ),
-
                         SizedBox(
                           height: 10,
                         ),
-
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3.0),
-                                  child: Text("Homework Date",
-                                      style: theme.textTheme.bodySmall!
-                                          .copyWith(fontSize: 14)),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Container(
-                                  height: 43,
-                                  child: TextField(
-                                    style: theme.textTheme.bodySmall,
-                                    decoration: InputDecoration(
-                                      hintText:
-                                      DateFormat('dd/MM/yyyy').format(
-                                          DateTime.now()),
-                                      border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.grey),
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
-                                    ),
-                                    readOnly: true,
-                                    controller: controller.homeWorkDate.value,
-                                    onTap: () async {
-                                      final date = await controller.getDate(
-                                          context);
-                                      if (date != null) {
-                                        String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(date);
-                                        controller.homeWorkDate.value.text =formattedDate;
-                                        print("@@@@@@@@ " +
-                                            controller.homeWorkDate.value.text);
-                                      }
-                                    },
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 3.0),
+                                    child: Text("Homework Date",
+                                        style: theme.textTheme.bodySmall!
+                                            .copyWith(fontSize: 14)),
                                   ),
-                                ),
-                              ],
-                            ),),
-                            SizedBox(width: 5,),
+                                  SizedBox(
+                                    height: 3,
+                                  ),
+                                  Container(
+                                    height: 43,
+                                    child: TextField(
+                                      style: theme.textTheme.bodySmall,
+                                      decoration: InputDecoration(
+                                        hintText: DateFormat('dd/MM/yyyy')
+                                            .format(DateTime.now()),
+                                        border: OutlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.grey),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5))),
+                                      ),
+                                      readOnly: true,
+                                      controller: controller.homeWorkDate.value,
+                                      onTap: () async {
+                                        final date =
+                                            await controller.getDate(context);
+                                        if (date != null) {
+                                          String formattedDate =
+                                              await GlobalData()
+                                                  .ConvertToSchoolDateTimeFormat(
+                                                      date);
+                                          controller.homeWorkDate.value.text =
+                                              formattedDate;
+                                          print("@@@@@@@@ " +
+                                              controller
+                                                  .homeWorkDate.value.text);
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -532,25 +581,27 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                                     child: TextField(
                                       style: theme.textTheme.bodySmall,
                                       decoration: InputDecoration(
-                                        hintText:
-                                        DateFormat('dd/MM/yyyy').format(
-                                            DateTime.now()),
+                                        hintText: DateFormat('dd/MM/yyyy')
+                                            .format(DateTime.now()),
                                         border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.grey),
-                                            borderRadius:
-                                            BorderRadius.all(
+                                            borderSide:
+                                                BorderSide(color: Colors.grey),
+                                            borderRadius: BorderRadius.all(
                                                 Radius.circular(5))),
                                       ),
                                       readOnly: true,
-                                      controller: controller.submissionDate
-                                          .value,
+                                      controller:
+                                          controller.submissionDate.value,
                                       onTap: () async {
-                                        final date = await controller.getDate(
-                                            context);
+                                        final date =
+                                            await controller.getDate(context);
                                         if (date != null) {
-                                          String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(date);
-                                          controller.submissionDate.value.text = formattedDate;
+                                          String formattedDate =
+                                              await GlobalData()
+                                                  .ConvertToSchoolDateTimeFormat(
+                                                      date);
+                                          controller.submissionDate.value.text =
+                                              formattedDate;
                                         }
                                       },
                                     ),
@@ -560,32 +611,34 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         InkWell(
-                          onTap: (){
+                          onTap: () {
                             _showImagePicker(context);
                           },
                           child: Container(
                             height: 40,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
-                                border: Border.all(
-                                    color: Colors.green.shade200
-                                )
-                            ),
+                                border:
+                                    Border.all(color: Colors.green.shade200)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.upload_file,color: Colors.green),
-                                Text("Drag and drop a file here or click",style: TextStyle(color: Colors.green),),
+                                Icon(Icons.upload_file, color: Colors.green),
+                                Text(
+                                  "Drag and drop a file here or click",
+                                  style: TextStyle(color: Colors.green),
+                                ),
                               ],
                             ),
-
                           ),
                         ),
-                        SizedBox(height: 10,),
-
-
+                        SizedBox(
+                          height: 10,
+                        ),
                         SizedBox(
                           height: 150,
                           child: HtmlEditor(
@@ -635,12 +688,10 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                   ),
                 ),
               );
-            }
-        );
+            });
       },
     );
   }
-
 
   final ImagePicker _picker = ImagePicker();
 
@@ -714,390 +765,416 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
       },
     );
   }
-
-
-
 }
 
-
 upcomingHomeWork(CloseHomeworkDataModal upcomingHomeWork) {
-  return
-    Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.grey,
-                blurRadius: 5,
-                offset: Offset(1, 4), // Shadow position
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Container(
+      decoration: BoxDecoration(boxShadow: const [
+        BoxShadow(
+          color: Colors.grey,
+          blurRadius: 5,
+          offset: Offset(1, 4), // Shadow position
+        ),
+      ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: Container(
+                width: 4,
+                decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(5.0)),
               ),
-            ],
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10)),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding:
-                const EdgeInsets.only(top: 10, bottom: 10),
-                child: Container(
-                  width: 4,
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(5.0)),
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.start,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Class: ",
+                              style: theme.textTheme.bodySmall,
+                            ),
+                            Text(
+                              upcomingHomeWork.className.toString(),
+                              style: theme.textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "Section.: ",
+                              style: theme.textTheme.bodySmall,
+                            ),
+                            Text(
+                              upcomingHomeWork.section.toString(),
+                              style: theme.textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Class: ",
-                                style: theme.textTheme.bodySmall,),
-                              Text(
-                                upcomingHomeWork.className.toString(),
-                                style: theme.textTheme.bodySmall,),
+                                "Subject Group: ",
+                                style: theme.textTheme.bodySmall,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  "Class 1",
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                              ),
                             ],
                           ),
-                          Row(
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Section.: ",
-                                style: theme.textTheme.bodySmall,),
-                              Text(upcomingHomeWork.section.toString(), style: theme.textTheme.bodySmall,),
+                              Text(
+                                "Subject.: ",
+                                style: theme.textTheme.bodySmall,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  upcomingHomeWork.subjectName.toString(),
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                              ),
                             ],
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 8,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
                               children: [
                                 Text(
-                                  "Subject Group: ",
-                                  style: theme.textTheme.bodySmall,),
-                                Expanded(
-                                  child: Text(
-                                    "Class 1",
-                                    style: theme.textTheme.bodySmall,),
+                                  "Homework Date: ",
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                                Text(
+                                  upcomingHomeWork.homeworkDate.toString(),
+                                  style: theme.textTheme.bodySmall,
                                 ),
                               ],
                             ),
-                          ),
-                          SizedBox(width: 5,),
-
-                          Expanded(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Row(
                               children: [
                                 Text(
-                                  "Subject.: ",
-                                  style: theme.textTheme.bodySmall,),
-                                Expanded(
-                                  child: Text(
-                                    upcomingHomeWork.subjectName.toString(),
-                                    style: theme.textTheme.bodySmall,),
+                                  "Submission Date: ",
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                                Text(
+                                  upcomingHomeWork.submitDate.toString(),
+                                  style: theme.textTheme.bodySmall,
                                 ),
                               ],
                             ),
-                          ),
-
-
-                        ],
-                      ),
-                      SizedBox(height: 8,),
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Homework Date: ",
-                                    style: theme.textTheme.bodySmall,),
-                                  Text(
-                                    upcomingHomeWork.homeworkDate.toString(),
-                                    style: theme.textTheme.bodySmall,),
+                                    "Evaluation Date: ",
+                                    style: theme.textTheme.bodySmall,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      upcomingHomeWork.evaluationDate
+                                          .toString(),
+                                      style: theme.textTheme.bodySmall,
+                                    ),
+                                  ),
                                 ],
                               ),
-                              SizedBox(width: 5,),
-
-                              Row(
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Expanded(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Submission Date: ",
-                                    style: theme.textTheme.bodySmall,),
-                                  Text(
-                                    upcomingHomeWork.submitDate.toString(),
-                                    style: theme.textTheme.bodySmall,),
+                                    "Created by.: ",
+                                    style: theme.textTheme.bodySmall,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      upcomingHomeWork.staffInfo.toString(),
+                                      style: theme.textTheme.bodySmall,
+                                    ),
+                                  ),
                                 ],
                               ),
-
-                            ],
-                          ),
-                          SizedBox(height: 8,),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Evaluation Date: ",
-                                      style: theme.textTheme.bodySmall,),
-                                    Expanded(
-                                      child: Text(
-                                        upcomingHomeWork.evaluationDate.toString(),
-                                        style: theme.textTheme.bodySmall,),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 5,),
-
-                              Expanded(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Created by.: ",
-                                      style: theme.textTheme.bodySmall,),
-                                    Expanded(
-                                      child: Text(
-                                        upcomingHomeWork.staffInfo.toString(),
-                                        style: theme.textTheme.bodySmall,),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                            ],
-                          ),
-                        ],
-                      ),
-
-                    ],
-                  ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
-    );
+    ),
+  );
 }
 
 closeHomeWork(CloseHomeworkDataModal closeHomeworkData) {
-  return
-    Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.grey,
-                blurRadius: 5,
-                offset: Offset(1, 4), // Shadow position
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Container(
+      decoration: BoxDecoration(boxShadow: const [
+        BoxShadow(
+          color: Colors.grey,
+          blurRadius: 5,
+          offset: Offset(1, 4), // Shadow position
+        ),
+      ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: Container(
+                width: 4,
+                decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(5.0)),
               ),
-            ],
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10)),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding:
-                const EdgeInsets.only(top: 10, bottom: 10),
-                child: Container(
-                  width: 4,
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(5.0)),
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.start,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Class: ",
+                              style: theme.textTheme.bodySmall,
+                            ),
+                            Text(
+                              closeHomeworkData.className.toString(),
+                              style: theme.textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "Section.: ",
+                              style: theme.textTheme.bodySmall,
+                            ),
+                            Text(
+                              closeHomeworkData.section.toString(),
+                              style: theme.textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Class: ",
-                                style: theme.textTheme.bodySmall,),
-                              Text(
-                                closeHomeworkData.className.toString(),
-                                style: theme.textTheme.bodySmall,),
+                                "Subject Group: ",
+                                style: theme.textTheme.bodySmall,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  "Subject ",
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                              ),
                             ],
                           ),
-                          Row(
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Section.: ",
-                                style: theme.textTheme.bodySmall,),
-                              Text(closeHomeworkData.section.toString(),
-                                style: theme.textTheme.bodySmall,),
+                              Text(
+                                "Subject.: ",
+                                style: theme.textTheme.bodySmall,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  closeHomeworkData.subjectName.toString(),
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                              ),
                             ],
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 8,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
                               children: [
                                 Text(
-                                  "Subject Group: ",
-                                  style: theme.textTheme.bodySmall,),
-                                Expanded(
-                                  child: Text(
-                                    "Subject ",
-                                    style: theme.textTheme.bodySmall,),
+                                  "Homework Date: ",
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                                Text(
+                                  closeHomeworkData.homeworkDate.toString(),
+                                  style: theme.textTheme.bodySmall,
                                 ),
                               ],
                             ),
-                          ),
-                          SizedBox(width: 5,),
-
-                          Expanded(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Row(
                               children: [
                                 Text(
-                                  "Subject.: ",
-                                  style: theme.textTheme.bodySmall,),
-                                Expanded(
-                                  child: Text(
-                                    closeHomeworkData.subjectName.toString(),
-                                    style: theme.textTheme.bodySmall,),
+                                  "Submission Date: ",
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                                Text(
+                                  closeHomeworkData.submitDate.toString(),
+                                  style: theme.textTheme.bodySmall,
                                 ),
                               ],
                             ),
-                          ),
-
-
-                        ],
-                      ),
-                      SizedBox(height: 8,),
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Homework Date: ",
-                                    style: theme.textTheme.bodySmall,),
-                                  Text(
-                                    closeHomeworkData.homeworkDate.toString(),
-                                    style: theme.textTheme.bodySmall,),
+                                    "Evaluation Date: ",
+                                    style: theme.textTheme.bodySmall,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      closeHomeworkData.evaluationDate
+                                          .toString(),
+                                      style: theme.textTheme.bodySmall,
+                                    ),
+                                  ),
                                 ],
                               ),
-                              SizedBox(width: 5,),
-
-                              Row(
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Expanded(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Submission Date: ",
-                                    style: theme.textTheme.bodySmall,),
-                                  Text(
-                                    closeHomeworkData.submitDate.toString(),
-                                    style: theme.textTheme.bodySmall,),
+                                    "Created by.: ",
+                                    style: theme.textTheme.bodySmall,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      closeHomeworkData.staffInfo.toString(),
+                                      style: theme.textTheme.bodySmall,
+                                    ),
+                                  ),
                                 ],
                               ),
-
-                            ],
-                          ),
-                          SizedBox(height: 8,),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Evaluation Date: ",
-                                      style: theme.textTheme.bodySmall,),
-                                    Expanded(
-                                      child: Text(
-                                        closeHomeworkData.evaluationDate
-                                            .toString(),
-                                        style: theme.textTheme.bodySmall,),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 5,),
-
-                              Expanded(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Created by.: ",
-                                      style: theme.textTheme.bodySmall,),
-                                    Expanded(
-                                      child: Text(
-                                        closeHomeworkData.staffInfo.toString(),
-                                        style: theme.textTheme.bodySmall,),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                            ],
-                          ),
-                        ],
-                      ),
-
-                    ],
-                  ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
-    );
+    ),
+  );
 }

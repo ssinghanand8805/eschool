@@ -165,6 +165,10 @@ class Constants {
   static const String editSubjectGroupList = '/subjectgroup/edit';
   static const String deleteSubjectGroupList  = '/subjectgroup/delete';
   static const String viewSubjectGroup = '/subjectgroup/view';
+  static const String assignclassteacherlist = '/teacher/assign_class_teacher_list';
+  static const String getTeacherList = '/teacher/getTeacherList';
+  static const String assignclassteacher = '/teacher/assign_class_teacher';
+  static const String classteacherdelete = '/teacher/classteacherdelete';
 
 
   /// promote student
@@ -195,10 +199,6 @@ class Constants {
 
   /// approve leave request
   static const String getStaffleaverequest = '/leaverequest/staffleaverequest';
-
-
-  static const String findStudentsrequest = '/stdtransfer/findStudents';
-  static const String promoteStudentsrequest = '/stdtransfer/promote';
 
 
 }

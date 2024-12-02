@@ -1,14 +1,19 @@
-class AssignClassTeacherModal {
+class GetClassTeacherModal {
   int? status;
   String? error;
-  Data? data;
+  List<Data>? data;
 
-  AssignClassTeacherModal({this.status, this.error, this.data});
+  GetClassTeacherModal({this.status, this.error, this.data});
 
-  AssignClassTeacherModal.fromJson(Map<String, dynamic> json) {
+  GetClassTeacherModal.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     error = json['error'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add(new Data.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -16,43 +21,19 @@ class AssignClassTeacherModal {
     data['status'] = this.status;
     data['error'] = this.error;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class Data {
-  List<Assignteacherlist>? assignteacherlist;
-
-  Data({this.assignteacherlist});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    if (json['assignteacherlist'] != null) {
-      assignteacherlist = <Assignteacherlist>[];
-      json['assignteacherlist'].forEach((v) {
-        assignteacherlist!.add(new Assignteacherlist.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.assignteacherlist != null) {
-      data['assignteacherlist'] =
-          this.assignteacherlist!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Assignteacherlist {
   String? id;
   String? employeeId;
   String? langId;
   String? currencyId;
-  String? department;
-  String? designation;
+  Null? department;
+  Null? designation;
   String? qualification;
   String? workExp;
   String? name;
@@ -64,8 +45,8 @@ class Assignteacherlist {
   String? email;
   String? dob;
   String? maritalStatus;
-  String? dateOfJoining;
-  String? dateOfLeaving;
+  Null? dateOfJoining;
+  Null? dateOfLeaving;
   String? localAddress;
   String? permanentAddress;
   String? note;
@@ -95,14 +76,11 @@ class Assignteacherlist {
   String? userId;
   String? isActive;
   String? verificationCode;
-  String? disableAt;
-  String? ctid;
-  String? classId;
-  String? sectionId;
-  String? classN;
-  String? section;
+  Null? disableAt;
+  String? roleId;
+  String? userType;
 
-  Assignteacherlist(
+  Data(
       {this.id,
         this.employeeId,
         this.langId,
@@ -152,13 +130,10 @@ class Assignteacherlist {
         this.isActive,
         this.verificationCode,
         this.disableAt,
-        this.ctid,
-        this.classId,
-        this.sectionId,
-        this.classN,
-        this.section});
+        this.roleId,
+        this.userType});
 
-  Assignteacherlist.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     employeeId = json['employee_id'];
     langId = json['lang_id'];
@@ -208,11 +183,8 @@ class Assignteacherlist {
     isActive = json['is_active'];
     verificationCode = json['verification_code'];
     disableAt = json['disable_at'];
-    ctid = json['ctid'];
-    classId = json['class_id'];
-    sectionId = json['section_id'];
-    classN = json['class'];
-    section = json['section'];
+    roleId = json['role_id'];
+    userType = json['user_type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -266,11 +238,8 @@ class Assignteacherlist {
     data['is_active'] = this.isActive;
     data['verification_code'] = this.verificationCode;
     data['disable_at'] = this.disableAt;
-    data['ctid'] = this.ctid;
-    data['class_id'] = this.classId;
-    data['section_id'] = this.sectionId;
-    data['class'] = this.classN;
-    data['section'] = this.section;
+    data['role_id'] = this.roleId;
+    data['user_type'] = this.userType;
     return data;
   }
 }

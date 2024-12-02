@@ -27,6 +27,10 @@ class SectionView extends GetView<SectionController> {
               controller: controller.searchC.value,
               hint: 'Search.... ',
               title: '',
+              onChanged: (val){
+                controller.searchContentType(val);
+                controller.update();
+              },
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 30, top: 10),

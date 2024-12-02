@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:learnladderfaculity/widgets/custom_button.dart';
 import '../../../widgets/myCustomsd.dart';
 import '../../theme/theme_helper.dart';
 import '../../widgets/button.dart';
@@ -14,9 +16,10 @@ class TeacherDailyAssignmentScreen extends StatefulWidget {
       _TeacherDailyAssignmentScreenState();
 }
 
-class _TeacherDailyAssignmentScreenState extends State<TeacherDailyAssignmentScreen> {
+class _TeacherDailyAssignmentScreenState
+    extends State<TeacherDailyAssignmentScreen> {
   TeacherDailyAssignmentController controller =
-  Get.put(TeacherDailyAssignmentController());
+      Get.put(TeacherDailyAssignmentController());
 
   getDate() async {
     var date = await showDatePicker(
@@ -45,123 +48,74 @@ class _TeacherDailyAssignmentScreenState extends State<TeacherDailyAssignmentScr
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MyCustomSD(
-                    labelText: 'Class',
-                    hideSearch: true,
-                    borderColor: Colors.grey,
-                    listToSearch: controller.students,
-                    valFrom: "name",
-                    label: 'Class',
-                    onChanged: (val) {
-                      print(val);
-                      // if(val!=null){
-                      //   controller.updateDutyFor = val['id'];
-                      //
-                      // }
-                      // else{
-                      //   controller.updateDutyFor=0;
-                      // }
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  MyCustomSD(
-                    labelText: 'Section',
-                    hideSearch: true,
-                    borderColor: Colors.grey,
-                    listToSearch: controller.students,
-                    valFrom: "name",
-                    label: 'Section',
-                    onChanged: (val) {
-                      print(val);
-                      // if(val!=null){
-                      //   controller.updateDutyFor = val['id'];
-                      //
-                      // }
-                      // else{
-                      //   controller.updateDutyFor=0;
-                      // }
-                    },
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  MyCustomSD(
-                    labelText: 'Subject Group',
-                    hideSearch: true,
-                    borderColor: Colors.grey,
-                    listToSearch: controller.students,
-                    valFrom: "name",
-                    label: 'Subject Group',
-                    onChanged: (val) {
-                      print(val);
-                      // if(val!=null){
-                      //   controller.updateDutyFor = val['id'];
-                      //
-                      // }
-                      // else{
-                      //   controller.updateDutyFor=0;
-                      // }
-                    },
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  MyCustomSD(
-                    labelText: 'Subject',
-                    hideSearch: true,
-                    borderColor: Colors.grey,
-                    listToSearch: controller.students,
-                    valFrom: "name",
-                    label: 'Subject',
-                    onChanged: (val) {
-                      print(val);
-                      // if(val!=null){
-                      //   controller.updateDutyFor = val['id'];
-                      //
-                      // }
-                      // else{
-                      //   controller.updateDutyFor=0;
-                      // }
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 3.0),
-                        child: Text("Date",
-                            style: theme.textTheme.bodySmall!
-                                .copyWith(fontSize: 14)),
+                      Expanded(
+                        child: MyCustomSD(
+                          labelText: 'Class',
+                          hideSearch: true,
+                          borderColor: Colors.grey,
+                          listToSearch: controller.students,
+                          valFrom: "name",
+                          label: 'Class',
+                          onChanged: (val) {
+                            print(val);
+
+                          },
+                        ),
                       ),
                       SizedBox(
-                        height: 3,
+                        width: 10,
                       ),
-                      Container(
-                        height: 43,
-                        child: TextField(
-                          style: theme.textTheme.bodySmall,
-                          decoration: InputDecoration(
-                            hintText:
-                            DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(5))),
-                          ),
-                          readOnly: true,
-                          controller: controller.dateC.value,
-                          onTap: () async {
-                            final date = await getDate();
-                            if (date != null) {
-                              controller.dateC.value.text =
-                                  DateFormat('dd/MM/yyyy').format(date);
-                            }
+                      Expanded(
+                        child: MyCustomSD(
+                          labelText: 'Section',
+                          hideSearch: true,
+                          borderColor: Colors.grey,
+                          listToSearch: controller.students,
+                          valFrom: "name",
+                          label: 'Section',
+                          onChanged: (val) {
+                            print(val);
+
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: MyCustomSD(
+                          labelText: 'Subject Group',
+                          hideSearch: true,
+                          borderColor: Colors.grey,
+                          listToSearch: controller.students,
+                          valFrom: "name",
+                          label: 'Subject Group',
+                          onChanged: (val) {
+                            print(val);
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: MyCustomSD(
+                          labelText: 'Subject',
+                          hideSearch: true,
+                          borderColor: Colors.grey,
+                          listToSearch: controller.students,
+                          valFrom: "name",
+                          label: 'Subject',
+                          onChanged: (val) {
+                            print(val);
+                                          
                           },
                         ),
                       ),
@@ -170,7 +124,49 @@ class _TeacherDailyAssignmentScreenState extends State<TeacherDailyAssignmentScr
                   SizedBox(
                     height: 10,
                   ),
-                  Button(text: 'Search', onTap: () {}, icon: Icons.search),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 3.0),
+                    child: Text("Date",
+                        style: theme.textTheme.bodySmall!
+                            .copyWith(fontSize: 14)),
+                  ),
+                  SizedBox(
+                    height: 3,
+                  ),
+                  Container(
+                    height: 43,
+                    child: TextField(
+                      style: theme.textTheme.bodySmall,
+                      decoration: InputDecoration(
+                        hintText:
+                        DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10))),
+                      ),
+                      readOnly: true,
+                      controller: controller.dateC.value,
+                      onTap: () async {
+                        final date = await getDate();
+                        if (date != null) {
+                          controller.dateC.value.text =
+                              DateFormat('dd/MM/yyyy').format(date);
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child: MyButton(
+                        title: 'Search',
+                        width: 80,
+                        color: Colors.green,
+                        onPress: () {},
+                      )),
                   SizedBox(
                     height: 10,
                   ),
@@ -181,16 +177,14 @@ class _TeacherDailyAssignmentScreenState extends State<TeacherDailyAssignmentScr
                   SizedBox(
                     height: 10,
                   ),
-                  Expanded(child: MyTable())
+                Expanded(child: MyTable())
                 ],
               ),
             );
           }),
     );
   }
-
 }
-
 
 class MyTable extends StatefulWidget {
   @override
@@ -198,354 +192,127 @@ class MyTable extends StatefulWidget {
 }
 
 class _MyTableState extends State<MyTable> {
-
   TeacherDailyAssignmentController controller =
-  Get.put(TeacherDailyAssignmentController());
-
-  // void showEditLeave(int index) {
-  //   showModalBottomSheet(
-  //     isScrollControlled: true,
-  //     context: context,
-  //     shape: RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.zero,
-  //     ),
-  //     builder: (BuildContext context) {
-  //       return Padding(
-  //         padding: MediaQuery.of(context).viewInsets,
-  //         child: SingleChildScrollView(
-  //           child: Padding(
-  //             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-  //             child: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               mainAxisSize: MainAxisSize.min,
-  //               children: [
-  //                 Padding(
-  //                   padding: const EdgeInsets.all(16.0),
-  //                   child: Text(
-  //                     'Edit Leave',
-  //                     style: TextStyle(
-  //                       fontSize: 20,
-  //                       fontWeight: FontWeight.bold,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 MyCustomSD(
-  //                   hideSearch: true,
-  //                   labelText: 'Class',
-  //                   borderColor: Colors.grey,
-  //                   listToSearch: controller.students,
-  //                   valFrom: "name",
-  //                   label: 'Class',
-  //                   onChanged: (val) {
-  //                     print(val);
-  //                     // if(val!=null){
-  //                     //   controller.updateDutyFor = val['id'];
-  //                     //
-  //                     // }
-  //                     // else{
-  //                     //   controller.updateDutyFor=0;
-  //                     // }
-  //                   },
-  //                 ),
-  //                 SizedBox(
-  //                   height: 5,
-  //                 ),
-  //                 MyCustomSD(
-  //                   labelText: 'Section',
-  //                   hideSearch: true,
-  //                   borderColor: Colors.grey,
-  //                   listToSearch:  controller.students,
-  //                   valFrom: "name",
-  //                   label: 'Section',
-  //                   onChanged: (val) {
-  //                     print(val);
-  //                     // if(val!=null){
-  //                     //   controller.updateDutyFor = val['id'];
-  //                     //
-  //                     // }
-  //                     // else{
-  //                     //   controller.updateDutyFor=0;
-  //                     // }
-  //                   },
-  //                 ),
-  //                 SizedBox(
-  //                   height: 5,
-  //                 ),
-  //                 MyCustomSD(
-  //                   labelText: 'Student',
-  //                   hideSearch: true,
-  //                   borderColor: Colors.grey,
-  //                   listToSearch: controller.students,
-  //                   valFrom: "name",
-  //                   label: 'Student',
-  //                   onChanged: (val) {
-  //                     print(val);
-  //                     // if(val!=null){
-  //                     //   controller.updateDutyFor = val['id'];
-  //                     //
-  //                     // }
-  //                     // else{
-  //                     //   controller.updateDutyFor=0;
-  //                     // }
-  //                   },
-  //                 ),
-  //                 SizedBox(
-  //                   height: 10,
-  //                 ),
-  //                 Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Padding(
-  //                       padding: const EdgeInsets.only(
-  //                         left: 4.0,
-  //                         bottom: 3,
-  //                       ),
-  //                       child: Text('Apply Date',
-  //                           style: theme.textTheme.bodySmall!
-  //                               .copyWith(fontSize: 14)),
-  //                     ),
-  //                     Container(
-  //                       height: 40,
-  //                       decoration: BoxDecoration(
-  //                         border: Border.all(
-  //                           color: Colors.grey,
-  //                           width: 1.0,
-  //                         ),
-  //                         borderRadius: BorderRadius.circular(5.0),
-  //                       ),
-  //                       child: TextField(
-  //                         decoration: InputDecoration(
-  //                           contentPadding: EdgeInsets.symmetric(
-  //                               horizontal: 10.0, vertical: 12),
-  //                           hintText: '04/05/2024',
-  //                           hintStyle: TextStyle(color: Colors.grey),
-  //                           border: InputBorder.none,
-  //                         ),
-  //                         readOnly: true,
-  //                         onTap: () {
-  //                           // Show date picker for apply date
-  //                         },
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Padding(
-  //                       padding: const EdgeInsets.only(
-  //                         left: 4.0,
-  //                         bottom: 3,
-  //                       ),
-  //                       child: Text('From Date',
-  //                           style: theme.textTheme.bodySmall!
-  //                               .copyWith(fontSize: 14)),
-  //                     ),
-  //                     Container(
-  //                       height: 40,
-  //                       decoration: BoxDecoration(
-  //                         border: Border.all(
-  //                           color: Colors.grey,
-  //                           width: 1.0,
-  //                         ),
-  //                         borderRadius: BorderRadius.circular(5.0),
-  //                       ),
-  //                       child: TextField(
-  //                         decoration: InputDecoration(
-  //                           contentPadding: EdgeInsets.symmetric(
-  //                               horizontal: 10.0, vertical: 12),
-  //                           hintText: '04/05/2024',
-  //                           hintStyle: TextStyle(color: Colors.grey),
-  //                           border: InputBorder.none,
-  //                         ),
-  //                         readOnly: true,
-  //                         onTap: () {
-  //                           // Show date picker for apply date
-  //                         },
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Padding(
-  //                       padding: const EdgeInsets.only(
-  //                         left: 4.0,
-  //                         bottom: 3,
-  //                       ),
-  //                       child: Text('To Date',
-  //                           style: theme.textTheme.bodySmall!
-  //                               .copyWith(fontSize: 14)),
-  //                     ),
-  //                     Container(
-  //                       height: 40,
-  //                       decoration: BoxDecoration(
-  //                         border: Border.all(
-  //                           color: Colors.grey,
-  //                           width: 1.0,
-  //                         ),
-  //                         borderRadius: BorderRadius.circular(5.0),
-  //                       ),
-  //                       child: TextField(
-  //                         decoration: InputDecoration(
-  //                           contentPadding: EdgeInsets.symmetric(
-  //                               horizontal: 10.0, vertical: 12),
-  //                           hintText: '04/05/2024',
-  //                           hintStyle: TextStyle(color: Colors.grey),
-  //                           border: InputBorder.none,
-  //                         ),
-  //                         readOnly: true,
-  //                         onTap: () {
-  //                           // Show date picker for apply date
-  //                         },
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Padding(
-  //                       padding:
-  //                       const EdgeInsets.only(left: 4.0, bottom: 4, top: 3),
-  //                       child: Text('Reason',
-  //                           style: theme.textTheme.bodySmall!
-  //                               .copyWith(fontSize: 14)),
-  //                     ),
-  //                     Container(
-  //                       height: 40,
-  //                       decoration: BoxDecoration(
-  //                         border: Border.all(
-  //                           color: Colors.green.shade50,
-  //                           width: 1.0,
-  //                         ),
-  //                         borderRadius: BorderRadius.circular(5.0),
-  //                       ),
-  //                       child: TextField(
-  //                         decoration: InputDecoration(
-  //                           contentPadding: EdgeInsets.symmetric(
-  //                               horizontal: 10.0, vertical: 12),
-  //                           hintText: 'reason',
-  //                           hintStyle: TextStyle(color: Colors.grey),
-  //                           border: OutlineInputBorder(),
-  //                         ),
-  //                         onTap: () {
-  //                           // Show date picker for apply date
-  //                         },
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 Row(
-  //                   children: [
-  //                     Text('Leave Status *', style: theme.textTheme.bodySmall),
-  //                     Radio(
-  //                       value: 'Pending',
-  //                       groupValue: 'Approve',
-  //                       onChanged: (value) {},
-  //                     ),
-  //                     Text('Pending', style: theme.textTheme.bodySmall),
-  //                     Radio(
-  //                       value: 'Disapprove',
-  //                       groupValue: 'Approve',
-  //                       onChanged: (value) {},
-  //                     ),
-  //                     Text('Disapprove', style: theme.textTheme.bodySmall),
-  //                     Radio(
-  //                       value: 'Approve',
-  //                       groupValue: 'Approve',
-  //                       onChanged: (value) {},
-  //                     ),
-  //                     Text('Approve', style: theme.textTheme.bodySmall),
-  //                   ],
-  //                 ),
-  //                 Row(
-  //                   mainAxisAlignment: MainAxisAlignment.end,
-  //                   children: [
-  //                     TextButton(
-  //                       onPressed: () {
-  //                         Navigator.of(context).pop();
-  //                       },
-  //                       child: Text('Cancel'),
-  //                     ),
-  //                     TextButton(
-  //                       onPressed: () {
-  //                         // Handle form submission
-  //                         Navigator.of(context).pop();
-  //                       },
-  //                       child: Text('Save'),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
+      Get.put(TeacherDailyAssignmentController());
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: DataTable(
-        columnSpacing: 8,
-        columns: const [
-          DataColumn(label: Text('Student Name')),
-          DataColumn(label: Text('Class')),
-          DataColumn(label: Text('Section')),
-          DataColumn(label: Text('Subject')),
-          DataColumn(label: Text('Title')),
-          DataColumn(label: Text('Submission Date')),
-          DataColumn(label: Text('Evaluation Date')),
-          DataColumn(label: Text('Evaluated By')),
-          DataColumn(label: Text('Action')),
-        ],
-        rows: controller.data.asMap().entries.map((entry) {
+      child: Column(
+        children: controller.data.asMap().entries.map((entry) {
           int index = entry.key;
-          return DataRow(
-            cells: [
-              DataCell(Text(entry.value['studentName'],
-                  style: theme.textTheme.bodySmall!)),
-              DataCell(Text(entry.value['class'],
-                  style: theme.textTheme.bodySmall!)),
-              DataCell(Text(entry.value['section'],
-                  style: theme.textTheme.bodySmall!)),
-              DataCell(Text(
-                  '${entry.value['applyDate'].day}/${entry.value['applyDate'].month}/${entry.value['applyDate'].year}',
-                  style: theme.textTheme.bodySmall!)),
-              DataCell(Text(
-                  '${entry.value['fromDate'].day}/${entry.value['fromDate'].month}/${entry.value['fromDate'].year}',
-                  style: theme.textTheme.bodySmall!)),
-              DataCell(Text(
-                  '${entry.value['toDate'].day}/${entry.value['toDate'].month}/${entry.value['toDate'].year}',
-                  style: theme.textTheme.bodySmall!)),
-              DataCell(Text(entry.value['status'],
-                  style: theme.textTheme.bodySmall!)),
-              DataCell(Text(entry.value['approvedBy'] ?? '',
-                  style: theme.textTheme.bodySmall!)),
-              DataCell(
-                Row(
+          var data = entry.value;
+
+          return Card(
+            margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            elevation: 4,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.green.shade100,
+                    Colors.green.shade50,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade200,
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    IconButton(
-                      icon: Icon(Icons.edit, size: 15),
-                      onPressed: () {
-                        // showEditLeave(index);
-                      },
+                    // Header Row with Student Name and Class
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          data['studentName'],
+                          style: theme.textTheme.bodySmall!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          data['class'],
+                          style: theme.textTheme.bodySmall!.copyWith(
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      icon: Icon(Icons.delete, size: 15),
-                      onPressed: () {
-                        print("Delete leave");
-                      },
+                    const SizedBox(height: 5.0),
+
+                    // Details Section
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Section: ${data['section']}",
+                          style: theme.textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 5.0),
+                        Text(
+                          "Subject: ${data['subject']}",
+                          style: theme.textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 5.0),
+                        Text(
+                          "Submission Date: Submission Date",
+                          style: theme.textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 5.0),
+                        Text(
+                          "Evaluated By: ${data['evaluatedBy'] ?? 'N/A'}",
+                          style: theme.textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 5.0),
+                        Text(
+                          "Evaluation Date: ${'Evaluation Date'}",
+                          style: theme.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                    // Action Buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton.icon(
+                          onPressed: () {
+                            print("Edit pressed");
+                            // Call edit function here
+                          },
+                          icon: const Icon(Icons.edit, size: 16),
+                          label: const Text("Edit"),
+                        ),
+                        const SizedBox(width: 5.0),
+                        TextButton.icon(
+                          onPressed: () {
+                            print("Delete pressed");
+                            // Call delete function here
+                          },
+                          icon: const Icon(Icons.delete,
+                              size: 16, color: Colors.red),
+                          label: Text(
+                            "Delete",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ],
+            ),
           );
         }).toList(),
       ),
