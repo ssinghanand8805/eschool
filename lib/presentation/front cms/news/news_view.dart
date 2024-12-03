@@ -119,13 +119,6 @@ class NewsView extends GetView<NewsController> {
                                                   MainAxisAlignment.end,
                                               children: [
                                                 IconButton(
-                                                  icon: Icon(Icons.edit,
-                                                      color: Colors.green),
-                                                  onPressed: () {
-                                                    addNews(context);
-                                                  },
-                                                ),
-                                                IconButton(
                                                   icon: Icon(
                                                     Icons.delete,
                                                     color: Colors.red,
@@ -156,7 +149,7 @@ class NewsView extends GetView<NewsController> {
                                                                     .pop(); // Close the dialog
                                                               },
                                                               icon: Icon(
-                                                                Icons.edit,
+                                                                Icons.cancel,
                                                                 color: Colors
                                                                     .green,
                                                               ),
@@ -215,6 +208,9 @@ class NewsView extends GetView<NewsController> {
   }
 
   void addNews(BuildContext context) {
+
+    controller.featureImage.value = '';
+    controller.titleC.clear();
     showCustomBottomSheet(
       context: context,
       child: SingleChildScrollView(
@@ -239,7 +235,7 @@ class NewsView extends GetView<NewsController> {
                 }),
             const SizedBox(height: 12),
             Obx(
-               () =>  Row(
+               () =>  Column(
                 children: [
                   InkWell(
                     onTap: () {
@@ -268,6 +264,7 @@ class NewsView extends GetView<NewsController> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 10,),
                   controller.featureImage.value  != "" ?  Stack(
                     children: [
                        Container(
@@ -288,7 +285,7 @@ class NewsView extends GetView<NewsController> {
                         child: InkWell(
                           onTap: () {
                             controller.featureImage.value = "";
-                            controller.update();// Remove the image
+                            controller.update();
                           },
                           child: Icon(Icons.close, color: Colors.red),
                         ),

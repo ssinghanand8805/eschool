@@ -132,38 +132,6 @@ class AddHomeWorkController extends GetxController {
   }
 
   final Rx<DateTime> applyDate = DateTime.now().obs;
-  final List students = [
-    {"id": 1001, "classId": "0202", "name": "Hudson1"},
-    {"id": 1002, "classId": "0203", "name": "Hudson2"},
-    {"id": 1003, "classId": "0204", "name": "Hudson2"},
-  ];
-  List<Map<String, dynamic>> data = [
-    {
-      'studentId': 18001,
-      'class': 'Class 4',
-      'section': 'A',
-      'subjectGroup': 'Class 1st Subject Group',
-      'subject': 'Hindi (230)',
-      'homeworkDate': DateTime(2024, 4, 5),
-      'submissionDate': DateTime(2024, 4, 9),
-      'evaluationDate': DateTime(2024, 4, 9),
-      'createdBy': 'Joe Black',
-      'approvedId': 9000,
-    },
-    {
-      'studentId': 18002,
-      'class': 'Class 4',
-      'section': 'A',
-      'subjectGroup': 'Class 1st Subject Group',
-      'subject': 'Hindi (230)',
-      'homeworkDate': DateTime(2024, 4, 5),
-      'submissionDate': DateTime(2024, 4, 9),
-      'evaluationDate': DateTime(2024, 4, 9),
-      'createdBy': 'Kirti Singh',
-      'approvedId': 9000,
-    },
-    // Add more data as needed
-  ];
   // Retrieve events by date
   List<Event>? getEvents(DateTime date) {
     // print("##################${date}");
@@ -210,7 +178,7 @@ class AddHomeWorkController extends GetxController {
       "student_id" : userData.getUserStudentId,
       "year":year,
       "month":month,
-      "date":"",
+      "date":formattedDate,
     };
     print("Body @@@@ ${body}");
     var data  = await apiRespository.postApiCallByJson(Constants.getAttendenceRecordsUrl, body);

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/api.dart';
+import '../../../apiHelper/toastMessage.dart';
 import '../../../apiHelper/userData.dart';
 import '../../Front Office/admission _enquiry/CustomScaffoldController.dart';
 import '../../common_widgets/controller/CommonApiController.dart';
@@ -112,7 +113,25 @@ class AddStudentController extends GetxController{
   }
 
 
+  surenderMember(context, memberId) async {
+    try {
+      var body = {"member_id": memberId};
+      var data = await apiRespository.postApiCallByFormData(
+          Constants.surrenderMember, body);
 
+      if (data.body['status'] == 1) {
+        Get.showSnackbar(
+            Ui.SuccessSnackBar(message: data.body['msg'].toString()));
+        initializeData();
+      } else {
+        Get.showSnackbar(
+            Ui.ErrorSnackBar(message: data.body['msg'].toString()));
+      }
+    } catch (e) {
+      print("EEEEEEEEEEEEEEEEEEEE${e}");
+      update();
+    }
+  }
 
 
 }

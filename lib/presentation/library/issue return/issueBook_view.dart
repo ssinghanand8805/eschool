@@ -78,11 +78,11 @@ class LibraryManagementPage extends GetView<IssueReturnController> {
                                     null
                                 ? Image.network(
                                     baseUrlFromPref +
-                                        controller.memberDetailsModel!.value.data!
-                                            .memberList!.image!,
+                                        controller.memberDetailsModel!.value
+                                            .data!.memberList!.image!,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) =>
-                                        Icon(
+                                    errorBuilder:
+                                        (context, error, stackTrace) => Icon(
                                       Icons.person,
                                       color: Colors.grey,
                                     ),
@@ -225,8 +225,8 @@ class LibraryManagementPage extends GetView<IssueReturnController> {
             MyCustomSD(
               hideSearch: true,
               borderColor: Colors.grey,
-              listToSearch: [],
-              valFrom: "className",
+              listToSearch: controller.bookList,
+              valFrom: "book_title",
               label: 'Books',
               labelText: 'Books',
               onChanged: (val) {},

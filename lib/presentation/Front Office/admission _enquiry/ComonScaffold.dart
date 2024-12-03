@@ -22,10 +22,10 @@ class CustomScaffold extends GetView<CustomScaffoldController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green.shade100,
+        backgroundColor: Colors.green.shade200,
         title: Text(
           aapBarTitle,
-          style: theme.textTheme.titleMedium,
+          style: theme.textTheme.bodyMedium,
         ),
         actions: [
           InkWell(
@@ -33,7 +33,7 @@ class CustomScaffold extends GetView<CustomScaffoldController> {
               filterFunction(context);
             },
             child: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: const EdgeInsets.only(right: 10.0),
                 child:Icon(Icons.filter_alt_outlined)
             ),
           ),

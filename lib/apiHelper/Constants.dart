@@ -146,6 +146,7 @@ class Constants {
   static const String createGalleryList = '/gallery/create';
   static const String viewGalleryList = '/gallery/view';
   static const String editGalleryList = '/gallery/edit';
+  static const String surrenderMember = '/member/surrender';
 
 
   ///  Event

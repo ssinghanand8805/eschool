@@ -146,6 +146,7 @@ print("ssss "+body.toString());
 
 
   addAdmissionEnquiry(context) async {
+
     var body=
     {
       "name": nameC.value.text.toString(),
@@ -161,7 +162,7 @@ print("ssss "+body.toString());
       "assigned": assignedId.value,
       "class_id": classId.value,
       "no_of_child": numberOfChildC.value.text.toString(),
-      'dob':dobC.value.text.toString(),
+      'dob':dobC.value.text,
       'lastschool': lastSchoolC.value.text.toString(),
       'lastclass': lastClassC.value.text.toString(),
       'fathername':  mother_fatherC.value.text.toString(),

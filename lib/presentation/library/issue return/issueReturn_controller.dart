@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
+import '../book list/book_list_modal.dart';
 import 'issueBook_view.dart';
 import 'issueReturn_modal.dart';
 import 'member_details.dart' as meberdetails;
@@ -12,7 +13,9 @@ class IssueReturnController extends GetxController{
 
   TextEditingController searchC = TextEditingController();
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
-  Rx< LibraryMemberList> filteredContentTypeList =  LibraryMemberList().obs;
+  Rx<LibraryMemberList> filteredContentTypeList =  LibraryMemberList().obs;
+  RxList bookList = [].obs;
+
   Rx< meberdetails.LibraryMemberDetails> memberDetailsModel =  meberdetails.LibraryMemberDetails().obs;
   Rx<TextEditingController> attendanceDate = TextEditingController().obs;
   late Future<void> fetchDataFuture;
@@ -22,6 +25,7 @@ class IssueReturnController extends GetxController{
   void onInit() async {
     super.onInit();
     fetchDataFuture = initializeData();
+    getAllBook();
   }
   void initializeOriginalList() {
     originalContentTypeList = List.from(filteredContentTypeList.value.data!.memberList!);  // Make a copy of the original data
@@ -66,6 +70,24 @@ class IssueReturnController extends GetxController{
 
 
   }
+
+  Future<void> getAllBook() async {
+
+    try {
+      var body = {};
+      var data =
+      await apiRespository.postApiCallByJson(Constants.getAllBookUrl, body);
+      bookList.value = data.body['data']['listbook'];
+      print("all book${bookList.value}");
+      update();
+    } catch (e) {
+      print("EEEEEEEEEEEEEEEEEEEE${e}");
+      update();
+    }
+  }
+
+
+
   Future<void> getMemberDetails(id,context) async  {
     //isLoading.value = true;
     try

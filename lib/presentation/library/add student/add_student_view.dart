@@ -282,9 +282,54 @@ class  AddStudentView extends GetView< AddStudentController> {
                                                                                 height: 8,
                                                                               ),
                                                                               Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.end,
                                                                                 children: [
-                                                                                IconButton(onPressed: (){}, icon: Icon(Icons.reply,color: Colors.green,)),
-                                                                                  IconButton(onPressed: (){}, icon: Icon(Icons.add,color: Colors.green,)),
+                                                                                IconButton( onPressed: () {
+                                                                                  showDialog(
+                                                                                    context: context,
+                                                                                    builder:
+                                                                                        (BuildContext context) {
+                                                                                      return AlertDialog(
+                                                                                        title: Text(
+                                                                                          " Surrender Membership",
+                                                                                          style: theme.textTheme
+                                                                                              .bodyLarge,
+                                                                                        ),
+                                                                                        content: Text(
+                                                                                          "Are You Sure You Want To Surrender Membership?",
+                                                                                          style: theme.textTheme
+                                                                                              .bodySmall,
+                                                                                        ),
+                                                                                        actions: [
+                                                                                          TextButton(
+                                                                                            onPressed: () {
+                                                                                              Navigator.of(
+                                                                                                  context)
+                                                                                                  .pop();
+                                                                                            },
+                                                                                            child: const Text(
+                                                                                                "Cancel"),
+                                                                                          ),
+                                                                                          TextButton(
+                                                                                            onPressed: () {
+                                                                                              controller.surenderMember(context, studentData.id);
+
+                                                                                              Navigator.of(
+                                                                                                  context)
+                                                                                                  .pop(); // Close the dialog
+                                                                                            },
+                                                                                            child: const Text(
+                                                                                              "Confirm",
+                                                                                              style: TextStyle(
+                                                                                                  color: Colors
+                                                                                                      .red),
+                                                                                            ),
+                                                                                          ),
+                                                                                        ],
+                                                                                      );
+                                                                                    },
+                                                                                  );
+                                                                                }, icon: Icon(Icons.reply,color: Colors.green,)),
                                                                                 ],
                                                                               ),
                                                                             ],

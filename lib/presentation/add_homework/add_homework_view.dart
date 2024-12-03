@@ -6,6 +6,7 @@ import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/widgets/customTextField.dart';
+import 'package:lottie/lottie.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/myCustomsd.dart';
 import '../../apiHelper/GlobalData.dart';
@@ -41,7 +42,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
         backgroundColor: Colors.green.shade100,
         title: Text(
           'Homework',
-          style: theme.textTheme.titleMedium,
+          style: theme.textTheme.bodyMedium,
         ),
         actions: [
           Padding(
@@ -316,7 +317,12 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                         "Upcoming homework",
                     child: Expanded(
                       child: modal.controller.getHomeworkList.isEmpty
-                          ? Center(child: Text("No data found!"))
+                          ? Center(
+                              child: Container(
+                                child: Lottie.asset(
+                                    "assets/images/no_data_found.json"),
+                              ),
+                            )
                           : ListView.builder(
                               itemCount:
                                   modal.controller.getHomeworkList.length,
@@ -324,7 +330,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                               itemBuilder: (context, index) {
                                 CloseHomeworkDataModal upcomingHomeWorkData =
                                     modal.controller.getHomeworkList[index];
-                                return upcomingHomeWork(upcomingHomeWorkData);
+                                return upcomingHomework(upcomingHomeWorkData);
                               },
                             ),
                     ),
@@ -335,9 +341,11 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                     child: Expanded(
                       child: modal.controller.getCloseHomeworkList.isEmpty
                           ? Center(
-                              child: Text(
-                              "Data not found!",
-                            ))
+                              child: Container(
+                                child: Lottie.asset(
+                                    "assets/images/no_data_found.json"),
+                              ),
+                            )
                           : ListView.builder(
                               itemCount:
                                   modal.controller.getCloseHomeworkList.length,
@@ -767,206 +775,164 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
   }
 }
 
-upcomingHomeWork(CloseHomeworkDataModal upcomingHomeWork) {
+Widget upcomingHomework(CloseHomeworkDataModal upcomingHomework) {
   return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Container(
-      decoration: BoxDecoration(boxShadow: const [
-        BoxShadow(
-          color: Colors.grey,
-          blurRadius: 5,
-          offset: Offset(1, 4), // Shadow position
-        ),
-      ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: Container(
-                width: 4,
-                decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(5.0)),
-              ),
+    padding: const EdgeInsets.all(5.0),
+    child: Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      elevation: 4,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.green.shade100,
+              Colors.green.shade50,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade200,
+              blurRadius: 10,
+              offset: Offset(0, 4),
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Class: ",
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            Text(
-                              upcomingHomeWork.className.toString(),
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "Section.: ",
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            Text(
-                              upcomingHomeWork.section.toString(),
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Subject Group: ",
-                                style: theme.textTheme.bodySmall,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  "Class 1",
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Subject.: ",
-                                style: theme.textTheme.bodySmall,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  upcomingHomeWork.subjectName.toString(),
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  "Homework Date: ",
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                                Text(
-                                  upcomingHomeWork.homeworkDate.toString(),
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Submission Date: ",
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                                Text(
-                                  upcomingHomeWork.submitDate.toString(),
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Evaluation Date: ",
-                                    style: theme.textTheme.bodySmall,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      upcomingHomeWork.evaluationDate
-                                          .toString(),
-                                      style: theme.textTheme.bodySmall,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Expanded(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Created by.: ",
-                                    style: theme.textTheme.bodySmall,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      upcomingHomeWork.staffInfo.toString(),
-                                      style: theme.textTheme.bodySmall,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            )
           ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Title and Image Section
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Image Section
+                  // ClipRRect(
+                  //   borderRadius: BorderRadius.circular(10),
+                  //   child: upcomingHomework. != null &&
+                  //       upcomingHomework.imageUrl!.isNotEmpty
+                  //       ? Image.network(
+                  //     upcomingHomework.imageUrl!,
+                  //     width: 80,
+                  //     height: 80,
+                  //     fit: BoxFit.cover,
+                  //   )
+                  //       : Container(
+                  //     width: 80,
+                  //     height: 80,
+                  //     color: Colors.grey.shade300,
+                  //     child: Icon(Icons.image, color: Colors.grey.shade600),
+                  //   ),
+                  // ),
+                  // const SizedBox(width: 16),
+                  // Title Section
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          upcomingHomework.homeworkName
+                                  .toString()
+                                  .capitalizeFirst ??
+                              "No Title",
+                          style: theme.textTheme.titleMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "Class: ${upcomingHomework.className} | Section: ${upcomingHomework.section}",
+                          style: theme.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
+              // Details Section
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Homework Date
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Homework Date:",
+                        style: theme.textTheme.bodySmall!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        upcomingHomework.homeworkDate ?? "N/A",
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                  // Submission Date
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Submission Date:",
+                        style: theme.textTheme.bodySmall!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        upcomingHomework.submitDate ?? "N/A",
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Evaluation Date
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Evaluation Date:",
+                        style: theme.textTheme.bodySmall!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        upcomingHomework.evaluationDate ?? "N/A",
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                  // Created By
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Created By:",
+                        style: theme.textTheme.bodySmall!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        upcomingHomework.staffInfo ?? "N/A",
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     ),
@@ -974,207 +940,128 @@ upcomingHomeWork(CloseHomeworkDataModal upcomingHomeWork) {
 }
 
 closeHomeWork(CloseHomeworkDataModal closeHomeworkData) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
+  return Card(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+    ),
+    elevation: 4,
     child: Container(
-      decoration: BoxDecoration(boxShadow: const [
-        BoxShadow(
-          color: Colors.grey,
-          blurRadius: 5,
-          offset: Offset(1, 4), // Shadow position
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.green.shade100,
+            Colors.green.shade50,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-      ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: Container(
-                width: 4,
-                decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(5.0)),
-              ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade200,
+            blurRadius: 10,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header with Title and Icon
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Homework Title
+                Expanded(
+                  child: Text(
+                    closeHomeworkData.homeworkName ?? "No Title Available",
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                // Status Icon
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 24,
+                ),
+              ],
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          const Divider(height: 1, color: Colors.grey),
+          // Details Section
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Class and Section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Class: ",
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            Text(
-                              closeHomeworkData.className.toString(),
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "Section.: ",
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            Text(
-                              closeHomeworkData.section.toString(),
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Subject Group: ",
-                                style: theme.textTheme.bodySmall,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  "Subject ",
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Subject.: ",
-                                style: theme.textTheme.bodySmall,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  closeHomeworkData.subjectName.toString(),
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  "Homework Date: ",
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                                Text(
-                                  closeHomeworkData.homeworkDate.toString(),
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Submission Date: ",
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                                Text(
-                                  closeHomeworkData.submitDate.toString(),
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Evaluation Date: ",
-                                    style: theme.textTheme.bodySmall,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      closeHomeworkData.evaluationDate
-                                          .toString(),
-                                      style: theme.textTheme.bodySmall,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Expanded(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Created by.: ",
-                                    style: theme.textTheme.bodySmall,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      closeHomeworkData.staffInfo.toString(),
-                                      style: theme.textTheme.bodySmall,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    _buildDetailItem("Class", closeHomeworkData.className),
+                    _buildDetailItem("Section", closeHomeworkData.section),
                   ],
                 ),
-              ),
-            )
-          ],
-        ),
+                const SizedBox(height: 8),
+                // Subject Group and Subject
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildDetailItem(
+                        "Subject Group", closeHomeworkData.subjectName),
+                    _buildDetailItem("Subject", closeHomeworkData.subjectName),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                // Dates
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildDetailItem(
+                        "Homework Date", closeHomeworkData.homeworkDate),
+                    _buildDetailItem(
+                        "Submission Date", closeHomeworkData.submitDate),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                // Evaluation Date and Creator
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildDetailItem(
+                        "Evaluation Date", closeHomeworkData.evaluationDate),
+                    _buildDetailItem("Created by", closeHomeworkData.staffInfo),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     ),
+  );
+}
+
+// Helper function for creating consistent detail items
+Widget _buildDetailItem(String label, String? value) {
+  return Row(
+    children: [
+      Text(
+        "$label: ",
+        style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
+      ),
+      Text(
+        value ?? "N/A",
+        style: theme.textTheme.bodySmall,
+        overflow: TextOverflow.ellipsis,
+      ),
+    ],
   );
 }
