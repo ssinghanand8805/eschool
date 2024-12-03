@@ -893,9 +893,9 @@ class AdmissionEnquiryView extends GetView<AdmissionEnquiryController> {
                   width: 120,
                   title: 'Save',
                   textStyle: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
-                  color: Colors.green.shade100,
+                  color: Colors.green,
                   onPress: () async {
                     if (controller.addEnquiryFormKey.currentState!.validate()) {
                       await controller.addAdmissionEnquiry(context);
