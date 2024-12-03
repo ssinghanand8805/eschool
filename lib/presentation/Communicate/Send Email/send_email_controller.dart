@@ -1,27 +1,33 @@
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 
-class SendEmailController extends GetxController{
+import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/popular_product_repo.dart';
 
-  List demo = [
-    {
-      "name":"Faheem"
-    },
-    {
-      "name":"Faheem"
-    },
-    {
-      "name":"Faheem"
-    },
-    {
-      "name":"Faheem"
-    },
-  ];
+class SendEmailController extends GetxController{
+  ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   Rx<TextEditingController> titleC = TextEditingController().obs;
   Rx<HtmlEditorController> messageC = HtmlEditorController().obs;
+  Rx<File?> selectedImageName = Rx<File?>(null);
+  RxList bookList = [].obs;
+
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getEmailTemplate();
+  }
+
+  void clearImage() {
+    selectedImageName.value = null;
+  }
+
 
   RxString selectedOption = 'Send Now'.obs;
   Rx<TimeOfDay>? selectedTime;
@@ -35,31 +41,28 @@ class SendEmailController extends GetxController{
         selectedTime!.value = picked;
     }
   }
+  Future<void> getEmailTemplate() async {
 
+    try {
+      var body = {};
+      var data =
+      await apiRespository.postApiCallByJson(Constants.email_template, body);
+      bookList.value = data.body['data']['email_template_list'];
 
-  final roles = [
-    'Student',
-    'Parent',
-    'Admin',
-    'Teacher',
-    'Accountant',
-    'Librarian',
-    'Receptionist',
-    'Super Admin',
-  ];
+      print("all email_template_list${bookList.value}");
+      update();
+    } catch (e) {
+      print("email_template_list${e}");
+      update();
+    }
+  }
+
   var checkboxStates = List<bool>.filled(8, false).obs;
 
   void toggleCheckbox(int index, bool value) {
     checkboxStates[index] = value;
   }
 
-  List groups = [
-
-       "Group",
-    "individual",
-     "class",
-      "Today's Birthday"
-  ];
 
   RxBool isChecked = false.obs;
 
@@ -70,12 +73,6 @@ class SendEmailController extends GetxController{
     update();
   }
 
-  final section = [
-    "A",
-    "B",
-    "C",
-    "D",
-  ];
   var checkBoxSectionState = List<bool>.filled(4, false).obs;
   void toggleSectionCheckbox(int index, bool value) {
     checkBoxSectionState[index] = value;

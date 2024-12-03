@@ -2,28 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../apiHelper/Constants.dart';
+import '../../../apiHelper/popular_product_repo.dart';
+
 class SendSmsController extends GetxController{
 
-  List demo = [
-    {
-      "name":"Faheem"
-    },
-    {
-      "name":"Faheem"
-    },
-    {
-      "name":"Faheem"
-    },
-    {
-      "name":"Faheem"
-    },
-  ];
-
+  RxList bookList = [].obs;
+  ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   Rx<TextEditingController> titleC = TextEditingController().obs;
   Rx<TextEditingController> messageC = TextEditingController().obs;
   Rx<TextEditingController> messageToC = TextEditingController().obs;
   Rx<TextEditingController> templateId = TextEditingController().obs;
   Rx<TextEditingController> searchC = TextEditingController().obs;
+
+  RxMap<String, dynamic> selectedSmsTemplate = <String, dynamic>{}.obs;
 
   final SendThrough = [
     "SMS",
@@ -34,29 +26,32 @@ class SendSmsController extends GetxController{
     checkBoxSendThroughState[index] = value;
   }
 
-  final roles = [
-    'Student',
-    'Parent',
-    'Admin',
-    'Teacher',
-    'Accountant',
-    'Librarian',
-    'Receptionist',
-    'Super Admin',
-  ];
+@override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getEmailTemplate();
+}
   var checkboxStates = List<bool>.filled(8, false).obs;
 
   void toggleCheckbox(int index, bool value) {
     checkboxStates[index] = value;
   }
 
-  List groups = [
+  Future<void> getEmailTemplate() async {
 
-    "Group",
-    "individual",
-    "class",
-    "Today's Birthday"
-  ];
+    try {
+      var body = {};
+      var data =
+      await apiRespository.postApiCallByJson(Constants.sms_template, body);
+      bookList.value = data.body['data']['sms_template_list'];
+      print("all sms_template_list${bookList.value}");
+      update();
+    } catch (e) {
+      print("EEEEEEEEEEEEEEEEEEEE${e}");
+      update();
+    }
+  }
 
   RxBool isChecked = false.obs;
 

@@ -44,20 +44,20 @@ class UploadShareContentView extends GetView<UploadShareContentController> {
               child: controller.checkboxStates.values
                       .any((isChecked) => isChecked == true)
                   ? MyButton(
-                      width: 120,
+                      width: 110,
                       title: 'Share Content',
                       textStyle: TextStyle(color: Colors.white),
-                      color: theme.hintColor,
+                      color: Colors.green,
                       onPress: () async {
                         await controller.getContypeList();
                         shareContent(context);
                       },
                     )
                   : MyButton(
-                      width: 120,
+                      width: 110,
                       title: 'Upload Content',
                       textStyle: TextStyle(color: Colors.white),
-                      color: theme.hintColor,
+                      color: Colors.green,
                       onPress: () async {
                         await controller.getContypeList();
                         uploadContent(context);

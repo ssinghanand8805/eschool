@@ -195,6 +195,11 @@ class Constants {
   static const String addMediaVideo = '/media/addVideo';
 
 
+  /// communicate mailsms/email_template
+
+  static const String email_template = '/mailsms/email_template';
+  static const String sms_template = '/mailsms/sms_template';
+
   /// leave request
   static const String getLeaverequest = '/leaverequest/leaverequest';
   static const String removeLeaverequest = '/leaverequest/remove';

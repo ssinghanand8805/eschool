@@ -22,9 +22,9 @@ class GalleryController extends GetxController {
   List<Data> originalContentTypeList = [];
   RxBool isLoading = false.obs;
 
-  var imageList = <Map<String,dynamic>>[].obs;
+  var imageList = <Map<String, dynamic>>[].obs;
 
-  void addImage(Map<String,dynamic> imageUrl) {
+  void addImage(Map<String, dynamic> imageUrl) {
     imageList.add(imageUrl);
   }
 
@@ -51,23 +51,24 @@ class GalleryController extends GetxController {
     }
   }
 
-  addGallery(context, titleC, descriptionController,) async {
+  addGallery(
+    context,
+    titleC,
+    descriptionController,
+  ) async {
     try {
       var description = await descriptionController.getText();
 
-List<String> imageIds = [];
-for(var i =0;i< imageList.value.length;i++)
-  {
-    imageIds.add(imageList.value[i]['id']);
-  }
+      List<String> imageIds = [];
+      for (var i = 0; i < imageList.value.length; i++) {
+        imageIds.add(imageList.value[i]['id']);
+      }
       var formData = {
-
         "title": titleC,
         "description": description,
         'gallery_images[]': imageIds,
-         "image":featureImage.value
+        "image": featureImage.value
       };
-
 
       var data = await apiRespository.postApiCallByFormData(
           Constants.createGalleryList, formData);
