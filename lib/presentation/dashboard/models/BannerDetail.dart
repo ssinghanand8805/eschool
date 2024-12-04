@@ -1,4 +1,4 @@
-class EventModal {
+class BannerDetails {
   String? id;
   String? type;
   String? slug;
@@ -23,9 +23,7 @@ class EventModal {
   String? inAppDisplayFrom;
   String? inAppDisplayTo;
 
-
-
-  EventModal(
+  BannerDetails(
       {this.id,
         this.type,
         this.slug,
@@ -44,12 +42,13 @@ class EventModal {
         this.featureImage,
         this.publishDate,
         this.publish,
-        this.sidebar,  this.inAppDisplayEnable,
+        this.sidebar,
+        this.inAppDisplayEnable,
         this.inAppDisplayFrequency,
         this.inAppDisplayFrom,
         this.inAppDisplayTo});
 
-  EventModal.fromJson(Map<String, dynamic> json) {
+  BannerDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     type = json['type'];
     slug = json['slug'];

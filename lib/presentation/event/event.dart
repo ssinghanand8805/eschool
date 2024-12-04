@@ -31,6 +31,7 @@ class _EventCalendarState extends State<EventCalendar> {
           isAllDay: false,
           subject: controller.EventModalvModelObj[i].slug.toString(),
           color: Colors.green.shade400,
+          id:controller.EventModalvModelObj[i].id
         ));
         print(
             "DATE :  ${meetings[i].startTime}  NAME : ${meetings[i].subject}");
