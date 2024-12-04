@@ -31,19 +31,28 @@ class EventController extends GetxController {
 
   void onEventTap(CalendarTapDetails details, BuildContext context,
       Function showEventDialog) {
+    print(details);
     if (details.appointments != null && details.appointments!.isNotEmpty) {
       final Appointment appointment = details.appointments![0] as Appointment;
-
+      EventModal event = EventModal();
+      for(var i=0;i<EventModalvModelObj.value.length;i++)
+        {
+          if(EventModalvModelObj.value[i].id ==appointment.id )
+            {
+              event = EventModalvModelObj.value[i];
+              break;
+            }
+        }
       // Convert Appointment to EventModal
-      EventModal event = EventModal(
-        title: appointment.subject,
-        eventStart:
-            appointment.startTime.toString().split(' ')[0], // Extract date only
-        eventEnd:
-            appointment.endTime.toString().split(' ')[0], // Extract date only
-        description: appointment.notes ?? 'No Description',
-        // Set other fields if needed
-      );
+      // EventModal event = EventModal(
+      //   title: appointment.subject,
+      //   eventStart:
+      //       appointment.startTime.toString().split(' ')[0], // Extract date only
+      //   eventEnd:
+      //       appointment.endTime.toString().split(' ')[0], // Extract date only
+      //   description: appointment.notes ?? 'No Description',
+      //   // Set other fields if needed
+      // );
 
       showEventDialog(context, event);
     }
@@ -60,6 +69,7 @@ class EventController extends GetxController {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        print(event.toJson());
         return Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -87,8 +97,9 @@ class EventController extends GetxController {
     List<EventModal> d = [];
     for (var i = 0; i < data.body['listResult'].length; i++) {
       print("nmjvkjjgkjnnj");
-      d.add(EventModal.fromJson(data.body['listResult'][i]));
-      print("nhbhbhhhbbhhb");
+      var t = EventModal.fromJson(data.body['listResult'][i]);
+      d.add(t);
+      print("nhbhbhhhbbhhb${t.toJson()}");
     }
     EventModalvModelObj.value = d;
     print("fvffhghnhnhnhnhnhn$d");
@@ -144,6 +155,7 @@ class ContentBox extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   InfoRow(
                     style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
                     style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
@@ -162,15 +174,45 @@ class ContentBox extends StatelessWidget {
                     title: "Event Venue:",
                     value: event.eventVenue ?? "Not specified",
                   ),
-                  InfoRow(
-                    style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
-                    style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
-                    title: "Description:",
-                    value: event.description ?? "No description available",
-                  ),
+                  // Html(data:  event.description),
+                  // InfoRow(
+                  //   style: theme.textTheme.titleSmall!.copyWith(fontSize: 13),
+                  //   style1: theme.textTheme.bodySmall!.copyWith(fontSize: 13),
+                  //   title: "Description:",
+                  //   value: event.description ?? "No description available",
+                  // ),
                 ],
               ),
             ),
+          ),
+          Image.network(
+            event.featureImage ?? '',
+            fit: BoxFit.contain,
+            //width: double.infinity,
+          // height: double.infinity,
+            errorBuilder: (context, error, stackTrace) => Image.asset(
+              "assets/projectImages/no_data.png",
+              fit: BoxFit.cover,
+            ),
+          ),
+          Html(
+            data: event.description ?? '',
+            style: {
+              "body": Style(
+                fontSize: FontSize(13.0),
+                color: Colors.black,
+              ),
+              "h1": Style(
+                fontSize: FontSize(12.0),
+                fontWeight: FontWeight.bold,
+                color: Colors.teal,
+              ),
+              "h2": Style(
+                fontSize: FontSize(12.0),
+                fontWeight: FontWeight.bold,
+                color: Colors.teal.shade700,
+              ),
+            },
           ),
           SizedBox(height: 22),
           Align(
@@ -181,7 +223,7 @@ class ContentBox extends StatelessWidget {
               },
               child: Text(
                 'Close',
-                style: TextStyle(fontSize: 16, color: Colors.green),
+                style: TextStyle(fontSize: 15, color: Colors.green,fontWeight: FontWeight.w600),
               ),
             ),
           ),

@@ -3,14 +3,13 @@ import 'dart:math';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:html/parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../apiHelper/userData.dart';
 import '../core/app_export.dart';
 import '../presentation/notifications/controller/NotificationController.dart';
 import 'NotificationController.dart';
-
-
 
 // Top-level function to handle background messages
 Future<void> backgroundMessageHandler(RemoteMessage message) async {
@@ -22,18 +21,45 @@ Future<void> backgroundMessageHandler(RemoteMessage message) async {
 void showNotification(String title, String body) {
   var random = Random();
   int randomNumber = random.nextInt(100);
+  print("--------");
+  print(body);
+  print("--------");
+  var document = parse(body);
+  String textContent = document.body?.text.trim() ?? '';
+  print("cccc${textContent}");
+  String? firstImageUrl;
+  var imgElement = document.querySelector('img'); // Find the first <img> tag
+  print("dddddd${imgElement}");
+  if (imgElement != null) {
+    firstImageUrl = imgElement.attributes['src'];
+    print("eeeee${firstImageUrl}");
+    if (firstImageUrl != null) {
+      if (firstImageUrl ==
+          'https://rksss.avadhconnect.com/uploads/gallery/media/1733308918-245842746675031f6251bb!600_300.jpg') {
+        firstImageUrl = 'assets://assets/projectImages/leavepage.jpg';
+      }
+      NotificationHelperController.createNewNotificationWithFCmForImage(
+          randomNumber, "alerts", title, textContent, firstImageUrl);
+    } else {
+      NotificationHelperController.createNewNotificationWithFCm(
+          randomNumber, "alerts", title, body);
+    }
+  } else {
+    NotificationHelperController.createNewNotificationWithFCm(
+        randomNumber, "alerts", title, body);
+  }
+
   // Assuming NotificationHelperController can be accessed here
-  NotificationHelperController.createNewNotificationWithFCm(randomNumber, "alerts", title, body);
 
   // Ensure GetX is properly initialized to manage Get.put()
   if (Get.isRegistered<NotificationController>()) {
     NotificationController controller = Get.find();
     controller.AddNewNotification(randomNumber, title, body);
   } else {
-    Get.put(NotificationController()).AddNewNotification(randomNumber, title, body);
+    Get.put(NotificationController())
+        .AddNewNotification(randomNumber, title, body);
   }
 }
-
 
 class PushNotificationService {
   FirebaseMessaging _fcm = FirebaseMessaging.instance;
@@ -51,7 +77,8 @@ class PushNotificationService {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       print('User granted provisional permission');
     } else {
       print('User denied or has not accepted permission');
@@ -69,6 +96,7 @@ class PushNotificationService {
         showNotification(message.data['title']!, message.data['body']!);
       }
     });
+    NotificationHelperController.initializeLocalNotifications();
     return await getToken();
   }
 
@@ -84,7 +112,6 @@ class PushNotificationService {
     return token;
   }
 }
-
 
 // class PushNotificationService {
 //   FirebaseMessaging _fcm = FirebaseMessaging.instance;

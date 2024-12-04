@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../NotificationServices/PushNotificationService.dart';
@@ -10,8 +13,8 @@ import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/userData.dart';
 import '../../../core/app_export.dart';
+import '../models/BannerDetail.dart';
 import '../models/dashboard_model.dart';
-
 
 /// A controller class for the FormScreen.
 ///
@@ -21,7 +24,7 @@ class DashboardController extends GetxController {
   UserData userData = Get.put(UserData());
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   RxString schoolImageUrl = "".obs;
-
+  RxList<BannerDetails> bannerDetails = <BannerDetails>[].obs;
   loadChildList(context) async {
     List<dynamic> childNameList = [];
     List<dynamic> childIdList = [];
@@ -53,11 +56,20 @@ class DashboardController extends GetxController {
     childSectionIdList = secid!;
     print(childNameList);
 
-    showChildList(context, childNameList, childIdList, childImageList, childClassList, childImagefoundList, childSessionIDList, childClassIdList,
+    showChildList(
+        context,
+        childNameList,
+        childIdList,
+        childImageList,
+        childClassList,
+        childImagefoundList,
+        childSessionIDList,
+        childClassIdList,
         childSectionIdList);
   }
 
-  onSelectChildStudent(student_id, classNameSection, name, sessionId, classId, sectionId) {
+  onSelectChildStudent(
+      student_id, classNameSection, name, sessionId, classId, sectionId) {
     UserData usersData = UserData();
     usersData.addUserIsLoggedIn(true);
     usersData.addUserHasMultipleChild(true);
@@ -91,8 +103,9 @@ class DashboardController extends GetxController {
         return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             final double itemHeight = 100.0; // Set a fixed height for each item
-            final double bottomSheetHeight =
-                (childNameList.length * itemHeight) + kBottomNavigationBarHeight; // Calculate the total height of the bottom sheet
+            final double bottomSheetHeight = (childNameList.length *
+                    itemHeight) +
+                kBottomNavigationBarHeight; // Calculate the total height of the bottom sheet
             return SizedBox(
               height: bottomSheetHeight,
               child: ListView.builder(
@@ -102,12 +115,20 @@ class DashboardController extends GetxController {
                     children: <Widget>[
                       InkWell(
                         onTap: () {
-                          onSelectChildStudent(childIdList[index], childClassList[index], childNameList[index], childSessionIDList[index],
-                              childClassIdList[index], childSectionIdList[index]);
+                          onSelectChildStudent(
+                              childIdList[index],
+                              childClassList[index],
+                              childNameList[index],
+                              childSessionIDList[index],
+                              childClassIdList[index],
+                              childSectionIdList[index]);
                         },
                         child: ListTile(
                           leading: childImagefoundList[index] != false
-                              ? CircleAvatar(radius: itemHeight / 4, backgroundImage: NetworkImage(childImageList[index]))
+                              ? CircleAvatar(
+                                  radius: itemHeight / 4,
+                                  backgroundImage:
+                                      NetworkImage(childImageList[index]))
                               : CircleAvatar(
                                   radius: itemHeight / 4,
                                   backgroundImage: AssetImage(
@@ -133,7 +154,10 @@ class DashboardController extends GetxController {
   Future<List<dynamic>?> loadArray(String name) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? encodedData = prefs.getString(name);
-    return encodedData == null ? null : List<dynamic>.from(json.decode(encodedData)); // Decode JSON string to a List
+    return encodedData == null
+        ? null
+        : List<dynamic>.from(
+            json.decode(encodedData)); // Decode JSON string to a List
   }
 
   Widget customContainer() {
@@ -168,7 +192,10 @@ class DashboardController extends GetxController {
             ),
             Text(
               'Loading',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: Colors.grey.shade600),
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.grey.shade600),
             )
           ],
         ),
@@ -177,7 +204,8 @@ class DashboardController extends GetxController {
   }
 
   RxList eLearningData = [].obs;
-  List<ModuleList> get getElearningList => List<ModuleList>.from(eLearningData.map((e) => ModuleList.fromJson(e)));
+  List<ModuleList> get getElearningList =>
+      List<ModuleList>.from(eLearningData.map((e) => ModuleList.fromJson(e)));
   set updateELearningData(List val) {
     // gridViewWidgets.removeAt(0);
     eLearningData.value = val;
@@ -185,7 +213,8 @@ class DashboardController extends GetxController {
   }
 
   RxList academicData = [].obs;
-  List<ModuleList> get getAcademicList => List<ModuleList>.from(academicData.map((e) => ModuleList.fromJson(e)));
+  List<ModuleList> get getAcademicList =>
+      List<ModuleList>.from(academicData.map((e) => ModuleList.fromJson(e)));
   set updateAcademicData(List val) {
     // gridViewWidgets.removeAt(0);
     academicData.value = val;
@@ -193,7 +222,8 @@ class DashboardController extends GetxController {
   }
 
   RxList communicationData = [].obs;
-  List<ModuleList> get getCommunicationList => List<ModuleList>.from(communicationData.map((e) => ModuleList.fromJson(e)));
+  List<ModuleList> get getCommunicationList => List<ModuleList>.from(
+      communicationData.map((e) => ModuleList.fromJson(e)));
   set updateCommunicationData(List val) {
     // gridViewWidgets.removeAt(0);
     communicationData.value = val;
@@ -201,7 +231,8 @@ class DashboardController extends GetxController {
   }
 
   RxList otherData = [].obs;
-  List<ModuleList> get getOtherDataList => List<ModuleList>.from(otherData.map((e) => ModuleList.fromJson(e)));
+  List<ModuleList> get getOtherDataList =>
+      List<ModuleList>.from(otherData.map((e) => ModuleList.fromJson(e)));
   set updateOtherData(List val) {
     // gridViewWidgets.removeAt(0);
     otherData.value = val;
@@ -251,7 +282,6 @@ class DashboardController extends GetxController {
   Color textColor = Colors.white;
   RxBool isLoading = true.obs;
 
-
   @override
   void onInit() {
     // TODO: implement onInit
@@ -275,31 +305,41 @@ class DashboardController extends GetxController {
     printSharedPreferencesData();
   }
 
-updateSchoolInfo()async {
-
-  print("PPPPP");
-  Map<String, dynamic> body = {
-    "student_id": userData.getUserStudentId.toString(),
-  };
-  var data = await apiRespository.postApiCallByJson(
-      "webservice/getDashboardBannerDetails", body);
-  print("UPDATE STUDENT INFO DATA ${data.body}");
-  ThemeHelper().setAndChangeThemeThroughSharedPref(data);
-  String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
-
-  schoolImageUrl.value = (data.body['school_details']["image"] == null || data.body['school_details']["image"] == null)
-      ? ""
-      : baseUrlFromPref + "uploads/school_content/logo/app_logo/" + data.body['school_details']["image"];
-  print("WWWWWWWWW${schoolImageUrl.value}");
-  update();
-}
+  updateSchoolInfo() async {
+    print("PPPPP");
+    Map<String, dynamic> body = {
+      "student_id": userData.getUserStudentId.toString(),
+    };
+    var data = await apiRespository.postApiCallByJson(
+        "webservice/getDashboardBannerDetails", body);
 
 
+    log("UPDATE STUDENT INFO DATA ${data.body}");
+    ThemeHelper().setAndChangeThemeThroughSharedPref(data);
+    String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
+    List<dynamic> bannerDetailsRaw = data.body['school_details']["display_events"];
 
+    for(var i=0;i<bannerDetailsRaw.length;i++)
+      {
+        bannerDetails.add(BannerDetails.fromJson(bannerDetailsRaw[i]));
+      }
+    if(bannerDetails.length > 0)
+      {
+        showResponsiveImageDialog(bannerDetails.value);
+      }
 
+    schoolImageUrl.value = (data.body['school_details']["image"] == null ||
+            data.body['school_details']["image"] == null)
+        ? ""
+        : baseUrlFromPref +
+            "uploads/school_content/logo/app_logo/" +
+            data.body['school_details']["image"];
+    print("WWWWWWWWW${schoolImageUrl.value}");
+    update();
+  }
 
-
-  final PushNotificationService _notificationService = PushNotificationService();
+  final PushNotificationService _notificationService =
+      PushNotificationService();
   updateDeviceToken() async {
     print("PPPPP");
     String? deToken = await _notificationService.initialize();
@@ -310,11 +350,13 @@ updateSchoolInfo()async {
       "role": userData.getRole,
     };
     print(body);
-    var data = apiRespository.postApiCallByJson("webservice/updateDeviceToken", body);
+    var data =
+        apiRespository.postApiCallByJson("webservice/updateDeviceToken", body);
   }
 
   bool get isSliverAppBarExpanded {
-    return scrollController!.hasClients && scrollController!.offset > (200 - kToolbarHeight);
+    return scrollController!.hasClients &&
+        scrollController!.offset > (200 - kToolbarHeight);
   }
 
   /// Section Widget
@@ -322,30 +364,36 @@ updateSchoolInfo()async {
     return Container(
       padding: EdgeInsets.all(4.0),
       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: Colors.grey.shade400,
-          offset: const Offset(
-            3.0,
-            5.0,
-          ),
-          blurRadius: 8.0,
-          spreadRadius: 2.0,
-        ), //BoxShadow
-        BoxShadow(
-          color: Colors.white,
-          offset: const Offset(0.0, 0.0),
-          blurRadius: 0.0,
-          spreadRadius: 0.0,
-        ), //BoxShadow
-      ], borderRadius: BorderRadius.circular(10)), // Add padding around the grid
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade400,
+              offset: const Offset(
+                3.0,
+                5.0,
+              ),
+              blurRadius: 8.0,
+              spreadRadius: 2.0,
+            ), //BoxShadow
+            BoxShadow(
+              color: Colors.white,
+              offset: const Offset(0.0, 0.0),
+              blurRadius: 0.0,
+              spreadRadius: 0.0,
+            ), //BoxShadow
+          ],
+          borderRadius:
+              BorderRadius.circular(10)), // Add padding around the grid
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             "${heading}",
             textAlign: TextAlign.start,
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: Colors.grey.shade800),
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+                color: Colors.grey.shade800),
           ),
           GridView.builder(
             padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
@@ -374,7 +422,7 @@ updateSchoolInfo()async {
                       Image.asset(
                         "assets/projectImages/" + images[index].toString(),
                         height: 25,
-                         color: theme.primaryColorDark,
+                        color: theme.primaryColorDark,
                       ),
                       SizedBox(
                         height: 10,
@@ -403,7 +451,7 @@ updateSchoolInfo()async {
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
     userData.userData.erase();
-     logoutAPI();
+    logoutAPI();
 
     Navigator.of(context).pop(); // Close the dialog
 
@@ -452,11 +500,13 @@ updateSchoolInfo()async {
       eLearningData.value = jsonDecode(prefs.getString('eLearningData')!);
 
       academicData.value = jsonDecode(prefs.getString('academicData')!);
-      communicationData.value = jsonDecode(prefs.getString('communicationData')!);
+      communicationData.value =
+          jsonDecode(prefs.getString('communicationData')!);
       otherData.value = jsonDecode(prefs.getString('otherData')!);
       buildGridViewData("E Learning", getElearningList, eLearningImagesPath, 0);
       buildGridViewData("Academics", getAcademicList, academicImages, 1);
-      buildGridViewData("Communicate", getCommunicationList, communicationImages, 2);
+      buildGridViewData(
+          "Communicate", getCommunicationList, communicationImages, 2);
       buildGridViewData("Other ", getOtherDataList, otherImages, 3);
       isLoading.value = false;
       await fetchFreshData(false);
@@ -495,7 +545,8 @@ updateSchoolInfo()async {
   getSchoolDetails() async {
     Map<String, dynamic> body = {};
     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
-    var data = await apiRespository.postApiCallByJson("webservice/getSchoolDetails", body);
+    var data = await apiRespository.postApiCallByJson(
+        "webservice/getSchoolDetails", body);
     final prefs = await SharedPreferences.getInstance();
     print("###################${data.body}");
     await prefs.setString("schoolName", data.body["name"] ?? "");
@@ -504,12 +555,17 @@ updateSchoolInfo()async {
     await prefs.setString("schoolEmail", data.body["email"] ?? "");
     await prefs.setString("schoolSchoolCode", data.body["dise_code"] ?? "");
     await prefs.setString("schoolCurrentSession", data.body["session"] ?? "");
-    await prefs.setString("schoolStartMonth", data.body["start_month_name"] ?? "");
-    await prefs.setString("schoolStartMonthNumber", data.body["start_month"] ?? "");
+    await prefs.setString(
+        "schoolStartMonth", data.body["start_month_name"] ?? "");
+    await prefs.setString(
+        "schoolStartMonthNumber", data.body["start_month"] ?? "");
     await prefs.setString("schoolImage", data.body["image"] ?? "");
-    schoolImageUrl.value = (data.body["image"] == null || data.body["image"] == null)
-        ? ""
-        : baseUrlFromPref + "uploads/school_content/logo/app_logo/" + data.body["image"];
+    schoolImageUrl.value =
+        (data.body["image"] == null || data.body["image"] == null)
+            ? ""
+            : baseUrlFromPref +
+                "uploads/school_content/logo/app_logo/" +
+                data.body["image"];
     update();
     print("+++++++++++++++++++++${schoolImageUrl.value}");
   }
@@ -519,9 +575,11 @@ updateSchoolInfo()async {
     Map<String, dynamic> body = {
       "user": "student",
     };
-    var data = await apiRespository.postApiCallByJson("webservice/getELearningModuleStatus", body);
+    var data = await apiRespository.postApiCallByJson(
+        "webservice/getELearningModuleStatus", body);
     var data1 = await data.body['module_list'];
-    updateELearningData = data1.where((item) => item['status'].toString() == "1").toList();
+    updateELearningData =
+        data1.where((item) => item['status'].toString() == "1").toList();
     // gridViewWidgets.add(
     //     buildGridItem("E Learning", getElearningList, eLearningImagesPath));
     // // academicStatusApi();
@@ -530,11 +588,13 @@ updateSchoolInfo()async {
     buildGridViewData("E Learning", getElearningList, eLearningImagesPath, 0);
   }
 
-  buildGridViewData(String title, List<ModuleList> moduleList, List<dynamic> imagePath, int index) {
+  buildGridViewData(String title, List<ModuleList> moduleList,
+      List<dynamic> imagePath, int index) {
     // Ensure gridViewWidgets has enough elements up to the requested index
     if (gridViewWidgets.length <= index) {
       // If the list isn't long enough, add placeholders up to the index
-      gridViewWidgets.addAll(List.generate(index - gridViewWidgets.length + 1, (i) => customContainer()));
+      gridViewWidgets.addAll(List.generate(
+          index - gridViewWidgets.length + 1, (i) => customContainer()));
     }
 
     // Assign the data to the specific index
@@ -544,7 +604,8 @@ updateSchoolInfo()async {
     update();
   }
 
-  buildGridViewData2(String title, List<ModuleList> moduleList, List<dynamic> imagePath, int index) {
+  buildGridViewData2(String title, List<ModuleList> moduleList,
+      List<dynamic> imagePath, int index) {
     gridViewWidgets[index] = buildGridItem(title, moduleList, imagePath);
     update();
     // if (gridViewWidgets.length <= index) {
@@ -564,11 +625,13 @@ updateSchoolInfo()async {
     Map<String, dynamic> body = {
       "user": "student",
     };
-    var data = await apiRespository.postApiCallByJson("webservice/getAcademicsModuleStatus", body);
+    var data = await apiRespository.postApiCallByJson(
+        "webservice/getAcademicsModuleStatus", body);
     // updateAcademicData = data.body['module_list'].where((item) => item['status'] == 1).toList();
     var data1 = await data.body['module_list'];
     print(data1);
-    updateAcademicData = data1.where((item) => item['status'].toString() == "1").toList();
+    updateAcademicData =
+        data1.where((item) => item['status'].toString() == "1").toList();
     // gridViewWidgets
     //     .add(buildGridItem("Academics", getAcademicList, academicImages));
     // // communicationStatusApi();
@@ -581,26 +644,31 @@ updateSchoolInfo()async {
     Map<String, dynamic> body = {
       "user": "student",
     };
-    var data = await apiRespository.postApiCallByJson("webservice/getCommunicateModuleStatus", body);
+    var data = await apiRespository.postApiCallByJson(
+        "webservice/getCommunicateModuleStatus", body);
     // updateCommunicationData = data.body['module_list'].where((item) => item['status'] == 1).toList();
     var data1 = await data.body['module_list'];
-    updateCommunicationData = data1.where((item) => item['status'].toString() == "1").toList();
+    updateCommunicationData =
+        data1.where((item) => item['status'].toString() == "1").toList();
     // gridViewWidgets.add(buildGridItem(
     //     "Communicate", getCommunicationList, communicationImages));
     // // otherModuleApi();
     // update();
     print("COMMUNICATION STATUS DATA ${getCommunicationList[0].name}");
-    buildGridViewData("Communicate", getCommunicationList, communicationImages, 2);
+    buildGridViewData(
+        "Communicate", getCommunicationList, communicationImages, 2);
   }
 
   otherModuleApi() async {
     Map<String, dynamic> body = {
       "user": "student",
     };
-    var data = await apiRespository.postApiCallByJson("webservice/getOthersModuleStatus", body);
+    var data = await apiRespository.postApiCallByJson(
+        "webservice/getOthersModuleStatus", body);
     // updateOtherData = data.body['module_list'].where((item) => item['status'] == 1).toList();
     var data1 = await data.body['module_list'];
-    updateOtherData = data1.where((item) => item['status'].toString() == "1").toList();
+    updateOtherData =
+        data1.where((item) => item['status'].toString() == "1").toList();
     // gridViewWidgets.add(buildGridItem("Other ", getOtherDataList, otherImages));
     //
     // update();
@@ -615,7 +683,8 @@ updateSchoolInfo()async {
 
     print("Logout Request Body: $body");
 
-    var response = await apiRespository.postApiCallByJson(Constants.logout, body);
+    var response =
+        await apiRespository.postApiCallByJson(Constants.logout, body);
 
     print("Logout Response: ${response.body}");
 
@@ -697,3 +766,152 @@ updateSchoolInfo()async {
     );
   }
 }
+
+void showResponsiveImageDialog(List<BannerDetails> mediaItems) {
+  PageController _pageController = PageController();
+  Timer? _autoScrollTimer;
+
+  void startAutoScroll() {
+    _autoScrollTimer = Timer.periodic(Duration(seconds: 2), (timer) {
+      if (_pageController.hasClients) {
+        int nextPage = _pageController.page!.toInt() + 1;
+        if (nextPage >= mediaItems.length) {
+          nextPage = 0; // Loop back to the first item
+        }
+        _pageController.animateToPage(
+          nextPage,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  void stopAutoScroll() {
+    _autoScrollTimer?.cancel();
+  }
+
+  Get.dialog(
+    Dialog(
+      insetPadding: EdgeInsets.all(16),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          double dialogWidth = MediaQuery.of(context).size.width * 0.85;
+          double dialogHeight = MediaQuery.of(context).size.height * 0.45;
+
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return Stack(
+                children: [
+                  // PageView with automatic scrolling
+                  Container(
+                    width: dialogWidth,
+                    height: dialogHeight,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
+                    child: PageView.builder(
+                      controller: _pageController,
+                      itemCount: mediaItems.length,
+                      onPageChanged: (index) {
+                        // Optional: Update UI or perform actions on page change
+                      },
+                      itemBuilder: (context, index) {
+                        final item = mediaItems[index];
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Title Section
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                item.title ?? '',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.teal,
+                                ),
+                              ),
+                            ),
+
+                            // Image Section
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.network(
+                                item.featureImage ?? '',
+                                fit: BoxFit.contain,
+                                //width: double.infinity,
+                                // height: double.infinity,
+                                errorBuilder: (context, error, stackTrace) => Image.asset(
+                                  "assets/projectImages/no_data.png",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+
+                            // HTML Description Section
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Html(
+                                data: item.description ?? '',
+                                style: {
+                                  "body": Style(
+                                    fontSize: FontSize(13.0),
+                                    color: Colors.black,
+                                  ),
+                                  "h1": Style(
+                                    fontSize: FontSize(12.0),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.teal,
+                                  ),
+                                  "h2": Style(
+                                    fontSize: FontSize(12.0),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.teal.shade700,
+                                  ),
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+
+                  // Close Button
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: GestureDetector(
+                      onTap: () {
+                        stopAutoScroll(); // Stop auto-scroll when dialog is closed
+                        Navigator.of(context).pop();
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Colors.red,
+                        radius: 16,
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
+    ),
+  ).then((_) => stopAutoScroll()); // Ensure auto-scroll stops when dialog is closed
+
+  startAutoScroll();
+}
+
+
+
+
+

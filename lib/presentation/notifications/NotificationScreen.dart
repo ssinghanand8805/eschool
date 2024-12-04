@@ -99,7 +99,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           subtitle: Utils.formatDateString(data.timestamp!.toString()),
           newWidget: Html(style: {
             "body": Style(
-              fontSize: FontSize(15.0),
+              fontSize: FontSize(13.0),
               color: Colors.black,
             ),
           }, shrinkWrap: true, data: data.body!)),

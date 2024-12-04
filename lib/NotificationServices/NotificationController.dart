@@ -214,7 +214,24 @@ class NotificationHelperController {
         ]);
   }
 
+  static Future<void> createNewNotificationWithFCmForImage(int id,String channelKey,
+      String title,String body,String image) async {
+    print("image notification");
+    bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
+    if (!isAllowed) isAllowed = await displayNotificationRationale();
+    if (!isAllowed) return;
 
+    await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: id, // -1 is replaced by a random number
+            channelKey: channelKey,
+            title: title,
+            body: body,
+            bigPicture: image,
+            notificationLayout: NotificationLayout.Default,
+            payload: {'notificationId': '1234567890'}),
+   );
+  }
 
   static Future<void> createNewNotificationWithFCm(int id,String channelKey,
       String title,String body) async {
@@ -227,8 +244,7 @@ class NotificationHelperController {
             id: id, // -1 is replaced by a random number
             channelKey: channelKey,
             title: title,
-            body:
-            body,
+            body: body,
             // summary: '',
             // bigPicture: 'https://storage.googleapis.com/cms-storage-bucket/d406c736e7c4c57f5f61.png',
             // largeIcon: 'https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png',
