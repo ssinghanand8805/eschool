@@ -247,7 +247,7 @@ class DashboardScreen extends GetView<DashboardController> {
                           thickness: 0.4,
                         ),
                         Text(
-                          "Version 1.8.0",
+                          "Version 1.9.0",
                           style: theme.textTheme.bodySmall,
                         )
                       ],
