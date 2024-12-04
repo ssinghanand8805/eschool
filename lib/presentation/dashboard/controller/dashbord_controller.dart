@@ -839,8 +839,9 @@ void showResponsiveImageDialog(List<BannerDetails> mediaItems) {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
+                                child: Container(
+                                  height: 200,
+                                  width:200,
                                   child: Image.network(
                                     item.featureImage ?? '',
                                     fit: BoxFit.contain,

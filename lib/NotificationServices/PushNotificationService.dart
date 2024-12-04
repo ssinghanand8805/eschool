@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:html/parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../apiHelper/userData.dart';
@@ -22,8 +23,40 @@ Future<void> backgroundMessageHandler(RemoteMessage message) async {
 void showNotification(String title, String body) {
   var random = Random();
   int randomNumber = random.nextInt(100);
+  print("--------");
+  print(body);
+  print("--------");
+  var document = parse(body);
+  String textContent = document.body?.text.trim() ?? '';
+  print("cccc${textContent}");
+  String? firstImageUrl;
+  var imgElement = document.querySelector('img'); // Find the first <img> tag
+  print("dddddd${imgElement}");
+  if (imgElement != null) {
+    firstImageUrl = imgElement.attributes['src'];
+    print("eeeee${firstImageUrl}");
+    if(firstImageUrl != null)
+      {
+
+        if(firstImageUrl == 'https://rksss.avadhconnect.com/uploads/gallery/media/1733308918-245842746675031f6251bb!600_300.jpg')
+          {
+            firstImageUrl = 'assets://assets/projectImages/leavepage.jpg';
+          }
+        NotificationHelperController.createNewNotificationWithFCmForImage(randomNumber, "alerts", title, textContent,firstImageUrl);
+      }
+    else
+      {
+        NotificationHelperController.createNewNotificationWithFCm(randomNumber, "alerts", title, body);
+      }
+
+  }
+  else
+    {
+      NotificationHelperController.createNewNotificationWithFCm(randomNumber, "alerts", title, body);
+    }
+
   // Assuming NotificationHelperController can be accessed here
-  NotificationHelperController.createNewNotificationWithFCm(randomNumber, "alerts", title, body);
+
 
   // Ensure GetX is properly initialized to manage Get.put()
   if (Get.isRegistered<NotificationController>()) {
@@ -69,6 +102,7 @@ class PushNotificationService {
         showNotification(message.data['title']!, message.data['body']!);
       }
     });
+    NotificationHelperController.initializeLocalNotifications();
     return await getToken();
   }
 
