@@ -106,6 +106,8 @@ async {
       print("Response body ${response.statusText}");
       return response;
     }catch(e){
+      print("Error calling post form data${e.toString()}");
+
       return Response(statusCode: 1,statusText: e.toString());
     }
   }

@@ -5,6 +5,7 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hint;
   final String title;
+  final bool? readOnly;
   VoidCallback? onTap;
   final FormFieldValidator<String>? validator;
   ValueChanged<String>? onChanged;
@@ -16,6 +17,7 @@ class CustomTextField extends StatelessWidget {
       required this.controller,
       required this.hint,
       required this.title,
+       this.readOnly = false,
       this.onTap,
       this.onChanged,
       this.validator,
@@ -56,6 +58,7 @@ class CustomTextField extends StatelessWidget {
             ],
           ),
           child: TextFormField(
+            readOnly: readOnly!,
             maxLines: maxLine,
             controller: controller,
             decoration: InputDecoration(

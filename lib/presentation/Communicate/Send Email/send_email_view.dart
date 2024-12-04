@@ -45,7 +45,12 @@ class SendEmailView extends GetView<SendEmailController> {
                   valFrom: 'title',
                   labelText: "Select Email Template",
                   label: "Select Email Template",
-                  onChanged: (val) {})),
+                  onChanged: (val) {
+
+                    controller.selectedSmsTemplate.value = val;
+                    controller.titleC.value.text = val['title'];
+                    controller.messageC.value.text = val['message'];
+                  })),
               CustomTextField(
                   controller: controller.titleC.value,
                   hint: "Title",
@@ -117,10 +122,11 @@ class SendEmailView extends GetView<SendEmailController> {
               SizedBox(
                 height: 10,
               ),
-              CustomHtmlEditor(
+              CustomTextField(
                 controller: controller.messageC.value,
-                height: 200,
+                maxLine: 5,
                 title: 'Message',
+                hint: 'Message......',
               ),
               SizedBox(
                 height: 10,
@@ -138,7 +144,11 @@ class SendEmailView extends GetView<SendEmailController> {
                     title: 'Send Email',
                     textStyle: TextStyle(fontSize: 14, color: Colors.white),
                     color: Colors.green,
-                    onPress: () {},
+                    onPress: () {
+
+                      controller.sendEmail();
+
+                    },
                   ),
                 ),
               ),

@@ -1,4 +1,5 @@
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,14 +9,16 @@ import 'package:html_editor_enhanced/html_editor.dart';
 
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
+import '../../common_widgets/controller/CommonUserSelectionController.dart';
 
 class SendEmailController extends GetxController{
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   Rx<TextEditingController> titleC = TextEditingController().obs;
-  Rx<HtmlEditorController> messageC = HtmlEditorController().obs;
+  Rx<TextEditingController> messageC = TextEditingController().obs;
   Rx<File?> selectedImageName = Rx<File?>(null);
   RxList bookList = [].obs;
 
+  RxMap<String, dynamic> selectedSmsTemplate = <String, dynamic>{}.obs;
 
   @override
   void onInit() {
@@ -81,6 +84,48 @@ class SendEmailController extends GetxController{
   Rx<TextEditingController> searchC = TextEditingController().obs;
   Rx<TextEditingController> messageToC = TextEditingController().obs;
 
+
+  sendEmail()
+  async {
+   var ctrl = Get.put(CommonUserSelectionController());
+   var body = {};
+   print("eeeeeeee${ctrl.selectedUserType.value.toString()}");
+   if(ctrl.selectedUserType.value.toString() == 'group')
+     {
+
+     }
+   else if(ctrl.selectedUserType.value.toString() == 'class')
+   {
+
+   }
+   else if(ctrl.selectedUserType.value.toString() == 'individual')
+   {
+     body['template_id'] = selectedSmsTemplate.value['id'];
+     body['individual_title'] = titleC.value.text.toString();
+     body['individual_message'] = messageToC.value.text.toString();
+
+     var AllUsers = ctrl.selectedUserList.value;
+     List us = [];
+     for(var i=0;i<AllUsers.length;i++)
+       {
+         var cateId = ctrl.selectedCategory.value;
+         var record_id = AllUsers[i].id;
+         var email = AllUsers[i].email;
+         var gaurdian_email = AllUsers[i].guardianEmail;
+         var mob = AllUsers[i].mobileno;
+         var d = {"category":cateId,"record_id":record_id,"email":email,
+           "guardianEmail":gaurdian_email,"mobileno":mob};
+         us.add(d);
+
+       }
+     body['user_list'] = jsonEncode(us);
+     body['individual_send_by'] = 'email';
+     body['individual_send_type'] = 'send_now';
+     var responsebody = await apiRespository.postApiCallByFormData(Constants.send_individual, body);
+     print(responsebody.body);
+
+   }
+  }
 
 
 }

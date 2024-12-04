@@ -181,10 +181,10 @@ class CommonUserSelection extends GetView<CommonUserSelectionController> {
                   label: 'Select ' + controller.slectedCategoryType.value,
                   labelText: controller.slectedCategoryType.value,
                   onChanged: (val) {
-                    if(controller.userList.value.length > 0)
-                    {
+                    // if(controller.userList.value.length > 0)
+                    // {
                       var a= jsonDecode(val);
-                      print("5555555555555${a}");
+                      print("55555555555eeeeeeeeeeee55${a}");
 
                       for(var i =0;i<a.length;i++)
                         {
@@ -196,7 +196,7 @@ class CommonUserSelection extends GetView<CommonUserSelectionController> {
                       // controller.selectedClassName.value = val['className'].toString();
                       controller.update();
                       //controller.getSectionList();
-                    }
+                    // }
 
                   },
                 ),
