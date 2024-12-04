@@ -185,46 +185,34 @@ class ContentBox extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  event.featureImage ?? '',
-                  fit: BoxFit.contain,
-                  width: double.infinity,
-                  height: double.infinity,
-                  errorBuilder: (context, error, stackTrace) => Image.asset(
-                    "assets/projectImages/no_data.png",
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+          Image.network(
+            event.featureImage ?? '',
+            fit: BoxFit.contain,
+            //width: double.infinity,
+          // height: double.infinity,
+            errorBuilder: (context, error, stackTrace) => Image.asset(
+              "assets/projectImages/no_data.png",
+              fit: BoxFit.cover,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Html(
-              data: event.description ?? '',
-              style: {
-                "p": Style(
-                  fontSize: FontSize(12.0),
-                  color: Colors.grey.shade800,
-                  lineHeight: LineHeight(1),
-                ),
-                "h1": Style(
-                  fontSize: FontSize(18.0),
-                  fontWeight: FontWeight.bold,
-                  color: Colors.teal,
-                ),
-                "h2": Style(
-                  fontSize: FontSize(16.0),
-                  fontWeight: FontWeight.bold,
-                  color: Colors.teal.shade700,
-                ),
-              },
-            ),
+          Html(
+            data: event.description ?? '',
+            style: {
+              "body": Style(
+                fontSize: FontSize(13.0),
+                color: Colors.black,
+              ),
+              "h1": Style(
+                fontSize: FontSize(12.0),
+                fontWeight: FontWeight.bold,
+                color: Colors.teal,
+              ),
+              "h2": Style(
+                fontSize: FontSize(12.0),
+                fontWeight: FontWeight.bold,
+                color: Colors.teal.shade700,
+              ),
+            },
           ),
           SizedBox(height: 22),
           Align(

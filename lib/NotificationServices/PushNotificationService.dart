@@ -11,8 +11,6 @@ import '../core/app_export.dart';
 import '../presentation/notifications/controller/NotificationController.dart';
 import 'NotificationController.dart';
 
-
-
 // Top-level function to handle background messages
 Future<void> backgroundMessageHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
@@ -35,38 +33,33 @@ void showNotification(String title, String body) {
   if (imgElement != null) {
     firstImageUrl = imgElement.attributes['src'];
     print("eeeee${firstImageUrl}");
-    if(firstImageUrl != null)
-      {
-
-        if(firstImageUrl == 'https://rksss.avadhconnect.com/uploads/gallery/media/1733308918-245842746675031f6251bb!600_300.jpg')
-          {
-            firstImageUrl = 'assets://assets/projectImages/leavepage.jpg';
-          }
-        NotificationHelperController.createNewNotificationWithFCmForImage(randomNumber, "alerts", title, textContent,firstImageUrl);
+    if (firstImageUrl != null) {
+      if (firstImageUrl ==
+          'https://rksss.avadhconnect.com/uploads/gallery/media/1733308918-245842746675031f6251bb!600_300.jpg') {
+        firstImageUrl = 'assets://assets/projectImages/leavepage.jpg';
       }
-    else
-      {
-        NotificationHelperController.createNewNotificationWithFCm(randomNumber, "alerts", title, body);
-      }
-
-  }
-  else
-    {
-      NotificationHelperController.createNewNotificationWithFCm(randomNumber, "alerts", title, body);
+      NotificationHelperController.createNewNotificationWithFCmForImage(
+          randomNumber, "alerts", title, textContent, firstImageUrl);
+    } else {
+      NotificationHelperController.createNewNotificationWithFCm(
+          randomNumber, "alerts", title, body);
     }
+  } else {
+    NotificationHelperController.createNewNotificationWithFCm(
+        randomNumber, "alerts", title, body);
+  }
 
   // Assuming NotificationHelperController can be accessed here
-
 
   // Ensure GetX is properly initialized to manage Get.put()
   if (Get.isRegistered<NotificationController>()) {
     NotificationController controller = Get.find();
     controller.AddNewNotification(randomNumber, title, body);
   } else {
-    Get.put(NotificationController()).AddNewNotification(randomNumber, title, body);
+    Get.put(NotificationController())
+        .AddNewNotification(randomNumber, title, body);
   }
 }
-
 
 class PushNotificationService {
   FirebaseMessaging _fcm = FirebaseMessaging.instance;
@@ -84,7 +77,8 @@ class PushNotificationService {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       print('User granted provisional permission');
     } else {
       print('User denied or has not accepted permission');
@@ -118,7 +112,6 @@ class PushNotificationService {
     return token;
   }
 }
-
 
 // class PushNotificationService {
 //   FirebaseMessaging _fcm = FirebaseMessaging.instance;

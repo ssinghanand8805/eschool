@@ -797,7 +797,7 @@ void showResponsiveImageDialog(List<BannerDetails> mediaItems) {
       child: LayoutBuilder(
         builder: (context, constraints) {
           double dialogWidth = MediaQuery.of(context).size.width * 0.85;
-          double dialogHeight = MediaQuery.of(context).size.height * 0.65;
+          double dialogHeight = MediaQuery.of(context).size.height * 0.45;
 
           return StatefulBuilder(
             builder: (context, setState) {
@@ -836,44 +836,37 @@ void showResponsiveImageDialog(List<BannerDetails> mediaItems) {
                             ),
 
                             // Image Section
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                child: Container(
-                                  height: 200,
-                                  width:200,
-                                  child: Image.network(
-                                    item.featureImage ?? '',
-                                    fit: BoxFit.contain,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    errorBuilder: (context, error, stackTrace) => Image.asset(
-                                      "assets/projectImages/no_data.png",
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.network(
+                                item.featureImage ?? '',
+                                fit: BoxFit.contain,
+                                //width: double.infinity,
+                                // height: double.infinity,
+                                errorBuilder: (context, error, stackTrace) => Image.asset(
+                                  "assets/projectImages/no_data.png",
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
 
                             // HTML Description Section
                             Padding(
-                              padding: const EdgeInsets.all(16.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: Html(
                                 data: item.description ?? '',
                                 style: {
-                                  "p": Style(
-                                    fontSize: FontSize(14.0),
-                                    color: Colors.grey.shade800,
-                                    lineHeight: LineHeight(1.5),
+                                  "body": Style(
+                                    fontSize: FontSize(13.0),
+                                    color: Colors.black,
                                   ),
                                   "h1": Style(
-                                    fontSize: FontSize(18.0),
+                                    fontSize: FontSize(12.0),
                                     fontWeight: FontWeight.bold,
                                     color: Colors.teal,
                                   ),
                                   "h2": Style(
-                                    fontSize: FontSize(16.0),
+                                    fontSize: FontSize(12.0),
                                     fontWeight: FontWeight.bold,
                                     color: Colors.teal.shade700,
                                   ),
