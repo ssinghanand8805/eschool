@@ -228,7 +228,8 @@ class NotificationHelperController {
             title: title,
             body: body,
             bigPicture: image,
-            notificationLayout: NotificationLayout.Default,
+            largeIcon: image,
+            notificationLayout: NotificationLayout.BigPicture,
             payload: {'notificationId': '1234567890'}),
    );
   }

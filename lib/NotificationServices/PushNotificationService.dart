@@ -12,6 +12,7 @@ import '../presentation/notifications/controller/NotificationController.dart';
 import 'NotificationController.dart';
 
 // Top-level function to handle background messages
+@pragma('vm:entry-point')
 Future<void> backgroundMessageHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
   showNotification(message.data['title']!, message.data['body']!);
@@ -88,6 +89,7 @@ class PushNotificationService {
   Future<String?> initialize() async {
     print("Requesting permission...");
     await requestPermission();
+    NotificationHelperController.initializeLocalNotifications();
     FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
@@ -96,7 +98,7 @@ class PushNotificationService {
         showNotification(message.data['title']!, message.data['body']!);
       }
     });
-    NotificationHelperController.initializeLocalNotifications();
+
     return await getToken();
   }
 
