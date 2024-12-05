@@ -88,21 +88,66 @@ class SendEmailController extends GetxController{
   sendEmail()
   async {
    var ctrl = Get.put(CommonUserSelectionController());
-   var body = {};
+   Map<String,String> body = {};
    print("eeeeeeee${ctrl.selectedUserType.value.toString()}");
    if(ctrl.selectedUserType.value.toString() == 'group')
      {
+       body['template_id'] = selectedSmsTemplate.value['id'];
+       body['group_title'] = titleC.value.text.toString();
+       body['group_message'] = messageC.value.text.toString();
 
+       var SelectedGroup = ctrl.selectedGroup.value;
+
+       body['user'] = SelectedGroup.join(',');
+       body['group_send_by'] = 'email';
+       body['send_type'] = 'send_now';
+       List<MultipartFile> files = [];
+       if(selectedImageName.value != null && await selectedImageName.value!.exists())
+       {
+
+         var f = MultipartFile(selectedImageName.value, filename: selectedImageName.value?.path.split('/').last ?? "");
+         files.add(f);
+       }
+       FormData bodyForm = FormData({
+         'files[]': files,
+       });
+       bodyForm.fields.addAll(body.entries);
+
+       var responsebody = await apiRespository.postApiCallByFormData(Constants.send_group, bodyForm);
+       print(responsebody.body);
      }
    else if(ctrl.selectedUserType.value.toString() == 'class')
    {
+     body['template_id'] = selectedSmsTemplate.value['id'];
+     body['class_title'] = titleC.value.text.toString();
+     body['class_message'] = messageC.value.text.toString();
 
+     var SelectedClassId = ctrl.selectedClassId.value;
+     var selectedSectionId = ctrl.selectedClassSectionId.value;
+     body['class_id'] = SelectedClassId;
+     body['user'] = selectedSectionId.join(',');
+     body['class_send_by'] = 'email';
+     body['class_send_type'] = 'send_now';
+     List<MultipartFile> files = [];
+     if(selectedImageName.value != null && await selectedImageName.value!.exists())
+     {
+
+       var f = MultipartFile(selectedImageName.value, filename: selectedImageName.value?.path.split('/').last ?? "");
+       files.add(f);
+     }
+     FormData bodyForm = FormData({
+       'files[]': files,
+     });
+     bodyForm.fields.addAll(body.entries);
+
+     var responsebody = await apiRespository.postApiCallByFormData(Constants.send_class, bodyForm);
+     print(responsebody.body);
    }
    else if(ctrl.selectedUserType.value.toString() == 'individual')
    {
      body['template_id'] = selectedSmsTemplate.value['id'];
      body['individual_title'] = titleC.value.text.toString();
-     body['individual_message'] = messageToC.value.text.toString();
+     body['individual_message'] = messageC.value.text.toString();
 
      var AllUsers = ctrl.selectedUserList.value;
      List us = [];
@@ -121,7 +166,19 @@ class SendEmailController extends GetxController{
      body['user_list'] = jsonEncode(us);
      body['individual_send_by'] = 'email';
      body['individual_send_type'] = 'send_now';
-     var responsebody = await apiRespository.postApiCallByFormData(Constants.send_individual, body);
+     List<MultipartFile> files = [];
+     if(selectedImageName.value != null && await selectedImageName.value!.exists())
+     {
+
+       var f = MultipartFile(selectedImageName.value, filename: selectedImageName.value?.path.split('/').last ?? "");
+       files.add(f);
+     }
+     FormData bodyForm = FormData({
+       'files[]': files,
+     });
+     bodyForm.fields.addAll(body.entries);
+
+     var responsebody = await apiRespository.postApiCallByFormData(Constants.send_individual, bodyForm);
      print(responsebody.body);
 
    }

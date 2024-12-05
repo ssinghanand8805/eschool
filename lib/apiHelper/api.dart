@@ -91,13 +91,20 @@ async {
       return  Response(statusCode: 1,statusText: e.toString());
     }
   }
+  void printFormData(FormData formData) {
+    formData.fields.forEach((field) {
+      print("${field.key}: ${field.value}");
+    });
 
+
+  }
   Future<Response> postDataFormData(uri,body)async{
 
     await loadHeader();
     try{
       print("Api Url  $baseUrl$uri");
       print("Request body $body");
+      printFormData(body);
       print("token "+ UserData().getAccessToken);
 
       Response response=await post(uri, body,headers: _mainHeader,contentType: "application/x-www-form-urlencoded");

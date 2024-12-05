@@ -200,6 +200,8 @@ class Constants {
   static const String email_template = '/mailsms/email_template';
   static const String sms_template = '/mailsms/sms_template';
   static const String send_individual = '/mailsms/send_individual';
+  static const String send_group = '/mailsms/send_group';
+  static const String send_class = '/mailsms/send_class';
 
   /// leave request
   static const String getLeaverequest = '/leaverequest/leaverequest';

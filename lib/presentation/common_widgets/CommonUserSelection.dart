@@ -71,8 +71,11 @@ class CommonUserSelection extends GetView<CommonUserSelectionController> {
                   print("5555555555555");
                   print(jsonDecode(val));
                   var data = jsonDecode(val);
-                  controller.selectedGroup.value =
-                      data.map((map) => map['id'].toString()).toList();;
+                  for(var i=0;i<data.length;i++)
+                    {
+                      controller.selectedGroup.value.add(data[i]['id'].toString());
+                    }
+
 
                   controller.update();
                 }
@@ -124,8 +127,12 @@ class CommonUserSelection extends GetView<CommonUserSelectionController> {
 
 
                         var data = jsonDecode(val);
-                        controller.selectedClassSectionId.value =
-                            data.map((map) => map['id'].toString()).toList();;
+                        for(var i=0;i<data.length;i++)
+                        {
+                          controller.selectedClassSectionId.value.add(data[i]['id'].toString());
+                        }
+                        // controller.selectedClassSectionId.value =
+                        //     data.map((map) => map['id'].toString()).toList();;
 
                         controller.update();
 
