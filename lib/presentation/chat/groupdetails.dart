@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
 import 'controller/ChatController.dart';
+import 'model/Chat.dart';
 
 class GroupDetailsPage extends GetView<ChatController> {
   GroupDetailsPage({Key? key})
@@ -24,32 +25,32 @@ class GroupDetailsPage extends GetView<ChatController> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(10.0),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
               child: Column(
                 children: [
-                  controller.chat.group!.photoUrl!.isNotEmpty
+                  controller.photoUrl!.isNotEmpty
                       ? CircleAvatar(
                           radius: 50,
                           backgroundImage:
-                              NetworkImage(controller.chat.group!.photoUrl!))
+                              NetworkImage(controller.photoUrl!))
                       : CircleAvatar(
                           radius: 50,
                           backgroundImage:
                               AssetImage("assets/projectImages/user.jpg")),
                   SizedBox(height: 10),
                   Text(
-                    controller.chat.group!.name.toString().capitalizeFirst!,
+                    controller.chatName.toString().capitalizeFirst!,
                     style: theme.textTheme.bodyMedium!
                         .copyWith(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 5),
                   Text(
-                    controller.chat.group!.createdBy.toString(),
+                    controller.groupCreatedBy.toString(),
                     style: theme.textTheme.bodyMedium!
                         .copyWith(fontSize: 13, color: theme.unselectedWidgetColor),
                   ),
@@ -65,8 +66,8 @@ class GroupDetailsPage extends GetView<ChatController> {
             ),
             SizedBox(height: 5),
             Text(
-              controller.chat.group!.description != null
-                  ? controller.chat.group!.description
+              controller.groupDescription.isNotEmpty
+                  ? controller.groupDescription
                       .toString()
                       .capitalizeFirst!
                   : 'No description added yet...',
@@ -78,14 +79,14 @@ class GroupDetailsPage extends GetView<ChatController> {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {},
-                    child: Text('Members 3'),
+                    child: Text('Members ${controller.groupDetails!.users!.length}'),
                   ),
                 ),
                 SizedBox(width: 10),
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {},
-                    child: Text('Media'),
+                    child: Text('Media '),
                   ),
                 ),
               ],
@@ -96,22 +97,22 @@ class GroupDetailsPage extends GetView<ChatController> {
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 5),
-            MemberTile(
-              name: 'Super Admin',
-              isOwner: true,
+            controller.groupDetails!.users == null ? Text("No Member") :
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                  itemCount: controller.groupDetails!.users!.length,
+              itemBuilder: (context, index)  {
+               Users user = controller.groupDetails!.users![index];
+
+                  return MemberTile(
+                    name: user.name!,
+                    isOwner: controller.groupDetails!.createdByUser!.id! == user.id!,
+                  );
+                }
+              ),
             ),
-            MemberTile(
-              name: 'user1',
-            ),
-            MemberTile(
-              name: 'user2',
-            ),
-            MemberTile(
-              name: 'user3',
-            ),
-            MemberTile(
-              name: 'user4',
-            ),
+
 
             SizedBox(height: 30),
             Padding(
@@ -119,7 +120,7 @@ class GroupDetailsPage extends GetView<ChatController> {
               child: SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () { Get.toNamed('/new_Chat',arguments: {'isAddingMember':true});},
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     shape: RoundedRectangleBorder(
@@ -143,7 +144,11 @@ class GroupDetailsPage extends GetView<ChatController> {
               child: SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+
+                    // Navigator.pop(context) ;
+
+                    },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     shape: RoundedRectangleBorder(

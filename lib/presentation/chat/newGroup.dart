@@ -6,18 +6,16 @@ import 'dart:io';
 import 'package:learnladderfaculity/core/app_export.dart';
 import 'package:learnladderfaculity/widgets/customTextField.dart';
 
-class NewGroupPage extends StatefulWidget {
-  @override
-  _NewGroupPageState createState() => _NewGroupPageState();
-}
+import 'controller/GroupController.dart';
 
-class _NewGroupPageState extends State<NewGroupPage> {
-  File? _imageFile;
+
+
+class NewGroupPage extends GetView<GroupController> {
+
   final ImagePicker _picker = ImagePicker();
 
-  String _groupType = 'Open';
-  String _privacy = 'Public';
-  Future<void> _pickImage() async {
+
+  Future<void> _pickImage(context) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -61,9 +59,9 @@ class _NewGroupPageState extends State<NewGroupPage> {
                       source: ImageSource.camera,
                     );
                     if (pickedFile != null) {
-                      setState(() {
-                        _imageFile = File(pickedFile.path);
-                      });
+
+                      controller.imageFile.value = File(pickedFile.path);
+                      controller.update();
                     }
                   },
                 ),
@@ -88,9 +86,8 @@ class _NewGroupPageState extends State<NewGroupPage> {
                       source: ImageSource.gallery,
                     );
                     if (pickedFile != null) {
-                      setState(() {
-                        _imageFile = File(pickedFile.path);
-                      });
+                      controller.imageFile.value = File(pickedFile.path);
+                      controller.update();
                     }
                   },
                 ),
@@ -102,7 +99,7 @@ class _NewGroupPageState extends State<NewGroupPage> {
     );
   }
 
-  TextEditingController controller = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +119,7 @@ class _NewGroupPageState extends State<NewGroupPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomTextField(
-                controller: controller,
+                controller: controller.txtGrpName.value,
                 hint: 'Group Name',
                 title: 'Group Name',
               ),
@@ -138,8 +135,8 @@ class _NewGroupPageState extends State<NewGroupPage> {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: _imageFile != null
-                        ? FileImage(_imageFile!)
+                    backgroundImage:  controller.imageFile.value != null
+                        ? FileImage(controller.imageFile.value!)
                         : AssetImage('assets/images/img.png') as ImageProvider,
                     backgroundColor: Colors.grey[200],
                   ),
@@ -150,7 +147,7 @@ class _NewGroupPageState extends State<NewGroupPage> {
                       child: SizedBox(
                         width: double.infinity,
                         child: TextButton(
-                          onPressed: _pickImage,
+                          onPressed: () { _pickImage(context) ; },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.symmetric(vertical: 10),
                             shape: RoundedRectangleBorder(
@@ -185,11 +182,10 @@ class _NewGroupPageState extends State<NewGroupPage> {
                   Expanded(
                     child: RadioListTile<String>(
                       value: 'Open',
-                      groupValue: _groupType,
+                      groupValue: controller.groupType.value,
                       onChanged: (value) {
-                        setState(() {
-                          _groupType = value!;
-                        });
+                        controller.groupType.value = value.toString();
+                        controller.update();
                       },
                       title: Row(
                         children: [
@@ -203,11 +199,10 @@ class _NewGroupPageState extends State<NewGroupPage> {
                   Expanded(
                     child: RadioListTile<String>(
                       value: 'Close',
-                      groupValue: _groupType,
+                      groupValue: controller.groupType.value,
                       onChanged: (value) {
-                        setState(() {
-                          _groupType = value!;
-                        });
+                        controller.groupType.value = value.toString();
+                        controller.update();
                       },
                       title: Row(
                         children: [
@@ -233,11 +228,10 @@ class _NewGroupPageState extends State<NewGroupPage> {
                   Expanded(
                     child: RadioListTile<String>(
                       value: 'Public',
-                      groupValue: _privacy,
+                      groupValue: controller.privacy.value,
                       onChanged: (value) {
-                        setState(() {
-                          _privacy = value!;
-                        });
+                        controller.privacy.value = value.toString();
+                        controller.update();
                       },
                       title: Row(
                         children: [
@@ -251,11 +245,10 @@ class _NewGroupPageState extends State<NewGroupPage> {
                   Expanded(
                     child: RadioListTile<String>(
                       value: 'Private',
-                      groupValue: _privacy,
+                      groupValue: controller.privacy.value,
                       onChanged: (value) {
-                        setState(() {
-                          _privacy = value!;
-                        });
+                        controller.privacy.value = value.toString();
+                        controller.update();
                       },
                       title: Row(
                         children: [
@@ -274,7 +267,10 @@ class _NewGroupPageState extends State<NewGroupPage> {
                 child: SizedBox(
                   width: double.infinity,
                   child: TextButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () async {
+                      await controller.createGroup();
+                      Navigator.pop(context);
+                      },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       shape: RoundedRectangleBorder(

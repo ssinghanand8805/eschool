@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/apiHelper/chat_api_repo.dart';
 import 'package:learnladderfaculity/apiHelper/userData.dart';
-import 'package:learnladderfaculity/presentation/profile/model/Profile.dart';
 import '../../../apiHelper/Constants.dart';
-import '../../../apiHelper/popular_product_repo.dart';
 import '../../../core/app_export.dart';
-import '../../login_screen/models/ChatUser.dart';
+import '../../login_screen/models/ChatUser.dart' as schoolUser;
 import '../../login_screen/models/Faculity.dart';
 import '../model/Chat.dart';
-import '../model/RecentChat.dart' as rec;
+
 import 'ChatGlobalController.dart';
 import 'RecentChatController.dart';
 
@@ -23,9 +21,21 @@ class ChatController extends GetxController {
   final ChatGlobalController chatGlobalControllerService = Get.put(ChatGlobalController());
   // late Rx<Chat> ChatModelObj;
   late String chatId ;
-  late rec.Conversations chat ;
+  // late rec.Conversations chat ;
   late int isGroup ;
   late String chatUserId ;
+  late String photoUrl ;
+  late String chatName ;
+  late String chatLastSeen ;
+  late String groupCreatedBy ;
+  late String groupDescription ;
+
+  late String chatUserAbout ;
+  late String chatUserPhone ;
+  late String chatUserEmail ;
+  late bool isAllowToSend ;
+  User? userDetails;
+  Group? groupDetails;
   Future<void> fetchDataFuture = Future.value(); // Initialize fetchDataFuture
   Rx<String> replyMessageId = "".obs;
   Rx<String> replyMessage = "".obs;
@@ -47,9 +57,25 @@ class ChatController extends GetxController {
     UserData usersData = UserData();
     Faculity? f =  usersData.getFaculity();
     chatUserId = f!.chatUserId.toString() ?? "";
-    chat = Get.arguments['chat'];
+    // chat = Get.arguments['chat'];
     isGroup = Get.arguments['isGroup'];
     chatId = Get.arguments['chatId'];
+    photoUrl = Get.arguments['photoUrl'];
+    chatName = Get.arguments['chatName'];
+    chatLastSeen = Get.arguments['lastSeen'];
+    isAllowToSend = Get.arguments['isAllowToSend'];
+
+
+    groupCreatedBy = Get.arguments['groupCreatedBy'];
+    groupDescription = Get.arguments['groupDescription'];
+
+    chatUserAbout = Get.arguments['chatUserAbout'];
+    chatUserPhone = Get.arguments['chatUserPhone'];
+    chatUserEmail = Get.arguments['chatUserEmail'];
+
+
+
+
     fetchDataFuture = getData();
     fetchDataFuture.then((_) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -146,11 +172,17 @@ class ChatController extends GetxController {
     // var tt = getBoolVariables(data.body['data']['user']);
     // print(tt);
     chatGlobalControllerService.ChatModelObj.value = Chat.fromJson(data.body);
+    userDetails = chatGlobalControllerService.ChatModelObj.value.data!.user;
+    groupDetails =  chatGlobalControllerService.ChatModelObj.value.data!.group;
     int conLength = chatGlobalControllerService.ChatModelObj.value.data!.conversations!.length;
-    Conversations topMsg = chatGlobalControllerService.ChatModelObj.value.data!.conversations![conLength - 1];
+    if(conLength != 0)
+      {
+        Conversations topMsg = chatGlobalControllerService.ChatModelObj.value.data!.conversations![conLength - 1];
 
-    topMessageId = topMsg.id.toString();
-    print("LLLLAAAASSSTTT${topMessageId}");
+        topMessageId = topMsg.id.toString();
+        print("LLLLAAAASSSTTT${topMessageId}");
+      }
+
     getUnreadMessagesId();
     _updateFlattenedMessages();
     update();
@@ -270,7 +302,7 @@ class ChatController extends GetxController {
   sendMessage(String message)
   async {
     UserData usersData = UserData();
-    ChatUser? chatUser = usersData.getChatUser();
+    schoolUser.ChatUser? chatUser = usersData.getChatUser();
     if(chatUser == null)
       {
         print("SSSSSSSS${chatUser}");

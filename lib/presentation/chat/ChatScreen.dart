@@ -44,7 +44,7 @@ class ChatScreen extends GetView<ChatController> {
         backgroundColor: Colors.green.shade200,
         title: InkWell(
           onTap: () {
-            if (controller.chat.isGroup == 1) {
+            if (controller.isGroup == 1) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -73,9 +73,7 @@ class ChatScreen extends GetView<ChatController> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 7, 0, 7),
                 child: CircleAvatar(
-                  backgroundImage: controller.chat.isGroup == 1
-                      ? NetworkImage(controller.chat.group!.photoUrl!)
-                      : NetworkImage(controller.chat.user!.photoUrl!),
+                  backgroundImage: NetworkImage(controller.photoUrl),
                   radius: 20, // Adjust size as needed
                 ),
               ),
@@ -88,18 +86,16 @@ class ChatScreen extends GetView<ChatController> {
                     child: Row(
                       children: [
                         Text(
-                          controller.chat.isGroup == 1
-                              ? controller.chat.group!.name!.capitalizeFirst!
-                              : controller.chat.user!.name!.capitalizeFirst!,
+                          controller.chatName!.capitalizeFirst!,
                           style: theme.textTheme.bodyMedium,
                         ),
                       ],
                     ),
                   ),
                   Text(
-                    controller.chat.isGroup == 1
+                    controller.isGroup == 1
                         ? 'Tap here for group info'
-                        : 'Last seen: ${controller.chat.user!.lastSeen}',
+                        : 'Last seen: ${controller.chatLastSeen}',
                     style: theme.textTheme.bodySmall!.copyWith(
                       color: Colors.grey[600],
                     ),
@@ -184,9 +180,9 @@ class ChatScreen extends GetView<ChatController> {
                           },
                         ),
                       ),
-                      controller.chat.group != null &&
-                              controller.chat.group!.groupType == 2
-                          ? Padding(
+                      // controller.chat.group != null &&
+                      //         controller.chat.group!.groupType == 2
+                      controller.isAllowToSend   ? Padding(
                               padding: const EdgeInsets.only(bottom: 18.0),
                               child: Text(
                                 "Only Admin can send messages",

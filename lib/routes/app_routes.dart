@@ -135,7 +135,11 @@ import '../presentation/attendance_bydate/attendance_bydate_view.dart';
 import '../presentation/attendance_bydate/binding/attendance_bydate.dart';
 import '../presentation/chat/ChatScreen.dart';
 import '../presentation/chat/binding/chat.dart';
+import '../presentation/chat/binding/newChat.dart';
+import '../presentation/chat/binding/newGroupCreate.dart';
 import '../presentation/chat/binding/recentchat.dart';
+import '../presentation/chat/newChat.dart';
+import '../presentation/chat/newGroup.dart';
 import '../presentation/dashboard/binding/dashboard_binding.dart';
 import '../presentation/dashboard/dashboard_screen.dart';
 import '../presentation/download_center/Content Share List/Binding/content_share_list_binding.dart';
@@ -284,6 +288,9 @@ class AppRoutes {
   static const String media_manager = '/media_manager';
 
 
+  static const String chatUsersPage = '/new_Chat';
+  static const String createGroupForChatPage = '/createGroupForChat';
+
   static List<GetPage> pages = [
 
 
@@ -293,6 +300,17 @@ class AppRoutes {
       name: enterSchoolUrlRoute,
       page: () => SchoolUrl(),
       bindings: [SchoolUrlBinding()],
+    ),
+    GetPage(
+      name: chatUsersPage,
+      page: () => NewConversationsPage(),
+      bindings: [NewChatBinding()],
+    ),
+
+    GetPage(
+      name: createGroupForChatPage,
+      page: () => NewGroupPage(),
+      bindings: [NewGroupCreateBinding()],
     ),
     GetPage(
       name: sScreen,

@@ -35,15 +35,16 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
 
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return NewGroupPage();
-                  },
-                ),
-              );
-              sendEvent();
+              Get.toNamed("/createGroupForChat");
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) {
+              //       return NewGroupPage();
+              //     },
+              //   ),
+              // );
+              // sendEvent();
             },
             icon: Icon(
               Icons.add,
@@ -80,11 +81,40 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
                                     ? chat.group!.id!
                                     : chat.user!.id!.toString();
                                 final int isGroupChat = chat.isGroup!;
+                                  bool isAllowSend = chat.group != null && chat.group!.groupType == 2 ? true : false;
+
+
+                                String lastSeen = chat.isGroup == 1
+                                    ? 'Tap here for group info'
+                                    : 'Last seen: ${chat.user!.lastSeen}';
+
+                                String chatName = chat.isGroup == 1 ? chat.group!.name!.capitalizeFirst!  : chat.user!.name!.capitalizeFirst! ;
+
+                              String photoUrl =    chat.isGroup == 1 ?  chat.group!.photoUrl! : chat.user!.photoUrl!;
+
+                                String groupCreatedBy = chat.isGroup == 1 ? chat.group!.createdBy.toString()  : '' ;
+                                String groupDescription = chat.isGroup == 1 ? chat.group!.description.toString()  : '' ;
+                                String chatUserAbout = chat.isGroup != 1 ? chat.user!.about.toString()  : '' ;
+                                String chatUserPhone = chat.isGroup != 1 ? chat.user!.phone.toString()  : '' ;
+                                String chatUserEmail = chat.isGroup != 1 ? chat.user!.email.toString()  : '' ;
+
+
+
 
                                 Get.toNamed('/chatMain', arguments: {
                                   'chat': chat,
                                   'isGroup': isGroupChat,
-                                  "chatId": chatID
+                                  "chatId": chatID,
+                                  "photoUrl":photoUrl,
+                                  "chatName":chatName,
+                                  "lastSeen":lastSeen,
+                                  "isAllowToSend":isAllowSend,
+
+                                  "groupCreatedBy":groupCreatedBy,
+                                  "groupDescription":groupDescription,
+                                  "chatUserAbout":chatUserAbout,
+                                  "chatUserPhone":chatUserPhone,
+                                  "chatUserEmail":chatUserEmail,
                                 });
 
                               },
@@ -97,14 +127,15 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
           }),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return NewConversationsPage();
-                },
-              ),
-            );
+            Get.toNamed('/new_Chat',arguments: {'isAddingMember':false});
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) {
+            //       return NewConversationsPage();
+            //     },
+            //   ),
+            // );
           },
           tooltip: 'New Chat',
           shape: CircleBorder(),
