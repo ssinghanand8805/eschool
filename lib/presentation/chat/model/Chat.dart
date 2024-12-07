@@ -316,7 +316,7 @@ class Group {
   String? groupCreatedBy;
   List<Users>? users;
   List<UsersWithTrashed>? usersWithTrashed;
-  List<String>? lastConversations;
+  List<Conversations>? lastConversations;
   CreatedByUser? createdByUser;
 
   Group(
@@ -364,9 +364,9 @@ class Group {
       });
     }
     if (json['last_conversations'] != null) {
-      lastConversations = <String>[];
+      lastConversations = <Conversations>[];
       json['last_conversations'].forEach((v) {
-        lastConversations!.add(v);
+        lastConversations!.add(new Conversations.fromJson(v));
       });
     }
     createdByUser = json['created_by_user'] != null

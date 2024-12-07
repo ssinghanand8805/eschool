@@ -57,9 +57,9 @@ class UserProfileModal extends StatelessWidget {
                 margin: EdgeInsets.symmetric(vertical: 5),
                 child: Column(
                   children: [
-                    _buildInfoSection('Bio', controller.chatUserAbout),
-                    _buildInfoSection('Phone', controller.chatUserPhone ),
-                    _buildInfoSection('Email', controller.chatUserEmail),
+                    _buildInfoSection('Bio', controller.chatUserAbout.value),
+                    _buildInfoSection('Phone', controller.chatUserPhone.value ),
+                    _buildInfoSection('Email', controller.chatUserEmail.value),
                   ],
                 ),
               ),
@@ -99,14 +99,14 @@ class UserProfileModal extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 40,
-          backgroundImage: NetworkImage(controller.photoUrl),
+          backgroundImage: NetworkImage(controller.photoUrl.value),
         ),
         SizedBox(width: 16),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              controller.chatName,
+              controller.chatName.value,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 4),

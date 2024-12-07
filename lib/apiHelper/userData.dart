@@ -230,7 +230,7 @@ class UserData extends GetxController {
     else
       {
         Faculity fac = Faculity.fromJson(data.body);
-        getChatDetail('sam@sam.com','12345678');
+        getChatDetail(getLastUserId,'12345678');
         // UserData usersData = UserData();
         saveFaculity(fac);
         if(fac.roles!.roleId.toString() == '7')

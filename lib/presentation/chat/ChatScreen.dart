@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/core/app_export.dart';
@@ -73,7 +74,7 @@ class ChatScreen extends GetView<ChatController> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 7, 0, 7),
                 child: CircleAvatar(
-                  backgroundImage: NetworkImage(controller.photoUrl),
+                  backgroundImage: NetworkImage(controller.photoUrl.value),
                   radius: 20, // Adjust size as needed
                 ),
               ),
@@ -86,7 +87,7 @@ class ChatScreen extends GetView<ChatController> {
                     child: Row(
                       children: [
                         Text(
-                          controller.chatName!.capitalizeFirst!,
+                          controller.chatName.value.capitalizeFirst!,
                           style: theme.textTheme.bodyMedium,
                         ),
                       ],
@@ -182,7 +183,7 @@ class ChatScreen extends GetView<ChatController> {
                       ),
                       // controller.chat.group != null &&
                       //         controller.chat.group!.groupType == 2
-                      controller.isAllowToSend   ? Padding(
+                      controller.isAllowToSend.value   ? Padding(
                               padding: const EdgeInsets.only(bottom: 18.0),
                               child: Text(
                                 "Only Admin can send messages",

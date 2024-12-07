@@ -45,6 +45,21 @@ class NewConversationsPage extends GetView<UserListController>  {
           // _buildBlockedUsersTab(),
         ],
       ),
+      floatingActionButton: Obx ( () { return controller.isAddingMember.value && controller.selectedItems.values.any((value) => value)? FloatingActionButton(
+        onPressed: () {
+         if(controller.callBackFunction != null)
+           {
+             controller.callBackFunction(controller.selectedItems);
+             Get.back();
+           }
+        },
+        tooltip: 'Add',
+        shape: CircleBorder(),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        child: Icon(Icons.save),
+      ) : SizedBox(); } ),
+
     );
   }
 

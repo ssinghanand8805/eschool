@@ -11,6 +11,8 @@ class GroupDetailsPage extends GetView<ChatController> {
 
   @override
   Widget build(BuildContext context) {
+    // print(controller.groupDetails.value!.users!.first.toJson());
+    // print(controller.groupDetails.value!.users!.last.toJson());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green.shade200,
@@ -25,7 +27,7 @@ class GroupDetailsPage extends GetView<ChatController> {
           ),
         ],
       ),
-      body: Padding(
+      body: Obx(() => Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,24 +35,24 @@ class GroupDetailsPage extends GetView<ChatController> {
             Center(
               child: Column(
                 children: [
-                  controller.photoUrl!.isNotEmpty
+                  controller.photoUrl.value.isNotEmpty
                       ? CircleAvatar(
-                          radius: 50,
-                          backgroundImage:
-                              NetworkImage(controller.photoUrl!))
+                      radius: 50,
+                      backgroundImage:
+                      NetworkImage(controller.photoUrl.value))
                       : CircleAvatar(
-                          radius: 50,
-                          backgroundImage:
-                              AssetImage("assets/projectImages/user.jpg")),
+                      radius: 50,
+                      backgroundImage:
+                      AssetImage("assets/projectImages/user.jpg")),
                   SizedBox(height: 10),
                   Text(
-                    controller.chatName.toString().capitalizeFirst!,
+                    controller.chatName.value.toString().capitalizeFirst!,
                     style: theme.textTheme.bodyMedium!
                         .copyWith(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 5),
                   Text(
-                    controller.groupCreatedBy.toString(),
+                    controller.groupCreatedBy.value.toString(),
                     style: theme.textTheme.bodyMedium!
                         .copyWith(fontSize: 13, color: theme.unselectedWidgetColor),
                   ),
@@ -66,10 +68,10 @@ class GroupDetailsPage extends GetView<ChatController> {
             ),
             SizedBox(height: 5),
             Text(
-              controller.groupDescription.isNotEmpty
-                  ? controller.groupDescription
-                      .toString()
-                      .capitalizeFirst!
+              controller.groupDescription.value.isNotEmpty
+                  ? controller.groupDescription.value
+                  .toString()
+                  .capitalizeFirst!
                   : 'No description added yet...',
               style: theme.textTheme.titleMedium!.copyWith(color: Colors.grey),
             ),
@@ -79,9 +81,9 @@ class GroupDetailsPage extends GetView<ChatController> {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {},
-                    child: Text('Members ${controller.groupDetails!.users!.length}'),
+                    child: Text('Members ${controller.groupDetails.value!.users!.length}'),
                   ),
-                ),
+                ) ,
                 SizedBox(width: 10),
                 Expanded(
                   child: OutlinedButton(
@@ -97,19 +99,90 @@ class GroupDetailsPage extends GetView<ChatController> {
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 5),
-            controller.groupDetails!.users == null ? Text("No Member") :
+            controller.groupDetails.value!.users == null ? Text("No Member") :
             Expanded(
               child: ListView.builder(
-                shrinkWrap: true,
-                  itemCount: controller.groupDetails!.users!.length,
-              itemBuilder: (context, index)  {
-               Users user = controller.groupDetails!.users![index];
-
-                  return MemberTile(
-                    name: user.name!,
-                    isOwner: controller.groupDetails!.createdByUser!.id! == user.id!,
-                  );
-                }
+                  shrinkWrap: true,
+                  itemCount: controller.groupDetails.value!.users!.length,
+                  itemBuilder: (context, index)  {
+                    Users user = controller.groupDetails.value!.users![index];
+                    return  ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.blue,
+                        child: Text(
+                          user.name![0].toUpperCase(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      title: Row(
+                        children: [
+                          Text(user.name!.capitalizeFirst!),
+                          if (controller.groupDetails.value!.createdByUser!.id! == user.id!)
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: SizedBox(
+                                height: 35,
+                                child: Chip(
+                                  label: Text(
+                                    'Owner',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  backgroundColor: Colors.blue,
+                                ),
+                              ),
+                            ),
+                          if (user.roleName! != 'Member')
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: SizedBox(
+                              height: 35,
+                              child: Chip(
+                                label: Text(
+                                  user.roleName!,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      trailing:  PopupMenuButton<String>(
+                        onSelected: (value) {
+                          if(value == 'remove')
+                          {
+                            controller.deleteMemberFromGroup(user.id!.toString());
+                          }
+                          else if(value == 'make_admin')
+                            {
+                              controller.makeMemberAdmin(user.id!.toString());
+                            }
+                          else if(value == 'remove_admin')
+                          {
+                            controller.removeMemberAsAdmin(user.id!.toString());
+                          }
+                          // Handle menu actions
+                        },
+                        itemBuilder: (context) => [
+                          if(controller.groupDetails.value!.createdByUser!.id! != user.id!)
+                          PopupMenuItem(
+                            value: 'remove',
+                            child: Text('Remove Member'),
+                          ),
+                          if(controller.groupDetails.value!.createdByUser!.id! != user.id!)
+                          PopupMenuItem(
+                            value: user.roleName! == 'Member' ? 'make_admin' : 'remove_admin',
+                            child: user.roleName! == 'Member' ? Text('Make Admin') : Text('Remove Admin'),
+                          ),
+                          // if (controller.groupDetails.value!.createdByUser!.id! == user.id! || user.roleName! != 'Member')
+                          //   PopupMenuItem(
+                          //     value: 'make_admin',
+                          //     child: Text('Make Admin'),
+                          //   ),
+                        ],
+                      ),
+                    );
+                  }
               ),
             ),
 
@@ -120,7 +193,10 @@ class GroupDetailsPage extends GetView<ChatController> {
               child: SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () { Get.toNamed('/new_Chat',arguments: {'isAddingMember':true});},
+                  onPressed: () {
+                    Get.toNamed('/new_Chat',arguments: {'isAddingMember':true,'callBackFunction':controller.addNewMemberCallback});
+
+                  },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     shape: RoundedRectangleBorder(
@@ -148,7 +224,7 @@ class GroupDetailsPage extends GetView<ChatController> {
 
                     // Navigator.pop(context) ;
 
-                    },
+                  },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     shape: RoundedRectangleBorder(
@@ -169,62 +245,9 @@ class GroupDetailsPage extends GetView<ChatController> {
             ),
           ],
         ),
-      ),
+      )),
     );
   }
 }
 
-class MemberTile extends StatelessWidget {
-  final String name;
-  final bool isOwner;
-  final ChatController? controller;
 
-  const MemberTile({required this.name, this.isOwner = false, this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: Colors.blue,
-        child: Text(
-          name[0].toUpperCase(),
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      title: Row(
-        children: [
-          Text(name.capitalizeFirst!),
-          if (isOwner)
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: SizedBox(
-                height: 35,
-                child: Chip(
-                  label: Text(
-                    'Owner',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Colors.blue,
-                ),
-              ),
-            ),
-        ],
-      ),
-    trailing:  PopupMenuButton<String>(
-        onSelected: (value) {
-          // Handle menu actions
-        },
-        itemBuilder: (context) => [
-          PopupMenuItem(
-            value: 'remove',
-            child: Text('Remove Member'),
-          ),
-          PopupMenuItem(
-            value: 'make_admin',
-            child: Text('Make Admin'),
-          ),
-        ],
-      ),
-    );
-  }
-}

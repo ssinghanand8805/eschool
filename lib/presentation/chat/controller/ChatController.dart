@@ -24,18 +24,17 @@ class ChatController extends GetxController {
   // late rec.Conversations chat ;
   late int isGroup ;
   late String chatUserId ;
-  late String photoUrl ;
-  late String chatName ;
-  late String chatLastSeen ;
-  late String groupCreatedBy ;
-  late String groupDescription ;
-
-  late String chatUserAbout ;
-  late String chatUserPhone ;
-  late String chatUserEmail ;
-  late bool isAllowToSend ;
+  RxString photoUrl = "".obs ;
+  RxString chatName = "".obs ;
+  RxString  chatLastSeen = "".obs ;
+  RxString groupCreatedBy= "".obs ;
+  RxString groupDescription = "".obs ;
+  RxString chatUserAbout = "".obs ;
+  RxString chatUserPhone = "".obs ;
+  RxString chatUserEmail = "".obs ;
+  RxBool isAllowToSend = false.obs ;
   User? userDetails;
-  Group? groupDetails;
+  Rx<Group?> groupDetails = Rx<Group?>(null);
   Future<void> fetchDataFuture = Future.value(); // Initialize fetchDataFuture
   Rx<String> replyMessageId = "".obs;
   Rx<String> replyMessage = "".obs;
@@ -60,18 +59,18 @@ class ChatController extends GetxController {
     // chat = Get.arguments['chat'];
     isGroup = Get.arguments['isGroup'];
     chatId = Get.arguments['chatId'];
-    photoUrl = Get.arguments['photoUrl'];
-    chatName = Get.arguments['chatName'];
-    chatLastSeen = Get.arguments['lastSeen'];
-    isAllowToSend = Get.arguments['isAllowToSend'];
+    photoUrl.value = Get.arguments['photoUrl'];
+    chatName.value = Get.arguments['chatName'];
+    chatLastSeen.value = Get.arguments['lastSeen'];
+    isAllowToSend.value = Get.arguments['isAllowToSend'];
 
 
-    groupCreatedBy = Get.arguments['groupCreatedBy'];
-    groupDescription = Get.arguments['groupDescription'];
+    groupCreatedBy.value = Get.arguments['groupCreatedBy'];
+    groupDescription.value = Get.arguments['groupDescription'];
 
-    chatUserAbout = Get.arguments['chatUserAbout'];
-    chatUserPhone = Get.arguments['chatUserPhone'];
-    chatUserEmail = Get.arguments['chatUserEmail'];
+    chatUserAbout.value = Get.arguments['chatUserAbout'];
+    chatUserPhone.value = Get.arguments['chatUserPhone'];
+    chatUserEmail.value = Get.arguments['chatUserEmail'];
 
 
 
@@ -101,6 +100,74 @@ class ChatController extends GetxController {
       );
     }
   }
+  Future<void> addNewMemberCallback(Map<String,bool> members)
+  async {
+print("Got Members Map${members}");
+List<String> selectedMemberId = members.entries
+    .where((entry) => entry.value == true)  // Filter entries with true value
+    .map((entry) => entry.key)              // Map to keys
+    .toList();
+    print("Got Members List${selectedMemberId}");
+FormData mainBody = FormData({'members[]':selectedMemberId});
+var data  = await apiRespository.postApiCallByFormData(Constants.groupsCreateForChat+'/'+chatId+'/'+'add-members',mainBody);
+
+Chat newChatDetails = Chat.fromJson(data.body);
+print("Previous User Details${newChatDetails.data!.group!.users!.length}");
+groupDetails.value!.users!.add(newChatDetails.data!.group!.users!.first);
+groupDetails.update((val) {});
+update();
+
+
+  }
+
+  Future<void> deleteMemberFromGroup(String memberId)
+  async {
+
+    FormData mainBody = FormData({});
+    var data  = await apiRespository.postApiCallByFormData(Constants.groupsCreateForChat+'/'+chatId+'/'+'members' + '/'+memberId,mainBody);
+    print(data.body);
+    groupDetails.value!.users!.removeWhere((item) => item.id.toString() == memberId);
+    groupDetails.update((val) {});
+    update();
+
+
+  }
+  Future<void> makeMemberAdmin(String memberId)
+  async {
+
+    FormData mainBody = FormData({});
+    var data  = await apiRespository.postApiCallByFormData(Constants.groupsCreateForChat+'/'+chatId+'/'+'members' + '/'+memberId + '/' + 'make-admin',mainBody);
+    print(data.body);
+    groupDetails.value!.users!.forEach((user) {
+      if (user.id.toString() == memberId) {
+        // Update the desired field
+        user.roleName = 'Admin';  // Example of updating a field
+      }
+    });
+    // groupDetails.value!.users!.removeWhere((item) => item.id.toString() == memberId);
+    groupDetails.update((val) {});
+    update();
+
+
+  }
+  Future<void> removeMemberAsAdmin(String memberId)
+  async {
+
+    FormData mainBody = FormData({});
+    var data  = await apiRespository.postApiCallByFormData(Constants.groupsCreateForChat+'/'+chatId+'/'+'members' + '/'+memberId + '/' + 'dismiss-as-admin',mainBody);
+    print(data.body);
+    groupDetails.value!.users!.forEach((user) {
+      if (user.id.toString() == memberId) {
+        // Update the desired field
+        user.roleName = 'Member';  // Example of updating a field
+      }
+    });
+    groupDetails.update((val) {});
+    update();
+
+
+  }
+
   bool isHtml(String input) {
     // Regular expression to check for common HTML tags
     final htmlTagRegex = RegExp(r'<\/?[a-z][\s\S]*>', caseSensitive: false);
@@ -173,7 +240,7 @@ class ChatController extends GetxController {
     // print(tt);
     chatGlobalControllerService.ChatModelObj.value = Chat.fromJson(data.body);
     userDetails = chatGlobalControllerService.ChatModelObj.value.data!.user;
-    groupDetails =  chatGlobalControllerService.ChatModelObj.value.data!.group;
+    groupDetails.value =  chatGlobalControllerService.ChatModelObj.value.data!.group;
     int conLength = chatGlobalControllerService.ChatModelObj.value.data!.conversations!.length;
     if(conLength != 0)
       {

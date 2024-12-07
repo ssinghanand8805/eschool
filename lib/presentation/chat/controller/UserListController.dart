@@ -21,10 +21,13 @@ class UserListController extends GetxController with GetTickerProviderStateMixin
   RxBool isAddingMember = false.obs;
   TextEditingController txtController = TextEditingController();
   RxMap<String,bool> selectedItems = <String,bool>{}.obs;
+  late final  callBackFunction;
   @override
   void onInit() async {
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
+
+
 
 
 
@@ -35,16 +38,17 @@ class UserListController extends GetxController with GetTickerProviderStateMixin
   }
 
   Future<void> initializeData() async {
-
+    var isAddingMember2 = await Get.arguments['isAddingMember'];
+    callBackFunction = await Get.arguments['callBackFunction'];
+    print("OOOOOOOOOOO${isAddingMember2}");
+    isAddingMember.value = isAddingMember2;
     try {
       var body = {};
       String url = Constants.staff_users_list;
       var data  = await apiRespository.getApiCallByJson(url,);
 
       staffUserList.value = StaffList.fromJson(data.body);
-      var isAddingMember2 = await Get.arguments['isAddingMember'];
-      print("OOOOOOOOOOO${isAddingMember2}");
-      isAddingMember.value = isAddingMember2;
+
       for(var i=0;i<staffUserList.value.data!.users!.length;i++)
       {
         Users staff = staffUserList.value.data!.users![i];

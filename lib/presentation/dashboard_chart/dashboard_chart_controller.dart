@@ -84,10 +84,9 @@ class DashboardChartController extends GetxController{
   }
   getData()
   async {
-    var body = {
-      "session_id":20
-    };
-    var data = await apiRespository.postApiCallByFormData(Constants.dashboard_chartUrl, body);
+
+    FormData mainBody = FormData({  "session_id":"20"});
+    var data = await apiRespository.postApiCallByFormData(Constants.dashboard_chartUrl, mainBody);
     try
     {
       chartData.value = DashboardChartData.fromJson(data.body);
