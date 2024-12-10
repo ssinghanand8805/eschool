@@ -11,7 +11,7 @@ import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../common_widgets/controller/CommonUserSelectionController.dart';
 
-class SendEmailController extends GetxController{
+class SendEmailController extends GetxController {
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   Rx<TextEditingController> titleC = TextEditingController().obs;
   Rx<TextEditingController> messageC = TextEditingController().obs;
@@ -156,13 +156,16 @@ class SendEmailController extends GetxController{
          var cateId = ctrl.selectedCategory.value;
          var record_id = AllUsers[i].id;
          var email = AllUsers[i].email;
-         var gaurdian_email = AllUsers[i].guardianEmail;
+         var guardian_email = AllUsers[i].guardianEmail;
          var mob = AllUsers[i].mobileno;
-         var d = {"category":cateId,"record_id":record_id,"email":email,
-           "guardianEmail":gaurdian_email,"mobileno":mob};
+         var d = {
+           "category":cateId,"record_id":record_id,"email":email,
+           "guardianEmail":guardian_email,"mobileno":mob
+         };
          us.add(d);
 
        }
+
      body['user_list'] = jsonEncode(us);
      body['individual_send_by'] = 'email';
      body['individual_send_type'] = 'send_now';

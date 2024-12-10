@@ -323,8 +323,7 @@ class DashboardScreen extends GetView<DashboardController> {
         builder: (_) {
           return RefreshIndicator(
             onRefresh: () async {
-              // Implement your refresh logic here
-              await controller.eLearningapi(); // Example method to load data
+              await controller.eLearningapi();
             },
             child: CustomScrollView(
               controller: controller.scrollController,

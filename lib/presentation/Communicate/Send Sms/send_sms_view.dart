@@ -29,20 +29,45 @@ class SendSmsView extends GetView<SendSmsController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Obx(() => MyCustomSD(
-                  listToSearch: controller.bookList.value,
-                  borderColor: Colors.grey,
-                  valFrom: 'title',
-                  labelText: "Select SMS Template",
-                  label: "Select Sms Template",
-                  onChanged: (val) {
-                    controller.selectedSmsTemplate.value = val;
-                    controller.titleC.value.text = val['title'];
-                    controller.templateId.value.text = val['template_id'];
-                    controller.messageC.value.text = val['message'];
-                    print(
-                        "selected sms template ${controller.selectedSmsTemplate.value}");
-                  })),
+              Obx(() {
+                final bookList = controller.bookList.value;
+                if (bookList == null || bookList.isEmpty) {
+                  return Center(
+                    child: SizedBox(
+                      height: 25,
+                      width: 25,
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+
+                return MyCustomSD(
+                    listToSearch: controller.bookList.value,
+                    borderColor: Colors.grey,
+                    valFrom: 'title',
+                    labelText: "Select SMS Template",
+                    label: "Select Sms Template",
+                    onChanged: (val) {
+
+                      if (val == null) {
+                        Get.snackbar(
+                          'Error',
+                          'No template selected.',
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                        return;
+                      }
+
+
+
+                      controller.selectedSmsTemplate.value = val;
+                      controller.titleC.value.text = val['title'];
+                      controller.templateId.value.text = val['template_id'];
+                      controller.messageC.value.text = val['message'];
+                      print(
+                          "selected sms template ${controller.selectedSmsTemplate.value}");
+                    });
+              }),
               CustomTextField(
                   controller: controller.titleC.value,
                   hint: "Title",
@@ -75,8 +100,7 @@ class SendSmsView extends GetView<SendSmsController> {
                 },
               ),
               CustomTextField(
-                readOnly: true,
-
+                  readOnly: true,
                   controller: controller.templateId.value,
                   hint: "Template ID",
                   title: 'Template ID'),

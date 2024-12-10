@@ -39,18 +39,38 @@ class SendEmailView extends GetView<SendEmailController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Obx(() => MyCustomSD(
-                  listToSearch: controller.bookList.value,
+              Obx(() {
+                final bookList = controller.bookList.value;
+                if (bookList == null || bookList.isEmpty) {
+                  return Center(
+                      child: SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: CircularProgressIndicator(),
+                      ));
+                }
+
+                return MyCustomSD(
+                  listToSearch: bookList,
                   borderColor: Colors.grey,
                   valFrom: 'title',
                   labelText: "Select Email Template",
                   label: "Select Email Template",
                   onChanged: (val) {
-
+                    if (val == null) {
+                      Get.snackbar(
+                        'Error',
+                        'No template selected.',
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                      return;
+                    }
                     controller.selectedSmsTemplate.value = val;
-                    controller.titleC.value.text = val['title'];
-                    controller.messageC.value.text = val['message'];
-                  })),
+                    controller.titleC.value.text = val['title'] ?? '';
+                    controller.messageC.value.text = val['message'] ?? '';
+                  },
+                );
+              }),
               CustomTextField(
                   controller: controller.titleC.value,
                   hint: "Title",
