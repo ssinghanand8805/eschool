@@ -357,10 +357,16 @@ class DashboardController extends GetxController {
                 child: InkWell(
                   onTap: () {
                     print(data[index].shortCode.toString());
-                    Navigator.pushNamed(
-                      context,
-                        "/" + data[index].shortCode.toString());
-                  //  Get.toNamed("/" + data[index].shortCode.toString());
+                    String routeName = "/" + data[index].shortCode.toString();
+
+                    // Check if the route exists (you can manually keep track of the available routes)
+                    if (Navigator.of(context).canPop() || ModalRoute.of(context)?.settings.name != routeName) {
+                      // Navigate to the route if it doesn't already exist
+                      Navigator.pushNamed(context, "/commingsoon");
+                    } else {
+                      // Optionally handle case when route already exists, e.g., show a message
+                      Navigator.pushNamed( context,"/" + data[index].shortCode.toString());
+                    }
 
                   },
                   child: Container(

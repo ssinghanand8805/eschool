@@ -172,7 +172,9 @@ if(selectedCategory.value == 'student')
       var stuList = st.data!.map((item) {
         return UserItem(id: item.id!,name: item.firstname!    + item.lastname!,
             type: selectedCategory.value,
-            email: item.email!,guardianEmail: item.guardianEmail!,mobileno: item.mobileno!);
+            email: item.email!,guardianEmail: item.guardianEmail!,mobileno: item.mobileno!,
+            app_key: item.appKey ?? ""
+        );
        // return {"id":item.id,"name":item.firstname!    + item.lastname!,"type": selectedCategory.value};
       }).toList();
       userList.value = stuList;
@@ -189,7 +191,8 @@ else if(selectedCategory.value == 'parent')
       var stuList = st.data!.map((item) {
         return UserItem(id: item.id!,name: item.firstname!    + item.lastname!,
             type: selectedCategory.value,
-            email: item.email!,guardianEmail: item.guardianEmail!,mobileno: item.mobileno!
+            email: item.email!,guardianEmail: item.guardianEmail!,mobileno: item.mobileno!,
+            app_key: item.parentAppKey ?? ""
         );
        // return {"id":item.id,"name":item.firstname!    + item.lastname! + " ( " + item.guardianName! + " )","type": selectedCategory.value};
       }).toList();
@@ -210,7 +213,8 @@ else
     var stuList = st.data!.map((item) {
       return UserItem(id: item.id!,name: item.name!    + " ( " + item.employeeId! + " )",
           type: selectedCategory.value,
-          email: item.email!,guardianEmail: item.email!,mobileno: item.contactNo!
+          email: item.email!,guardianEmail: item.email!,mobileno: item.contactNo!,
+        app_key: item.appKey ?? ""
       );
       // return {"id":item.id,"name":item.name!    + " ( " + item.employeeId! + " )","type": selectedCategory.value};
     }).toList();
@@ -255,13 +259,14 @@ class UserItem {
   final String email;
   final String guardianEmail;
   final String mobileno;
+  final String app_key;
 
   UserItem({required this.id, required this.name,required this.type,
-    required this.email,required this.guardianEmail,required this.mobileno});
+    required this.email,required this.guardianEmail,required this.mobileno,required this.app_key});
 
   factory UserItem.fromJson(Map<String, dynamic> json) {
     return UserItem(id: json['id'], name: json['name'],type: json['type'],
-        email: json['email'],guardianEmail: json['guardianEmail'],mobileno: json['mobileno']);
+        email: json['email'],guardianEmail: json['guardianEmail'],mobileno: json['mobileno'],app_key: json['app_key']);
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -271,6 +276,7 @@ class UserItem {
     data['email'] = this.email;
     data['guardianEmail'] = this.guardianEmail;
     data['mobileno'] = this.mobileno;
+    data['app_key'] = this.app_key;
     return data;
   }
 }

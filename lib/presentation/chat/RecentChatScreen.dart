@@ -125,23 +125,26 @@ class _RecentChatScreenState extends State<RecentChatScreen> {
                       : Text("No Data Found");
                 });
           }),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Get.toNamed('/new_Chat',arguments: {'isAddingMember':false});
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) {
-            //       return NewConversationsPage();
-            //     },
-            //   ),
-            // );
-          },
-          tooltip: 'New Chat',
-          shape: CircleBorder(),
-          backgroundColor: Colors.green,
-          foregroundColor: Colors.white,
-          child: Icon(Icons.chat),
+        floatingActionButton: Padding(
+          padding:  EdgeInsets.only(bottom: Get.height * 0.05 ),
+          child: FloatingActionButton(
+            onPressed: () {
+              Get.toNamed('/new_Chat',arguments: {'isAddingMember':false});
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) {
+              //       return NewConversationsPage();
+              //     },
+              //   ),
+              // );
+            },
+            tooltip: 'New Chat',
+            shape: CircleBorder(),
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+            child: Icon(Icons.chat),
+          ),
         )
     );
   }

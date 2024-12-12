@@ -101,7 +101,9 @@ class SendSmsView extends GetView<SendSmsController> {
                     title: 'Send SMS',
                     textStyle: TextStyle(fontSize: 14, color: Colors.white),
                     color: Colors.green,
-                    onPress: () {},
+                    onPress: () {
+                      controller.sendMessage();
+                    },
                   ),
                 ),
               ),

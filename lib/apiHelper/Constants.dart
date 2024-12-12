@@ -180,7 +180,8 @@ class Constants {
 
   /// promote student
   static const String getAllSessionList = '/stdtransfer/getAllSession';
-
+  static const String getAllSessionListWithStatus = 'webservice/getSessions';
+  static const String updateSessionUrl = 'webservice/updateSession';
 
   ///fees
   static const String balanceFeeListUrl = 'webservice/studentbalancefeereport';
@@ -205,6 +206,10 @@ class Constants {
   static const String send_individual = '/mailsms/send_individual';
   static const String send_group = '/mailsms/send_group';
   static const String send_class = '/mailsms/send_class';
+
+  static const String send_individual_sms = '/mailsms/send_individual_sms';
+  static const String send_group_sms = '/mailsms/send_group_sms';
+  static const String send_class_sms = '/mailsms/send_class_sms';
 
   /// leave request
   static const String getLeaverequest = '/leaverequest/leaverequest';

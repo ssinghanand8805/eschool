@@ -80,6 +80,7 @@ class Data {
   String? isActive;
   String? verificationCode;
   String? disableAt;
+  String? appKey;
 
   Data(
       {this.id,
@@ -130,7 +131,10 @@ class Data {
         this.userId,
         this.isActive,
         this.verificationCode,
-        this.disableAt});
+        this.disableAt,
+        this.appKey,
+
+      });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -182,6 +186,7 @@ class Data {
     isActive = json['is_active'];
     verificationCode = json['verification_code'];
     disableAt = json['disable_at'];
+    appKey = json['appKey'];
   }
 
   Map<String, dynamic> toJson() {
@@ -235,6 +240,7 @@ class Data {
     data['is_active'] = this.isActive;
     data['verification_code'] = this.verificationCode;
     data['disable_at'] = this.disableAt;
+    data['appKey'] = this.appKey;
     return data;
   }
 }
