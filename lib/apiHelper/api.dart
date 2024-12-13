@@ -62,6 +62,7 @@ loadHeader() async
   _mainHeader['Role'] = f != null ? f.roles!.roleId! : "0";
   _mainHeader['userID'] = f != null ? f.id! : "0";
   _mainHeader['sessionId'] =  prefs.getString("sessionId") ?? "20";
+  print(_mainHeader);
 
 
 
@@ -105,7 +106,7 @@ async {
     try{
       print("Api Url  $baseUrl$uri");
       print("Request body $body");
-      printFormData(body);
+
       print("token "+ UserData().getAccessToken);
 
       Response response=await post(uri, body,headers: _mainHeader,contentType: "application/x-www-form-urlencoded");

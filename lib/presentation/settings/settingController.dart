@@ -36,7 +36,9 @@ class SettingController extends GetxController {
       var sessionData = data.body['sessionData'];
       print("000000000000");
       print(sessionData);
-      var activeSessionData = sessionData['session_id'];
+      final prefs = await SharedPreferences.getInstance();
+
+      var activeSessionData = prefs.getString("sessionId");//sessionData['session_id'];
       var sessionList = data.body['sessionList'];
       print(sessionList);
       currentActiveSession.value = activeSessionData.toString();
@@ -81,15 +83,15 @@ class SettingController extends GetxController {
     FormData formBody = FormData({});
     formBody.fields.addAll(body.entries);
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString("sessionId", currentActiveSession.value);
+   await  prefs.setString("sessionId", currentActiveSession.value);
     var data  = await apiRespository.postApiCallByFormData(Constants.updateSessionUrl,formBody);
     print("DATA @@@@ getAllSessionList ${data.body}");
     if(data.body != null) {
       Get.showSnackbar(Ui.SuccessSnackBar(message: "Session Updated..Now restarting data.."));
-
-      var dashboardController = Get.put(DashboardController());
-      dashboardController.getSchoolDetails();
-       //Get.toNamed('/s_screen');
+     await getAllSession();
+      // var dashboardController = Get.put(DashboardController());
+      // dashboardController.getSchoolDetails();
+       Get.toNamed('/s_screen');
     }
     else
       {

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../apiHelper/Constants.dart';
 import '../../apiHelper/popular_product_repo.dart';
 import 'models/dashboard_chart_data.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 class DashboardChartController extends GetxController{
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   Rx<TextEditingController> searchC = TextEditingController().obs;
@@ -84,8 +84,9 @@ class DashboardChartController extends GetxController{
   }
   getData()
   async {
+    final prefs = await SharedPreferences.getInstance();
 
-    FormData mainBody = FormData({  "session_id":"20"});
+    FormData mainBody = FormData({  "session_id":prefs.getString("sessionId")});
     var data = await apiRespository.postApiCallByFormData(Constants.dashboard_chartUrl, mainBody);
     try
     {
