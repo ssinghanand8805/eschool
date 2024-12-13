@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apiHelper/Constants.dart';
 import '../../apiHelper/popular_product_repo.dart';
 import '../../apiHelper/toastMessage.dart';
 import '../../apiHelper/userData.dart';
 import '../academics/Promote Student/promote_student_modal.dart';
+import '../dashboard/controller/dashbord_controller.dart';
 
 class SettingController extends GetxController {
   UserData userData = Get.put(UserData());
@@ -78,10 +80,16 @@ class SettingController extends GetxController {
     var body = {"popup_session":currentActiveSession.value};
     FormData formBody = FormData({});
     formBody.fields.addAll(body.entries);
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("sessionId", currentActiveSession.value);
     var data  = await apiRespository.postApiCallByFormData(Constants.updateSessionUrl,formBody);
     print("DATA @@@@ getAllSessionList ${data.body}");
     if(data.body != null) {
       Get.showSnackbar(Ui.SuccessSnackBar(message: "Session Updated..Now restarting data.."));
+
+      var dashboardController = Get.put(DashboardController());
+      dashboardController.getSchoolDetails();
+       //Get.toNamed('/s_screen');
     }
     else
       {

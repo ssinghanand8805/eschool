@@ -358,15 +358,15 @@ class DashboardController extends GetxController {
                   onTap: () {
                     print(data[index].shortCode.toString());
                     String routeName = "/" + data[index].shortCode.toString();
-
+                    Navigator.pushNamed( context,"/" + data[index].shortCode.toString());
                     // Check if the route exists (you can manually keep track of the available routes)
-                    if (Navigator.of(context).canPop() || ModalRoute.of(context)?.settings.name != routeName) {
-                      // Navigate to the route if it doesn't already exist
-                      Navigator.pushNamed(context, "/commingsoon");
-                    } else {
-                      // Optionally handle case when route already exists, e.g., show a message
-                      Navigator.pushNamed( context,"/" + data[index].shortCode.toString());
-                    }
+                    // if (Navigator.of(context).canPop() || ModalRoute.of(context)?.settings.name != routeName) {
+                    //   // Navigate to the route if it doesn't already exist
+                    //   Navigator.pushNamed(context, "/commingsoon");
+                    // } else {
+                    //   // Optionally handle case when route already exists, e.g., show a message
+                    //   Navigator.pushNamed( context,"/" + data[index].shortCode.toString());
+                    // }
 
                   },
                   child: Container(
@@ -445,6 +445,7 @@ class DashboardController extends GetxController {
     await prefs.setString("schoolEmail", data.body["email"] ?? "");
     await prefs.setString("schoolSchoolCode", data.body["dise_code"] ?? "");
     await prefs.setString("schoolCurrentSession", data.body["session"] ?? "");
+    await prefs.setString("sessionId", data.body["sessionId"].toString() ?? "");
     await prefs.setString("date_format", data.body["date_format"] ?? "");
     await prefs.setString("timezone", data.body["timezone"] ?? "");
     await prefs.setString(
@@ -465,7 +466,7 @@ class DashboardController extends GetxController {
 
 
   eLearningapi() async {
-    getSchoolDetails();  //check for school details change
+      //check for school details change
 
     UserData usersData = UserData();
     Faculity? f = await usersData.getFaculity();

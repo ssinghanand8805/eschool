@@ -61,6 +61,7 @@ loadHeader() async
   _mainHeader['Staff-Id'] = f == null ? "0" : f.id.toString();
   _mainHeader['Role'] = f != null ? f.roles!.roleId! : "0";
   _mainHeader['userID'] = f != null ? f.id! : "0";
+  _mainHeader['sessionId'] =  prefs.getString("sessionId") ?? "20";
 
 
 

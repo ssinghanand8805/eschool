@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../apiHelper/userData.dart';
 import '../../notifications/controller/NotificationController.dart';
 import '../../theme/theme_helper.dart';
+import '../dashboard/controller/dashbord_controller.dart';
 import '../dashboard/dashboard_screen.dart';
 import 'NavigationScreen.dart';
 import 'homepage_controller.dart';
@@ -29,7 +30,7 @@ class _MyHomePageState extends State<HomePage> with TickerProviderStateMixin {
   late CurvedAnimation fabCurve;
   late CurvedAnimation borderRadiusCurve;
   late AnimationController _hideBottomBarAnimationController;
-
+  var dashboardController = Get.put(DashboardController());
   final iconList = <IconData>[
     Icons.dashboard,
     Icons.home,
@@ -46,7 +47,7 @@ class _MyHomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
+    dashboardController.getSchoolDetails();
     _fabAnimationController = AnimationController(
       duration: Duration(milliseconds: 500),
       vsync: this,
