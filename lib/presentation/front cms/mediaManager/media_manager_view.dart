@@ -8,6 +8,7 @@ import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
 import 'package:learnladderfaculity/widgets/custom_button.dart';
+import 'package:lottie/lottie.dart';
 import '../../../apiHelper/GlobalData.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
@@ -44,42 +45,7 @@ class MediaManagerView extends GetView<MediaManagerController> {
                   }
                   return Column(
                     children: [
-                      // Padding(
-                      //   padding:
-                      //       const EdgeInsets.only(left: 8.0, right: 8, top: 5),
-                      //   child: MyCustomSD(
-                      //     hideSearch: true,
-                      //     borderColor: Colors.grey,
-                      //     listToSearch: controller.listToSearch,
-                      //     valFrom: "value",
-                      //     label: 'Filter By File Type',
-                      //     labelText: 'Filter By File Type',
-                      //     onChanged: (val) {},
-                      //   ),
-                      // ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 8.0, right: 8),
-                      //   child: CustomTextField(
-                      //     controller: controller.searchC,
-                      //     hint: 'Search.... ',
-                      //     title: 'Search',
-                      //     onChanged: (val) {},
-                      //   ),
-                      // ),
-                      // SizedBox(height: 8),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(right: 12.0),
-                      //   child: Align(
-                      //     alignment: Alignment.topRight,
-                      //     child: MyButton(
-                      //         onPress: () {},
-                      //         color: Colors.green,
-                      //         textStyle: theme.textTheme.titleMedium,
-                      //         width: 80,
-                      //         title: "Search"),
-                      //   ),
-                      // ),
-                      // SizedBox(height: 8),
+
                       Expanded(
                         child: GetBuilder<MediaManagerController>(
                           builder: (controller) {
@@ -87,7 +53,8 @@ class MediaManagerView extends GetView<MediaManagerController> {
                                     null ||
                                 controller
                                     .mediaManagerList.value.data!.isEmpty) {
-                              return Center(child: CustomLoader());
+                              return Center(child: Lottie.asset(
+                                  "assets/images/no_data_found.json"));
                             }
 
                             return GridView.builder(

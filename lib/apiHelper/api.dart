@@ -147,6 +147,7 @@ async {
 
   Future<Response> postDatabyJsonForLogin(uri,body)async{
    await checkBaseUrl();
+
     log("Api Url  "+(baseUrl!+uri).toString());
     log("header  ${_mainHeader}");
     log("body  ${body}");

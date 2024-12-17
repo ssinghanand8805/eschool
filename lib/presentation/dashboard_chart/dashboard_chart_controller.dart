@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../apiHelper/Constants.dart';
 import '../../apiHelper/popular_product_repo.dart';
+import '../login_screen/models/SchoolSetting.dart';
 import 'models/dashboard_chart_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class DashboardChartController extends GetxController{
@@ -86,7 +89,31 @@ class DashboardChartController extends GetxController{
   async {
     final prefs = await SharedPreferences.getInstance();
 
-    FormData mainBody = FormData({  "session_id":prefs.getString("sessionId")});
+    FormData mainBody = FormData({});
+    String? sessionId = prefs.getString("sessionId");
+
+    if (sessionId != null && sessionId.isNotEmpty) {
+       mainBody = FormData({
+        "session_id": sessionId,
+      });
+      // Proceed with the mainBody logic
+    } else {
+     String? schoolSettingData =  prefs.getString("schoolSettingData");
+     if(schoolSettingData != null && schoolSettingData.isNotEmpty)
+       {
+         var d = jsonDecode(schoolSettingData);
+         SchoolSetting sch = SchoolSetting.fromJson(d);
+         mainBody = FormData({
+           "session_id": sch.currentSession!.sessionId!,
+         });
+       }
+     else
+       {
+         print("Session ID is not available.");
+       }
+      // Handle the case when sessionId is null or empty
+
+    }
     var data = await apiRespository.postApiCallByFormData(Constants.dashboard_chartUrl, mainBody);
     try
     {

@@ -46,10 +46,13 @@ class SendEmailView extends GetView<SendEmailController> {
                   labelText: "Select Email Template",
                   label: "Select Email Template",
                   onChanged: (val) {
+                    if(val != null)
+                      {
+                        controller.selectedSmsTemplate.value = val;
+                        controller.titleC.value.text = val['title'];
+                        controller.messageC.value.text = val['message'];
+                      }
 
-                    controller.selectedSmsTemplate.value = val;
-                    controller.titleC.value.text = val['title'];
-                    controller.messageC.value.text = val['message'];
                   })),
               CustomTextField(
                   controller: controller.titleC.value,

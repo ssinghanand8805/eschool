@@ -54,7 +54,7 @@ class SchoolUrlController extends GetxController {
   var data = jsonDecode(response.body) as Map<String, dynamic>;
   print(data);
   newUrl = data['baseurl'];
-      newChatBaseUrl = data['chatbaseurl'];
+      newChatBaseUrl = data['chatbaseurl'] ?? "";
 
     } else {
       // If the server did not return a 201 CREATED response,

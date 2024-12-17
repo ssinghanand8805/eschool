@@ -49,7 +49,7 @@ class HomePageController extends GetxController {
   getSchoolDetails() async {
     Map<String, dynamic> body = {};
     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
-    var data = await apiRespository.postApiCallByJsonForLogin(
+    var data = await apiRespository.postApiCallByJson(
         "webservice/getSchoolDetails", body);
 
     final prefs = await SharedPreferences.getInstance();

@@ -36,12 +36,16 @@ class SendSmsView extends GetView<SendSmsController> {
                   labelText: "Select SMS Template",
                   label: "Select Sms Template",
                   onChanged: (val) {
-                    controller.selectedSmsTemplate.value = val;
-                    controller.titleC.value.text = val['title'];
-                    controller.templateId.value.text = val['template_id'];
-                    controller.messageC.value.text = val['message'];
-                    print(
-                        "selected sms template ${controller.selectedSmsTemplate.value}");
+                    if(val != null)
+                      {
+                        controller.selectedSmsTemplate.value = val;
+                        controller.titleC.value.text = val['title'];
+                        controller.templateId.value.text = val['template_id'];
+                        controller.messageC.value.text = val['message'];
+                        print(
+                            "selected sms template ${controller.selectedSmsTemplate.value}");
+                      }
+
                   })),
               CustomTextField(
                   controller: controller.titleC.value,

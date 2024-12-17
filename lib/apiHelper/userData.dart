@@ -14,6 +14,7 @@ import '../presentation/login_screen/models/ChatUser.dart';
 import '../presentation/login_screen/models/ChatUser.dart';
 import '../presentation/login_screen/models/Faculity.dart';
 import '../presentation/login_screen/models/ChatUser.dart' as ChatUser;
+import '../presentation/login_screen/models/SchoolSetting.dart';
 import '../routes/app_routes.dart';
 import 'ChatNotificationService.dart';
 import 'Constants.dart';
@@ -66,13 +67,18 @@ class UserData extends GetxController {
       print("_--------${cachedChatUser!.data!.token}");
     }
   }
-      void saveFaculity(Faculity user) async {
+      void saveFaculity(Faculity user,{SchoolSetting? schoolSetting}) async {
 
     userData.write('faculityData', user.toJson()); // Saving the user model as JSON
     print("#@#@#");
     log(json.encode(getFaculity()!.toJson()));
     final prefs = await SharedPreferences.getInstance();
     prefs.setString("faculityData", json.encode(user.toJson()));
+    if(schoolSetting != null)
+      {
+        prefs.setString("schoolSettingData", json.encode(schoolSetting.toJson()));
+      }
+
     await prefs.setBool('isLoggegIn', true);
     initializeFaculity();
   }
@@ -229,7 +235,7 @@ class UserData extends GetxController {
     }
     else
       {
-        Faculity fac = Faculity.fromJson(data.body);
+        Faculity fac = Faculity.fromJson(data.body['staffDetails']);
         getChatDetail(getLastUserId,'12345678');
         // UserData usersData = UserData();
         saveFaculity(fac);
