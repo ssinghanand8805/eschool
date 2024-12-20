@@ -294,8 +294,19 @@ class DashboardController extends GetxController {
                 onTap: () {
                   print("========${data.shortCode.toString()}");
 // Get.toNamed("/"+data.shortCode.toString());
-                  showDynamicBottomSheet(context,
-                      data: data.permissionCategory!, images: images);
+
+                  if(data.permissionCategory!.length == 1)
+                    {
+                      String routeName = "/" + data.permissionCategory![0].shortCode.toString();
+                      Navigator.pushNamed( context,routeName);
+                      // Get.toNamed("/"+routeName);
+                    }
+                  else
+                    {
+                      showDynamicBottomSheet(context,
+                          data: data.permissionCategory!, images: images);
+                    }
+
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -468,6 +479,34 @@ class DashboardController extends GetxController {
   eLearningapi() async {
       //check for school details change
 
+    final prefs = await SharedPreferences.getInstance();
+    List<MenuResponse>? filteredResponses;
+    String? encodedData = prefs.getString('dashboardMenuData');
+    if (encodedData != null) {
+      Iterable l = jsonDecode(encodedData);
+      filteredResponses =  List<MenuResponse>.from(l.map((model) => MenuResponse.fromJson(model)));
+    } else {
+      filteredResponses = [];
+    }
+    menuResponseModelObj.value = filteredResponses;
+    // update();
+    //print(filteredResponses);
+
+    var per = prefs.getString('pagePermission');
+
+    List permArr = jsonDecode(per!);
+    permArr.forEach((element) {print(element);});
+    updateELearningData = filteredResponses.toList();
+    gridViewWidgets
+        .add(buildGridItem("", getMenuDataList, menuImageImagesPath));
+    lazyLoadDasboardData();
+    // academicStatusApi();
+    update();
+    print("E LEARNING DATA ${getMenuDataList.length}");
+  }
+
+  lazyLoadDasboardData()
+  async {
     UserData usersData = UserData();
     Faculity? f = await usersData.getFaculity();
     Map<String, dynamic> body = {
@@ -487,27 +526,21 @@ class DashboardController extends GetxController {
       var e  = await menus.setResponsesWhereCanView(isSuperAdmin : true);
       var per = jsonEncode(e);
       final prefs = await SharedPreferences.getInstance();
-       await prefs.setString('pagePermission',per);
-    } else {
+      await prefs.setString('pagePermission',per);
+    }
+    else {
       filteredResponses = menus.getResponsesWhereCanView();
       var e  = await menus.setResponsesWhereCanView();
       var per = jsonEncode(e);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('pagePermission',per);
     }
-    menuResponseModelObj.value = filteredResponses!;
-    // update();
-    //print(filteredResponses);
     final prefs = await SharedPreferences.getInstance();
-    var per = prefs.getString('pagePermission');
-    List permArr = jsonDecode(per!);
-    permArr.forEach((element) {print(element);});
-    updateELearningData = filteredResponses.toList();
-    gridViewWidgets
-        .add(buildGridItem("", getMenuDataList, menuImageImagesPath));
-    // academicStatusApi();
-    update();
-    print("E LEARNING DATA ${getMenuDataList.length}");
+    if(filteredResponses != null)
+    {
+      String encodedData = jsonEncode(filteredResponses.map((response) => response.toJson()).toList());
+      await prefs.setString('dashboardMenuData', encodedData);
+    }
   }
 
   Future<void> logOutDialog(context) async {

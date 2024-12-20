@@ -366,16 +366,9 @@ class  AddStudentView extends GetView< AddStudentController> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Obx(() => controller.commonApiController.isClassLoading.value ?  Expanded(child: Material(
-              child: Column(
-               crossAxisAlignment: CrossAxisAlignment.start ,
-                children: [
-                  Text("Class"),
-                  CircularProgressIndicator(),
-                ],
-              ),
-            )) : Expanded(
+            Obx(() =>  Expanded(
                 child: MyCustomSD(
+                  isLoading:controller.commonApiController.isClassLoading.value,
                     hideSearch: true,
                     borderColor: Colors.grey,
                     listToSearch:
@@ -410,16 +403,11 @@ class  AddStudentView extends GetView< AddStudentController> {
             SizedBox(
               width: 10,
             ),
-            Obx(() => controller.commonApiController.isSectionLoading.value ?Expanded(child: Material(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start ,
-                children: [
-                  Text("Section"),
-                  CircularProgressIndicator(),
-                ],
-              ),
-            )): Expanded(
+            Obx(() =>
+
+            Expanded(
               child: MyCustomSD(
+                    isLoading :  controller.commonApiController.isSectionLoading.value,
                     hideSearch: true,
                     borderColor: Colors.grey,
                     listToSearch: controller
