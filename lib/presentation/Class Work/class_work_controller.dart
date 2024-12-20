@@ -6,18 +6,18 @@ import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../apiHelper/Constants.dart';
-import '../../../../apiHelper/popular_product_repo.dart';
-import '../../../apiHelper/GlobalData.dart';
-import '../../../apiHelper/toastMessage.dart';
-import '../../../apiHelper/userData.dart';
-import '../../common_widgets/controller/CommonApiController.dart';
-import '../model/DailyAssgnment.dart';
-import '../model/Student_Attendance.dart';
-import '../model/SubjectGroup.dart';
-import '../model/SubjectListBySubjectGroup.dart';
+import '../../apiHelper/Constants.dart';
+import '../../apiHelper/GlobalData.dart';
+import '../../apiHelper/popular_product_repo.dart';
+import '../../apiHelper/toastMessage.dart';
+import '../../apiHelper/userData.dart';
+import '../add_homework/model/addHomework.dart';
+import '../common_widgets/controller/CommonApiController.dart';
+import '../teacher_daily_assignment/model/DailyAssgnment.dart';
+import '../teacher_daily_assignment/model/SubjectGroup.dart';
+import '../teacher_daily_assignment/model/SubjectListBySubjectGroup.dart';
 
-class TeacherDailyAssignmentController extends GetxController {
+class ClassWorkController extends GetxController {
   CommonApiController commonApiController = Get.put(CommonApiController());
   Rx<TextEditingController> dateC = TextEditingController().obs;
   final Rx<DateTime> applyDate = DateTime.now().obs;
