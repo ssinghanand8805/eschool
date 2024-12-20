@@ -294,8 +294,19 @@ class DashboardController extends GetxController {
                 onTap: () {
                   print("========${data.shortCode.toString()}");
 // Get.toNamed("/"+data.shortCode.toString());
-                  showDynamicBottomSheet(context,
-                      data: data.permissionCategory!, images: images);
+
+                  if(data.permissionCategory!.length == 1)
+                    {
+                      String routeName = "/" + data.permissionCategory![0].shortCode.toString();
+                      Navigator.pushNamed( context,routeName);
+                      // Get.toNamed("/"+routeName);
+                    }
+                  else
+                    {
+                      showDynamicBottomSheet(context,
+                          data: data.permissionCategory!, images: images);
+                    }
+
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -357,10 +368,16 @@ class DashboardController extends GetxController {
                 child: InkWell(
                   onTap: () {
                     print(data[index].shortCode.toString());
-                    Navigator.pushNamed(
-                      context,
-                        "/" + data[index].shortCode.toString());
-                  //  Get.toNamed("/" + data[index].shortCode.toString());
+                    String routeName = "/" + data[index].shortCode.toString();
+                    Navigator.pushNamed( context,"/" + data[index].shortCode.toString());
+                    // Check if the route exists (you can manually keep track of the available routes)
+                    // if (Navigator.of(context).canPop() || ModalRoute.of(context)?.settings.name != routeName) {
+                    //   // Navigate to the route if it doesn't already exist
+                    //   Navigator.pushNamed(context, "/commingsoon");
+                    // } else {
+                    //   // Optionally handle case when route already exists, e.g., show a message
+                    //   Navigator.pushNamed( context,"/" + data[index].shortCode.toString());
+                    // }
 
                   },
                   child: Container(
@@ -428,7 +445,7 @@ class DashboardController extends GetxController {
   getSchoolDetails() async {
     Map<String, dynamic> body = {};
     String baseUrlFromPref = GlobalData().baseUrlValueFromPref;
-    var data = await apiRespository.postApiCallByJsonForLogin(
+    var data = await apiRespository.postApiCallByJson(
         "webservice/getSchoolDetails", body);
 
     final prefs = await SharedPreferences.getInstance();
@@ -439,6 +456,7 @@ class DashboardController extends GetxController {
     await prefs.setString("schoolEmail", data.body["email"] ?? "");
     await prefs.setString("schoolSchoolCode", data.body["dise_code"] ?? "");
     await prefs.setString("schoolCurrentSession", data.body["session"] ?? "");
+    await prefs.setString("sessionId", data.body["sessionId"].toString() ?? "");
     await prefs.setString("date_format", data.body["date_format"] ?? "");
     await prefs.setString("timezone", data.body["timezone"] ?? "");
     await prefs.setString(
@@ -459,8 +477,36 @@ class DashboardController extends GetxController {
 
 
   eLearningapi() async {
-    getSchoolDetails();  //check for school details change
+      //check for school details change
 
+    final prefs = await SharedPreferences.getInstance();
+    List<MenuResponse>? filteredResponses;
+    String? encodedData = prefs.getString('dashboardMenuData');
+    if (encodedData != null) {
+      Iterable l = jsonDecode(encodedData);
+      filteredResponses =  List<MenuResponse>.from(l.map((model) => MenuResponse.fromJson(model)));
+    } else {
+      filteredResponses = [];
+    }
+    menuResponseModelObj.value = filteredResponses;
+    // update();
+    //print(filteredResponses);
+
+    var per = prefs.getString('pagePermission');
+
+    List permArr = jsonDecode(per!);
+    permArr.forEach((element) {print(element);});
+    updateELearningData = filteredResponses.toList();
+    gridViewWidgets
+        .add(buildGridItem("", getMenuDataList, menuImageImagesPath));
+    lazyLoadDasboardData();
+    // academicStatusApi();
+    update();
+    print("E LEARNING DATA ${getMenuDataList.length}");
+  }
+
+  lazyLoadDasboardData()
+  async {
     UserData usersData = UserData();
     Faculity? f = await usersData.getFaculity();
     Map<String, dynamic> body = {
@@ -480,27 +526,21 @@ class DashboardController extends GetxController {
       var e  = await menus.setResponsesWhereCanView(isSuperAdmin : true);
       var per = jsonEncode(e);
       final prefs = await SharedPreferences.getInstance();
-       await prefs.setString('pagePermission',per);
-    } else {
+      await prefs.setString('pagePermission',per);
+    }
+    else {
       filteredResponses = menus.getResponsesWhereCanView();
       var e  = await menus.setResponsesWhereCanView();
       var per = jsonEncode(e);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('pagePermission',per);
     }
-    menuResponseModelObj.value = filteredResponses!;
-    // update();
-    //print(filteredResponses);
     final prefs = await SharedPreferences.getInstance();
-    var per = prefs.getString('pagePermission');
-    List permArr = jsonDecode(per!);
-    permArr.forEach((element) {print(element);});
-    updateELearningData = filteredResponses.toList();
-    gridViewWidgets
-        .add(buildGridItem("", getMenuDataList, menuImageImagesPath));
-    // academicStatusApi();
-    update();
-    print("E LEARNING DATA ${getMenuDataList.length}");
+    if(filteredResponses != null)
+    {
+      String encodedData = jsonEncode(filteredResponses.map((response) => response.toJson()).toList());
+      await prefs.setString('dashboardMenuData', encodedData);
+    }
   }
 
   Future<void> logOutDialog(context) async {

@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:learnladderfaculity/presentation/common_widgets/InfoRow.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
 import 'package:learnladderfaculity/widgets/download_button.dart';
+import 'package:lottie/lottie.dart';
 import '../../../apiHelper/GlobalData.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
@@ -59,7 +60,8 @@ class  EventView extends GetView< EventController> {
                           builder: (controller) {
                             if (controller.eventModalList.value.data == null ||
                                 controller.eventModalList.value.data!.listResult!.isEmpty) {
-                              return Center(child: CustomLoader());
+                              return Center(child: Lottie.asset(
+                                  "assets/images/no_data_found.json"));
                             }
 
                             return GridView.builder(

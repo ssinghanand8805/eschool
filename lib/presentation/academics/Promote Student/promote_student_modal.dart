@@ -4,6 +4,8 @@ class Sessionlist {
   String? isActive;
   String? createdAt;
   String? updatedAt;
+  String? active;
+
 
   Sessionlist(
       {this.id, this.session, this.isActive, this.createdAt, this.updatedAt});
@@ -14,6 +16,7 @@ class Sessionlist {
     isActive = json['is_active'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    active = json['active'];
   }
 
   Map<String, dynamic> toJson() {
@@ -23,6 +26,7 @@ class Sessionlist {
     data['is_active'] = this.isActive;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['active'] = this.active;
     return data;
   }
 }

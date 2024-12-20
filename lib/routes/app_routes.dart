@@ -140,6 +140,7 @@ import '../presentation/chat/binding/newGroupCreate.dart';
 import '../presentation/chat/binding/recentchat.dart';
 import '../presentation/chat/newChat.dart';
 import '../presentation/chat/newGroup.dart';
+import '../presentation/common_widgets/commingsoon.dart';
 import '../presentation/dashboard/binding/dashboard_binding.dart';
 import '../presentation/dashboard/dashboard_screen.dart';
 import '../presentation/download_center/Content Share List/Binding/content_share_list_binding.dart';
@@ -149,6 +150,8 @@ import '../presentation/download_center/Content Type/content_type_view.dart';
 import '../presentation/download_center/Upload Content/upload_share_content_view.dart';
 import '../presentation/download_center/Video Tutorial/Binding/video_tutorial_binding.dart';
 import '../presentation/download_center/Video Tutorial/video_tutorial_view.dart';
+import '../presentation/evaluateHomeWork/EvaluateHomeworkBinding.dart';
+import '../presentation/evaluateHomeWork/evaluateHomeworkView.dart';
 import '../presentation/fees/balancefees/balance_fees_binding.dart';
 import '../presentation/fees/balancefees/balance_fees_view.dart';
 import '../presentation/fees/daily_collection/daily_collection_binding.dart';
@@ -163,6 +166,8 @@ import '../presentation/s_screen/s_screen.dart';
 import '../presentation/school_attendace/binding/school_attendance_bydate.dart';
 import '../presentation/school_attendace/school_attendance_bydate_view.dart';
 import '../presentation/school_url/schoolUrlScreen.dart';
+import '../presentation/settings/settingBinding.dart';
+import '../presentation/settings/settingsview.dart';
 import '../presentation/student_attendence/binding/student_attendance.dart';
 import '../presentation/student_attendence/student_attendance_view.dart';
 import '../presentation/teacher_daily_assignment/binding/daily_assignment.dart';
@@ -291,11 +296,29 @@ class AppRoutes {
   static const String chatUsersPage = '/new_Chat';
   static const String createGroupForChatPage = '/createGroupForChat';
 
+
+  static const String commingsoon = '/commingsoon';
+  static const String setting = '/setting';
+  static const String evaluateHomeWork = '/evaluateHomeWork';
   static List<GetPage> pages = [
 
 
 
-
+    GetPage(
+      name: commingsoon,
+      page: () => CommingSoon(),
+      bindings: [],
+    ),
+    GetPage(
+      name: setting,
+      page: () => SettingView(),
+      bindings: [SettingBinding()],
+    ),
+    GetPage(
+      name: evaluateHomeWork,
+      page: () => EvaluateHomeworkPage(),
+      bindings: [EvaluateHomeworkBinding()],
+    ),
     GetPage(
       name: enterSchoolUrlRoute,
       page: () => SchoolUrl(),

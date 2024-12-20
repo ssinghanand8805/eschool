@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:image_picker/image_picker.dart';
@@ -538,8 +539,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                                     child: TextField(
                                       style: theme.textTheme.bodySmall,
                                       decoration: InputDecoration(
-                                        hintText: DateFormat('dd/MM/yyyy')
-                                            .format(DateTime.now()),
+
                                         border: OutlineInputBorder(
                                             borderSide:
                                                 BorderSide(color: Colors.grey),
@@ -589,8 +589,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                                     child: TextField(
                                       style: theme.textTheme.bodySmall,
                                       decoration: InputDecoration(
-                                        hintText: DateFormat('dd/MM/yyyy')
-                                            .format(DateTime.now()),
+
                                         border: OutlineInputBorder(
                                             borderSide:
                                                 BorderSide(color: Colors.grey),
@@ -811,41 +810,25 @@ Widget upcomingHomework(CloseHomeworkDataModal upcomingHomework) {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Image Section
-                  // ClipRRect(
-                  //   borderRadius: BorderRadius.circular(10),
-                  //   child: upcomingHomework. != null &&
-                  //       upcomingHomework.imageUrl!.isNotEmpty
-                  //       ? Image.network(
-                  //     upcomingHomework.imageUrl!,
-                  //     width: 80,
-                  //     height: 80,
-                  //     fit: BoxFit.cover,
-                  //   )
-                  //       : Container(
-                  //     width: 80,
-                  //     height: 80,
-                  //     color: Colors.grey.shade300,
-                  //     child: Icon(Icons.image, color: Colors.grey.shade600),
-                  //   ),
-                  // ),
-                  // const SizedBox(width: 16),
-                  // Title Section
+
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          upcomingHomework.homeworkName
-                                  .toString()
-                                  .capitalizeFirst ??
-                              "No Title",
-                          style: theme.textTheme.titleMedium!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+
+                        Html(data:  upcomingHomework.homeworkName
+                            .toString()
+                            .capitalizeFirst ??
+                            "No Title",
+                          style: {
+                            "html": Style(
+                              fontSize: FontSize.medium,
+                              color: Colors.black87,
+                              //color: Colors.black54,
+                              maxLines: 2,
+                              textOverflow: TextOverflow.ellipsis,
+                            ),
+                          },
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -929,7 +912,18 @@ Widget upcomingHomework(CloseHomeworkDataModal upcomingHomework) {
                       ),
                     ],
                   ),
+
+
                 ],
+              ),
+              TextButton.icon(
+                onPressed: () {
+                  print("Edit pressed");
+                  Get.toNamed('/evaluateHomeWork',arguments: {"id":upcomingHomework.id});
+                  // Call edit function here
+                },
+                icon: const Icon(Icons.people, size: 16),
+                label: const Text("Evaluate HomeWork"),
               ),
             ],
           ),
@@ -1042,6 +1036,15 @@ closeHomeWork(CloseHomeworkDataModal closeHomeworkData) {
                 ),
               ],
             ),
+          ),
+          TextButton.icon(
+            onPressed: () {
+              print("Edit pressed");
+              Get.toNamed('/evaluateHomeWork',arguments: {"id":closeHomeworkData.id});
+              // Call edit function here
+            },
+            icon: const Icon(Icons.people, size: 16),
+            label: const Text("Evaluate HomeWork"),
           ),
         ],
       ),

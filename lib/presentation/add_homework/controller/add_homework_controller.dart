@@ -153,11 +153,18 @@ class AddHomeWorkController extends GetxController {
       equals: isSameDay,
       hashCode: getHashCode,
     )..addAll(_kEventSource.value);
-    DateTime now = DateTime.now();
+    setDateOnInit();
 
   //  getDataFromApi( now);// Initialize the future when the controller is created
   }
-
+  setDateOnInit()
+  async {
+    DateTime now = DateTime.now();
+    var d =  await GlobalData().ConvertToSchoolDateTimeFormat(now);
+    homeWorkDate.value.text = d;
+    submissionDate.value.text = d;
+    // getData();
+  }
   getDataFromApi(DateTime now)
   {
 

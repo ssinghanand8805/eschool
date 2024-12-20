@@ -4,9 +4,16 @@ import 'package:learnladderfaculity/core/app_export.dart';
 
 import '../chat/RecentChatScreen.dart';
 import '../chat/binding/recentchat.dart';
+import '../chat/controller/RecentChatController.dart';
+import '../common_widgets/commingsoon.dart';
 import '../dashboard/binding/dashboard_binding.dart';
+import '../dashboard/controller/dashbord_controller.dart';
 import '../dashboard/dashboard_screen.dart';
+import '../dashboard_chart/dashboard_chart_controller.dart';
 import '../dashboard_chart/screens/dash_board_screen.dart';
+import '../settings/settingBinding.dart';
+import '../settings/settingController.dart';
+import '../settings/settingsview.dart';
 
 class NavigationScreen extends StatefulWidget {
   final IconData iconData;
@@ -73,19 +80,28 @@ class _NavigationScreenState extends State<NavigationScreen>
   {
      if(index == 0)
     {
+      Get.delete<DashboardChartController>();
       dashBordBinding().dependencies();
     return DashBoardScreen();
     }
    else if(index == 1)
       {
+        Get.delete<DashboardController>();
         dashBordBinding().dependencies();
         return DashboardScreen();
       }
     else if(index == 2)
       {
+        Get.delete<RecentChatController>();
         RecentChatBinding().dependencies();
         return RecentChatScreen();
       }
+     else if(index == 3)
+     {
+       Get.delete<SettingController>();
+       SettingBinding().dependencies();
+       return SettingView();
+     }
 
 
   }

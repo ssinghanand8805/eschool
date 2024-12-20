@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
+import 'package:lottie/lottie.dart';
 import '../../../apiHelper/GlobalData.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
@@ -58,7 +59,8 @@ class ApproveLeaveRequestView extends GetView<ApproveLeaveController> {
                       ),
                       SizedBox(height: 8),
                       Expanded(
-                        child: ListView.builder(
+                        child: controller.filteredContentTypeList.value != null && ( controller.filteredContentTypeList.value
+                            .data?.leaveRequest?.length ?? 0 ) > 0 ? ListView.builder(
                           itemCount: controller.filteredContentTypeList.value
                                   .data?.leaveRequest?.length ??
                               0,
@@ -315,7 +317,8 @@ class ApproveLeaveRequestView extends GetView<ApproveLeaveController> {
                               ),
                             );
                           },
-                        ),
+                        ) : Lottie.asset(
+                            "assets/images/no_data_found.json"),
                       )
                     ],
                   );

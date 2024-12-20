@@ -67,7 +67,7 @@ class ClassController extends GetxController {
       initializeOriginalList();
       update();
     } catch (e) {
-      print("EEEEEEEEEEEEEEEEEEEE${e}");
+      print("EEEEEEEEEEEEE5555555EEEEEEE${e}");
       update();
     }
   }
@@ -84,7 +84,7 @@ class ClassController extends GetxController {
       initializeOriginalList();
       update();
     } catch (e) {
-      print("EEEEEEEEEEEEEEEEEEEE${e}");
+      print("EEEEEEEEEEEEEEEEEE11111122222333EE${e}");
       update();
     }
   }

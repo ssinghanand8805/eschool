@@ -14,6 +14,7 @@ class MyCustomSD extends StatefulWidget {
   final IconData? prefixIcon;
   final List? initialValue;
   final bool? hideSearch;
+  final bool isLoading;
   final double? height;
   final Color? borderColor;
   final bool?  multiSelect;
@@ -27,6 +28,7 @@ class MyCustomSD extends StatefulWidget {
     required this.listToSearch,
     this.initialValue,
     this.hideSearch,
+    this.isLoading = false,
     this.height,
     this.borderColor,
     required this.valFrom,
@@ -53,8 +55,19 @@ class _MyCustomSDState extends State<MyCustomSD> {
       children: [
     widget.labelText == ""?SizedBox(): Padding(
       padding: const EdgeInsets.only(left: 4.0,bottom: 3,),
-      child: Text(widget.labelText ??"",
-          style: theme.textTheme.bodySmall!.copyWith(fontSize: 14)),
+      child: SizedBox(
+        height: 30,
+        child: Row(
+          children: [
+            Text(widget.labelText ??"",
+                style: theme.textTheme.bodySmall!.copyWith(fontSize: 14)),
+           widget.isLoading == true ?  Transform.scale(
+             scale: 0.4,
+             child: CircularProgressIndicator(),
+           ) : SizedBox(),
+          ],
+        ),
+      ),
     ),
         CustomSearchableDropDown(
           multiSelect:widget.multiSelect ?? false,

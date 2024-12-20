@@ -6,6 +6,7 @@ import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learnladderfaculity/widgets/alert_dialogue.dart';
 import 'package:learnladderfaculity/widgets/custom_button.dart';
+import 'package:lottie/lottie.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/customTextField.dart';
 import '../../common_widgets/custom_loader.dart';
@@ -55,7 +56,8 @@ class GalleryView extends GetView<GalleryController> {
                             if (controller.galleryList.value.data == null ||
                                 controller.galleryList.value.data!.listResult!
                                     .isEmpty) {
-                              return Center(child: CustomLoader());
+                              return Center(child: Lottie.asset(
+                                  "assets/images/no_data_found.json"));
                             }
 
                             return GridView.builder(

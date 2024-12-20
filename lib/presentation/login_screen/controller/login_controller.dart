@@ -9,6 +9,7 @@ import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
 import '../../../core/app_export.dart';
 import '../models/Faculity.dart';
+import '../models/SchoolSetting.dart';
 
 
 class LoginController extends GetxController {
@@ -62,12 +63,12 @@ class LoginController extends GetxController {
         {
           isLoading.value = false;
           update();
-          Faculity fac = Faculity.fromJson(data.body);
-
+          Faculity fac = Faculity.fromJson(data.body['staffDetails']);
+          SchoolSetting schoolSetting = SchoolSetting.fromJson(data.body['setting_result'][0]);
           UserData usersData = UserData();
           userData.addLastUserId(idController.text);
           userData.addLastUserPwd(passwordController.text);
-          usersData.saveFaculity(fac);
+          usersData.saveFaculity(fac,schoolSetting: schoolSetting);
           if(fac.roles!.roleId.toString() == '7')
           {
             Get.showSnackbar(Ui.SuccessSnackBar(message: "Welcome ${fac.name}"));

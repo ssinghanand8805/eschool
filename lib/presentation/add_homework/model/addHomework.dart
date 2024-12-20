@@ -17,7 +17,7 @@ class AddHomeWorkModal{
 
   addHomeWork(context) async {
 
-    var ff = await controller.HtmlController.value.getText().toString();
+    var ff = await controller.HtmlController.value.getText();
 
     Map<String, String> body = {
       "modal_class_id":commonApiController.selectedClassId.value,

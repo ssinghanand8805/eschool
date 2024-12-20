@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/userData.dart';
 import '../../../core/app_export.dart';
+import '../../login_screen/models/Faculity.dart';
 import '../models/s_model.dart';
 
 /// A controller class for the SScreen.
@@ -28,7 +29,7 @@ class SController extends GetxController {
 
 
     print("#############ONINIT ${prefs.getBool("isLoggegIn")}");
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () async {
       if(!isBaseUrlFound)
         {
           Get.offNamed(
@@ -39,10 +40,22 @@ class SController extends GetxController {
         {
           if(prefs.getBool("isLoggegIn") == true)
           {
-            userData.loadDataFromSharedPreferences();
-            Get.offNamed(
-              AppRoutes.formScreen,
-            );
+            Faculity? f = await userData.getFaculity();
+            if(f == null)
+              {
+                await prefs.clear();
+                Get.offNamed(
+                  AppRoutes.loginScreen,
+                );
+              }
+            else
+              {
+                userData.loadDataFromSharedPreferences();
+                Get.offNamed(
+                  AppRoutes.formScreen,
+                );
+              }
+
           }
           else
           {
