@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../apiHelper/Constants.dart';
@@ -9,6 +10,8 @@ class EvaluateHomeworkController extends GetxController {
   CommonApiController commonApiController = Get.put(CommonApiController());
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   Rx<EvaluateHomework> evaluateHomework = EvaluateHomework().obs;
+  Rx<TextEditingController> evaluateDateC = TextEditingController().obs;
+  Rx<TextEditingController> titleC = TextEditingController().obs;
   String id = "";
   @override
   void onInit() {
@@ -18,14 +21,12 @@ class EvaluateHomeworkController extends GetxController {
     print("PPPPPPP${id}");
     getEvaluationData();
   }
-  Future<void> getEvaluationData() async {
 
+  Future<void> getEvaluationData() async {
     try {
-      var body = {
-        "id":id
-      };
-      var data =
-      await apiRespository.postApiCallByJson(Constants.homework_evaluation, body);
+      var body = {"id": id};
+      var data = await apiRespository.postApiCallByJson(
+          Constants.homework_evaluation, body);
 
       evaluateHomework.value = EvaluateHomework.fromJson(data.body);
 
@@ -36,5 +37,4 @@ class EvaluateHomeworkController extends GetxController {
       update();
     }
   }
-
 }

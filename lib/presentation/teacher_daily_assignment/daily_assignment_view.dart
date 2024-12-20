@@ -1,20 +1,15 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
-import 'package:html_editor_enhanced/utils/options.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:learnladderfaculity/widgets/custom_button.dart';
+
 import '../../../widgets/myCustomsd.dart';
 import '../../apiHelper/GlobalData.dart';
 import '../../theme/theme_helper.dart';
-import '../../widgets/alert_dialogue.dart';
-import '../../widgets/button.dart';
-import '../../widgets/customTextField.dart';
 import '../../widgets/datePickerTextField.dart';
 // import '../add_homework/controller/add_homework_controller.dart';
 // import '../add_homework/model/addHomework.dart';
@@ -44,6 +39,7 @@ class _TeacherDailyAssignmentScreenState
     );
     return date;
   }
+
   CommonApiController commonApiController = Get.put(CommonApiController());
   CommonApiController controller3 = Get.put(CommonApiController());
   // AddHomeWorkController hcController = Get.put(AddHomeWorkController());
@@ -205,29 +201,29 @@ class _TeacherDailyAssignmentScreenState
                     children: [
                       Expanded(
                         child: Obx(() => MyCustomSD(
-                          hideSearch: true,
-                          borderColor: Colors.grey,
-                          listToSearch:
-                          commonApiController.classListModelMap.value,
-                          valFrom: "className",
-                          label: 'Class',
-                          labelText: 'Class',
-                          onChanged: (val) {
-                            print(val);
-                            if (commonApiController
-                                .classListModelMap.value.length >
-                                0) {
-                              print("5555555555555");
+                              hideSearch: true,
+                              borderColor: Colors.grey,
+                              listToSearch:
+                                  commonApiController.classListModelMap.value,
+                              valFrom: "className",
+                              label: 'Class',
+                              labelText: 'Class',
+                              onChanged: (val) {
+                                print(val);
+                                if (commonApiController
+                                        .classListModelMap.value.length >
+                                    0) {
+                                  print("5555555555555");
 
-                              commonApiController.selectedClassId.value =
-                                  val['id'].toString();
-                              commonApiController.selectedClassName.value =
-                                  val['className'].toString();
-                              commonApiController.update();
-                              commonApiController.getSectionList();
-                            }
-                          },
-                        )),
+                                  commonApiController.selectedClassId.value =
+                                      val['id'].toString();
+                                  commonApiController.selectedClassName.value =
+                                      val['className'].toString();
+                                  commonApiController.update();
+                                  commonApiController.getSectionList();
+                                }
+                              },
+                            )),
                       ),
                       SizedBox(
                         width: 5,
@@ -238,7 +234,7 @@ class _TeacherDailyAssignmentScreenState
                             hideSearch: true,
                             borderColor: Colors.grey,
                             listToSearch:
-                            commonApiController.sectionListModelMap.value,
+                                commonApiController.sectionListModelMap.value,
                             valFrom: "section",
                             label: 'Section',
                             labelText: 'Section',
@@ -246,7 +242,7 @@ class _TeacherDailyAssignmentScreenState
                               print(val);
                               if (val != null) {
                                 if (commonApiController
-                                    .sectionListModelMap.value.length >
+                                        .sectionListModelMap.value.length >
                                     0) {
                                   commonApiController.selectedSectionId.value =
                                       val['section_id'].toString();
@@ -269,11 +265,15 @@ class _TeacherDailyAssignmentScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: Obx(() =>
-                            MyCustomSD(
+                        child: Obx(() => MyCustomSD(
                               hideSearch: true,
                               borderColor: Colors.grey,
-                              listToSearch: controller.subjectGroupList.value.length > 0 ?  controller.subjectGroupList.value.map((e) => e.toJson()).toList() : [],
+                              listToSearch:
+                                  controller.subjectGroupList.value.length > 0
+                                      ? controller.subjectGroupList.value
+                                          .map((e) => e.toJson())
+                                          .toList()
+                                      : [],
                               valFrom: "name",
                               label: 'Subject Group',
                               labelText: 'Subject Group',
@@ -281,30 +281,35 @@ class _TeacherDailyAssignmentScreenState
                                 print(val);
                                 if (val != null) {
                                   controller.updateSubjectGroupId.value =
-                                  val['subject_group_id'];
+                                      val['subject_group_id'];
                                   controller.subject();
                                 }
                               },
-                            )) ,
+                            )),
                       ),
                       SizedBox(
                         width: 5,
                       ),
                       Expanded(
                         child: Obx(() => MyCustomSD(
-                          hideSearch: true,
-                          borderColor: Colors.grey,
-                          listToSearch:  controller.subjectList.value.length > 0 ? controller.subjectList.value.map((e) => e.toJson()).toList():[],
-                          valFrom: "name",
-                          label: 'Subject',
-                          labelText: 'Subject',
-                          onChanged: (val) {
-                            print(val);
-                            if (val != null) {
-                              controller.updateSubjectId.value = val['id'];
-                            }
-                          },
-                        )),
+                              hideSearch: true,
+                              borderColor: Colors.grey,
+                              listToSearch:
+                                  controller.subjectList.value.length > 0
+                                      ? controller.subjectList.value
+                                          .map((e) => e.toJson())
+                                          .toList()
+                                      : [],
+                              valFrom: "name",
+                              label: 'Subject',
+                              labelText: 'Subject',
+                              onChanged: (val) {
+                                print(val);
+                                if (val != null) {
+                                  controller.updateSubjectId.value = val['id'];
+                                }
+                              },
+                            )),
                       )
                     ],
                   ),
@@ -320,9 +325,8 @@ class _TeacherDailyAssignmentScreenState
                             controller: controller.dateC.value,
                             title: 'Attendance date',
                             onDateSelected: (date) async {
-                              controller.dateC.value.text =
-                              await GlobalData().ConvertToSchoolDateTimeFormat(
-                                  date);
+                              controller.dateC.value.text = await GlobalData()
+                                  .ConvertToSchoolDateTimeFormat(date);
                             }),
                       ),
                       SizedBox(
@@ -358,7 +362,7 @@ class _TeacherDailyAssignmentScreenState
                   SizedBox(
                     height: 10,
                   ),
-                Expanded(child: MyTable())
+                  Expanded(child: MyTable())
                 ],
               ),
             );
@@ -368,13 +372,14 @@ class _TeacherDailyAssignmentScreenState
           addDailyAssignment(context);
         },
         tooltip: 'Add Staff',
-        shape:CircleBorder() ,
+        shape: CircleBorder(),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
         child: Icon(Icons.add),
       ),
     );
   }
+
   void addDailyAssignment(BuildContext context) {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -414,12 +419,12 @@ class _TeacherDailyAssignmentScreenState
                                 labelText: 'Class',
                                 borderColor: Colors.grey,
                                 listToSearch:
-                                commonApiController.classListModelMap.value,
+                                    commonApiController.classListModelMap.value,
                                 valFrom: "className",
                                 label: 'Class',
                                 onChanged: (val) {
                                   if (commonApiController
-                                      .classListModelMap.value.length >
+                                          .classListModelMap.value.length >
                                       0) {
                                     print("5555555555555");
 
@@ -449,12 +454,12 @@ class _TeacherDailyAssignmentScreenState
                                   onChanged: (val) {
                                     if (val != null) {
                                       if (commonApiController
-                                          .sectionListModelMap
-                                          .value
-                                          .length >
+                                              .sectionListModelMap
+                                              .value
+                                              .length >
                                           0) {
                                         commonApiController
-                                            .selectedSectionId.value =
+                                                .selectedSectionId.value =
                                             val['section_id'].toString();
                                         commonApiController.selectedSectionName
                                             .value = val['section'].toString();
@@ -478,7 +483,12 @@ class _TeacherDailyAssignmentScreenState
                               child: MyCustomSD(
                                 hideSearch: true,
                                 borderColor: Colors.grey,
-                                listToSearch: controller.subjectGroupList.value.length > 0 ?  controller.subjectGroupList.value.map((e) => e.toJson()).toList() : [],
+                                listToSearch:
+                                    controller.subjectGroupList.value.length > 0
+                                        ? controller.subjectGroupList.value
+                                            .map((e) => e.toJson())
+                                            .toList()
+                                        : [],
                                 valFrom: "name",
                                 label: 'Subject Group',
                                 labelText: 'Subject Group',
@@ -486,7 +496,7 @@ class _TeacherDailyAssignmentScreenState
                                   print(val);
                                   if (val != null) {
                                     controller.updateSubjectGroupId.value =
-                                    val['subject_group_id'];
+                                        val['subject_group_id'];
                                     controller.subject();
                                   }
                                 },
@@ -497,19 +507,25 @@ class _TeacherDailyAssignmentScreenState
                             ),
                             Expanded(
                               child: Obx(() => MyCustomSD(
-                                hideSearch: true,
-                                borderColor: Colors.grey,
-                                listToSearch:  controller.subjectList.value.length > 0 ? controller.subjectList.value.map((e) => e.toJson()).toList():[],
-                                valFrom: "name",
-                                label: 'Subject',
-                                labelText: 'Subject',
-                                onChanged: (val) {
-                                  print(val);
-                                  if (val != null) {
-                                    controller.updateSubjectId.value = val['id'];
-                                  }
-                                },
-                              )),
+                                    hideSearch: true,
+                                    borderColor: Colors.grey,
+                                    listToSearch:
+                                        controller.subjectList.value.length > 0
+                                            ? controller.subjectList.value
+                                                .map((e) => e.toJson())
+                                                .toList()
+                                            : [],
+                                    valFrom: "name",
+                                    label: 'Subject',
+                                    labelText: 'Subject',
+                                    onChanged: (val) {
+                                      print(val);
+                                      if (val != null) {
+                                        controller.updateSubjectId.value =
+                                            val['id'];
+                                      }
+                                    },
+                                  )),
                             ),
                           ],
                         ),
@@ -537,10 +553,9 @@ class _TeacherDailyAssignmentScreenState
                                     child: TextField(
                                       style: theme.textTheme.bodySmall,
                                       decoration: InputDecoration(
-
                                         border: OutlineInputBorder(
                                             borderSide:
-                                            BorderSide(color: Colors.grey),
+                                                BorderSide(color: Colors.grey),
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(5))),
                                       ),
@@ -548,12 +563,12 @@ class _TeacherDailyAssignmentScreenState
                                       controller: controller.homeWorkDate.value,
                                       onTap: () async {
                                         final date =
-                                        await controller.getDate(context);
+                                            await controller.getDate(context);
                                         if (date != null) {
                                           String formattedDate =
-                                          await GlobalData()
-                                              .ConvertToSchoolDateTimeFormat(
-                                              date);
+                                              await GlobalData()
+                                                  .ConvertToSchoolDateTimeFormat(
+                                                      date);
                                           controller.homeWorkDate.value.text =
                                               formattedDate;
                                           print("@@@@@@@@ " +
@@ -587,24 +602,23 @@ class _TeacherDailyAssignmentScreenState
                                     child: TextField(
                                       style: theme.textTheme.bodySmall,
                                       decoration: InputDecoration(
-
                                         border: OutlineInputBorder(
                                             borderSide:
-                                            BorderSide(color: Colors.grey),
+                                                BorderSide(color: Colors.grey),
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(5))),
                                       ),
                                       readOnly: true,
                                       controller:
-                                      controller.submissionDate.value,
+                                          controller.submissionDate.value,
                                       onTap: () async {
                                         final date =
-                                        await controller.getDate(context);
+                                            await controller.getDate(context);
                                         if (date != null) {
                                           String formattedDate =
-                                          await GlobalData()
-                                              .ConvertToSchoolDateTimeFormat(
-                                              date);
+                                              await GlobalData()
+                                                  .ConvertToSchoolDateTimeFormat(
+                                                      date);
                                           controller.submissionDate.value.text =
                                               formattedDate;
                                         }
@@ -628,7 +642,7 @@ class _TeacherDailyAssignmentScreenState
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
                                 border:
-                                Border.all(color: Colors.green.shade200)),
+                                    Border.all(color: Colors.green.shade200)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -697,6 +711,7 @@ class _TeacherDailyAssignmentScreenState
       },
     );
   }
+
   final ImagePicker _picker = ImagePicker();
   Future<void> getImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
@@ -780,159 +795,161 @@ class _MyTableState extends State<MyTable> {
       Get.put(TeacherDailyAssignmentController());
   @override
   Widget build(BuildContext context) {
-    return controller.assignmentList.value.data != null ?
-    ListView.builder(
-      itemCount: controller.assignmentList.value.data!.length,
-      itemBuilder: (context, index) {
-        Assignment assignment = controller.assignmentList.value.data![index];
-        //  print("PPPPPP${student.attendenceTypeId}");
-        //  controller.studentAttendaceDet[student.studentSessionId] =  student.attendenceTypeId.toString() == '1' ? 'P' : student.attendenceTypeId.toString() == '4' ? 'A' : student.attendenceTypeId.toString() == '5' ? 'L' : 'P';
+    return controller.assignmentList.value.data != null
+        ? ListView.builder(
+            itemCount: controller.assignmentList.value.data!.length,
+            itemBuilder: (context, index) {
+              Assignment assignment =
+                  controller.assignmentList.value.data![index];
+              //  print("PPPPPP${student.attendenceTypeId}");
+              //  controller.studentAttendaceDet[student.studentSessionId] =  student.attendenceTypeId.toString() == '1' ? 'P' : student.attendenceTypeId.toString() == '4' ? 'A' : student.attendenceTypeId.toString() == '5' ? 'L' : 'P';
 
-        return Container(
-          margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            color: Colors.green.shade100,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
-                spreadRadius: 1,
-                blurRadius: 3,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Card(
-            margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            elevation: 4,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.green.shade100,
-                    Colors.green.shade50,
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                      offset: Offset(0, 2),
+                    ),
                   ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade200,
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
+                child: Card(
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 16.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
                   ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Header Row with Student Name and Class
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Html(
-                            data: assignment.description!,
-                          ),
-                        ),
-                        assignment.document != null ?  IconButton(onPressed: () {
-
-                        }, icon: Icon(Icons.remove_red_eye_sharp)) : SizedBox()
-                        // Expanded(child: Text("File: ${assignment.document ?? ""}")),
-                      
-
-
-                      ],
-                    ),
-                    const SizedBox(height: 5.0),
-
-                    // Details Section
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          assignment.className!,
-                          style: theme.textTheme.bodySmall!.copyWith(
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
-                        Text(
-                          "Section: ${assignment.section!}",
-                          style: theme.textTheme.bodySmall,
-                        ),
-                        const SizedBox(height: 5.0),
-                        Text(
-                          "Subject: ${assignment.subjectName!}",
-                          style: theme.textTheme.bodySmall,
-                        ),
-                        const SizedBox(height: 5.0),
-                        Text(
-                          "Submission Date: ${assignment.submitDate!}",
-                          style: theme.textTheme.bodySmall,
-                        ),
-                        const SizedBox(height: 5.0),
-                        Text(
-                          "Evaluated By: ${assignment.staffName! ?? 'N/A'}",
-                          style: theme.textTheme.bodySmall,
-                        ),
-                        const SizedBox(height: 5.0),
-                        Text(
-                          "Evaluation Date: ${'Evaluation Date'}",
-                          style: theme.textTheme.bodySmall,
+                  elevation: 4,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.green.shade100,
+                          Colors.green.shade50,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade200,
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
                         ),
                       ],
                     ),
-                    // Action Buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton.icon(
-                          onPressed: () {
-                            print("Edit pressed");
-                            Get.toNamed('/evaluateHomeWork');
-                            // Call edit function here
-                          },
-                          icon: const Icon(Icons.people, size: 16),
-                          label: const Text("Students"),
-                        ),
-                        const SizedBox(width: 5.0),
-                        TextButton.icon(
-                          onPressed: () {
-                            print("Edit pressed");
-                            // Call edit function here
-                          },
-                          icon: const Icon(Icons.edit, size: 16),
-                          label: const Text("Edit"),
-                        ),
-                        const SizedBox(width: 5.0),
-                        TextButton.icon(
-                          onPressed: () {
-                            print("Delete pressed");
-                            // Call delete function here
-                          },
-                          icon: const Icon(Icons.delete,
-                              size: 16, color: Colors.red),
-                          label: Text(
-                            "Delete",
-                            style: TextStyle(color: Colors.red),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Header Row with Student Name and Class
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Html(
+                                  data: assignment.description!,
+                                ),
+                              ),
+                              assignment.document != null
+                                  ? IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.remove_red_eye_sharp))
+                                  : SizedBox()
+                              // Expanded(child: Text("File: ${assignment.document ?? ""}")),
+                            ],
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 5.0),
+
+                          // Details Section
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                assignment.className!,
+                                style: theme.textTheme.bodySmall!.copyWith(
+                                  color: Colors.grey.shade600,
+                                ),
+                              ),
+                              Text(
+                                "Section: ${assignment.section!}",
+                                style: theme.textTheme.bodySmall,
+                              ),
+                              const SizedBox(height: 5.0),
+                              Text(
+                                "Subject: ${assignment.subjectName!}",
+                                style: theme.textTheme.bodySmall,
+                              ),
+                              const SizedBox(height: 5.0),
+                              Text(
+                                "Submission Date: ${assignment.submitDate!}",
+                                style: theme.textTheme.bodySmall,
+                              ),
+                              const SizedBox(height: 5.0),
+                              Text(
+                                "Evaluated By: ${assignment.staffName! ?? 'N/A'}",
+                                style: theme.textTheme.bodySmall,
+                              ),
+                              const SizedBox(height: 5.0),
+                              Text(
+                                "Evaluation Date: ${'Evaluation Date'}",
+                                style: theme.textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
+                          // Action Buttons
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TextButton.icon(
+                                onPressed: () {
+                                  print("Edit pressed");
+                                  Get.toNamed('/evaluateHomeWork',
+                                      arguments: {"id": assignment.id});
+                                  // Call edit function here
+                                },
+                                icon: const Icon(Icons.people, size: 16),
+                                label: const Text("Students"),
+                              ),
+                              const SizedBox(width: 5.0),
+                              TextButton.icon(
+                                onPressed: () {
+                                  print("Edit pressed");
+                                  // Call edit function here
+                                },
+                                icon: const Icon(Icons.edit, size: 16),
+                                label: const Text("Edit"),
+                              ),
+                              const SizedBox(width: 5.0),
+                              TextButton.icon(
+                                onPressed: () {
+                                  print("Delete pressed");
+                                  // Call delete function here
+                                },
+                                icon: const Icon(Icons.delete,
+                                    size: 16, color: Colors.red),
+                                label: Text(
+                                  "Delete",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ),
-        );
-      },
-    )
+              );
+            },
+          )
         : Text("No Data Found");
     // return SingleChildScrollView(
     //   child: Column(

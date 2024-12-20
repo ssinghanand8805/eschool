@@ -2,14 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../apiHelper/ChatNotificationService.dart';
+
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/GlobalData.dart';
-import '../../../apiHelper/SocketService.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/userData.dart';
 import '../../../core/app_export.dart';
-import '../../login_screen/models/ChatUser.dart';
 import '../../login_screen/models/Faculity.dart';
 import '../models/Menus.dart';
 
@@ -295,18 +293,15 @@ class DashboardController extends GetxController {
                   print("========${data.shortCode.toString()}");
 // Get.toNamed("/"+data.shortCode.toString());
 
-                  if(data.permissionCategory!.length == 1)
-                    {
-                      String routeName = "/" + data.permissionCategory![0].shortCode.toString();
-                      Navigator.pushNamed( context,routeName);
-                      // Get.toNamed("/"+routeName);
-                    }
-                  else
-                    {
-                      showDynamicBottomSheet(context,
-                          data: data.permissionCategory!, images: images);
-                    }
-
+                  if (data.permissionCategory!.length == 1) {
+                    String routeName =
+                        "/" + data.permissionCategory![0].shortCode.toString();
+                    Navigator.pushNamed(context, routeName);
+                    // Get.toNamed("/"+routeName);
+                  } else {
+                    showDynamicBottomSheet(context,
+                        data: data.permissionCategory!, images: images);
+                  }
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -369,7 +364,8 @@ class DashboardController extends GetxController {
                   onTap: () {
                     print(data[index].shortCode.toString());
                     String routeName = "/" + data[index].shortCode.toString();
-                    Navigator.pushNamed( context,"/" + data[index].shortCode.toString());
+                    Navigator.pushNamed(
+                        context, "/" + data[index].shortCode.toString());
                     // Check if the route exists (you can manually keep track of the available routes)
                     // if (Navigator.of(context).canPop() || ModalRoute.of(context)?.settings.name != routeName) {
                     //   // Navigate to the route if it doesn't already exist
@@ -378,7 +374,6 @@ class DashboardController extends GetxController {
                     //   // Optionally handle case when route already exists, e.g., show a message
                     //   Navigator.pushNamed( context,"/" + data[index].shortCode.toString());
                     // }
-
                   },
                   child: Container(
                     padding: EdgeInsets.all(5),
@@ -416,7 +411,7 @@ class DashboardController extends GetxController {
                           data[index].name!,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                           overflow: TextOverflow.ellipsis,
+                            overflow: TextOverflow.ellipsis,
                             color: Colors.grey.shade600,
                             fontWeight: FontWeight.w600,
                             fontSize: 12,
@@ -472,47 +467,50 @@ class DashboardController extends GetxController {
                 data.body["image"];
     update();
     print("+++++++++++++++++++++${schoolImageUrl.value}");
-
   }
 
-
   eLearningapi() async {
-      //check for school details change
+    //check for school details change
 
     final prefs = await SharedPreferences.getInstance();
     List<MenuResponse>? filteredResponses;
     String? encodedData = prefs.getString('dashboardMenuData');
     if (encodedData != null) {
       Iterable l = jsonDecode(encodedData);
-      filteredResponses =  List<MenuResponse>.from(l.map((model) => MenuResponse.fromJson(model)));
+      filteredResponses = List<MenuResponse>.from(
+          l.map((model) => MenuResponse.fromJson(model)));
     } else {
       filteredResponses = [];
     }
-    menuResponseModelObj.value = filteredResponses;
-    // update();
-    //print(filteredResponses);
+    if (filteredResponses.length > 0) {
+      menuResponseModelObj.value = filteredResponses;
+      // update();
+      //print(filteredResponses);
 
-    var per = prefs.getString('pagePermission');
+      var per = prefs.getString('pagePermission');
 
-    List permArr = jsonDecode(per!);
-    permArr.forEach((element) {print(element);});
-    updateELearningData = filteredResponses.toList();
-    gridViewWidgets
-        .add(buildGridItem("", getMenuDataList, menuImageImagesPath));
-    lazyLoadDasboardData();
-    // academicStatusApi();
-    update();
-    print("E LEARNING DATA ${getMenuDataList.length}");
+      List permArr = jsonDecode(per!);
+      permArr.forEach((element) {
+        print(element);
+      });
+      updateELearningData = filteredResponses.toList();
+      gridViewWidgets
+          .add(buildGridItem("", getMenuDataList, menuImageImagesPath));
+      lazyLoadDasboardData();
+      // academicStatusApi();
+      update();
+      print("E LEARNING DATA ${getMenuDataList.length}");
+    } else {
+      await lazyLoadDasboardData();
+    }
   }
 
-  lazyLoadDasboardData()
-  async {
+  lazyLoadDasboardData() async {
     UserData usersData = UserData();
     Faculity? f = await usersData.getFaculity();
     Map<String, dynamic> body = {
       "roleId": f!.roles!.roleId.toString(),
     };
-
 
     print("))))))))))))))${f.chatAccessToken}");
     var data = await apiRespository.postApiCallByJson(
@@ -523,22 +521,21 @@ class DashboardController extends GetxController {
     if (f!.roles!.roleId.toString() == "7") {
       print("***********");
       filteredResponses = menus.response;
-      var e  = await menus.setResponsesWhereCanView(isSuperAdmin : true);
+      var e = await menus.setResponsesWhereCanView(isSuperAdmin: true);
       var per = jsonEncode(e);
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('pagePermission',per);
-    }
-    else {
+      await prefs.setString('pagePermission', per);
+    } else {
       filteredResponses = menus.getResponsesWhereCanView();
-      var e  = await menus.setResponsesWhereCanView();
+      var e = await menus.setResponsesWhereCanView();
       var per = jsonEncode(e);
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('pagePermission',per);
+      await prefs.setString('pagePermission', per);
     }
     final prefs = await SharedPreferences.getInstance();
-    if(filteredResponses != null)
-    {
-      String encodedData = jsonEncode(filteredResponses.map((response) => response.toJson()).toList());
+    if (filteredResponses != null) {
+      String encodedData = jsonEncode(
+          filteredResponses.map((response) => response.toJson()).toList());
       await prefs.setString('dashboardMenuData', encodedData);
     }
   }
@@ -612,27 +609,11 @@ class DashboardController extends GetxController {
     );
   }
 
-
-
   RxList FAB = [
-    {
-      'name':"Term"
-    },
-    {
-      'name':"Assessment"
-    },
-    {
-      'name':"Grade"
-    },
-    {
-      'name':"Exam"
-    },
-    {
-      'name':"Exam Schedule"
-    },
+    {'name': "Term"},
+    {'name': "Assessment"},
+    {'name': "Grade"},
+    {'name': "Exam"},
+    {'name': "Exam Schedule"},
   ].obs;
-
-
-
-
 }

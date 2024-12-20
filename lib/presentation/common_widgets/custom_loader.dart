@@ -23,9 +23,10 @@ class CustomLoader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Lottie.asset("assets/images/lottiebookloader.json"),
+                  Lottie.asset("assets/images/lottiebookloader.json",
+                      height: 200, width: 200),
                   //CircularProgressIndicator(backgroundColor: Colors.red.shade400,),
-                  SizedBox(height: 16.0),
+                  SizedBox(height: 10.0),
                   Text(
                     message,
                     style: TextStyle(

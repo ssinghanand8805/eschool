@@ -30,9 +30,12 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     if (json['studentlist'] != null) {
       studentlist = <Studentlist>[];
-      json['studentlist'].forEach((v) { studentlist!.add(new Studentlist.fromJson(v)); });
+      json['studentlist'].forEach((v) {
+        studentlist!.add(new Studentlist.fromJson(v));
+      });
     }
-    result = json['result'] != null ? new Result.fromJson(json['result']) : null;
+    result =
+        json['result'] != null ? new Result.fromJson(json['result']) : null;
     createdBy = json['created_by'];
     evaluatedBy = json['evaluated_by'];
   }
@@ -53,16 +56,16 @@ class Data {
 
 class Studentlist {
   String? homeworkEvaluationId;
-  Null? note;
-  Null? marks;
+  String? note;
+  String? marks;
   String? id;
   String? sessionId;
   String? studentId;
   String? classId;
   String? sectionId;
-  Null? hostelRoomId;
-  Null? vehrouteId;
-  Null? routePickupPointId;
+  String? hostelRoomId;
+  String? vehrouteId;
+  String? routePickupPointId;
   String? transportFees;
   String? feesDiscount;
   String? isLeave;
@@ -70,14 +73,38 @@ class Studentlist {
   String? isAlumni;
   String? defaultLogin;
   String? createdAt;
-  Null? updatedAt;
+  String? updatedAt;
   String? firstname;
-  Null? middlename;
+  String? middlename;
   String? lastname;
   String? admissionNo;
   List<Assignmentlist>? assignmentlist;
 
-  Studentlist({this.homeworkEvaluationId, this.note, this.marks, this.id, this.sessionId, this.studentId, this.classId, this.sectionId, this.hostelRoomId, this.vehrouteId, this.routePickupPointId, this.transportFees, this.feesDiscount, this.isLeave, this.isActive, this.isAlumni, this.defaultLogin, this.createdAt, this.updatedAt, this.firstname, this.middlename, this.lastname, this.admissionNo, this.assignmentlist});
+  Studentlist(
+      {this.homeworkEvaluationId,
+      this.note,
+      this.marks,
+      this.id,
+      this.sessionId,
+      this.studentId,
+      this.classId,
+      this.sectionId,
+      this.hostelRoomId,
+      this.vehrouteId,
+      this.routePickupPointId,
+      this.transportFees,
+      this.feesDiscount,
+      this.isLeave,
+      this.isActive,
+      this.isAlumni,
+      this.defaultLogin,
+      this.createdAt,
+      this.updatedAt,
+      this.firstname,
+      this.middlename,
+      this.lastname,
+      this.admissionNo,
+      this.assignmentlist});
 
   Studentlist.fromJson(Map<String, dynamic> json) {
     homeworkEvaluationId = json['homework_evaluation_id'];
@@ -105,7 +132,9 @@ class Studentlist {
     admissionNo = json['admission_no'];
     if (json['assignmentlist'] != null) {
       assignmentlist = <Assignmentlist>[];
-      json['assignmentlist'].forEach((v) { assignmentlist!.add(new Assignmentlist.fromJson(v)); });
+      json['assignmentlist'].forEach((v) {
+        assignmentlist!.add(new Assignmentlist.fromJson(v));
+      });
     }
   }
 
@@ -135,7 +164,8 @@ class Studentlist {
     data['lastname'] = this.lastname;
     data['admission_no'] = this.admissionNo;
     if (this.assignmentlist != null) {
-      data['assignmentlist'] = this.assignmentlist!.map((v) => v.toJson()).toList();
+      data['assignmentlist'] =
+          this.assignmentlist!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -147,7 +177,8 @@ class Assignmentlist {
   String? message;
   String? studentId;
 
-  Assignmentlist({this.submitAssignmentId, this.docs, this.message, this.studentId});
+  Assignmentlist(
+      {this.submitAssignmentId, this.docs, this.message, this.studentId});
 
   Assignmentlist.fromJson(Map<String, dynamic> json) {
     submitAssignmentId = json['submit_assignment_id'];
@@ -196,69 +227,97 @@ class Result {
   String? createdStaffSurname;
   String? createdStaffRoleid;
 
-  Result({this.id, this.classId, this.sectionId, this.sessionId, this.staffId, this.subjectGroupSubjectId, this.subjectId, this.homeworkDate, this.submitDate, this.marks, this.description, this.isAssignment, this.createDate, this.evaluationDate, this.document, this.createdBy, this.evaluatedBy, this.createdAt, this.className, this.section, this.name, this.code, this.subjectGroup, this.createdStaffId, this.createdEmployeeId, this.createdStaffName, this.createdStaffSurname, this.createdStaffRoleid});
+  Result(
+      {this.id,
+      this.classId,
+      this.sectionId,
+      this.sessionId,
+      this.staffId,
+      this.subjectGroupSubjectId,
+      this.subjectId,
+      this.homeworkDate,
+      this.submitDate,
+      this.marks,
+      this.description,
+      this.isAssignment,
+      this.createDate,
+      this.evaluationDate,
+      this.document,
+      this.createdBy,
+      this.evaluatedBy,
+      this.createdAt,
+      this.className,
+      this.section,
+      this.name,
+      this.code,
+      this.subjectGroup,
+      this.createdStaffId,
+      this.createdEmployeeId,
+      this.createdStaffName,
+      this.createdStaffSurname,
+      this.createdStaffRoleid});
 
   Result.fromJson(Map<String, dynamic> json) {
-  id = json['id'];
-  classId = json['class_id'];
-  sectionId = json['section_id'];
-  sessionId = json['session_id'];
-  staffId = json['staff_id'];
-  subjectGroupSubjectId = json['subject_group_subject_id'];
-  subjectId = json['subject_id'];
-  homeworkDate = json['homework_date'];
-  submitDate = json['submit_date'];
-  marks = json['marks'];
-  description = json['description'];
-  isAssignment = json['isAssignment'];
-  createDate = json['create_date'];
-  evaluationDate = json['evaluation_date'];
-  document = json['document'];
-  createdBy = json['created_by'];
-  evaluatedBy = json['evaluated_by'];
-  createdAt = json['created_at'];
-  className = json['class'];
-  section = json['section'];
-  name = json['name'];
-  code = json['code'];
-  subjectGroup = json['subject_group'];
-  createdStaffId = json['created_staff_id'];
-  createdEmployeeId = json['created_employee_id'];
-  createdStaffName = json['created_staff_name'];
-  createdStaffSurname = json['created_staff_surname'];
-  createdStaffRoleid = json['created_staff_roleid'];
+    id = json['id'];
+    classId = json['class_id'];
+    sectionId = json['section_id'];
+    sessionId = json['session_id'];
+    staffId = json['staff_id'];
+    subjectGroupSubjectId = json['subject_group_subject_id'];
+    subjectId = json['subject_id'];
+    homeworkDate = json['homework_date'];
+    submitDate = json['submit_date'];
+    marks = json['marks'];
+    description = json['description'];
+    isAssignment = json['isAssignment'];
+    createDate = json['create_date'];
+    evaluationDate = json['evaluation_date'];
+    document = json['document'];
+    createdBy = json['created_by'];
+    evaluatedBy = json['evaluated_by'];
+    createdAt = json['created_at'];
+    className = json['class'];
+    section = json['section'];
+    name = json['name'];
+    code = json['code'];
+    subjectGroup = json['subject_group'];
+    createdStaffId = json['created_staff_id'];
+    createdEmployeeId = json['created_employee_id'];
+    createdStaffName = json['created_staff_name'];
+    createdStaffSurname = json['created_staff_surname'];
+    createdStaffRoleid = json['created_staff_roleid'];
   }
 
   Map<String, dynamic> toJson() {
-  final Map<String, dynamic> data = new Map<String, dynamic>();
-  data['id'] = this.id;
-  data['class_id'] = this.classId;
-  data['section_id'] = this.sectionId;
-  data['session_id'] = this.sessionId;
-  data['staff_id'] = this.staffId;
-  data['subject_group_subject_id'] = this.subjectGroupSubjectId;
-  data['subject_id'] = this.subjectId;
-  data['homework_date'] = this.homeworkDate;
-  data['submit_date'] = this.submitDate;
-  data['marks'] = this.marks;
-  data['description'] = this.description;
-  data['isAssignment'] = this.isAssignment;
-  data['create_date'] = this.createDate;
-  data['evaluation_date'] = this.evaluationDate;
-  data['document'] = this.document;
-  data['created_by'] = this.createdBy;
-  data['evaluated_by'] = this.evaluatedBy;
-  data['created_at'] = this.createdAt;
-  data['class'] = this.className;
-  data['section'] = this.section;
-  data['name'] = this.name;
-  data['code'] = this.code;
-  data['subject_group'] = this.subjectGroup;
-  data['created_staff_id'] = this.createdStaffId;
-  data['created_employee_id'] = this.createdEmployeeId;
-  data['created_staff_name'] = this.createdStaffName;
-  data['created_staff_surname'] = this.createdStaffSurname;
-  data['created_staff_roleid'] = this.createdStaffRoleid;
-  return data;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['class_id'] = this.classId;
+    data['section_id'] = this.sectionId;
+    data['session_id'] = this.sessionId;
+    data['staff_id'] = this.staffId;
+    data['subject_group_subject_id'] = this.subjectGroupSubjectId;
+    data['subject_id'] = this.subjectId;
+    data['homework_date'] = this.homeworkDate;
+    data['submit_date'] = this.submitDate;
+    data['marks'] = this.marks;
+    data['description'] = this.description;
+    data['isAssignment'] = this.isAssignment;
+    data['create_date'] = this.createDate;
+    data['evaluation_date'] = this.evaluationDate;
+    data['document'] = this.document;
+    data['created_by'] = this.createdBy;
+    data['evaluated_by'] = this.evaluatedBy;
+    data['created_at'] = this.createdAt;
+    data['class'] = this.className;
+    data['section'] = this.section;
+    data['name'] = this.name;
+    data['code'] = this.code;
+    data['subject_group'] = this.subjectGroup;
+    data['created_staff_id'] = this.createdStaffId;
+    data['created_employee_id'] = this.createdEmployeeId;
+    data['created_staff_name'] = this.createdStaffName;
+    data['created_staff_surname'] = this.createdStaffSurname;
+    data['created_staff_roleid'] = this.createdStaffRoleid;
+    return data;
   }
 }
