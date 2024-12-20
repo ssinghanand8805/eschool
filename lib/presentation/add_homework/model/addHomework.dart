@@ -52,14 +52,24 @@ class AddHomeWorkModal{
   }
 
   subjectGroup() async {
-    Map<String, dynamic> body = {
-      "class_id":commonApiController.selectedClassId.value,
-      "section_id":commonApiController.selectedSectionId.value,
-    };
-print("EEEEEEEE${body}");
-    var data = await apiRespository.postApiCallByJson(Constants.subjectGroup, body);
-    print("DATA @@@@ ${data.body}");
-    controller.updateSubjectGroup = data.body;
+
+    try{
+      controller.isSubjectGroupLoading.value = true;
+      Map<String, dynamic> body = {
+        "class_id":commonApiController.selectedClassId.value,
+        "section_id":commonApiController.selectedSectionId.value,
+      };
+      print("EEEEEEEE${body}");
+      var data = await apiRespository.postApiCallByJson(Constants.subjectGroup, body);
+      print("DATA @@@@ ${data.body}");
+      controller.updateSubjectGroup = data.body;
+      controller.isSubjectGroupLoading.value = false;
+    }
+    catch(e)
+    {
+      controller.isSubjectGroupLoading.value = false;
+    }
+
   }
 
   // subject() async {
@@ -92,14 +102,23 @@ print("EEEEEEEE${body}");
   // }
 
   subject() async {
-    Map<String, dynamic> body = {
-      "subject_group_id": controller.getSubjectGroupId.value
-    };
+    try{
+      controller.isSubjectLoading.value = true;
+      Map<String, dynamic> body = {
+        "subject_group_id": controller.getSubjectGroupId.value
+      };
 
-    var data = await apiRespository.postApiCallByJson(Constants.subject, body);
-    print("DATA @@@@ ${data.body}");
+      var data = await apiRespository.postApiCallByJson(Constants.subject, body);
+      print("DATA @@@@ ${data.body}");
 
-    controller.updateSubjectList = data.body;
+      controller.updateSubjectList = data.body;
+      controller.isSubjectLoading.value = false;
+    }
+    catch(e)
+    {
+      controller.isSubjectLoading.value = false;
+    }
+
 
   }
 

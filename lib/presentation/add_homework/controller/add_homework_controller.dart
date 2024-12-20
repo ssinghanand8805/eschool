@@ -24,7 +24,8 @@ class AddHomeWorkController extends GetxController {
   RxString isUpcomingHomeworkList = "Upcoming homework".obs;
 
 
-
+  RxBool isSubjectGroupLoading = false.obs;
+  RxBool isSubjectLoading = false.obs;
 
   RxList subjectGroupList = [].obs;
   RxList get getListGroupList => subjectGroupList;

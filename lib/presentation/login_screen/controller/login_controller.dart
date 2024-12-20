@@ -61,27 +61,39 @@ class LoginController extends GetxController {
         }
         else if(data.body != null)
         {
-          isLoading.value = false;
-          update();
-          Faculity fac = Faculity.fromJson(data.body['staffDetails']);
-          SchoolSetting schoolSetting = SchoolSetting.fromJson(data.body['setting_result'][0]);
-          UserData usersData = UserData();
-          userData.addLastUserId(idController.text);
-          userData.addLastUserPwd(passwordController.text);
-          usersData.saveFaculity(fac,schoolSetting: schoolSetting);
-          if(fac.roles!.roleId.toString() == '7')
-          {
-            Get.showSnackbar(Ui.SuccessSnackBar(message: "Welcome ${fac.name}"));
-            //superadmin found no restriction
-            //navigate to dashboard
-            Get.toNamed(AppRoutes.formScreen);
-          }
+          print("tttttttttttttt${data.body}");
+          if(data.body['staffDetails'] is bool && data.body['staffDetails'] == false)
+            {
+              Get.showSnackbar(Ui.ErrorSnackBar(message: "Incorrect Credentials"));
+              isLoading.value = false;
+              update();
+              return;
+            }
           else
-          {
-            Get.showSnackbar(Ui.SuccessSnackBar(message: "Welcome ${fac.name}"));
-            Get.toNamed(AppRoutes.formScreen);
-            //check permission wise and navigate to dashboard
-          }
+            {
+              isLoading.value = false;
+              update();
+              Faculity fac = Faculity.fromJson(data.body['staffDetails']);
+              SchoolSetting schoolSetting = SchoolSetting.fromJson(data.body['setting_result'][0]);
+              UserData usersData = UserData();
+              userData.addLastUserId(idController.text);
+              userData.addLastUserPwd(passwordController.text);
+              usersData.saveFaculity(fac,schoolSetting: schoolSetting);
+              if(fac.roles!.roleId.toString() == '7')
+              {
+                Get.showSnackbar(Ui.SuccessSnackBar(message: "Welcome ${fac.name}"));
+                //superadmin found no restriction
+                //navigate to dashboard
+                Get.toNamed(AppRoutes.formScreen);
+              }
+              else
+              {
+                Get.showSnackbar(Ui.SuccessSnackBar(message: "Welcome ${fac.name}"));
+                Get.toNamed(AppRoutes.formScreen);
+                //check permission wise and navigate to dashboard
+              }
+            }
+
         }
         else
         {
