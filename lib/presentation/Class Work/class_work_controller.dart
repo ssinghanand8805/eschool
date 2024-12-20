@@ -13,9 +13,9 @@ import '../../apiHelper/toastMessage.dart';
 import '../../apiHelper/userData.dart';
 import '../add_homework/model/addHomework.dart';
 import '../common_widgets/controller/CommonApiController.dart';
-import '../teacher_daily_assignment/model/DailyAssgnment.dart';
 import '../teacher_daily_assignment/model/SubjectGroup.dart';
 import '../teacher_daily_assignment/model/SubjectListBySubjectGroup.dart';
+import 'class_work_modal.dart';
 
 class ClassWorkController extends GetxController {
   CommonApiController commonApiController = Get.put(CommonApiController());
@@ -38,11 +38,11 @@ class ClassWorkController extends GetxController {
       <SubjectListBySubjectGroup>[].obs;
   Rx<File?> pickedFile = Rx<File?>(null);
 
-  Rx<TextEditingController> homeWorkDate = TextEditingController().obs;
+  Rx<TextEditingController> classWorkDate = TextEditingController().obs;
   Rx<TextEditingController> submissionDate = TextEditingController().obs;
   Rx<TextEditingController> maxMark = TextEditingController().obs;
   Rx<HtmlEditorController> HtmlController = HtmlEditorController().obs;
-  Rx<DailyAssignment> assignmentList = DailyAssignment().obs;
+  Rx<ClassWork> classList = ClassWork().obs;
   @override
   void onClose() {
     super.onClose();
@@ -65,22 +65,21 @@ class ClassWorkController extends GetxController {
     var d = await GlobalData().ConvertToSchoolDateTimeFormat(now);
     dateC.value.text = d;
 
-    homeWorkDate.value.text = d;
+    classWorkDate.value.text = d;
     submissionDate.value.text = d;
   }
 
-  addAssignment(context) async {
+  addClassWork(context) async {
     var ff = await HtmlController.value.getText();
 
     Map<String, String> body = {
+      "record_id": "0",
       "modal_class_id": commonApiController.selectedClassId.value,
       "modal_section_id": commonApiController.selectedSectionId.value,
-      "homework_date": homeWorkDate.value.text,
-      "submit_date": submissionDate.value.text,
+      "classwork_date": classWorkDate.value.text,
       "modal_subject_id": updateSubjectId.value,
+      "submit_date": submissionDate.value.text,
       "description": ff.isEmpty ? "" : ff,
-      "record_id": "0",
-      "homework_marks": "0",
     };
 
     FormData bodyForm = FormData({});
@@ -93,7 +92,7 @@ class ClassWorkController extends GetxController {
     }
     print("AddHomeWorkBody ${bodyForm.files}");
     var data = await apiRespository.postApiCallByFormData(
-        Constants.addDailyAssignment, bodyForm);
+        Constants.createClassWork, bodyForm);
 
     print("dddd " + data.body['status']);
 
@@ -139,10 +138,10 @@ class ClassWorkController extends GetxController {
     };
     print("Body @@@@ ${body}");
     var data = await apiRespository.postApiCallByJson(
-        Constants.getdailyassignmentUrl, body);
+        Constants.getclassworklist, body);
     print("DATA @@@@ ${data.body}");
     if (data.statusCode == 200) {
-      assignmentList.value = DailyAssignment.fromJson(data.body);
+      classList.value = ClassWork.fromJson(data.body);
       update();
     }
   }
