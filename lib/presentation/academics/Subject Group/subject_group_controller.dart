@@ -5,6 +5,7 @@ import 'package:learnladderfaculity/presentation/academics/Subject%20Group/subje
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/toastMessage.dart';
+import '../Subject/subject_modal.dart';
 
 class SubjectGroupController extends GetxController{
 
@@ -12,9 +13,11 @@ class SubjectGroupController extends GetxController{
   Rx<TextEditingController> searchC = TextEditingController().obs;
   Rx<TextEditingController> descriptionC = TextEditingController().obs;
   RxBool isChecked = false.obs;
-
+  Rx<SubjectListModal> subjectList = SubjectListModal().obs;
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
-
+  List<String> selectedSubjectIdList = [];
+  List<String> selectedSelectionId = [];
+   String selectedClassId = "";
   Rx<SubjectGroupModal> subjectGroupList = SubjectGroupModal().obs;
   RxBool isTheory = true.obs;
   RxBool isPractical = false.obs;
@@ -43,6 +46,12 @@ class SubjectGroupController extends GetxController{
       print("EEEEEEEEEEEEEEEEEEEE${e}");
       update();
     }
+    var body = {};
+    var data = await apiRespository.postApiCallByJson(
+        Constants.getSubjectList, body);
+    print("Subject List: ${data.body}");
+
+    subjectList.value = SubjectListModal.fromJson(data.body);
   }
   viewData(id) async {
     try {
@@ -79,13 +88,15 @@ class SubjectGroupController extends GetxController{
 
 
 
-  Future<void> addSubject() async {
+  Future<void> addSubjectSubjectGroup() async {
     try {
 
       var body = {
-        "name":'',
-        "type": '',
-        "code": '',
+        "name":nameC.value.text.toString(),
+        "class_id": selectedClassId,
+        "sections": selectedSelectionId.join(","),
+        "subject": selectedSubjectIdList.join(","),
+
       };
       String url = Constants.addSubjectGroupList;
       if(selectedSubjectId.value == '')
@@ -97,6 +108,7 @@ class SubjectGroupController extends GetxController{
         body['id'] = selectedSubjectId.value;
         url = Constants.editSubjectGroupList;
       }
+      print("eeeeee${body}");
       var data = await apiRespository.postApiCallByFormData(
           url, body);
 

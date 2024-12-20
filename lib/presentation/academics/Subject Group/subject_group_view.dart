@@ -1,14 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:learnladderfaculity/presentation/academics/Subject%20Group/subject_group_controller.dart';
 import 'package:learnladderfaculity/presentation/common_widgets/custom_loader.dart';
 import 'package:learnladderfaculity/theme/theme_helper.dart';
 import 'package:learnladderfaculity/widgets/myCustomsd.dart';
+import 'package:lottie/lottie.dart';
 import '../../../widgets/alert_dialogue.dart';
 import '../../../widgets/customTextField.dart';
 import '../../../widgets/custom_button.dart';
+import '../../common_widgets/controller/CommonApiController.dart';
 
 class SubjectGroupView extends GetView<SubjectGroupController> {
+
+  CommonApiController controller3 = Get.put(CommonApiController());
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -16,7 +22,7 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
       appBar: AppBar(
         backgroundColor: Colors.green.shade100,
         title: Text(
-          'Subject List',
+          'Subject Group List',
           style: theme.textTheme.bodyMedium,
         ),
       ),
@@ -81,7 +87,8 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
                   if (controller.subjectGroupList.value.data == null ||
                       controller.subjectGroupList.value.data!.subjectgroupList!
                           .isEmpty) {
-                    return Center(child: CustomLoader());
+                    return Center(child: Lottie.asset(
+                        "assets/images/no_data_found.json"));
                   }
 
                   return ListView.builder(
@@ -233,17 +240,17 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     controller.resetData();
-      //     addSubjectGroup(context);
-      //   },
-      //   tooltip: 'Add Item',
-      //   shape: CircleBorder(),
-      //   backgroundColor: Colors.green,
-      //   foregroundColor: Colors.white,
-      //   child: Icon(Icons.add),
-      // )
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          controller.resetData();
+          addSubjectGroup(context);
+        },
+        tooltip: 'Add Subject Group',
+        shape: CircleBorder(),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        child: Icon(Icons.add),
+      )
     );
   }
 
@@ -254,7 +261,7 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
           children: [
             controller.selectedSubjectId.value == ''
                 ? Text(
-                    "Add Subject",
+                    "Add Subject Group",
                     style: theme.textTheme.bodyMedium!
                         .copyWith(fontWeight: FontWeight.w600),
                   )
@@ -265,46 +272,94 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
                   ),
             CustomTextField(
               controller: controller.nameC.value,
-              hint: "Subject ....",
+              hint: "Subject Group Name ....",
               title: "",
+            ),
+            SizedBox(
+              height: 15,
             ),
             Row(
               children: [
-                Obx(() {
-                  return Row(
-                    children: [
-                      Radio<bool>(
-                        value: true,
-                        groupValue: controller.isTheory.value,
-                        onChanged: (value) {
-                          if (value == true) {
-                            controller.isTheory.value = true;
-                            controller.isPractical.value = false;
-                          }
-                        },
-                      ),
-                      Text("Section A"),
-                    ],
-                  );
-                }),
-                Obx(() {
-                  return Row(
-                    children: [
-                      Radio<bool>(
-                        value: true,
-                        groupValue: controller.isPractical.value,
-                        onChanged: (value) {
-                          if (value == true) {
-                            controller.isPractical.value = true;
-                            controller.isTheory.value = false;
-                          }
-                        },
-                      ),
-                      Text("Section B"),
-                    ],
-                  );
-                }),
+                Expanded(
+                  child: Obx(() => MyCustomSD(
+                    hideSearch: true,
+                    borderColor: Colors.grey,
+                    listToSearch:
+                    controller3.classListModelMap.value,
+                    valFrom: "className",
+                    label: 'Class',
+                    labelText: 'Class',
+                    onChanged: (val) {
+                      if (controller3
+                          .classListModelMap.value.length >
+                          0) {
+                        print("5555555555555${val}");
+
+                        controller3.selectedClassId.value =
+                            val['id'].toString();
+                        controller.selectedClassId = val['id'].toString();
+                        controller3.selectedClassName.value =
+                            val['className'].toString();
+                        controller3.update();
+                        controller3.getSectionList();
+                      }
+                    },
+                  )),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Obx(() => MyCustomSD(
+                    hideSearch: true,
+                    borderColor: Colors.grey,
+                    listToSearch:
+                    controller3.sectionListModelMap.value,
+                    valFrom: "section",
+                    label: 'Section',
+                    labelText: 'Section',
+                    multiSelect: true,
+                    onChanged: (val) {
+                      print(val);
+                      if (controller3
+                          .sectionListModelMap.value.length >
+                          0) {
+
+                        var data = jsonDecode(val);
+                        for(var i=0;i<data.length;i++)
+                        {
+                          controller.selectedSelectionId.add(data[i]['id'].toString());
+                        }
+
+                      }
+                    },
+                  )),
+                )
               ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            MyCustomSD(
+    borderColor: Colors.grey,
+    listToSearch: controller.subjectList.value.data!.subjectlist!.map((model) => model.toJson()).toList(),
+    valFrom: 'name',
+    label: "Select Subject",
+    onChanged: (val) {
+      if(val.length > 0)
+        {
+          var data = jsonDecode(val);
+          for(var i=0;i<data.length;i++)
+          {
+            controller.selectedSubjectIdList.add(data[i]['id'].toString());
+          }
+        }
+
+    },
+      multiSelect: true,
+    ),
+            SizedBox(
+              height: 15,
             ),
             CustomTextField(
               controller: controller.descriptionC.value,
@@ -326,7 +381,7 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
                 ),
                 color: Colors.green.shade100,
                 onPress: () async {
-                  await controller.addSubject();
+                  await controller.addSubjectSubjectGroup();
                   Navigator.pop(context);
                 },
               ),

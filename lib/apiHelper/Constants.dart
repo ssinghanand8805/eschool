@@ -20,7 +20,7 @@ class Constants {
   static const String getExamResultUrl = 'webservice/getExamResult';
   static const String getFeestUrl = 'webservice/fees';
   static const String lessonPlanUrl = 'webservice/getlessonplan';
-  static const String getdailyassignmentUrl = 'webservice/getdailyassignment';
+  static const String getdailyassignmentUrl = 'webservice/getDailyAssignmentlist';
   static const String getdownloadcontent = 'webservice/getDownloadsLinks';
   static const String getVideocontent = 'webservice/getVideoTutorial';
   static const String getTimelineUrl = 'webservice/getTimeline';
@@ -68,10 +68,12 @@ class Constants {
 
   /// Homework
   static const String addHomeWork = 'webservice/createHomeWork';
+  static const String addDailyAssignment = 'webservice/createDailyAssignment';
   static const String subjectGroup = 'webservice/getGroupByClassandSection';
   static const String subject = 'webservice/getGroupsubjects';
   static const String closeHomework = 'webservice/closehomeworklist';
   static const String homework = 'webservice/gethomeworklist';
+  static const String homework_evaluation = 'webservice/homework_evaluation';
 
   /// Front Office
   static const String admissionEnquiry = 'enquiry/getEnquiryList';

@@ -150,6 +150,8 @@ import '../presentation/download_center/Content Type/content_type_view.dart';
 import '../presentation/download_center/Upload Content/upload_share_content_view.dart';
 import '../presentation/download_center/Video Tutorial/Binding/video_tutorial_binding.dart';
 import '../presentation/download_center/Video Tutorial/video_tutorial_view.dart';
+import '../presentation/evaluateHomeWork/EvaluateHomeworkBinding.dart';
+import '../presentation/evaluateHomeWork/evaluateHomeworkView.dart';
 import '../presentation/fees/balancefees/balance_fees_binding.dart';
 import '../presentation/fees/balancefees/balance_fees_view.dart';
 import '../presentation/fees/daily_collection/daily_collection_binding.dart';
@@ -297,7 +299,7 @@ class AppRoutes {
 
   static const String commingsoon = '/commingsoon';
   static const String setting = '/setting';
-
+  static const String evaluateHomeWork = '/evaluateHomeWork';
   static List<GetPage> pages = [
 
 
@@ -311,6 +313,11 @@ class AppRoutes {
       name: setting,
       page: () => SettingView(),
       bindings: [SettingBinding()],
+    ),
+    GetPage(
+      name: evaluateHomeWork,
+      page: () => EvaluateHomeworkPage(),
+      bindings: [EvaluateHomeworkBinding()],
     ),
     GetPage(
       name: enterSchoolUrlRoute,
