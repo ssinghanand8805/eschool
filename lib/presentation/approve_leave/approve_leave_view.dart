@@ -191,7 +191,7 @@ class _ApproveLeaveScreenState extends State<ApproveLeaveScreen> {
                     ),
                   ),
                   MyCustomSD(
-
+isLoading: controller3.isClassLoading.value,
                     hideSearch: true,
                     borderColor: Colors.grey,
                     listToSearch: controller3.classListModelMap.value,
@@ -216,6 +216,7 @@ class _ApproveLeaveScreenState extends State<ApproveLeaveScreen> {
                     height: 5,
                   ),
                   MyCustomSD(
+                    isLoading: controller3.isSectionLoading.value,
                     hideSearch: true,
                     borderColor: Colors.grey,
                     listToSearch: controller3.sectionListModelMap.value,
@@ -846,7 +847,7 @@ class _MyTableState extends State<MyTable> {
                     ),
                   ),
                   MyCustomSD(
-
+                    isLoading: controller3.isClassLoading.value,
                     hideSearch: true,
                     borderColor: Colors.grey,
                     listToSearch: controller3.classListModelMap.value,
@@ -871,6 +872,7 @@ class _MyTableState extends State<MyTable> {
                     height: 5,
                   ),
                   MyCustomSD(
+                    isLoading: controller3.isSectionLoading.value,
                     hideSearch: true,
                     borderColor: Colors.grey,
                     listToSearch: controller3.sectionListModelMap.value,

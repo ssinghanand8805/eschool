@@ -282,6 +282,7 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
               children: [
                 Expanded(
                   child: Obx(() => MyCustomSD(
+                    isLoading: controller3.isClassLoading.value,
                     hideSearch: true,
                     borderColor: Colors.grey,
                     listToSearch:
@@ -311,6 +312,7 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
                 ),
                 Expanded(
                   child: Obx(() => MyCustomSD(
+                    isLoading: controller3.isSectionLoading.value,
                     hideSearch: true,
                     borderColor: Colors.grey,
                     listToSearch:
@@ -341,6 +343,7 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
               height: 15,
             ),
             MyCustomSD(
+              isLoading: controller.isSubjectLoading.value,
     borderColor: Colors.grey,
     listToSearch: controller.subjectList.value.data!.subjectlist!.map((model) => model.toJson()).toList(),
     valFrom: 'name',

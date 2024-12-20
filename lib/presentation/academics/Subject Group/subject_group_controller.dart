@@ -22,6 +22,7 @@ class SubjectGroupController extends GetxController{
   RxBool isTheory = true.obs;
   RxBool isPractical = false.obs;
   RxString selectedSubjectId = ''.obs;
+  RxBool isSubjectLoading = false.obs;
 
   late Future<void> fetchDataFuture;
   void onInit() {
@@ -34,24 +35,36 @@ class SubjectGroupController extends GetxController{
 
   subjectListData() async {
     try {
+      // isSubjectLoading.value = true;
       var body = {};
       var data = await apiRespository.postApiCallByJson(
           Constants.getSubjectGroupList, body);
       print("Subject List: ${data.body}");
 
       subjectGroupList.value = SubjectGroupModal.fromJson(data.body);
+      // isSubjectLoading.value = false;
       print(subjectGroupList.value.toJson());
       update();
     } catch (e) {
       print("EEEEEEEEEEEEEEEEEEEE${e}");
+      // isSubjectLoading.value = false;
       update();
     }
-    var body = {};
-    var data = await apiRespository.postApiCallByJson(
-        Constants.getSubjectList, body);
-    print("Subject List: ${data.body}");
+    try {
+      isSubjectLoading.value = true;
+      var body = {};
+      var data = await apiRespository.postApiCallByJson(
+          Constants.getSubjectList, body);
+      print("Subject List: ${data.body}");
 
-    subjectList.value = SubjectListModal.fromJson(data.body);
+      subjectList.value = SubjectListModal.fromJson(data.body);
+      isSubjectLoading.value = false;
+    }
+    catch (e) {
+      isSubjectLoading.value = false;
+      update();
+    }
+
   }
   viewData(id) async {
     try {

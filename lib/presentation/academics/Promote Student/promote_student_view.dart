@@ -38,6 +38,7 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                 children: [
                   Expanded(
                     child: Obx(() => MyCustomSD(
+                      isLoading: controller3.isClassLoading.value,
                           hideSearch: true,
                           borderColor: Colors.grey,
                           listToSearch: controller3.classListModelMap.value,
@@ -64,6 +65,7 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                   ),
                   Expanded(
                     child: Obx(() => MyCustomSD(
+                      isLoading: controller3.isSectionLoading.value,
                           hideSearch: true,
                           borderColor: Colors.grey,
                           listToSearch: controller3.sectionListModelMap.value,
@@ -90,6 +92,7 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
               ),
 
               Obx(() => MyCustomSD(
+                isLoading: controller.isSessionLoading.value,
                 hideSearch: true,
                 borderColor: Colors.grey,
                 listToSearch: controller.SessionlistModelMap.value,
@@ -115,6 +118,7 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                 children: [
                   Expanded(
                     child: Obx(() => MyCustomSD(
+                      isLoading: controller.isClassLoading.value,
                       hideSearch: false,
                       borderColor: Colors.grey,
                       listToSearch: controller.pramotedClasslistModelMap.value,
@@ -140,6 +144,7 @@ class PromoteStudentView extends GetView<PromoteStudentController> {
                   ),
                   Expanded(
                     child: Obx(() => MyCustomSD(
+                      isLoading:controller.isSectionLoading.value,
                       hideSearch: true,
                       borderColor: Colors.grey,
                       listToSearch: controller.pramotedSectionListModelMap.value,

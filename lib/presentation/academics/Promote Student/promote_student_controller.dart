@@ -24,7 +24,9 @@ class PromoteStudentController extends GetxController{
   RxMap selecetedStudents = {}.obs;
   RxMap isContinue = {}.obs;
   RxMap isPassed = {}.obs;
+  RxBool isSessionLoading = false.obs;
   RxBool isClassLoading = false.obs;
+  RxBool isSectionLoading = false.obs;
   Rx<String> selectedSessionId = "".obs;
   Rx<String> selectedSessionName = "".obs;
   void onInit() {
@@ -74,6 +76,7 @@ class PromoteStudentController extends GetxController{
   ];
   Future<void> getClassList() async
   {
+    isClassLoading.value = true;
     var data  = await apiRespository.getApiCallByJson(Constants.getClassListUrl);
     print("DATA @@@@ ${data.body}");
     if(data.body != null)
@@ -89,20 +92,20 @@ class PromoteStudentController extends GetxController{
         return item.toJson();
       }).toList();
       print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQ${pramotedClasslistModelMap.value}");
-
+      isClassLoading.value = false;
   update();
     }
     else
     {
       Get.showSnackbar(Ui.ErrorSnackBar(message: "Class Loading Failed..Try Again"));
-
+      isClassLoading.value = false;
     }
   }
 
 
   Future<void> getSectionList() async
   {
-
+    isSectionLoading.value = true;
     pramotedSectionListModelMap.clear();
     var body = {
       "class_id": pramotedSelectedClassId.value
@@ -122,13 +125,13 @@ class PromoteStudentController extends GetxController{
       pramotedSectionListModelMap.value = pramotedSectionListModel.value.map((item) {
         return item.toJson();
       }).toList();
-
+      isSectionLoading.value = false;
       update();
     }
     else
     {
       Get.showSnackbar(Ui.ErrorSnackBar(message: "Section Loading Failed..Try Again"));
-
+      isSectionLoading.value = false;
     }
 
   }
@@ -168,7 +171,7 @@ class PromoteStudentController extends GetxController{
 
   Future<void> getAllSessionList() async
   {
-    isClassLoading.value = true;
+    isSessionLoading.value = true;
     update();
    await getClassList();
     var body = {};
@@ -188,13 +191,13 @@ class PromoteStudentController extends GetxController{
         return item.toJson();
       }).toList();
 
-      isClassLoading.value = false;
+      isSessionLoading.value = false;
       update();
     }
     else
     {
       Get.showSnackbar(Ui.ErrorSnackBar(message: "Section Loading Failed..Try Again"));
-      isClassLoading.value = false;
+      isSessionLoading.value = false;
       update();
     }
 

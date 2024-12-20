@@ -36,9 +36,9 @@ class VideoTutorialView extends GetView<VideoTutorialController> {
           padding: const EdgeInsets.only(left: 8.0, right: 8),
           child: Column(
             children: [
-              Obx(() => controller.commonApiController.isClassLoading.value
-                  ? CircularProgressIndicator()
-                  : MyCustomSD(
+              Obx(() => MyCustomSD(
+                isLoading: controller
+                    .commonApiController.isClassLoading.value,
                       hideSearch: true,
                       borderColor: Colors.grey,
                       listToSearch: controller
@@ -70,9 +70,9 @@ class VideoTutorialView extends GetView<VideoTutorialController> {
                         }
                       },
                     )),
-              Obx(() => controller.commonApiController.isSectionLoading.value
-                  ? CircularProgressIndicator()
-                  : MyCustomSD(
+              Obx(() =>  MyCustomSD(
+                isLoading:  controller
+                  .commonApiController.isSectionLoading.value,
                       hideSearch: true,
                       borderColor: Colors.grey,
                       listToSearch: controller
@@ -276,9 +276,9 @@ class VideoTutorialView extends GetView<VideoTutorialController> {
               style: theme.textTheme.titleMedium!
                   .copyWith(fontWeight: FontWeight.bold),
             ),
-            Obx(() => controller.commonApiController.isClassLoading.value
-                ? CircularProgressIndicator()
-                : MyCustomSD(
+            Obx(() =>  MyCustomSD(
+              isLoading: controller
+                  .commonApiController.isClassLoading.value,
                     hideSearch: true,
                     borderColor: Colors.grey,
                     listToSearch:
@@ -309,9 +309,9 @@ class VideoTutorialView extends GetView<VideoTutorialController> {
                       }
                     },
                   )),
-            Obx(() => controller.commonApiController.isSectionLoading.value
-                ? CircularProgressIndicator()
-                : MyCustomSD(
+            Obx(() =>  MyCustomSD(
+              isLoading: controller
+                  .commonApiController.isSectionLoading.value,
                     hideSearch: true,
                     borderColor: Colors.grey,
                     listToSearch: controller

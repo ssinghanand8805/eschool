@@ -34,7 +34,7 @@ class _CommonFilterState extends State<CommonFilter> {
         widgetFilterData: Column(
           children: [
             Obx( () => MyCustomSD(
-
+              isLoading: commonApiController.isClassLoading.value,
               hideSearch: true,
               borderColor: Colors.grey,
               listToSearch: commonApiController.classListModelMap.value,
@@ -58,6 +58,7 @@ class _CommonFilterState extends State<CommonFilter> {
               height: 10,
             ),
             Obx( () => MyCustomSD(
+              isLoading: commonApiController.isSectionLoading.value,
               hideSearch: true,
               borderColor: Colors.grey,
               listToSearch: commonApiController.sectionListModelMap.value,
