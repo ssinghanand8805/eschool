@@ -1,10 +1,9 @@
-
-
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Observation/Assign%20Marks/assign_marks_binding.dart';
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Observation/Assign%20Marks/assign_marks_view.dart';
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Assign%20Observation/assign_observation_view.dart';
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Exam/Exam%20Marks/exam_mark_binding.dart';
 import 'package:learnladderfaculity/presentation/CBSE%20Examination/Observation%20Parameter/observation_parameter_binding.dart';
+import 'package:learnladderfaculity/presentation/Class%20Work/class_work_view.dart';
 import 'package:learnladderfaculity/presentation/Examinitaion/Exam%20Group/Add%20Exam/Exam%20Marks/Enter%20Marks/enter_marks_view.dart';
 import 'package:learnladderfaculity/presentation/Front%20Office/Follow%20Up%20Enquiry/follow_up_enquiry_binding.dart';
 import 'package:learnladderfaculity/presentation/Front%20Office/Follow%20Up%20Enquiry/follow_up_enquiry_view.dart';
@@ -46,6 +45,7 @@ import 'package:learnladderfaculity/presentation/school_url/bindings/school_url_
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Syllabus%20Status/manage_syllabus_status_binding.dart';
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage%20Syllabus%20Status/manage_syllabus_status_view_details.dart';
 import 'package:learnladderfaculity/presentation/teacher_lesson_plan/Manage_Lesson_Plan/teacher_lesson_plan.dart';
+
 import '../core/app_export.dart';
 import '../presentation/CBSE Examination/Assessment/Binding/assessment_ binding.dart';
 import '../presentation/CBSE Examination/Assessment/assessment_view.dart';
@@ -74,6 +74,7 @@ import '../presentation/CBSE Examination/Print Marksheet/print_marksheet_binding
 import '../presentation/CBSE Examination/Print Marksheet/print_marksheet_view.dart';
 import '../presentation/CBSE Examination/Term/Binding/trem_binding.dart';
 import '../presentation/CBSE Examination/Term/trem_view.dart';
+import '../presentation/Class Work/class_work_binding.dart';
 import '../presentation/Communicate/Email Sms Log/email_sms_log_binding.dart';
 import '../presentation/Communicate/Email Sms Log/email_sms_log_view.dart';
 import '../presentation/Communicate/Email Tamplet/email_tamplet_binding.dart';
@@ -142,7 +143,6 @@ import '../presentation/chat/newChat.dart';
 import '../presentation/chat/newGroup.dart';
 import '../presentation/common_widgets/commingsoon.dart';
 import '../presentation/dashboard/binding/dashboard_binding.dart';
-import '../presentation/dashboard/dashboard_screen.dart';
 import '../presentation/download_center/Content Share List/Binding/content_share_list_binding.dart';
 import '../presentation/download_center/Content Share List/content_share_list_view.dart';
 import '../presentation/download_center/Content Type/Binding/content_type_binding.dart';
@@ -215,8 +215,6 @@ class AppRoutes {
   static const String sectionRoute = '/section';
   static const String teachers_time_tableRoute = '/teachers_time_table';
 
-
-
   static const String termRoute = '/term';
   static const String exam_gradeRoute = '/exam_grade';
   static const String assessmentRoute = '/assessment';
@@ -234,18 +232,19 @@ class AppRoutes {
   static const String observationRoute = '/observation';
   static const String exam_scheduleRoute = '/exam_schedule';
 
-      /// EXAMINATION
+  /// EXAMINATION
   static const String marks_gradeRoute = '/marks_grade';
   static const String exam_groupRoute = '/exam_group';
   static const String add_exam_groupRoute = '/add_exam_group';
-  static const String add_exam_assign_view_studentRoute = '/add_exam_assign_view_student';
+  static const String add_exam_assign_view_studentRoute =
+      '/add_exam_assign_view_student';
   static const String add_exam_exam_subjectRoute = '/add_exam_exam_subject';
   static const String add_exam_markRoute = '/add_exam_mark';
   static const String add_exam_enter_marksRoute = '/add_exam_enter_marks';
-  static const String add_exam_teacher_remarksRoute = '/add_exam_teacher_remarks';
+  static const String add_exam_teacher_remarksRoute =
+      '/add_exam_teacher_remarks';
 
-
-      /// Communicate
+  /// Communicate
   static const String notice_boardRoute = '/notice_board';
   static const String new_messageRoute = '/new_message';
   static const String emailRoute = '/email';
@@ -256,8 +255,7 @@ class AppRoutes {
   static const String sms_templateRoute = '/sms_template';
   static const String smsRoute = '/sms';
 
-
-      /// Student Information
+  /// Student Information
   static const String student = '/student';
   static const String import_student = '/import_student';
   static const String student_categories = '/student_categories';
@@ -271,7 +269,7 @@ class AppRoutes {
   static const String chatMain = '/chatMain';
   static const String school_attendance = '/school_attendance';
 
-/// library
+  /// library
   static const String books = '/books';
   static const String issue_return = '/issue_return';
   static const String add_student = '/add_student';
@@ -292,18 +290,15 @@ class AppRoutes {
   static const String daily_collection_report = '/daily_collection_report';
   static const String media_manager = '/media_manager';
 
-
   static const String chatUsersPage = '/new_Chat';
   static const String createGroupForChatPage = '/createGroupForChat';
-
 
   static const String commingsoon = '/commingsoon';
   static const String setting = '/setting';
   static const String evaluateHomeWork = '/evaluateHomeWork';
+  static const String class_work = '/class_work';
+
   static List<GetPage> pages = [
-
-
-
     GetPage(
       name: commingsoon,
       page: () => CommingSoon(),
@@ -597,7 +592,7 @@ class AppRoutes {
       bindings: [ExamScheduleBinding()],
     ),
 
-      ///EXAMINATION
+    ///EXAMINATION
     GetPage(
       name: marks_gradeRoute,
       page: () => MarksGradeView(),
@@ -674,17 +669,17 @@ class AppRoutes {
     GetPage(
       name: email_templateRoute,
       page: () => EmailTemplateView(),
-      bindings: [ EmailTemplateBinding()],
+      bindings: [EmailTemplateBinding()],
     ),
     GetPage(
       name: sms_templateRoute,
       page: () => SmsTemplateView(),
-      bindings: [ SmsTemplateBinding()],
+      bindings: [SmsTemplateBinding()],
     ),
     GetPage(
       name: smsRoute,
       page: () => SendSmsView(),
-      bindings: [ SendSmsBinding()],
+      bindings: [SendSmsBinding()],
     ),
 
     GetPage(
@@ -754,7 +749,8 @@ class AppRoutes {
       name: issue_return,
       page: () => IssueReturnView(),
       bindings: [IssueReturnBinding()],
-    ),  GetPage(
+    ),
+    GetPage(
       name: add_student,
       page: () => AddStudentView(),
       bindings: [AddStudentBinding()],
@@ -770,16 +766,17 @@ class AppRoutes {
       name: event,
       page: () => EventView(),
       bindings: [EventBinding()],
-    ),  GetPage(
+    ),
+    GetPage(
       name: notice,
       page: () => NewsView(),
       bindings: [NewsBinding()],
-    ), GetPage(
+    ),
+    GetPage(
       name: media_manager,
       page: () => MediaManagerView(),
       bindings: [MediaManagerBinding()],
     ),
-
 
     /// HR
     GetPage(
@@ -790,7 +787,7 @@ class AppRoutes {
     GetPage(
       name: approve_leave_request,
       page: () => ApproveLeaveRequestView(),
-      bindings: [ ApproveLeaveRequestBinding()],
+      bindings: [ApproveLeaveRequestBinding()],
     ),
     GetPage(
       name: apply_leave,
@@ -807,12 +804,18 @@ class AppRoutes {
     GetPage(
       name: balance_fees_report,
       page: () => BalanceFeeView(),
-      bindings: [ BalanceFeesBinding()],
+      bindings: [BalanceFeesBinding()],
     ),
     GetPage(
       name: daily_collection_report,
       page: () => DailyCollectionView(),
       bindings: [DailyCollectionBinding()],
+    ),
+
+    GetPage(
+      name: class_work,
+      page: () => ClassWorkPage(),
+      bindings: [ClassWorkBinding()],
     ),
   ];
 }
