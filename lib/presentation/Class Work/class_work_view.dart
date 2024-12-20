@@ -376,7 +376,7 @@ class ClassWorkPage extends GetView<ClassWorkController> {
                                               Radius.circular(5))),
                                     ),
                                     readOnly: true,
-                                    controller: controller.homeWorkDate.value,
+                                    controller: controller.classWorkDate.value,
                                     onTap: () async {
                                       final date =
                                           await controller.getDate(context);
@@ -385,10 +385,11 @@ class ClassWorkPage extends GetView<ClassWorkController> {
                                             await GlobalData()
                                                 .ConvertToSchoolDateTimeFormat(
                                                     date);
-                                        controller.homeWorkDate.value.text =
+                                        controller.classWorkDate.value.text =
                                             formattedDate;
                                         print("@@@@@@@@ " +
-                                            controller.homeWorkDate.value.text);
+                                            controller
+                                                .classWorkDate.value.text);
                                       }
                                     },
                                   ),
@@ -516,7 +517,7 @@ class ClassWorkPage extends GetView<ClassWorkController> {
                             width: 80,
                             title: 'Save',
                             onPress: () {
-                              controller.addAssignment(context);
+                              controller.addClassWork(context);
                             },
                           ),
                         ],
