@@ -13,13 +13,14 @@ class EvaluateHomeworkController extends GetxController {
   Rx<TextEditingController> evaluateDateC = TextEditingController().obs;
   Rx<TextEditingController> titleC = TextEditingController().obs;
   String id = "";
+  late Future<void> fetchDataFuture;
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     id = Get.arguments['id'];
     print("PPPPPPP${id}");
-    getEvaluationData();
+    fetchDataFuture = getEvaluationData();
   }
 
   Future<void> getEvaluationData() async {
