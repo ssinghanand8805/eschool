@@ -76,7 +76,8 @@ class DailyCollectionView extends GetView<DailyCollectionController> {
                     ),
                     Align(
                       alignment: Alignment.topRight,
-                      child: MyButton(
+                      child: Obx(() => MyButton(
+                        isLoading: controller.isDataLoading.value,
                         width: 100,
                         title: 'Search',
 
@@ -85,7 +86,7 @@ class DailyCollectionView extends GetView<DailyCollectionController> {
                           controller.initializeData();
                           //Get.back();
                         },
-                      ),
+                      )),
                     ),
                     FutureBuilder(
                         future: controller.fetchDataFuture,

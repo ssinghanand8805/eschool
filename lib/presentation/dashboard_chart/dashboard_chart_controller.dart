@@ -85,52 +85,64 @@ class DashboardChartController extends GetxController{
 
     fetchDataFuture = getData();
   }
-  getData()
-  async {
+  Future<void> getData() async {
     final prefs = await SharedPreferences.getInstance();
 
-    FormData mainBody = FormData({});
-    String? sessionId = prefs.getString("sessionId");
-
-    if (sessionId != null && sessionId.isNotEmpty) {
-       mainBody = FormData({
-        "session_id": sessionId,
-      });
-      // Proceed with the mainBody logic
-    } else {
-     String? schoolSettingData =  prefs.getString("schoolSettingData");
-     if(schoolSettingData != null && schoolSettingData.isNotEmpty)
-       {
-         var d = jsonDecode(schoolSettingData);
-         SchoolSetting sch = SchoolSetting.fromJson(d);
-         mainBody = FormData({
-           "session_id": sch.currentSession!.sessionId!,
-         });
-       }
-     else
-       {
-         print("Session ID is not available.");
-       }
-      // Handle the case when sessionId is null or empty
-
+    // Immediately load and display cached data
+    String? cachedData = prefs.getString("cachedChartData");
+    if (cachedData != null) {
+      try {
+        var jsonData = jsonDecode(cachedData);
+        chartData.value = DashboardChartData.fromJson(jsonData);
+        update(); // Update the UI immediately with cached data
+      } catch (e) {
+        print("Failed to load cached data: $e");
+      }
     }
-    var data = await apiRespository.postApiCallByFormData(Constants.dashboard_chartUrl, mainBody);
-    try
-    {
+
+    // Then, fetch new data from the API
+     fetchDataFromAPI(prefs);
+  }
+
+  Future<void> fetchDataFromAPI(SharedPreferences prefs) async {
+    FormData mainBody = determineMainBody(prefs);
+    try {
+      var data = await apiRespository.postApiCallByFormData(Constants.dashboard_chartUrl, mainBody);
       chartData.value = DashboardChartData.fromJson(data.body);
-      update();
+      update(); // Update the UI with new data
+
+      // Cache the new data in SharedPreferences
+      await prefs.setString("cachedChartData", jsonEncode(data.body));
+
       print("=======================");
       print(chartData.value.toJson());
       print("=======================");
+    } catch (e) {
+      print("Exception when calling API: $e");
     }
-    catch(e)
-    {
-      print("Exception:::${e}");
-    }
-
-
-//dashboard_chartUrl
   }
+
+  FormData determineMainBody(SharedPreferences prefs) {
+    String? sessionId = prefs.getString("sessionId");
+    if (sessionId != null && sessionId.isNotEmpty) {
+      return FormData({"session_id": sessionId});
+    } else {
+      String? schoolSettingData = prefs.getString("schoolSettingData");
+      if (schoolSettingData != null && schoolSettingData.isNotEmpty) {
+        var d = jsonDecode(schoolSettingData);
+        SchoolSetting sch = SchoolSetting.fromJson(d);
+        return FormData({"session_id": sch.currentSession!.sessionId!});
+      } else {
+        print("Session ID is not available.");
+        // Ensure you handle this case appropriately, perhaps with a fallback or error handling
+      }
+    }
+    return FormData({});
+  }
+
+
+
+
 
   Rx<TextEditingController> nameC = TextEditingController().obs;
   Rx<TextEditingController> descriptionC = TextEditingController().obs;

@@ -49,7 +49,8 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
       body: GetBuilder(
           init: controller,
           builder: (context) {
-            return CommonForm(
+            return Obx(() => CommonForm(
+                isFilterLoading:controller.isLoadingStudentList.value,
                 widgetFilterSelectedData: Container(
                   width: Get.width*0.7,
                   child: SingleChildScrollView(
@@ -189,7 +190,7 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
                             : AttendancePage())
                   ],
                 ),
-                onTapAction: filterData);
+                onTapAction: filterData));
           }),
     );
   }

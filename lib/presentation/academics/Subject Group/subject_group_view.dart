@@ -382,7 +382,7 @@ class SubjectGroupView extends GetView<SubjectGroupController> {
                 textStyle: TextStyle(
                   color: Colors.black,
                 ),
-                color: Colors.green.shade100,
+                color: Colors.green,
                 onPress: () async {
                   await controller.addSubjectSubjectGroup();
                   Navigator.pop(context);

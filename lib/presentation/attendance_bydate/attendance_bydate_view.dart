@@ -216,7 +216,8 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
       body: GetBuilder(
           init: controller,
           builder: (context) {
-            return CommonForm(
+            return Obx(() => CommonForm(
+                isFilterLoading: controller.isLoadingStudentList.value,
                 widgetFilterSelectedData: Container(
                   width: Get.width * 0.7,
                   child: SingleChildScrollView(
@@ -285,28 +286,28 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
                         Expanded(
                           child: Obx(() => MyCustomSD(
                             isLoading: controller3.isClassLoading.value,
-                                hideSearch: true,
-                                borderColor: Colors.grey,
-                                listToSearch:
-                                    controller3.classListModelMap.value,
-                                valFrom: "className",
-                                label: 'Class',
-                                labelText: 'Class',
-                                onChanged: (val) {
-                                  if (controller3
-                                          .classListModelMap.value.length >
-                                      0) {
-                                    print("5555555555555");
+                            hideSearch: true,
+                            borderColor: Colors.grey,
+                            listToSearch:
+                            controller3.classListModelMap.value,
+                            valFrom: "className",
+                            label: 'Class',
+                            labelText: 'Class',
+                            onChanged: (val) {
+                              if (controller3
+                                  .classListModelMap.value.length >
+                                  0) {
+                                print("5555555555555");
 
-                                    controller3.selectedClassId.value =
-                                        val['id'].toString();
-                                    controller3.selectedClassName.value =
-                                        val['className'].toString();
-                                    controller3.update();
-                                    controller3.getSectionList();
-                                  }
-                                },
-                              )),
+                                controller3.selectedClassId.value =
+                                    val['id'].toString();
+                                controller3.selectedClassName.value =
+                                    val['className'].toString();
+                                controller3.update();
+                                controller3.getSectionList();
+                              }
+                            },
+                          )),
                         ),
                         SizedBox(
                           width: 10,
@@ -314,26 +315,26 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
                         Expanded(
                           child: Obx(() => MyCustomSD(
                             isLoading: controller3.isSectionLoading.value,
-                                hideSearch: true,
-                                borderColor: Colors.grey,
-                                listToSearch:
-                                    controller3.sectionListModelMap.value,
-                                valFrom: "section",
-                                label: 'Section',
-                                labelText: 'Section',
-                                onChanged: (val) {
-                                  print(val);
-                                  if (controller3
-                                          .sectionListModelMap.value.length >
-                                      0) {
-                                    controller3.selectedSectionId.value =
-                                        val['id'].toString();
-                                    controller3.selectedSectionName.value =
-                                        val['section'].toString();
-                                    controller3.update();
-                                  }
-                                },
-                              )),
+                            hideSearch: true,
+                            borderColor: Colors.grey,
+                            listToSearch:
+                            controller3.sectionListModelMap.value,
+                            valFrom: "section",
+                            label: 'Section',
+                            labelText: 'Section',
+                            onChanged: (val) {
+                              print(val);
+                              if (controller3
+                                  .sectionListModelMap.value.length >
+                                  0) {
+                                controller3.selectedSectionId.value =
+                                    val['id'].toString();
+                                controller3.selectedSectionName.value =
+                                    val['section'].toString();
+                                controller3.update();
+                              }
+                            },
+                          )),
                         )
                       ],
                     ),
@@ -356,8 +357,8 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
                             title: 'Attendance date',
                             onDateSelected: (date) async {
                               controller.attendanceDate.value.text =
-                                  await GlobalData()
-                                      .ConvertToSchoolDateTimeFormat(date);
+                              await GlobalData()
+                                  .ConvertToSchoolDateTimeFormat(date);
                             }),
                         SizedBox(
                           height: 17,
@@ -377,7 +378,7 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
                             : getTableData())
                   ],
                 ),
-                onTapAction: filterData);
+                onTapAction: filterData));
           }),
     );
   }

@@ -41,6 +41,10 @@ class TeacherDailyAssignmentController extends GetxController {
   Rx<File?> pickedFile = Rx<File?>(null);
   RxBool isSubjectGroupLoading = false.obs;
   RxBool isSubjectLoading = false.obs;
+  RxBool isDataLoading = false.obs;
+
+
+
   Rx<TextEditingController> homeWorkDate = TextEditingController().obs;
   Rx<TextEditingController> submissionDate = TextEditingController().obs;
   Rx<TextEditingController> maxMark = TextEditingController().obs;
@@ -182,22 +186,40 @@ class TeacherDailyAssignmentController extends GetxController {
   }
   Future<void> getData() async
   {
+    try
+    {
+      isDataLoading.value = true;
 
-    Map<String,dynamic> body = {
-      "class_id" : commonApiController.selectedClassId.value,
-      "section_id":commonApiController.selectedSectionId.value,
-      "subject_group_id":updateSubjectGroupId.value,
-      "subject_id":updateSubjectId.value,
-      "date":dateC.value.text,
-    };
-    print("Body @@@@ ${body}");
-    var data  = await apiRespository.postApiCallByJson(Constants.getdailyassignmentUrl, body);
-    print("DATA @@@@ ${data.body}");
-    if(data.statusCode == 200)
+      Map<String,dynamic> body = {
+        "class_id" : commonApiController.selectedClassId.value,
+        "section_id":commonApiController.selectedSectionId.value,
+        "subject_group_id":updateSubjectGroupId.value,
+        "subject_id":updateSubjectId.value,
+        "date":dateC.value.text,
+      };
+      print("Body @@@@ ${body}");
+      var data  = await apiRespository.postApiCallByJson(Constants.getdailyassignmentUrl, body);
+      print("DATA @@@@ ${data.body}");
+      if(data.statusCode == 200)
       {
         assignmentList.value = DailyAssignment.fromJson(data.body);
+        isDataLoading.value = false;
         update();
       }
+      else
+        {
+          Get.showSnackbar(Ui.ErrorSnackBar(message: data.body.reasonPhrase));
+          isDataLoading.value = false;
+          update();
+        }
+    }
+    catch(e)
+    {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+      isDataLoading.value = false;
+      update();
+    }
+
 
   }
 

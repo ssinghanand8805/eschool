@@ -248,7 +248,7 @@ class SectionView extends GetView<SectionController> {
                 textStyle: TextStyle(
                   color: Colors.black,
                 ),
-                color: Colors.green.shade100,
+                color: Colors.green,
                 onPress: () {
                   controller.addSection();
                 },

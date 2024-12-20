@@ -27,6 +27,7 @@ class AddHomeWorkController extends GetxController {
   RxBool isSubjectGroupLoading = false.obs;
   RxBool isSubjectLoading = false.obs;
 
+  RxBool isDataLoading = false.obs;
   RxList subjectGroupList = [].obs;
   RxList get getListGroupList => subjectGroupList;
   set updateSubjectGroup(List val) {

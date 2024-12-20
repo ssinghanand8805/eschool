@@ -10,7 +10,8 @@ class CommonForm extends StatefulWidget {
   final  Widget widgetformData;
   final  Widget? widgetFilterSelectedData;
   final Function onTapAction;
-  CommonForm({Key? key, required this.widgetFilterData, required this.widgetformData,  this.widgetFilterSelectedData, required this.onTapAction }) : super(key: key);
+  final bool isFilterLoading;
+  CommonForm({Key? key, required this.widgetFilterData, required this.widgetformData,  this.widgetFilterSelectedData, required this.onTapAction,this.isFilterLoading = false }) : super(key: key);
   @override
   State<CommonForm> createState() => _CommonFormState();
 }
@@ -30,6 +31,7 @@ class _CommonFormState extends State<CommonForm> {
             controller2.isSearchExpand.isFalse ?  Align(
               alignment: Alignment.topRight,
               child: MyButton(
+                isLoading: widget.isFilterLoading,
                 width: 100,
                 title: 'Search',
 
@@ -41,17 +43,28 @@ class _CommonFormState extends State<CommonForm> {
                   controller2.update();
                 },
               ),
-            )  : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                widget.widgetFilterSelectedData != null ? widget.widgetFilterSelectedData! : SizedBox(),
-                Button(icon: Icons.sort, onTap: () {
-                  controller2.isSearchExpand.value = false;
-                  controller2.update();
-                }, text: 'Filter'
+            )  :
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
 
-                ),
-              ],
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                widget.widgetFilterSelectedData != null ? widget.widgetFilterSelectedData! : SizedBox(),
+                  SizedBox(
+                    width: 100,
+                    child: MyButton(title: "Filter",
+
+                      color: Colors.green,
+                      isLoading:widget.isFilterLoading,
+                      prefixIcon: Icon(Icons.sort),
+                      onPress: () {
+                        controller2.isSearchExpand.value = false;
+                        controller2.update();
+                      },),
+                  ),
+                ],
+              ),
             ),
 
             Expanded(child: widget.widgetformData)

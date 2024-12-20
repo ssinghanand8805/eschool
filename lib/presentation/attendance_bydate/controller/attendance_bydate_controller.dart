@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../../apiHelper/Constants.dart';
 import '../../../../apiHelper/popular_product_repo.dart';
 import '../../../apiHelper/GlobalData.dart';
+import '../../../apiHelper/toastMessage.dart';
 import '../../../apiHelper/userData.dart';
 import '../../add_homework/model/addHomework.dart';
 import '../../common_widgets/controller/CommonApiController.dart';
@@ -89,13 +90,16 @@ class AttendanceByDateController extends GetxController {
     update();
   }
   Future<void> getFilterData() async {
-    CommonController controller2 =
-    Get.put(CommonController());
-    CommonApiController commonApiController = Get.put(CommonApiController());
-    print(commonApiController.selectedClassId.value);
-    print(commonApiController.selectedSectionId.value);
-    print(attendanceDate.value.text.toString());
-    if(commonApiController.selectedClassId.value.isNotEmpty && commonApiController.selectedSectionId.value.isNotEmpty && attendanceDate.value.text.toString().isNotEmpty)
+    try
+    {
+      isLoadingStudentList.value = true;
+      CommonController controller2 =
+      Get.put(CommonController());
+      CommonApiController commonApiController = Get.put(CommonApiController());
+      print(commonApiController.selectedClassId.value);
+      print(commonApiController.selectedSectionId.value);
+      print(attendanceDate.value.text.toString());
+      if(commonApiController.selectedClassId.value.isNotEmpty && commonApiController.selectedSectionId.value.isNotEmpty && attendanceDate.value.text.toString().isNotEmpty)
       {
         DateTime parsedDate = DateFormat("dd/MM/yyyy").parse(attendanceDate.value.text.toString());
         String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(parsedDate);
@@ -119,13 +123,23 @@ class AttendanceByDateController extends GetxController {
         print("studentListModel Length: ${studentReportListModel.length}");
         print("filteredStudentListModel Length: ${filteredStudentListModel.length}");
         controller2.isSearchExpand.value = true;
-
+        isLoadingStudentList.value = false;
         update();
       }
-    else
+      else
       {
+        isLoadingStudentList.value = false;
         print("Filter Data not valid");
+        Get.showSnackbar(Ui.ErrorSnackBar(message: "Filter Data not valid"));
       }
+    }
+    catch(e)
+    {
+      isLoadingStudentList.value = false;
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+    }
+
+
 
   }
 

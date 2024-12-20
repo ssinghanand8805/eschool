@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/api.dart';
+import '../../../apiHelper/toastMessage.dart';
 import '../../../apiHelper/userData.dart';
 import '../../Front Office/admission _enquiry/CustomScaffoldController.dart';
 import '../../common_widgets/controller/CommonApiController.dart';
@@ -51,18 +52,29 @@ class StudentDetailsController extends GetxController{
   RxBool isLoading = false.obs;
 
   studentByClassSection() async {
-    isLoading.value = true;
-    Map<String, dynamic> body = {
-      "class_id" : commonApiController.selectedClassId.value,
-      "section_id":commonApiController.selectedSectionId.value
-    };
-  //  await Future.delayed(Duration(seconds: 4));
-    var data = await apiRespository.postApiCallByJson(Constants.studentDetails, body);
+    try
+    {
+      isLoading.value = true;
+      Map<String, dynamic> body = {
+        "class_id" : commonApiController.selectedClassId.value,
+        "section_id":commonApiController.selectedSectionId.value
+      };
+      //  await Future.delayed(Duration(seconds: 4));
+      var data = await apiRespository.postApiCallByJson(Constants.studentDetails, body);
 
-    print("DATA @@@@ ${data.body}");
+      print("DATA @@@@ ${data.body}");
 
-    updateStudentDetailsList = data.body;
-    isLoading.value = false;
+      updateStudentDetailsList = data.body;
+      isLoading.value = false;
+      Get.back();
+      update();
+    }
+    catch(e)
+    {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+      isLoading.value = false;
+      update();
+    }
 
   }
 

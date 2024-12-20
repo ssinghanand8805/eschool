@@ -142,20 +142,35 @@ class AddHomeWorkModal{
 
 
   homework(context) async {
-    Map<String, dynamic> body = {
-      "class_id":commonApiController.selectedClassId.value,
-      "section_id":commonApiController.selectedSectionId.value,
-      "subject_group_id":controller.getSubjectGroupId.value,
-      "subject_id": controller.getSubjectId.value
-    };
+try{
+  controller.isDataLoading.value = true;
+  Map<String, dynamic> body = {
+    "class_id":commonApiController.selectedClassId.value,
+    "section_id":commonApiController.selectedSectionId.value,
+    "subject_group_id":controller.getSubjectGroupId.value,
+    "subject_id": controller.getSubjectId.value
+  };
 
-    var data = await apiRespository.postApiCallByJson(Constants.homework, body);
-    print("CloseHomeworkData ${data.body}");
-    if(data.body['status']==200){
-      controller.updateHomeworkList = data.body['data'];
-    }else{
-      print(data.body.reasonPhrase);
+  var data = await apiRespository.postApiCallByJson(Constants.homework, body);
+  print("CloseHomeworkData ${data.body}");
+  if(data.body['status']==200){
+    controller.updateHomeworkList = data.body['data'];
+    controller.isDataLoading.value = false;
+  }else{
+    controller.isDataLoading.value = false;
+    print(data.body.reasonPhrase);
+    Get.showSnackbar(Ui.ErrorSnackBar(message: data.body.reasonPhrase));
+    controller.update();
+  }
+}
+catch(e)
+    {
+      controller.isDataLoading.value = false;
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+      controller.update();
     }
+
+
   }
 
 

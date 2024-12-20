@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../../../apiHelper/Constants.dart';
 import '../../../../apiHelper/popular_product_repo.dart';
 import '../../../../apiHelper/userData.dart';
+import '../../../apiHelper/toastMessage.dart';
 import '../../common_widgets/controller/CommonApiController.dart';
 import '../../common_widgets/controller/CommonController.dart';
 import '../model/ApproveLeave.dart';
@@ -74,34 +75,47 @@ class ApproveLeaveController extends GetxController {
     update();
   }
   filterData() async {
+try{
+  isLoadingStudentList.value = true;
+  CommonApiController commonApiController = Get.put(CommonApiController());
+  print(commonApiController.selectedClassId.value);
+  print(commonApiController.selectedSectionId.value);
 
-    CommonApiController commonApiController = Get.put(CommonApiController());
-    print(commonApiController.selectedClassId.value);
-    print(commonApiController.selectedSectionId.value);
+  if(commonApiController.selectedClassId.value.isNotEmpty && commonApiController.selectedSectionId.value.isNotEmpty)
+  {
 
-    if(commonApiController.selectedClassId.value.isNotEmpty && commonApiController.selectedSectionId.value.isNotEmpty)
+
+    var body = {
+      "class_id": commonApiController.selectedClassId.value,
+      "section_id": commonApiController.selectedSectionId.value
+    };
+    print("Body @@@@ ${body}");
+    var data = await apiRespository.postApiCallByJson(
+        Constants.getApprove_leaveUrl, body);
+    print("DATA @@@@ ${data.body}");
+    ApproveLeave ss = ApproveLeave.fromJson(data.body);
+    approveLeaveList.value.assignAll(ss.resultlist!);
+
+    filteredStudentListModel.assignAll(ss.resultlist!);
+    isLoadingStudentList.value = false;
+    update();
+  }
+  else
+  {
+    isLoadingStudentList.value = false;
+    print("Filter Data not valid");
+    Get.showSnackbar(Ui.ErrorSnackBar(message: "Filter Data not valid"));
+    update();
+  }
+}
+catch(e)
     {
-
-
-      var body = {
-        "class_id": commonApiController.selectedClassId.value,
-        "section_id": commonApiController.selectedSectionId.value
-      };
-      print("Body @@@@ ${body}");
-      var data = await apiRespository.postApiCallByJson(
-          Constants.getApprove_leaveUrl, body);
-      print("DATA @@@@ ${data.body}");
-      ApproveLeave ss = ApproveLeave.fromJson(data.body);
-      approveLeaveList.value.assignAll(ss.resultlist!);
-
-      filteredStudentListModel.assignAll(ss.resultlist!);
-
+      isLoadingStudentList.value = false;
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
       update();
     }
-    else
-    {
-      print("Filter Data not valid");
-    }
+
+
 
 
   }

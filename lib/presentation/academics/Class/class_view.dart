@@ -303,7 +303,7 @@ class ClassView extends GetView<ClassController>{
                     textStyle: TextStyle(
                       color: Colors.black,
                     ),
-                    color: Colors.green.shade100,
+                    color: Colors.green,
                     onPress: () async {
                       await controller.addSubject();
                       Navigator.pop(context);

@@ -131,6 +131,7 @@ class BalanceFeeView extends GetView<BalanceFeeController> {
                       ],
                     ),
                     MyCustomSD(
+                 
                       hideSearch: true,
                       borderColor: Colors.grey,
                       listToSearch: [
@@ -158,7 +159,8 @@ class BalanceFeeView extends GetView<BalanceFeeController> {
                     ),
                     Align(
                       alignment: Alignment.topRight,
-                      child: MyButton(
+                      child: Obx(() => MyButton(
+                        isLoading: controller.isDataLoading.value,
                         width: 100,
                         title: 'Search',
                         textStyle: TextStyle(
@@ -169,7 +171,7 @@ class BalanceFeeView extends GetView<BalanceFeeController> {
                           controller.initializeData();
                           //Get.back();
                         },
-                      ),
+                      )),
                     ),
                     FutureBuilder(
                         future: controller.fetchDataFuture,

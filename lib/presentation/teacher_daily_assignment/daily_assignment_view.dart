@@ -200,14 +200,15 @@ class _TeacherDailyAssignmentScreenState
                   ),
                   Align(
                     alignment: Alignment.topRight,
-                    child: MyButton(
+                    child: Obx(() => MyButton(
+                      isLoading:controller.isDataLoading.value,
                       color: Colors.green,
                       width: 80,
                       title: 'Search',
                       onPress: () {
                         controller.getData();
                       },
-                    ),
+                    )),
                   ),
                   Text(
                     'Daily Assignment List',
@@ -543,14 +544,15 @@ class _TeacherDailyAssignmentScreenState
                           SizedBox(
                             width: 15,
                           ),
-                          MyButton(
+                          Obx(() => MyButton(
+                           
                             color: Colors.green,
                             width: 80,
                             title: 'Save',
                             onPress: () {
                               controller.addAssignment(context);
                             },
-                          ),
+                          )),
                         ],
                       ),
                     ],
@@ -643,7 +645,7 @@ class _MyTableState extends State<MyTable> {
   Get.put(TeacherDailyAssignmentController());
   @override
   Widget build(BuildContext context) {
-    return controller.assignmentList.value.data != null
+    return controller.assignmentList.value.data != null && controller.assignmentList.value.data!.length > 0
         ? ListView.builder(
       itemCount: controller.assignmentList.value.data!.length,
       itemBuilder: (context, index) {

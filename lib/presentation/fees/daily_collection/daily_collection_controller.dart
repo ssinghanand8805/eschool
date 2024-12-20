@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../../../apiHelper/Constants.dart';
 import '../../../apiHelper/GlobalData.dart';
 import '../../../apiHelper/popular_product_repo.dart';
+import '../../../apiHelper/toastMessage.dart';
 import '../../common_widgets/controller/CommonApiController.dart';
 
 import 'daily_collection_modal.dart';
@@ -18,7 +19,7 @@ class DailyCollectionController extends GetxController{
   Rx<TextEditingController> toDate = TextEditingController().obs;
   ApiRespository apiRespository = ApiRespository(apiClient: Get.find());
   Rx<DailyCollection> filteredContentTypeList =  DailyCollection().obs;
-
+  RxBool isDataLoading = false.obs;
   late Future<void> fetchDataFuture;
   List<FeesData> originalContentTypeList = [];
   RxString selectedSearchType = 'all'.obs;
@@ -69,16 +70,19 @@ class DailyCollectionController extends GetxController{
     var body = {"date_from":fromDateString,"date_to":toDateString};
     try
     {
-
+      isDataLoading.value = true;
       var data = await apiRespository.postApiCallByJson(Constants.dailycollectionreportUrl, body);
 
      filteredContentTypeList.value =  DailyCollection.fromJson(data.body);
       print(filteredContentTypeList.value.toJson());
+      isDataLoading.value = false;
       initializeOriginalList();
       update();
     }
     catch(e)
     {
+      isDataLoading.value = false;
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
       print("EEEEEEEEEEEEEEEEEEEE${e}");
       update();
     }

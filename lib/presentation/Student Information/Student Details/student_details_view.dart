@@ -40,9 +40,7 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
                       },
                     ),
                     //SizedBox(height: 10,),
-                    controller.isLoading.isTrue
-                        ? CustomLoader()
-                        : Container(
+                    Container(
                             child: controller.getStudentDetailsList.length > 0
                                 ? ListView.builder(
                                     scrollDirection: Axis.vertical,
@@ -371,7 +369,8 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
         ),
         Align(
           alignment: Alignment.bottomRight,
-          child: MyButton(
+          child: Obx(() => MyButton(
+            isLoading: controller.isLoading.value,
             width: 100,
             title: 'Search',
             textStyle: TextStyle(
@@ -380,9 +379,9 @@ class StudentDetailsView extends GetView<StudentDetailsController> {
             color: Colors.green,
             onPress: () {
               controller.studentByClassSection();
-              Get.back();
+
             },
-          ),
+          )),
         ),
       ],
     );

@@ -11,6 +11,7 @@ import 'package:lottie/lottie.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/myCustomsd.dart';
 import '../../apiHelper/GlobalData.dart';
+import '../../apiHelper/toastMessage.dart';
 import '../../widgets/button.dart';
 import '../../widgets/custom_button.dart';
 import '../common_widgets/controller/CommonApiController.dart';
@@ -189,7 +190,8 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                   ),
                   Align(
                     alignment: Alignment.centerRight,
-                    child: MyButton(
+                    child: Obx(() => MyButton(
+                      isLoading:controller.isDataLoading.value,
                       color: Colors.green,
                       width: 80,
                       title: 'Search',
@@ -199,12 +201,13 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                                 .selectedSectionId.value.isEmpty &&
                             commonApiController.selectedClassId.value.isEmpty) {
                           print("Select DropDown");
+                          Get.showSnackbar(Ui.ErrorSnackBar(message: "Please Select Valid Filters"));
                         } else {
                           modal.homework(context);
                           modal.closeHomework(context);
                         }
                       },
-                    ),
+                    )),
                   ),
                   SizedBox(
                     height: 10,

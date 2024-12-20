@@ -55,7 +55,7 @@ class _ApproveLeaveScreenState extends State<ApproveLeaveScreen> {
       body: GetBuilder(
           init: controller,
           builder: (context) {
-            return CommonFilter(onTapAction: controller.filterData, widgetMain: MyTable(),);
+            return Obx(() => CommonFilter(onTapAction: controller.filterData, widgetMain: MyTable(),isLoading: controller.isLoadingStudentList.value,));
           }),
       // floatingActionButton: PermissionWidget(
       //

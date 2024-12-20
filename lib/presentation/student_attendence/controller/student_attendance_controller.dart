@@ -76,43 +76,53 @@ async {
   }
 
   Future<void> getFilterData() async {
-    CommonApiController commonApiController = Get.put(CommonApiController());
-    DateTime parsedDate = DateFormat("dd/MM/yyyy").parse(attendanceDate.value.text.toString());
-    String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(parsedDate);
-    var body = {
-      "class_id": commonApiController.selectedClassId.value,
-      "section_id": commonApiController.selectedSectionId.value,
-      "date": formattedDate,
-      "holiday": "",
-      "search": "search"
-    };
-    print("Body @@@@ ${body}");
-    var data = await apiRespository.postApiCallByJson(
-        Constants.getstudentAttendenceUrl, body);
-    print("DATA @@@@ ${data.body}");
-    StudentAttendence ss = StudentAttendence.fromJson(data.body);
-    studentListModel.value = ss.resultlist!;
-    print("TTTTTTTT");
-    var t =  ss.resultlist!
-        .map((student) => student.toJson())
-        .toList();
-    print( t);
-    attendencetypestListModel.value = ss.attendencetypeslist!;
-    studentAttendenceModel.value.clear();
-    remarks.clear();
-    for (var i = 0; i < studentListModel.value.length; i++) {
-      Resultlist e = studentListModel.value[i];
-      StudentAttendenceModel ss = new StudentAttendenceModel();
-      ss.attendendenceId = e.attendenceId;
-      ss.attendencetype = e.attendenceTypeId;
-      ss.studentSession = e.studentSessionId;
-      ss.remark = e.remark;
-      studentAttendenceModel.value.add(ss);
-      Resultlist student =  studentListModel.value[i];
-      studentAttendaceDet[student.studentSessionId] =  student.attendenceTypeId.toString() == '1' ? 'P' : student.attendenceTypeId.toString() == '4' ? 'A' : student.attendenceTypeId.toString() == '5' ? 'L' : 'P';
+    try{
+      isLoadingStudentList.value = true;
+      CommonApiController commonApiController = Get.put(CommonApiController());
+      DateTime parsedDate = DateFormat("dd/MM/yyyy").parse(attendanceDate.value.text.toString());
+      String formattedDate = await GlobalData().ConvertToSchoolDateTimeFormat(parsedDate);
+      var body = {
+        "class_id": commonApiController.selectedClassId.value,
+        "section_id": commonApiController.selectedSectionId.value,
+        "date": formattedDate,
+        "holiday": "",
+        "search": "search"
+      };
+      print("Body @@@@ ${body}");
+      var data = await apiRespository.postApiCallByJson(
+          Constants.getstudentAttendenceUrl, body);
+      print("DATA @@@@ ${data.body}");
+      StudentAttendence ss = StudentAttendence.fromJson(data.body);
+      studentListModel.value = ss.resultlist!;
+      print("TTTTTTTT");
+      var t =  ss.resultlist!
+          .map((student) => student.toJson())
+          .toList();
+      print( t);
+      attendencetypestListModel.value = ss.attendencetypeslist!;
+      studentAttendenceModel.value.clear();
+      remarks.clear();
+      for (var i = 0; i < studentListModel.value.length; i++) {
+        Resultlist e = studentListModel.value[i];
+        StudentAttendenceModel ss = new StudentAttendenceModel();
+        ss.attendendenceId = e.attendenceId;
+        ss.attendencetype = e.attendenceTypeId;
+        ss.studentSession = e.studentSessionId;
+        ss.remark = e.remark;
+        studentAttendenceModel.value.add(ss);
+        Resultlist student =  studentListModel.value[i];
+        studentAttendaceDet[student.studentSessionId] =  student.attendenceTypeId.toString() == '1' ? 'P' : student.attendenceTypeId.toString() == '4' ? 'A' : student.attendenceTypeId.toString() == '5' ? 'L' : 'P';
+      }
+      isLoadingStudentList.value = false;
+      update();
+    }
+    catch(e)
+    {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+      isLoadingStudentList.value = false;
+      update();
     }
 
-    update();
   }
 
   updateForAll(attendenceTypeId) {

@@ -9,7 +9,8 @@ import '../common_widgets/custom_loader.dart';
 class CommonFilter extends StatefulWidget {
   final Function onTapAction;
   final Widget? widgetMain;
-  const CommonFilter({Key? key, required this.onTapAction,required this.widgetMain}) : super(key: key);
+  final bool isLoading;
+  const CommonFilter({Key? key, required this.onTapAction,required this.widgetMain,this.isLoading = false}) : super(key: key);
 
 
   @override
@@ -22,6 +23,7 @@ class _CommonFilterState extends State<CommonFilter> {
   @override
   Widget build(BuildContext context) {
     return CommonForm(
+      isFilterLoading: widget.isLoading,
         widgetFilterSelectedData: Row(
           children: [
             Text("Class :  ",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
