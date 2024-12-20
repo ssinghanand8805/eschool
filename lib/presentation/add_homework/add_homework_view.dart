@@ -77,6 +77,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                     children: [
                       Expanded(
                         child: Obx(() => MyCustomSD(
+                          isLoading: commonApiController.isClassLoading.value,
                               hideSearch: true,
                               borderColor: Colors.grey,
                               listToSearch:
@@ -107,6 +108,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                       Expanded(
                         child: Obx(() {
                           return MyCustomSD(
+                            isLoading: commonApiController.isSectionLoading.value,
                             hideSearch: true,
                             borderColor: Colors.grey,
                             listToSearch:
@@ -141,7 +143,8 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: MyCustomSD(
+                        child: Obx(() => MyCustomSD(
+                          isLoading:controller.isSubjectGroupLoading.value,
                           hideSearch: true,
                           borderColor: Colors.grey,
                           listToSearch: controller.getListGroupList.value,
@@ -152,17 +155,18 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                             print(val);
                             if (val != null) {
                               controller.updateSubjectGroupId =
-                                  val['subject_group_id'];
+                              val['subject_group_id'];
                               modal.subject();
                             }
                           },
-                        ),
+                        )),
                       ),
                       SizedBox(
                         width: 5,
                       ),
                       Expanded(
-                        child: MyCustomSD(
+                        child: Obx(() => MyCustomSD(
+                          isLoading:controller.isSubjectLoading.value,
                           hideSearch: true,
                           borderColor: Colors.grey,
                           listToSearch: controller.getSubjectList.value,
@@ -175,7 +179,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                               controller.updateSubjectId = val['id'];
                             }
                           },
-                        ),
+                        )),
                       )
                     ],
                   ),
@@ -403,6 +407,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                           children: [
                             Expanded(
                               child: MyCustomSD(
+                                isLoading: commonApiController.isClassLoading.value,
                                 hideSearch: true,
                                 labelText: 'Class',
                                 borderColor: Colors.grey,
@@ -432,6 +437,7 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                             Expanded(
                               child: Obx(() {
                                 return MyCustomSD(
+                                  isLoading: commonApiController.isSectionLoading.value,
                                   labelText: 'Section',
                                   hideSearch: true,
                                   borderColor: Colors.grey,
@@ -468,7 +474,8 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                              child: MyCustomSD(
+                              child: Obx(() => MyCustomSD(
+                                isLoading: controller.isSubjectGroupLoading.value,
                                 labelText: 'Subject Group',
                                 hideSearch: true,
                                 borderColor: Colors.grey,
@@ -478,17 +485,18 @@ class _AddHomeWorkScreenState extends State<AddHomeWorkScreen> {
                                 onChanged: (val) {
                                   if (val != null) {
                                     controller.updateSubjectGroupId =
-                                        val['subject_group_id'];
+                                    val['subject_group_id'];
                                     modal.subject();
                                   }
                                 },
-                              ),
+                              )),
                             ),
                             SizedBox(
                               width: 5,
                             ),
                             Expanded(
                               child: Obx(() => MyCustomSD(
+                                isLoading: controller.isSubjectLoading.value,
                                     labelText: 'Subject',
                                     hideSearch: true,
                                     borderColor: Colors.grey,

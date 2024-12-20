@@ -201,6 +201,7 @@ class _TeacherDailyAssignmentScreenState
                     children: [
                       Expanded(
                         child: Obx(() => MyCustomSD(
+                          isLoading: commonApiController.isClassLoading.value,
                               hideSearch: true,
                               borderColor: Colors.grey,
                               listToSearch:
@@ -231,6 +232,7 @@ class _TeacherDailyAssignmentScreenState
                       Expanded(
                         child: Obx(() {
                           return MyCustomSD(
+                            isLoading: commonApiController.isSectionLoading.value,
                             hideSearch: true,
                             borderColor: Colors.grey,
                             listToSearch:
@@ -266,6 +268,7 @@ class _TeacherDailyAssignmentScreenState
                     children: [
                       Expanded(
                         child: Obx(() => MyCustomSD(
+                              isLoading: controller.isSubjectGroupLoading.value,
                               hideSearch: true,
                               borderColor: Colors.grey,
                               listToSearch:
@@ -292,6 +295,7 @@ class _TeacherDailyAssignmentScreenState
                       ),
                       Expanded(
                         child: Obx(() => MyCustomSD(
+                          isLoading: controller.isSubjectLoading.value,
                               hideSearch: true,
                               borderColor: Colors.grey,
                               listToSearch:
@@ -415,6 +419,7 @@ class _TeacherDailyAssignmentScreenState
                           children: [
                             Expanded(
                               child: MyCustomSD(
+                                isLoading: commonApiController.isClassLoading.value,
                                 hideSearch: true,
                                 labelText: 'Class',
                                 borderColor: Colors.grey,
@@ -444,6 +449,7 @@ class _TeacherDailyAssignmentScreenState
                             Expanded(
                               child: Obx(() {
                                 return MyCustomSD(
+                                  isLoading: commonApiController.isSectionLoading.value,
                                   labelText: 'Section',
                                   hideSearch: true,
                                   borderColor: Colors.grey,
@@ -480,15 +486,16 @@ class _TeacherDailyAssignmentScreenState
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                              child: MyCustomSD(
+                              child: Obx(() => MyCustomSD(
+                                isLoading: controller.isSubjectGroupLoading.value,
                                 hideSearch: true,
                                 borderColor: Colors.grey,
                                 listToSearch:
-                                    controller.subjectGroupList.value.length > 0
-                                        ? controller.subjectGroupList.value
-                                            .map((e) => e.toJson())
-                                            .toList()
-                                        : [],
+                                controller.subjectGroupList.value.length > 0
+                                    ? controller.subjectGroupList.value
+                                    .map((e) => e.toJson())
+                                    .toList()
+                                    : [],
                                 valFrom: "name",
                                 label: 'Subject Group',
                                 labelText: 'Subject Group',
@@ -496,17 +503,18 @@ class _TeacherDailyAssignmentScreenState
                                   print(val);
                                   if (val != null) {
                                     controller.updateSubjectGroupId.value =
-                                        val['subject_group_id'];
+                                    val['subject_group_id'];
                                     controller.subject();
                                   }
                                 },
-                              ),
+                              )),
                             ),
                             SizedBox(
                               width: 5,
                             ),
                             Expanded(
                               child: Obx(() => MyCustomSD(
+                                isLoading: controller.isSubjectLoading.value,
                                     hideSearch: true,
                                     borderColor: Colors.grey,
                                     listToSearch:

@@ -39,7 +39,8 @@ class TeacherDailyAssignmentController extends GetxController {
   RxList<SubjectGroupByClassAndSection> subjectGroupList = <SubjectGroupByClassAndSection>[].obs;
   RxList<SubjectListBySubjectGroup> subjectList = <SubjectListBySubjectGroup>[].obs;
   Rx<File?> pickedFile = Rx<File?>(null);
-
+  RxBool isSubjectGroupLoading = false.obs;
+  RxBool isSubjectLoading = false.obs;
   Rx<TextEditingController> homeWorkDate = TextEditingController().obs;
   Rx<TextEditingController> submissionDate = TextEditingController().obs;
   Rx<TextEditingController> maxMark = TextEditingController().obs;
@@ -201,34 +202,56 @@ class TeacherDailyAssignmentController extends GetxController {
   }
 
   subjectGroup() async {
-    Map<String, dynamic> body = {
-      "class_id":commonApiController.selectedClassId.value,
-      "section_id":commonApiController.selectedSectionId.value,
-    };
-    print("EEEEEEEE${body}");
-    var data = await apiRespository.postApiCallByJson(Constants.subjectGroup, body);
-    print("DATA @@@@ ${data.body}");
-    data.body.forEach((item) {
+    try
+    {
+      isSubjectGroupLoading.value = true;
+      subjectGroupList.clear();
+      Map<String, dynamic> body = {
+        "class_id":commonApiController.selectedClassId.value,
+        "section_id":commonApiController.selectedSectionId.value,
+      };
+      print("EEEEEEEE${body}");
+      var data = await apiRespository.postApiCallByJson(Constants.subjectGroup, body);
+      print("DATA @@@@ ${data.body}");
+      data.body.forEach((item) {
 
-      subjectGroupList.value.add( SubjectGroupByClassAndSection.fromJson(item));
-    });
-    update();
+        subjectGroupList.value.add( SubjectGroupByClassAndSection.fromJson(item));
+      });
+      isSubjectGroupLoading.value = false;
+      update();
+    }
+    catch(e)
+    {
+      isSubjectGroupLoading.value = false;
+
+    }
+
     // controller.updateSubjectGroup = data.body;
   }
 
   subject() async {
-    Map<String, dynamic> body = {
-      "subject_group_id": updateSubjectGroupId.value
-    };
+    try
+    {
+      isSubjectLoading.value = true;
+      subjectList.clear();
+      Map<String, dynamic> body = {
+        "subject_group_id": updateSubjectGroupId.value
+      };
 
-    var data = await apiRespository.postApiCallByJson(Constants.subject, body);
-    print("DATA @@@@ ${data.body}");
-    data.body.forEach((item) {
+      var data = await apiRespository.postApiCallByJson(Constants.subject, body);
+      print("DATA @@@@ ${data.body}");
+      data.body.forEach((item) {
 
-      subjectList.value.add( SubjectListBySubjectGroup.fromJson(item));
-    });
+        subjectList.value.add( SubjectListBySubjectGroup.fromJson(item));
+      });
+      isSubjectLoading.value = false;
+      update();
+    }
+    catch(e)
+    {
+      isSubjectLoading.value = false;
+    }
 
-    update();
 
   }
   // final kEvents = LinkedHashMap<DateTime, List<Event>>(
