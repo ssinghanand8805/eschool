@@ -12,6 +12,7 @@ class MyButton extends StatelessWidget {
   final TextStyle? textStyle;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
+  final bool isLoading;
 
   const MyButton(
       {Key? key,
@@ -24,7 +25,10 @@ class MyButton extends StatelessWidget {
         this.animate,
         this.suffixIcon,
         this.prefixIcon,
-        this.width})
+        this.width,
+        this.isLoading = false
+
+      })
       : super(key: key);
 
   @override
@@ -53,6 +57,7 @@ class MyButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  isLoading ?  SizedBox(height:20,width:20,child: CircularProgressIndicator()) : SizedBox(),
                   Expanded(
                     child: Wrap(
                       alignment: WrapAlignment.center,

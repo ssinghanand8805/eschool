@@ -16,6 +16,7 @@ import '../common_widgets/controller/CommonApiController.dart';
 import '../teacher_daily_assignment/controller/daily_assignment_controller.dart';
 import '../teacher_daily_assignment/model/DailyAssgnment.dart';
 import 'class_work_controller.dart';
+import 'class_work_modal.dart';
 
 class ClassWorkPage extends GetView<ClassWorkController> {
   CommonApiController commonApiController = Get.put(CommonApiController());
@@ -45,6 +46,7 @@ class ClassWorkPage extends GetView<ClassWorkController> {
                     children: [
                       Expanded(
                         child: Obx(() => MyCustomSD(
+                          isLoading: commonApiController.isClassLoading.value ,
                               hideSearch: true,
                               borderColor: Colors.grey,
                               listToSearch:
@@ -75,6 +77,7 @@ class ClassWorkPage extends GetView<ClassWorkController> {
                       Expanded(
                         child: Obx(() {
                           return MyCustomSD(
+                            isLoading: commonApiController.isSectionLoading.value ,
                             hideSearch: true,
                             borderColor: Colors.grey,
                             listToSearch:
@@ -110,6 +113,7 @@ class ClassWorkPage extends GetView<ClassWorkController> {
                     children: [
                       Expanded(
                         child: Obx(() => MyCustomSD(
+                          isLoading: controller.isSubjectGroupLoading.value ,
                               hideSearch: true,
                               borderColor: Colors.grey,
                               listToSearch:
@@ -136,6 +140,7 @@ class ClassWorkPage extends GetView<ClassWorkController> {
                       ),
                       Expanded(
                         child: Obx(() => MyCustomSD(
+                          isLoading: controller.isSubjectLoading.value ,
                               hideSearch: true,
                               borderColor: Colors.grey,
                               listToSearch:
@@ -172,14 +177,15 @@ class ClassWorkPage extends GetView<ClassWorkController> {
                   ),
                   Align(
                     alignment: Alignment.topRight,
-                    child: MyButton(
+                    child: Obx(() => MyButton(
+                      isLoading: controller.isFetchDataLoading.value,
                       color: Colors.green,
                       width: 80,
                       title: 'Search',
                       onPress: () {
                         controller.getData();
                       },
-                    ),
+                    )),
                   ),
                   Text(
                     'Class Work List',
@@ -234,6 +240,7 @@ class ClassWorkPage extends GetView<ClassWorkController> {
                         children: [
                           Expanded(
                             child: MyCustomSD(
+                              isLoading:commonApiController.isClassLoading.value,
                               hideSearch: true,
                               labelText: 'Class',
                               borderColor: Colors.grey,
@@ -263,6 +270,7 @@ class ClassWorkPage extends GetView<ClassWorkController> {
                           Expanded(
                             child: Obx(() {
                               return MyCustomSD(
+                                isLoading: commonApiController.isSectionLoading.value,
                                 labelText: 'Section',
                                 hideSearch: true,
                                 borderColor: Colors.grey,
@@ -297,6 +305,7 @@ class ClassWorkPage extends GetView<ClassWorkController> {
                         children: [
                           Expanded(
                             child: MyCustomSD(
+                              isLoading: controller.isSubjectGroupLoading.value ,
                               hideSearch: true,
                               borderColor: Colors.grey,
                               listToSearch:
@@ -323,6 +332,7 @@ class ClassWorkPage extends GetView<ClassWorkController> {
                           ),
                           Expanded(
                             child: Obx(() => MyCustomSD(
+                              isLoading: controller.isSubjectLoading.value ,
                                   hideSearch: true,
                                   borderColor: Colors.grey,
                                   listToSearch:
@@ -512,14 +522,15 @@ class ClassWorkPage extends GetView<ClassWorkController> {
                           SizedBox(
                             width: 15,
                           ),
-                          MyButton(
+                          Obx(() => MyButton(
+                            isLoading: controller.isAdding.value,
                             color: Colors.green,
                             width: 80,
                             title: 'Save',
                             onPress: () {
                               controller.addClassWork(context);
                             },
-                          ),
+                          )),
                         ],
                       ),
                     ],
@@ -608,16 +619,16 @@ class MyTable extends StatefulWidget {
 }
 
 class _MyTableState extends State<MyTable> {
-  TeacherDailyAssignmentController controller =
-      Get.put(TeacherDailyAssignmentController());
+  ClassWorkController controller =
+      Get.put(ClassWorkController());
   @override
   Widget build(BuildContext context) {
-    return controller.assignmentList.value.data != null
+    return controller.classList.length > 0
         ? ListView.builder(
-            itemCount: controller.assignmentList.value.data!.length,
+            itemCount: controller.classList.length,
             itemBuilder: (context, index) {
-              Assignment assignment =
-                  controller.assignmentList.value.data![index];
+              Classwork classWork =
+                  controller.classList.value[index];
               return Card(
                 margin:
                     const EdgeInsets.symmetric(vertical: 5, horizontal: 10.0),
@@ -654,7 +665,7 @@ class _MyTableState extends State<MyTable> {
                           children: [
                             Expanded(
                               child: Html(
-                                data: assignment.description!,
+                                data: classWork.description,
                               ),
                             ),
                           ],
@@ -664,73 +675,36 @@ class _MyTableState extends State<MyTable> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Class: ${assignment.className!}",
-                              style: theme.textTheme.titleMedium!.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
-                              ),
+                              "Class: ${classWork.className!}",
+                                style: theme.textTheme.bodySmall,
                             ),
                             Text(
-                              "Section: ${assignment.section!}",
+                              "Section: ${classWork.section!}",
                               style: theme.textTheme.bodySmall,
                             ),
                             const SizedBox(height: 5.0),
                             Text(
-                              "Subject: ${assignment.subjectName!}",
+                              "Subject: ${classWork.subjectName!}",
                               style: theme.textTheme.bodySmall,
                             ),
                             const SizedBox(height: 5.0),
                             Text(
-                              "Submission Date: ${assignment.submitDate!}",
+                              "Date: ${classWork.createDate!}",
                               style: theme.textTheme.bodySmall,
                             ),
                             const SizedBox(height: 5.0),
                             Text(
-                              "Evaluated By: ${assignment.staffName! ?? 'N/A'}",
+                              "Document: ${classWork.document ?? 'N/A'}",
                               style: theme.textTheme.bodySmall,
                             ),
                             const SizedBox(height: 5.0),
                             Text(
-                              "Evaluation Date: ${'Evaluation Date'}",
+                              "Staff: ${classWork.staffName ?? 'N/A'}",
                               style: theme.textTheme.bodySmall,
                             ),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            TextButton.icon(
-                              onPressed: () {
-                                print("Edit pressed");
-                                Get.toNamed('/evaluateHomeWork',
-                                    arguments: {"id": assignment.id});
-                                // Call edit function here
-                              },
-                              icon: const Icon(Icons.people, size: 16),
-                              label: const Text("Students"),
-                            ),
-                            const SizedBox(width: 5.0),
-                            TextButton.icon(
-                              onPressed: () {
-                                print("Edit pressed");
-                              },
-                              icon: const Icon(Icons.edit, size: 16),
-                              label: const Text("Edit"),
-                            ),
-                            const SizedBox(width: 5.0),
-                            TextButton.icon(
-                              onPressed: () {
-                                print("Delete pressed");
-                              },
-                              icon: const Icon(Icons.delete,
-                                  size: 16, color: Colors.red),
-                              label: Text(
-                                "Delete",
-                                style: TextStyle(color: Colors.red),
-                              ),
-                            ),
-                          ],
-                        ),
+
                       ],
                     ),
                   ),

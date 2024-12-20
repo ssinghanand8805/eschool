@@ -42,7 +42,12 @@ class ClassWorkController extends GetxController {
   Rx<TextEditingController> submissionDate = TextEditingController().obs;
   Rx<TextEditingController> maxMark = TextEditingController().obs;
   Rx<HtmlEditorController> HtmlController = HtmlEditorController().obs;
-  Rx<ClassWork> classList = ClassWork().obs;
+  RxList<Classwork> classList = <Classwork>[].obs;
+  RxBool isSubjectGroupLoading = false.obs;
+  RxBool isSubjectLoading = false.obs;
+
+  RxBool isFetchDataLoading = false.obs;
+  RxBool isAdding = false.obs;
   @override
   void onClose() {
     super.onClose();
@@ -70,53 +75,56 @@ class ClassWorkController extends GetxController {
   }
 
   addClassWork(context) async {
-    var ff = await HtmlController.value.getText();
 
-    Map<String, String> body = {
-      "record_id": "0",
-      "modal_class_id": commonApiController.selectedClassId.value,
-      "modal_section_id": commonApiController.selectedSectionId.value,
-      "classwork_date": classWorkDate.value.text,
-      "modal_subject_id": updateSubjectId.value,
-      "submit_date": submissionDate.value.text,
-      "description": ff.isEmpty ? "" : ff,
-    };
+    try{
+      var ff = await HtmlController.value.getText();
+      isAdding.value = true;
+      update();
+      Map<String, String> body = {
+        "record_id": "0",
+        "modal_class_id": commonApiController.selectedClassId.value,
+        "modal_section_id": commonApiController.selectedSectionId.value,
+        "classwork_date": classWorkDate.value.text,
+        "modal_subject_id": updateSubjectId.value,
+        "submit_date": submissionDate.value.text,
+        "description": ff.isEmpty ? "" : ff,
+      };
 
-    FormData bodyForm = FormData({});
-    bodyForm.fields.addAll(body.entries);
-    if (pickedFile.value != null && await pickedFile.value!.exists()) {
-      bodyForm.files.add(MapEntry(
-          'userfile',
-          MultipartFile(pickedFile.value,
-              filename: pickedFile.value?.path.split('/').last ?? "")));
+      FormData bodyForm = FormData({});
+      bodyForm.fields.addAll(body.entries);
+      if (pickedFile.value != null && await pickedFile.value!.exists()) {
+        bodyForm.files.add(MapEntry(
+            'userfile',
+            MultipartFile(pickedFile.value,
+                filename: pickedFile.value?.path.split('/').last ?? "")));
+      }
+      print("AddHomeWorkBody ${bodyForm.files}");
+      var data = await apiRespository.postApiCallByFormData(
+          Constants.createClassWork, bodyForm);
+
+      print("dddd " + data.body['status']);
+      isAdding.value = false;
+      update();
+      if (data.body != null && data.body['status'] == 'success') {
+        print("Cherck");
+        Get.showSnackbar(
+            Ui.SuccessSnackBar(message: "Homework added successfully"));
+        Navigator.pop(context);
+      } else {
+        Get.showSnackbar(Ui.ErrorSnackBar(message: "Something went wrong"));
+      }
     }
-    print("AddHomeWorkBody ${bodyForm.files}");
-    var data = await apiRespository.postApiCallByFormData(
-        Constants.createClassWork, bodyForm);
-
-    print("dddd " + data.body['status']);
-
-    if (data.body != null && data.body['status'] == 'success') {
-      print("Cherck");
-      Get.showSnackbar(
-          Ui.SuccessSnackBar(message: "Homework added successfully"));
-      Navigator.pop(context);
-    } else {
+    catch(e)
+    {
       Get.showSnackbar(Ui.ErrorSnackBar(message: "Something went wrong"));
+      isAdding.value = false;
     }
+
   }
 
-  getDataFromApi(DateTime now) {
-    String year = DateFormat('yyyy').format(now); // Extracts the year as "2024"
-    String month = DateFormat('MM').format(now);
-    // fetchDataFuture = getData(year,month);
-  }
 
-  setMonthAndYear() {
-    year.value = "";
-    month.value = "";
-    update();
-  }
+
+
 
   getDate(context) async {
     var date = await showDatePicker(
@@ -129,51 +137,85 @@ class ClassWorkController extends GetxController {
   }
 
   Future<void> getData() async {
-    Map<String, dynamic> body = {
-      "class_id": commonApiController.selectedClassId.value,
-      "section_id": commonApiController.selectedSectionId.value,
-      "subject_group_id": updateSubjectGroupId.value,
-      "subject_id": updateSubjectId.value,
-      "date": dateC.value.text,
-    };
-    print("Body @@@@ ${body}");
-    var data = await apiRespository.postApiCallByJson(
-        Constants.getclassworklist, body);
-    print("DATA @@@@ ${data.body}");
-    if (data.statusCode == 200) {
-      classList.value = ClassWork.fromJson(data.body);
+
+    try{
+      isFetchDataLoading.value = true;
+      update();
+      Map<String, dynamic> body = {
+        "class_id": commonApiController.selectedClassId.value,
+        "section_id": commonApiController.selectedSectionId.value,
+        "subject_group_id": updateSubjectGroupId.value,
+        "subject_id": updateSubjectId.value,
+        "filterdate": dateC.value.text,
+      };
+      print("Body @@@@ ${body}");
+      var data = await apiRespository.postApiCallByJson(
+          Constants.getclassworklist, body);
+      print("DATA @@@@ ${data.body}");
+      if (data.statusCode == 200 && data.body.length > 0) {
+        for(var i=0;i<data.body.length;i++)
+        {
+          classList.value.add(Classwork.fromJson(data.body[i]));
+
+        }
+        isFetchDataLoading.value = false;
+        update();
+
+      }
+    }
+    catch(e)
+    {
+      isFetchDataLoading.value = false;
       update();
     }
+
   }
 
   subjectGroup() async {
-    Map<String, dynamic> body = {
-      "class_id": commonApiController.selectedClassId.value,
-      "section_id": commonApiController.selectedSectionId.value,
-    };
-    print("EEEEEEEE${body}");
-    var data =
-        await apiRespository.postApiCallByJson(Constants.subjectGroup, body);
-    print("DATA @@@@ ${data.body}");
-    data.body.forEach((item) {
-      subjectGroupList.value.add(SubjectGroupByClassAndSection.fromJson(item));
-    });
-    update();
+    try{
+      isSubjectGroupLoading.value = true;
+      Map<String, dynamic> body = {
+        "class_id": commonApiController.selectedClassId.value,
+        "section_id": commonApiController.selectedSectionId.value,
+      };
+      print("EEEEEEEE${body}");
+      var data =
+      await apiRespository.postApiCallByJson(Constants.subjectGroup, body);
+      print("DATA @@@@ ${data.body}");
+      data.body.forEach((item) {
+        subjectGroupList.value.add(SubjectGroupByClassAndSection.fromJson(item));
+      });
+      isSubjectGroupLoading.value = false;
+      update();
+    }
+    catch(e)
+    {
+      isSubjectGroupLoading.value = false;
+    }
+
     // controller.updateSubjectGroup = data.body;
   }
 
   subject() async {
-    Map<String, dynamic> body = {
-      "subject_group_id": updateSubjectGroupId.value
-    };
+    try{
+      isSubjectLoading.value = true;
+      Map<String, dynamic> body = {
+        "subject_group_id": updateSubjectGroupId.value
+      };
 
-    var data = await apiRespository.postApiCallByJson(Constants.subject, body);
-    print("DATA @@@@ ${data.body}");
-    data.body.forEach((item) {
-      subjectList.value.add(SubjectListBySubjectGroup.fromJson(item));
-    });
+      var data = await apiRespository.postApiCallByJson(Constants.subject, body);
+      print("DATA @@@@ ${data.body}");
+      data.body.forEach((item) {
+        subjectList.value.add(SubjectListBySubjectGroup.fromJson(item));
+      });
+      isSubjectLoading.value = false;
+      update();
+    }
+    catch(e)
+    {
+      isSubjectLoading.value = false;
+    }
 
-    update();
   }
 
   bool isSameDay(DateTime a, DateTime b) {
