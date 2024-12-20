@@ -284,6 +284,7 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
                       children: [
                         Expanded(
                           child: Obx(() => MyCustomSD(
+                            isLoading: controller3.isClassLoading.value,
                                 hideSearch: true,
                                 borderColor: Colors.grey,
                                 listToSearch:
@@ -312,6 +313,7 @@ class _ApproveLeaveScreenState extends State<AttendanceByDateScreen> {
                         ),
                         Expanded(
                           child: Obx(() => MyCustomSD(
+                            isLoading: controller3.isSectionLoading.value,
                                 hideSearch: true,
                                 borderColor: Colors.grey,
                                 listToSearch:

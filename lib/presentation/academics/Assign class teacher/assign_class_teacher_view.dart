@@ -206,7 +206,7 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
         child: Column(
           children: [
             Text(
-              "Add Content Type",
+              "Assign Class Teacher",
               style: theme.textTheme.bodyMedium,
             ),
             SizedBox(
@@ -216,6 +216,7 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
               children: [
                 Expanded(
                   child: Obx(() => MyCustomSD(
+                        isLoading: controller3.isClassLoading.value,
                         hideSearch: true,
                         borderColor: Colors.grey,
                         listToSearch: controller3.classListModelMap.value,
@@ -241,6 +242,7 @@ class AssignClassTeacherView extends GetView<AssignClassTeacherController> {
                 ),
                 Expanded(
                   child: Obx(() => MyCustomSD(
+                    isLoading: controller3.isSectionLoading.value,
                         hideSearch: true,
                         borderColor: Colors.grey,
                         listToSearch: controller3.sectionListModelMap.value,

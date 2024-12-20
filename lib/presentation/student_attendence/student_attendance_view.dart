@@ -114,6 +114,7 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
                       return Row(
                         children: [
                           Expanded(child: MyCustomSD(
+                            isLoading: controller3.isClassLoading.value,
                             hideSearch: true,
                             borderColor: Colors.grey,
                             listToSearch: controller3.classListModelMap.value,
@@ -138,6 +139,7 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
                             width: 10,
                           ),
                           Expanded(child: MyCustomSD(
+                            isLoading: controller3.isSectionLoading.value,
                             hideSearch: true,
                             borderColor: Colors.grey,
                             listToSearch: controller3.sectionListModelMap.value,
